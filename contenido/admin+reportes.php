@@ -199,49 +199,6 @@ function ADMIN_reportes() {
 	echo "<h4>Reporte de horarios</h4>";
 	?>
 	<form action="./?accion=reportes" method="post">
-	<input type="checkbox" name="generar_horarios" value="1" checked="cheked">Generar reporte de horarios
-	<table>
-	<tr>
-	<td><input type="checkbox" name="dpto0" value="1" checked="cheked"><?echo DE_0;?></td>
-	<td><input type="checkbox" name="dpto1" value="1" checked="cheked"><?echo DE_1;?></td>
-	</tr>
-	</table>
-	<table>
-	<tr>
-	<td><input type="checkbox" name="taller0" value="1" checked="cheked">LSA</td>
-	<td><input type="checkbox" name="taller4" value="1" checked="cheked">TPP</td>
-	</tr>
-	<tr>
-	<td><input type="checkbox" name="taller1" value="1" checked="cheked">LID</td>
-	<td><input type="checkbox" name="taller5" value="1" checked="cheked">TIS</td>
-	</tr>
-	<tr>
-	<td><input type="checkbox" name="taller2" value="1" checked="cheked">LAI</td>
-	<td><input type="checkbox" name="taller6" value="1" checked="cheked">TAS</td>
-	</tr>
-	<tr>
-	<td><input type="checkbox" name="taller3" value="1" checked="cheked">LIV</td>
-	<td><input type="checkbox" name="taller7" value="1" checked="cheked">TEC</td>
-	</tr>
-	</table>
-	<table>
-	<tr>
-	<td><input type="checkbox" name="tipo_instructor0" value="1" checked="cheked"> <?echo TI_0;?></td>
-	<td><input type="checkbox" name="tipo_instructor1" value="1" checked="cheked"> <?echo TI_1;?></td>
-	</tr>
-	<tr>
-	<td><input type="checkbox" name="tipo_instructor2" value="1" checked="cheked"> <?echo TI_2;?></td>
-	<td><input type="checkbox" name="tipo_instructor3" value="1" checked="cheked"> <?echo TI_3;?></td>
-	</tr>
-	</table>
-	<? echo "<h4>Reporte de Instructores (listas)</h4>"; ?>
-	<input type="checkbox" name="generar_instructores" value="1" checked="cheked">Generar reporte de instructores
-	<table>
-	<tr>
-	<td><input type="checkbox" name="instructor_nivel0" value="1" checked="cheked"> Administradores</td>
-	<td><input type="checkbox" name="instructor_nivel1" value="1" checked="cheked"> Instructores</td>
-	</tr>
-	</table>
 	<? echo "<hr /><h3>Por favor seleccione el/los tipo(s) de formato de salida a generar</h3>"; ?>
 	<table>
 	<tr>
