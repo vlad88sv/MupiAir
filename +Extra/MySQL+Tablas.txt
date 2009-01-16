@@ -1,0 +1,87 @@
+Tablas Utilizadas por ECO MUPIS y su explicación.
+---------------------------------------------------------------------------------------------------------------------------------
+
+emupi_geocode_cache
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| address | varchar(255) | NO   | PRI | NULL    |       |
+| lon     | float        | YES  |     | NULL    |       |
+| lat     | float        | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+
+emupi_mupis
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| id            | int(11)      | NO   | PRI | NULL    | auto_increment |
+| codigo_mupi   | varchar(100) | NO   |     | NULL    |                |
+| direccion     | varchar(255) | YES  |     | NULL    |                |
+| foto_generica | varchar(255) | YES  |     | NULL    |                |
+| lon           | float        | YES  |     | NULL    |                |
+| lat           | float        | YES  |     | NULL    |                |
+| codigo_evento | varchar(50)  | YES  |     | NULL    |                |
++---------------+--------------+------+-----+---------+----------------+
+
+emupi_mupis_caras
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| id              | int(11)      | NO   | PRI | NULL    | auto_increment |
+| codigo_mupi     | varchar(100) | NO   |     | NULL    |                |
+| codigo          | varchar(100) | YES  |     | NULL    |                |
+| alquilado_desde | int(11)      | YES  |     | NULL    |                |
+| codigo_evento   | varchar(50)  | YES  |     | NULL    |                |
++-----------------+--------------+------+-----+---------+----------------+
+
+emupi_mupis_eventos
++--------------------+--------------+------+-----+---------+----------------+
+| Field              | Type         | Null | Key | Default | Extra          |
++--------------------+--------------+------+-----+---------+----------------+
+| id                 | int(11)      | NO   | PRI | NULL    | auto_increment |
+| codigo_evento      | varchar(50)  | YES  |     | NULL    |                |
+| descripcion_evento | varchar(500) | YES  |     | NULL    |                |
++--------------------+--------------+------+-----+---------+----------------+
+
+emupi_registro
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| clave | varchar(255) | NO   | PRI | NULL    |       |
+| valor | varchar(255) | YES  |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+
+emupi_usuarios
++-----------+---------------------+------+-----+---------+-------+
+| Field     | Type                | Null | Key | Default | Extra |
++-----------+---------------------+------+-----+---------+-------+
+| codigo    | varchar(100)        | NO   | PRI | NULL    |       |
+| clave     | varchar(32)         | NO   |     | NULL    |       |
+| nombre    | varchar(32)         | NO   |     | NULL    |       |
+| razon     | varchar(100)        | NO   |     | NULL    |       |
+| email     | varchar(50)         | YES  |     | NULL    |       |
+| telefono1 | varchar(20)         | NO   |     | NULL    |       |
+| telefono2 | varchar(20)         | YES  |     | NULL    |       |
+| telefono3 | varchar(20)         | YES  |     | NULL    |       |
+| logotipo  | varchar(200)        | YES  |     | NULL    |       |
+| notas     | varchar(500)        | YES  |     | NULL    |       |
+| userlevel | tinyint(1) unsigned | NO   |     | NULL    |       |
+| userid    | varchar(32)         | YES  |     | NULL    |       |
+| timestamp | int(11) unsigned    | NO   |     | NULL    |       |
++-----------+---------------------+------+-----+---------+-------+
+
+emupi_usuarios_activos
++-----------+------------------+------+-----+---------+-------+
+| Field     | Type             | Null | Key | Default | Extra |
++-----------+------------------+------+-----+---------+-------+
+| codigo    | varchar(30)      | NO   | PRI | NULL    |       |
+| timestamp | int(11) unsigned | NO   |     | NULL    |       |
++-----------+------------------+------+-----+---------+-------+
+
+emupi_visitantes_activos
++-----------+------------------+------+-----+---------+-------+
+| Field     | Type             | Null | Key | Default | Extra |
++-----------+------------------+------+-----+---------+-------+
+| ip        | varchar(15)      | NO   | PRI | NULL    |       |
+| timestamp | int(11) unsigned | NO   |     | NULL    |       |
++-----------+------------------+------+-----+---------+-------+

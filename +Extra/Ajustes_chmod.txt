@@ -1,0 +1,7 @@
+Los siguientes ajustes de permisos son necesarios para ejecutar Sistema de Horarios en un servidor Linux común:
+
+0777 reportes/+H/+HTML/*
+0777 reportes/+H/+PDF/*
+0777 reportes/+I/+HTML/*
+0777 reportes/+I/+PDF/*
+0777 include/dompdf/tmp/*

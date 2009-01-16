@@ -1,0 +1,44 @@
+Sistema en linea Eco Mupis 
+
+1. Requerimientos
+
+Software:
+PHP + PEAR >= 5.2.6
+MySQL >= 5.0.67
+Apache 2 o Lighty(+FAST_CGI) >= 1.4.19.
+
+Hadware minimo del servidor:
+Memoria RAM: 30MB para uso normal del sistema, hasta 128MB para generar reportes PDF.
+CPU: Pentium 3 @ 1Ghz
+
+
+1. Instalación
+
+1. Obtener "Sistema_Horarios+Rev1.zip" o posterior (código fuente).
+2. Descomprimir temporalmente en alguna carpeta del servidor a donde se procederá a instalar.
+3. Ubicar la carpeta www (usualmente '/var/www/') y mover la carpeta del Sistema de Horarios ahí, es usual que se necesite el permiso/contraseña de root (el administrador del equipo) para poder copiar archivos a esa carpeta.
+4.Ejecutar un comando llamado "chmod" según se especifica en Ajustes_chmod.txt
+5. Abra el navegador de la maquina y escriba: http://localhost/clab/instalar.php
+5.1 Configuración MySQL
+5.1.1 Dirección del servidor MySQL: Deje "localhost" a menos que le digan que el servidor SQL no esta en ese mismo servidor.
+5.1.2 Base de datos a utilizar: Utilice el nombre de la base de datos proporcionada por el administrador o consulte el archivo MySQL-Instrucciones.txt sobre como crearla.
+5.1.3 Usuario: Utilice el nombre de usuario de la base de datos proporcionada por el administrador o consulte el archivo MySQL-Instrucciones.txt sobre como crearlo.
+5.1.4 Clave: Utilice la clave de usuario de la base de datos proporcionada por el administrador o consulte el archivo MySQL-Instrucciones.txt sobre como crearla.
+5.2 Administración
+5.2.1 Nombre Administrador: Escoja un nombre compuesto por letras (sin espacios) menor a 10 caracteres. Este será el usuario Administrador principal.
+5.2.2 Correo electrónico: Ingrese su correo electrónico, use un correo real puesto que se le enviarán sus datos de acceso a el.
+5.2.3 Clave: Ingrese la clave para el Administrador.
+5.2.4 Clave (repetir): Ingrese nuevamente la clave del paso 5.2.3
+6. Presione el botón "Instalar". Esto realizará la instalación principal
+
+
+1.1 Ajustes Extras.
+
+1 Puede que necesite ajustar dompdf a sus necesidades particulares (usualmente la configuración por defecto es suficiente). Lea el documento en "include/dompdf/README" para mas información.
+
+2. Archivos y su utilidad.
+
+0_Extra/ -> Carpeta de documentos y ayuda relacionada con Sistema de Horarios.
+contenido/ -> Contiene las plantillas de presentación principales.
+include/ -> Contiene las librerias necesarias para la ejecución del sistema.
+reportes/ -> Carpeta necesaria para albergar documentos temporales y reportes finales.
