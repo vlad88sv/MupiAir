@@ -145,7 +145,7 @@ Ademas de su fecha de alquiler, quien es su "alquilador", que tipo de cara es (p
 NOTA: Dado que el daño a un MUPI (llamado "evento") puede producirse en una sola cara (ej. el pintando callejero de una cara)
 entonces también los eventos pueden ser asociados a estas (caras).
 */
-$q="codigo_cara_mupi VARCHAR(100) NOT NULL PRIMARY KEY, codigo VARCHAR(100), alquilado_desde int(11), codigo_evento VARCHAR(50)";
+$q="codigo_cara_mupi VARCHAR(100) NOT NULL PRIMARY KEY, codigo_mupi VARCHAR(100) NOT NULL, codigo VARCHAR(100), alquilado_desde int(11), codigo_evento VARCHAR(50)";
 CREAR_TBL(TBL_MUPI_FACES, $q);
 
 /*
