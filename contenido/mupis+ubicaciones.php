@@ -25,19 +25,7 @@ echo '
 <td width="20%">
 <h2>Sus MUPIS</h2>';
 $map->printSidebar();
-echo '
-</td>
-</tr>
-<tr>
-<td colspan="2"><h2>Datos del MUPI seleccionado</h2></td>
-</tr>
-<tr>
-<td>
-<span id="datos_cara_mupis">Seleccione un '._NOMBRE_.' por favor</span>
-</td>
-</tr>
-</table>
-</body>';
+echo '</table><span id="datos_cara_mupis">Seleccione un '._NOMBRE_.' por favor</span></body>';
 }
 
 function AgregarPuntosMupis(){
