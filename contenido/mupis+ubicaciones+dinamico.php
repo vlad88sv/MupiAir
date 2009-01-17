@@ -1,7 +1,6 @@
 <?php
 error_reporting(E_STRICT | E_ALL);
 require_once('../include/const.php');
-
 if ( isset( $_GET['MUPI'] ) ) {
 	return retornar ( Buscar (strip_tags($_GET['MUPI'])) );
 } else {
@@ -9,7 +8,7 @@ if ( isset( $_GET['MUPI'] ) ) {
 }
 
 function retornar($texto) {
-	return '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' . $texto . '<br />';
+	exit ('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' . $texto . '<br />');
 }
 
 function Buscar ($MUPI) {
@@ -21,11 +20,11 @@ function Buscar ($MUPI) {
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
    if(!$result || ($num_rows < 0)){
-      return retornar("Error mostrando la información");
+      retornar("Error mostrando la información");
    }
  
  if($num_rows == 0){
-      return "¡No hay "._NOMBRE_." con ese código ($MUPI)!";
+      retornar ("¡No hay "._NOMBRE_." con ese código ($MUPI)!");
    }
 
     $datos .=  '<table>';
@@ -40,7 +39,6 @@ function Buscar ($MUPI) {
        $datos .=  "<tr><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$lon</td><td>$lat</td><td>$codigo_evento</td></tr>";
    }
     $datos .=  "</table>";
-
-return retornar($datos);
+retornar($datos);
 }
 ?>
