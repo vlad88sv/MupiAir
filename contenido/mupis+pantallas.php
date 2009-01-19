@@ -9,7 +9,11 @@ global $session;
 	echo '<hr /><h2>Pantallas '._NOMBRE_." registradas para Ud.</h2>";
 	verPantallas($usuario);
 	if ( $session->isAdmin() ) {
-	echo '<hr /><h2>Registrar Pantallas</h2>';
+	$paraUsuario = "";
+	if ($usuario) {
+		$paraUsuario = " para $usuario";
+	}
+	echo '<hr /><h2>Registrar Pantallas'.$paraUsuario.'</h2>';
 	verPantallasregistro();
 	}
 }
@@ -17,7 +21,7 @@ function verPantallas($usuario=""){
    global $database;
    $WHERE = "";
    if ($usuario) {
-    $WHERE = 'WHERE codigo='.$usuario;
+    $WHERE = " WHERE codigo='".$usuario."'";
     }
     
    $q = "SELECT codigo_cara_mupi 'Código Pantalla', codigo_mupi 'Código " . _NOMBRE_."', codigo 'Código propietario', alquilado_desde 'Alquilado desde', codigo_evento 'Evento', foto 'Foto' FROM ".TBL_MUPI_FACES."$WHERE;";
