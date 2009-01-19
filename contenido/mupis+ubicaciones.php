@@ -35,12 +35,11 @@ function AgregarPuntosMupis(){
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
    if(!$result || ($num_rows < 0)){
-      echo "Error mostrando la información";
-      return;
+      exit ( "Error mostrando la información<br />");
    }
+   
    if($num_rows == 0){
-      echo "¡No hay "._NOMBRE_." ingresados!<BR />";
-      return;
+      exit ("¡No hay "._NOMBRE_." ingresados!<br />");
    }
    
    for($i=0; $i<$num_rows; $i++){

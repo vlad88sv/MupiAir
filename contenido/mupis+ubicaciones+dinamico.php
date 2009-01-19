@@ -2,9 +2,9 @@
 error_reporting(E_STRICT | E_ALL);
 require_once('../include/const.php');
 if ( isset( $_GET['MUPI'] ) ) {
-	return retornar ( Buscar (strip_tags($_GET['MUPI'])) );
+	retornar ( Buscar (strip_tags($_GET['MUPI'])) );
 } else {
-	return retornar ( "Este MUPI no tiene caras asignadas" );
+	retornar ( "Este MUPI no tiene caras asignadas" );
 }
 
 function retornar($texto) {
@@ -16,7 +16,7 @@ function Buscar ($MUPI) {
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die('!->La base de datos seleccionada "'.$DB_base.'" no existe');
    $q = "SELECT * FROM ".TBL_MUPI." WHERE codigo_mupi='".$MUPI."';";
-   $result = @mysql_query($q, $link) or die('!->Ocurrió un error mientras se revisaba la disponibilidad del MUPI.');
+   $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba la disponibilidad del MUPI.');
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
    if(!$result || ($num_rows < 0)){
