@@ -76,7 +76,8 @@ function CONTENIDO_mostrar_principal() {
 	case "gestionar pantallas":
 		if($session->isAdmin()){
 			$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
-			CONTENIDO_pantallas($usuario);
+			$pantalla= isset( $_GET['pantalla'] ) ? $_GET['pantalla'] : "";
+			CONTENIDO_pantallas($usuario,$pantalla);
 			break;
 		}
 

@@ -1,6 +1,6 @@
 <?php
-function CONTENIDO_pantallas($usuario) {
-global $session;
+function CONTENIDO_pantallas($usuario, $pantalla) {
+	global $session;
 	echo '<h1>Gestión de pantallas de ' . _NOMBRE_ . '</h1>';
 	if ( $session->isAdmin() && isset($_POST['registrar_mupi']) ) {
 	//Nos toca registrar un MUPI
@@ -14,17 +14,19 @@ global $session;
 		$paraUsuario = " para $usuario";
 	}
 	echo '<hr /><h2>Registrar Pantallas'.$paraUsuario.'</h2>';
-	verPantallasregistro();
+	verPantallasregistro($pantalla);
 	}
 }
-function verPantallas($usuario=""){
+function verPantallas($usuario="", $pantalla=""){
    global $database;
+   
    $WHERE = "";
    if ($usuario) {
     $WHERE = " WHERE codigo='".$usuario."'";
     }
     
-   $q = "SELECT codigo_cara_mupi 'Código Pantalla', codigo_mupi 'Código " . _NOMBRE_."', codigo 'Código propietario', alquilado_desde 'Alquilado desde', codigo_evento 'Evento', foto 'Foto' FROM ".TBL_MUPI_FACES."$WHERE;";
+   //$q = "SELECT codigo_cara_mupi 'Código Pantalla', codigo_mupi 'Código " . _NOMBRE_."', codigo 'Código propietario', alquilado_desde 'Alquilado desde', codigo_evento 'Evento', foto 'Foto' FROM ".TBL_MUPI_FACES."$WHERE;";
+   $q = "SELECT * FROM ".TBL_MUPI_FACES."$WHERE;";
    $result = $database->query($q);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
@@ -36,10 +38,27 @@ function verPantallas($usuario=""){
       echo "¡No hay Pantallas "._NOMBRE_." ingresadas!<BR />";
       return;
    }
-   echo Query2Table($result);
+echo '<table>';
+echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th>Código propietario</th><th>Alquilado desde'</th><th>Evento</th><th>Foto</th></tr>";
+   for($i=0; $i<$num_rows; $i++){
+      $codigo_cara_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;pantalla=".mysql_result($result,$i,"codigo_cara_mupi"),mysql_result($result,$i,"codigo_cara_mupi"), "Editar los datos de esta pantalla");
+      $codigo_mupi = mysql_result($result,$i,"codigo_mupi");
+      $codigo = mysql_result($result,$i,"codigo");
+      $alquilado_desde  = mysql_result($result,$i,"alquilado_desde");
+      $codigo_evento  = mysql_result($result,$i,"codigo_evento");
+      $Foto = mysql_result($result,$i,"Foto");
+      echo "<tr><td>$codigo_cara_mupi</td><td>$codigo_mupi</td><td>$codigo</td><td>$alquilado_desde</td><td>$codigo_evento</td><td>$Foto</td></tr>";
+   }
+   echo "</table><br>";
 }
-function verPantallasregistro() {
-global $form;
+function verPantallasregistro($pantalla="") {
+global $form, $database;
+if ($pantalla) {
+	$q = "SELECT * FROM ".TBL_MUPI_FACES." WHERE codigo_cara_mupi='$pantalla';";
+	$result = $database->query($q);
+	$form->setValue("codigo", mysql_result($result,0,"codigo_cara_mupi"));
+	$form->setValue("foto", mysql_result($result,0,"foto"));
+}
 echo '
 <form action="./?'._ACC_.'=gestionar+pantallas" method="POST">
 <table>
