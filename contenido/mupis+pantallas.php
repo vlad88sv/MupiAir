@@ -1,5 +1,5 @@
 <?php
-function CONTENIDO_pantallas() {
+function CONTENIDO_pantallas($usuario) {
 global $session;
 	echo '<h1>Gestión de pantallas de ' . _NOMBRE_ . '</h1>';
 	if ( $session->isAdmin() && isset($_POST['registrar_mupi']) ) {
@@ -7,15 +7,20 @@ global $session;
 	Pantalla_REGISTRAR();
 	}
 	echo '<hr /><h2>Pantallas '._NOMBRE_." registradas para Ud.</h2>";
-	verPantallas();
+	verPantallas($usuario);
 	if ( $session->isAdmin() ) {
 	echo '<hr /><h2>Registrar Pantallas</h2>';
 	verPantallasregistro();
 	}
 }
-function verPantallas(){
+function verPantallas($usuario=""){
    global $database;
-   $q = "SELECT codigo_cara_mupi 'Código Pantalla', codigo_mupi ' Código " . _NOMBRE_."', codigo 'Código propietario', alquilado_desde 'Alquilado desde', codigo_evento 'Evento', foto 'Foto' FROM ".TBL_MUPI_FACES.";";
+   $WHERE = "";
+   if ($usuario) {
+    $WHERE = 'WHERE codigo='.$usuario;
+    }
+    
+   $q = "SELECT codigo_cara_mupi 'Código Pantalla', codigo_mupi 'Código " . _NOMBRE_."', codigo 'Código propietario', alquilado_desde 'Alquilado desde', codigo_evento 'Evento', foto 'Foto' FROM ".TBL_MUPI_FACES."$WHERE;";
    $result = $database->query($q);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
