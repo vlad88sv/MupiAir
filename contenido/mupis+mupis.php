@@ -1,21 +1,23 @@
 <?php
-function CONTENIDO_mupis() {
-global $session;
+function CONTENIDO_mupis($mupi="") {
+	global $session;
 	echo '<h1>Gestión de ' . _NOMBRE_ . '</h1>';
 	if ( $session->isAdmin() && isset($_POST['registrar_mupi']) ) {
 	//Nos toca registrar un MUPI
 	MUPI_REGISTRAR();
 	}
-	echo '<hr /><h2>'._NOMBRE_." registrados para Ud.</h2>";
+	echo '<hr /><h2>'._NOMBRE_." disponibles</h2>";
 	verMUPIS();
 	if ( $session->isAdmin() ) {
-	echo '<hr /><h2>Registrar MUPIS</h2>';
-	verMUPISregistro();
+	if ($mupi) $mupiex = " (".$mupi.")";
+	echo '<hr /><h2>Registrar/Actualizar '._NOMBRE_.$mupiex.'</h2>';
+	verMUPISregistro($mupi);
 	}
 }
 function verMUPIS(){
    global $database;
-   $q = "SELECT codigo_mupi 'Código "._NOMBRE_."', direccion 'Dirección', foto_generica 'Foto Genérica', lon 'Longitud', lat 'Latitud', codigo_evento 'Evento' FROM ".TBL_MUPI.";";
+   //$q = "SELECT codigo_mupi 'Código "._NOMBRE_."', direccion 'Dirección', foto_generica 'Foto Genérica', lon 'Longitud', lat 'Latitud', codigo_evento 'Evento' FROM ".TBL_MUPI.";";
+   $q = "SELECT * FROM ".TBL_MUPI.";";
    $result = $database->query($q);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
@@ -27,10 +29,32 @@ function verMUPIS(){
       echo "¡No hay "._NOMBRE_." ingresados!<BR />";
       return;
    }
-   echo Query2Table($result);
+	echo '<table border="0">';
+	echo "<tr><th>Código "._NOMBRE_."</th><th>Dirección</th><th>Foto Genérica</th><th>Longitud</th><th>Latitud</th><th>Evento</th></tr>";
+	for($i=0; $i<$num_rows; $i++){
+		$codigo_mupi  = CREAR_LINK_GET("gestionar+mupis:".mysql_result($result,$i,"codigo_mupi"), mysql_result($result,$i,"codigo_mupi"), "Carga los datos del "._NOMBRE_. " seleccionado para editar");
+		$direccion = mysql_result($result,$i,"direccion");
+		$foto_generica = mysql_result($result,$i,"foto_generica");
+		$Longitud  = mysql_result($result,$i,"lon");
+		$Latitud  = mysql_result($result,$i,"lat");
+		$codigo_evento  = mysql_result($result,$i,"codigo_evento");
+	echo "<tr><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$Longitud</td><td>$Latitud</td><td>$codigo_evento</td></tr>";
+	}
+	echo "</table><br />";
 }
-function verMUPISregistro() {
-global $form;
+
+function verMUPISregistro($mupi="") {
+global $form, $database;
+
+if ($mupi) {
+	$q = "SELECT * FROM ".TBL_MUPI." WHERE codigo_mupi='$mupi';";
+	$result = $database->query($q);
+	$form->setValue("codigo", mysql_result($result,0,"codigo_mupi"));
+	$form->setValue("direccion", mysql_result($result,0,"direccion"));
+	$form->setValue("foto", mysql_result($result,0,"foto_generica"));
+	$form->setValue("lon", mysql_result($result,0,"lon"));
+	$form->setValue("lat", mysql_result($result,0,"lat"));	
+}
 echo '
 <form action="./?'._ACC_.'=gestionar+mupis" method="POST">
 <table>

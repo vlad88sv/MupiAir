@@ -6,7 +6,7 @@ global $session;
 	//Nos toca registrar un MUPI
 	Pantalla_REGISTRAR();
 	}
-	echo '<hr /><h2>Pantallas '._NOMBRE_." registradas para Ud.</h2>";
+	echo '<hr /><h2>Sus Pantallas '._NOMBRE_.".</h2>";
 	verPantallas($usuario);
 	if ( $session->isAdmin() ) {
 	$paraUsuario = "";

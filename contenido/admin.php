@@ -27,7 +27,7 @@ function displayUsers(){
       $uname = CREAR_LINK_GET("ver+cliente:".$uname, $uname, "Ver datos de este cliente");
       echo "<tr><td>$uname</td><td>$nombre</td><td>$ulevel</td><td>$email</td><td>$time</td><td>$verMUPIS<hr />$reporte</td></tr>";
    }
-   echo "</table><br>\n";
+   echo "</table><br />";
 }
 
 function CONTENIDO_admin() {

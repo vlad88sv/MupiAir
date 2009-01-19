@@ -95,8 +95,11 @@ function CONTENIDO_mostrar_principal() {
 		break;
 		
 	case "gestionar mupis":
-		CONTENIDO_mupis();
-		break;
+		if($session->isAdmin()){
+			$mupi= isset( $ACC[1] ) ? $ACC[1] : "";
+			CONTENIDO_mupis($mupi);
+			break;
+		}
 
 	case "ver reportes":
 		ADMIN_reportes();
@@ -233,7 +236,6 @@ function INICIAR_MENUES () {
 }
 function Query2Table($result, $tableFeatures="") {
  $table = "";
- $table .= "<!--Debugging output for SQL query-->\n\n";
  $table .= "<table $tableFeatures>\n\n";
  $noFields = mysql_num_fields($result);
  $table .= "<tr>\n";
@@ -249,7 +251,6 @@ function Query2Table($result, $tableFeatures="") {
  $table .= "</tr>\n";
  }
  $table .= "</table>\n\n";
- $table .= "<!--End debug from SQL query-->\n\n";
  return $table;
  }
 ?>
