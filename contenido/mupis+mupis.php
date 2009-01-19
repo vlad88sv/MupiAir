@@ -9,6 +9,7 @@ function CONTENIDO_mupis($mupi="") {
 	echo '<hr /><h2>'._NOMBRE_." disponibles</h2>";
 	verMUPIS();
 	if ( $session->isAdmin() ) {
+	$mupiex ="";
 	if ($mupi) $mupiex = " (".$mupi.")";
 	echo '<hr /><h2>Registrar/Actualizar '._NOMBRE_.$mupiex.'</h2>';
 	verMUPISregistro($mupi);
@@ -76,7 +77,7 @@ $form->setValue("direccion", $_POST['direccion']);
 $form->setValue("foto", $_POST['foto']);
 $form->setValue("lon", $_POST['lon']);
 $form->setValue("lat", $_POST['lat']);
-$q = "INSERT INTO ".TBL_MUPI." (codigo_mupi, direccion, foto_generica, lon, lat) VALUES ('".$_POST['codigo'] . "', '" . $_POST['direccion'] . "', '" . $_POST['foto'] . "', '" . $_POST['lon'] . "', '" . $_POST['lat'] . "');";
+$q = "INSERT INTO ".TBL_MUPI." (codigo_mupi, direccion, foto_generica, lon, lat) VALUES ('".$_POST['codigo'] . "', '" . $_POST['direccion'] . "', '" . $_POST['foto'] . "', '" . $_POST['lon'] . "', '" . $_POST['lat'] . "') ON DUPLICATE KEY UPDATE codigo_mupi=VALUES(codigo_mupi), direccion=VALUES(direccion), foto_generica=VALUES(foto_generica), lon=VALUES(lon), lat=VALUES(lat);";
 DEPURAR ($q);	
 $result = $database->query($q);
 }
