@@ -5,7 +5,9 @@ error_reporting(E_STRICT | E_ALL);
 
 function CREAR_TBL($TBL,$QUERY) {
 global $link;
-//$x = @mysql_query("DROP TABLE IF EXISTS $TBL;", $link) or die('!->No se pudo eliminar la tabla "'.$TBL.'".<br /><pre>' . mysql_error() . '</pre>');
+if ( isset($_POST['reiniciar']) ) { 
+@mysql_query("DROP TABLE IF EXISTS $TBL;", $link) or die('!->No se pudo eliminar la tabla "'.$TBL.'".<br /><pre>' . mysql_error() . '</pre>');
+}
 $QUERY = "CREATE TABLE IF NOT EXISTS ". $TBL . " (" . $QUERY . ");";
 $x = @mysql_query($QUERY, $link) or die('!->No se pudo crear la tabla "'. $TBL .'".<br /><pre>' . mysql_error() . '</pre>');
 if ($x) {echo "- Creada: '$TBL'<br />";}
@@ -77,6 +79,8 @@ echo '<h1>'._NOMBRE_.' - Instalador</h1><br />
 </tr>
 </table>
 <br />
+<input type="checkbox" name="reiniciar"  value="" />Destruir tablas si existen
+<br />
 <input type="submit" name="instalar" value="Instalar" />
 </form>
 ';
@@ -91,8 +95,7 @@ $link = @mysql_connect($_POST['motor'], $_POST['usuario'], $_POST['clave']) or d
 mysql_select_db($_POST['base'], $link) or die('!->La base de datos seleccionada "'.$_POST['base'].'" no existe');
 echo '- Base de datos conectada...<br />';
 echo '<h3>+Creando Archivo con datos de conexión...</h3><br />';
-//touch("data.php");
-//chmod("data.php", 0666);
+@chmod("include/data.php", 0666);
 $fh = @fopen("include/data.php", 'w') or die("No se pudo escribir 'data.php'.<br />");
 if ($fh) {
 $Datos = "<?php ";
@@ -105,7 +108,7 @@ fclose($fh);
 }
 echo '- Creado<br />';
 echo '<h3>+Creando Tablas...</h3><br />';
-
+if ( isset($_POST['reiniciar']) ) { echo '->Se solicitó destruir y crear tablas<br />'; }
 /*
 Tabla que contiene los datos de los clientes.
 Esta tabla solo contendrá los datos relaventes a la identificación y contacto de cliente
