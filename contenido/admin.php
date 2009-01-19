@@ -10,7 +10,7 @@ function displayUsers(){
       return;
    }
    if($num_rows == 0){
-   /*Esto nunca deberia de pasar realmente...*/
+      /*Esto nunca deberia de pasar realmente...*/
       echo "¡No hay clientes/usuarios ingresados!";
       return;
    }

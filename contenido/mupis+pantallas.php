@@ -56,7 +56,7 @@ global $database,$form;
 $form->setValue("codigo", $_POST['codigo']);
 $form->setValue("foto", $_POST['foto']);
 echo "Registrado ".  $_POST['codigo'];
-$q = "INSERT INTO ".TBL_MUPI_FACES." (codigo_cara_mupi, foto) VALUES ('".$_POST['codigo'] . "', '" . $_POST['foto'] ."');";
+$q = "INSERT INTO ".TBL_MUPI_FACES." (codigo_cara_mupi, foto) VALUES ('".$_POST['codigo'] . "', '" . $_POST['foto'] ."')  ON DUPLICATE KEY UPDATE codigo_cara_mupi=VALUES(codigo_cara_mupi), foto=VALUES(foto);";
 DEPURAR ($q);
 $result = $database->query($q);
 }
