@@ -1,4 +1,5 @@
 <?php
+if( !file_exists("include/data.php") ) { if ( !touch ("include/data.php") ) exit ("woops!, include/data.php no existe y no pudo ser creado");}
 require_once("include/const.php");
 error_reporting(E_STRICT | E_ALL);
 
