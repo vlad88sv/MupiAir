@@ -22,8 +22,8 @@ function displayUsers(){
       $ulevel = mysql_result($result,$i,"userlevel");
       $email  = mysql_result($result,$i,"email");
       $time   = date("d-m-y\nh:ia", mysql_result($result,$i,"timestamp"));
-      $verMUPIS = CREAR_LINK_GET("gestionar+mupis:$uname", "MUPIS", "Le mostrara los MUPIS relacionados a este cliente.") ;
-      $reporte = CREAR_LINK_GET("reportes:$uname", "Reporte", "Le generará un reporte de el horario.") ;
+      $verMUPIS = CREAR_LINK_GET("gestionar+pantallas:$uname", "Pantallas", "Le mostrara las Pantallas contratadas por este cliente.");
+      $reporte = CREAR_LINK_GET("reportes:$uname", "Reporte", "Le generará un reporte sobre este cliente.");
       $uname = CREAR_LINK_GET("ver+cliente:".$uname, $uname, "Ver datos de este cliente");
       echo "<tr><td>$uname</td><td>$nombre</td><td>$ulevel</td><td>$email</td><td>$time</td><td>$verMUPIS<hr />$reporte</td></tr>";
    }
