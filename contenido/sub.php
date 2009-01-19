@@ -73,6 +73,12 @@ function CONTENIDO_mostrar_principal() {
 			break;
 		}
 
+	case "gestionar pantallas":
+		if($session->isAdmin()){
+			CONTENIDO_pantallas();
+			break;
+		}
+
 	case "registro":
 		if($session->isAdmin()){
 			CONTENIDO_usuario_registrar();
@@ -224,4 +230,25 @@ function INICIAR_MENUES () {
 	$s .= '<script type="text/javascript">cssdropdown.startchrome("chromemenu")</script>';
 	return $s;
 }
+function Query2Table($result, $tableFeatures="") {
+ $table = "";
+ $table .= "<!--Debugging output for SQL query-->\n\n";
+ $table .= "<table $tableFeatures>\n\n";
+ $noFields = mysql_num_fields($result);
+ $table .= "<tr>\n";
+ for ($i = 0; $i < $noFields; $i++) {
+ $field = mysql_field_name($result, $i);
+ $table .= "\t<th>$field</th>\n";
+ }
+ while ($r = mysql_fetch_row($result)) {
+ $table .= "<tr>\n";
+ foreach ($r as $column) {
+ $table .= "\t<td>$column</td>\n";
+ }
+ $table .= "</tr>\n";
+ }
+ $table .= "</table>\n\n";
+ $table .= "<!--End debug from SQL query-->\n\n";
+ return $table;
+ }
 ?>

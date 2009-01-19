@@ -27,7 +27,6 @@ require_once("contenido/admin.php");
 require_once("contenido/ayuda+contacto.php");
 require_once("contenido/usuario+recuperar_clave.php");
 require_once("contenido/usuario+info.php");
-require_once("contenido/usuario+mupi.php");
 require_once("contenido/usuario+ingresar.php");
 require_once("contenido/usuario+registrar.php");
 require_once("contenido/usuario+editar.php");
@@ -44,6 +43,8 @@ require_once("contenido/mupis+info.php");
 require_once("contenido/mupis+precio.php");
 require_once("contenido/mupis+servicios.php");
 require_once("contenido/mupis+ubicaciones.php");
+require_once("contenido/mupis+mupis.php");
+require_once("contenido/mupis+pantallas.php");
 ?>
 <!-- Este comentario activa "quirks mode" en Internet Explorer ;) - Vlad.-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

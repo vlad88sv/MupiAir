@@ -15,7 +15,7 @@ global $session;
 }
 function verMUPIS(){
    global $database;
-   $q = "SELECT * FROM ".TBL_MUPI.";";
+   $q = "SELECT codigo_mupi 'Código "._NOMBRE_."', direccion 'Dirección', foto_generica 'Foto Genérica', lon 'Longitud', lat 'Latitud', codigo_evento 'Evento' FROM ".TBL_MUPI.";";
    $result = $database->query($q);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
@@ -27,18 +27,7 @@ function verMUPIS(){
       echo "¡No hay "._NOMBRE_." ingresados!<BR />";
       return;
    }
-   echo '<table>';
-   echo "<tr><th>Código "._NOMBRE_."</th><th>Dirección</th><th>Foto genérica</th><th>Longitud</th><th>Latitud</th><th>Código evento</th></tr>";
-   for($i=0; $i<$num_rows; $i++){
-      $codigo_mupi  = mysql_result($result,$i,"codigo_mupi");
-      $direccion = mysql_result($result,$i,"direccion");
-      $foto_generica = mysql_result($result,$i,"foto_generica");
-      $lon  = mysql_result($result,$i,"lon");
-      $lat  = mysql_result($result,$i,"lat");
-      $codigo_evento = mysql_result($result,$i,"codigo_evento");
-      echo "<tr><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$lon</td><td>$lat</td><td>$codigo_evento</td></tr>";
-   }
-   echo "</table><br>";
+   echo Query2Table($result);
 }
 function verMUPISregistro() {
 global $form;
@@ -64,7 +53,7 @@ $form->setValue("foto", $_POST['foto']);
 $form->setValue("lon", $_POST['lon']);
 $form->setValue("lat", $_POST['lat']);
 $q = "INSERT INTO ".TBL_MUPI." (codigo_mupi, direccion, foto_generica, lon, lat) VALUES ('".$_POST['codigo'] . "', '" . $_POST['direccion'] . "', '" . $_POST['foto'] . "', '" . $_POST['lon'] . "', '" . $_POST['lat'] . "');";
-DEPURAR ($q);
+DEPURAR ($q);	
 $result = $database->query($q);
 }
 ?>
