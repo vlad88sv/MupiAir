@@ -71,6 +71,7 @@ require_once("contenido/mupis+pantallas.php");
 	</head>
 <body>
 	<?php CONTENIDO_mostrar_logo(); ?>
+	<img class="fija" src="hoja.gif" />
 	<?php echo INICIAR_MENUES() ?>
 	<div id="container">
 		<div id="content">
@@ -83,6 +84,5 @@ require_once("contenido/mupis+pantallas.php");
 		<div class="clear"></div>
 	</div>
 	</div>	
-	<img class="fija" src="hoja.gif" />
 	</body>
 </html>
