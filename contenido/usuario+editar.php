@@ -1,6 +1,6 @@
 <?
 function CONTENIDO_usuario_editar($usuario) {
-global $database, $session, $form;
+global $database, $session;
 if(!$session->isAdmin()){
    echo "<h1>Acceso denegado</h1>";
    return;
