@@ -228,7 +228,7 @@ function INICIAR_MENUES () {
 	$s .= '
 	<div id="menu_ayuda" class="dropmenudiv" style="width: 150px;">'
 	. CREAR_LINK_GET("ayuda+contacto", "Dudas y comentarios", "Si desea comentar algo o tiene dudas al respecto de nuestro servicio")
-	. CREAR_LINK_GET("info+nosotros", "Acerca de...", "Acerca de Eco Mupis y CEPASA C.V.")
+	. CREAR_LINK_GET("intfo+nosotros", "Acerca de...", "Acerca de Eco Mupis y CEPASA C.V.")
 	.'</div>';
 	
 	// Finalmente iniciamos el script.
@@ -253,5 +253,9 @@ function Query2Table($result, $tableFeatures="") {
  }
  $table .= "</table>\n\n";
  return $table;
+ }
+ 
+ function AnularFechaNula ($time) {
+ if ($time) { return date("d-m-Y", $time); } else { return ''; }
  }
 ?>
