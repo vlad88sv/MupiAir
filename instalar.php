@@ -1,5 +1,8 @@
 <?php
-if( !file_exists("include/data.php") ) { if ( !touch ("include/data.php") ) exit ("woops!, include/data.php no existe y no pudo ser creado");}
+if( !file_exists("include/data.php") ) {
+	if ( @!chmod("include/", 0777) ) exit ("woops!, 'include/data.php' no existe e include/ no pudo ser Chmodeado");
+	if ( @!touch ("include/data.php") ) exit ("woops!, 'include/data.php' no existe y no pudo ser creado");
+}
 require_once("include/const.php");
 error_reporting(E_STRICT | E_ALL);
 
@@ -95,7 +98,6 @@ $link = @mysql_connect($_POST['motor'], $_POST['usuario'], $_POST['clave']) or d
 mysql_select_db($_POST['base'], $link) or die('!->La base de datos seleccionada "'.$_POST['base'].'" no existe');
 echo '- Base de datos conectada...<br />';
 echo '<h3>+Creando Archivo con datos de conexión...</h3><br />';
-@chmod("include/data.php", 0666);
 $fh = @fopen("include/data.php", 'w') or die("No se pudo escribir 'data.php'.<br />");
 if ($fh) {
 $Datos = "<?php ";
