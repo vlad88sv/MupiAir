@@ -26,6 +26,7 @@ function verPantallas($usuario="", $pantalla=""){
    global $database;
    
    $WHERE = "";
+   $num_rows = "";
    if ($usuario) {
     $WHERE = " WHERE codigo='".$usuario."'";
     }
@@ -33,12 +34,11 @@ function verPantallas($usuario="", $pantalla=""){
    //$q = "SELECT codigo_cara_mupi 'Código Pantalla', codigo_mupi 'Código " . _NOMBRE_."', codigo 'Código propietario', alquilado_desde 'Alquilado desde', codigo_evento 'Evento', foto 'Foto' FROM ".TBL_MUPI_FACES."$WHERE;";
    $q = "SELECT * FROM ".TBL_MUPI_FACES."$WHERE;";
    $result = $database->query($q);
-   /* Error occurred, return given name by default */
-   $num_rows = mysql_numrows($result);
-   if(!$result || ($num_rows < 0)){
+   if ( !$result ) {
       echo "Error mostrando la información";
       return;
    }
+   $num_rows = mysql_numrows($result);
    if($num_rows == 0){
       echo "¡No hay Pantallas "._NOMBRE_." ingresadas!<BR />";
       return;
@@ -109,6 +109,7 @@ if ( isset($_POST['CampoUsuario'] ) ) {
 }
 echo "Registrado ".  $_POST['codigo_pantalla_mupi'];
 DEPURAR ($q);
-$result = $database->query($q);
+echo $database->query($q);
+
 }
 ?>

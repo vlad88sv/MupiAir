@@ -276,7 +276,11 @@ class MySQLDB
     * resource identifier.
     */
    function query($query){
-      return mysql_query($query, $this->connection);
+     $resultado = @mysql_query($query, $this->connection);
+     if ( mysql_error($this->connection) ) {
+	echo '<pre>MySQL:'. mysql_error().'</pre>';
+      }
+	return $resultado;
    }
 };
 
