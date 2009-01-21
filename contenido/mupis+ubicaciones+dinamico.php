@@ -2,6 +2,7 @@
 error_reporting(E_STRICT | E_ALL);
 date_default_timezone_set ('America/El_Salvador');
 require_once('../include/const.php');
+require_once('../include/sesion.php');
 require_once('sub.php');
 if ( isset( $_GET['MUPI'] ) ) {
 	retornar ( Buscar (strip_tags($_GET['MUPI'])) );
@@ -14,10 +15,17 @@ function retornar($texto) {
 }
 
 function Buscar ($MUPI) {
+   global $session;
+   echo $session->codigo;
+   /* La logica aqui es que si el usuario que solicitó la búsqueda es administrador, entonces se le muestran todos los MUPIS, si no solo se le muestran los suyos */
    $datos ="";
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die('!->La base de datos seleccionada "'.$DB_base.'" no existe');
-   $q = "SELECT * FROM ".TBL_MUPI." WHERE codigo_mupi='".$MUPI."';";
+   if ( $session->isAdmin() ) {
+	$q = "SELECT * FROM ".TBL_MUPI." WHERE codigo_mupi='".$MUPI."';";
+   } else {
+	$q = "SELECT * FROM ".TBL_MUPI." WHERE codigo_mupi='".$MUPI.";";
+   }
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba la disponibilidad del MUPI.');
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
@@ -59,14 +67,13 @@ function Buscar ($MUPI) {
    }
 
     $datos .=  '<table>';
-    $datos .=  "<tr><th>Código "._NOMBRE_."</th><th>Código</th><th>Alquilado desde</th><th>Foto</th><th>Código evento</th></tr>";
+    $datos .=  "<tr><th>Código "._NOMBRE_."</th><th>Código</th><th>Alquilado desde</th><th>Código evento</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_mupi  = mysql_result($result,$i,"codigo_mupi");
       $codigo = mysql_result($result,$i,"codigo");
       $alquilado_desde = AnularFechaNula(mysql_result($result,$i,"alquilado_desde"));
       $codigo_evento  = mysql_result($result,$i,"codigo_evento");
-      $foto  = mysql_result($result,$i,"foto");
-      $datos .=  "<tr><td>$codigo_mupi</td><td>$codigo</td><td>$alquilado_desde</td><td>$foto</<td><td>$codigo_evento</td></tr>";
+      $datos .=  "<tr><td>$codigo_mupi</td><td>$codigo</td><td>$alquilado_desde</td><td>$codigo_evento</td></tr>";
    }
     $datos .=  "</table>";
 retornar($datos);

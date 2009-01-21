@@ -116,7 +116,7 @@ if ( isset($_POST['reiniciar']) ) { echo '->Se solicitó destruir y crear tablas
 Tabla que contiene los datos de los clientes.
 Esta tabla solo contendrá los datos relaventes a la identificación y contacto de cliente
 */
-$q="codigo VARCHAR(100) primary key, clave VARCHAR(32) not null, nombre VARCHAR(32) not null, razon VARCHAR(100) not null, email VARCHAR(50), telefono1 VARCHAR(20) not null, telefono2 VARCHAR(20), telefono3 VARCHAR(20), logotipo VARCHAR(200), notas VARCHAR(500), userlevel tinyint(1) unsigned not null, userid VARCHAR(32), timestamp int(11) unsigned not null";
+$q="codigo VARCHAR(100) primary key, clave VARCHAR(32) not null, nombre VARCHAR(32) not null, razon VARCHAR(100) not null, email VARCHAR(50), telefono1 VARCHAR(20) not null, telefono2 VARCHAR(20), telefono3 VARCHAR(20), logotipo VARCHAR(255), notas VARCHAR(500), userlevel tinyint(1) unsigned not null, userid VARCHAR(32), timestamp int(11) unsigned not null";
 CREAR_TBL(TBL_USERS, $q);
 
 /*
@@ -147,12 +147,19 @@ $q="codigo_mupi VARCHAR(100) NOT NULL PRIMARY KEY, direccion VARCHAR(255), foto_
 CREAR_TBL(TBL_MUPI, $q);
 
 /*
+Tabla que contiene la descripción de cada pedido (compra) realizada.
+La finalidad es no repetir los mismos datos para cada pantalla, si no que se enlazaría cada pantalla con un código de pedido que le indicaría el cliente y la foto que debe llevar.
+*/
+$q="codigo_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo VARCHAR(100), alquilado_desde int(11)";
+CREAR_TBL(TBL_MUPI_ORDERS, $q);
+
+/*
 Esta tabla es una tabla relacionada con TBL_MUPI en el sentido de que a travez de ella se determinan las caras alquiladas
 Ademas de su fecha de alquiler, quien es su "alquilador", que tipo de cara es (peatonal/vehicular) y la foto actual del MUPI.
 NOTA: Dado que el daño a un MUPI (llamado "evento") puede producirse en una sola cara (ej. el pintando callejero de una cara)
 entonces también los eventos pueden ser asociados a estas (caras).
 */
-$q="codigo_cara_mupi VARCHAR(100) NOT NULL PRIMARY KEY, codigo_mupi VARCHAR(100) NOT NULL, codigo VARCHAR(100), alquilado_desde int(11), codigo_evento VARCHAR(50), foto VARCHAR(255)";
+$q="codigo_cara_mupi VARCHAR(100) NOT NULL PRIMARY KEY, codigo_mupi VARCHAR(100) NOT NULL, codigo_evento VARCHAR(50)";
 CREAR_TBL(TBL_MUPI_FACES, $q);
 
 /*
@@ -180,7 +187,7 @@ $q="clave VARCHAR(255) NOT NULL PRIMARY KEY, valor VARCHAR(255)";
 CREAR_TBL(TBL_REGISTRY, $q);
 
 echo '<h3>+Creando usuario '.$_POST['admin'].'...</h3><br />';
-$q = "INSERT INTO ".TBL_USERS." VALUES ('".$_POST['admin'] . "', '" . md5($_POST['admin_clave']) . "', 'Administrador Principal', 'Administrador', '" . $_POST['email'] . "', '0','','','','Creado durante de la instalación', 9, 0," . time() . ") ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), clave=VALUES(clave), email=VALUES(email)";
+$q = "INSERT INTO ".TBL_USERS." VALUES ('".$_POST['admin'] . "', '" . md5($_POST['admin_clave']) . "', 'Administrador Principal', 'Administrador', '" . $_POST['email'] . "', '0','','','','Creado durante de la instalación', 9, 0," . time() . ") ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), clave=VALUES(clave), email=VALUES(email), foto_pantalla=VALUES(foto_pantalla)";
 @mysql_query($q, $link)  or die('!->No se pudo insertar el usuario<br /><pre>' . mysql_error() . '</pre>');;
 echo '- Creado<br />';
 mysql_close($link);

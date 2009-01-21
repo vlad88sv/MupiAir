@@ -30,8 +30,6 @@ function verPantallas($usuario="", $pantalla=""){
    if ($usuario) {
     $WHERE = " WHERE codigo='".$usuario."'";
     }
-    
-   //$q = "SELECT codigo_cara_mupi 'Código Pantalla', codigo_mupi 'Código " . _NOMBRE_."', codigo 'Código propietario', alquilado_desde 'Alquilado desde', codigo_evento 'Evento', foto 'Foto' FROM ".TBL_MUPI_FACES."$WHERE;";
    $q = "SELECT * FROM ".TBL_MUPI_FACES."$WHERE;";
    $result = $database->query($q);
    if ( !$result ) {
@@ -44,17 +42,16 @@ function verPantallas($usuario="", $pantalla=""){
       return;
    }
 echo '<table>';
-echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th>Código propietario</th><th>Alquilado desde</th><th>Evento</th><th>Foto</th><th>Accion</th></tr>";
+echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th>Código propietario</th><th>Alquilado desde</th><th>Evento</th><th>Accion</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_cara_mupi  = mysql_result($result,$i,"codigo_cara_mupi");
       $codigo_mupi = mysql_result($result,$i,"codigo_mupi");
       $codigo = mysql_result($result,$i,"codigo");
       $alquilado_desde  = AnularFechaNula(mysql_result($result,$i,"alquilado_desde"));
       $codigo_evento  = mysql_result($result,$i,"codigo_evento");
-      $Foto = mysql_result($result,$i,"Foto");
       $Eliminar = CREAR_LINK_GET("gestionar+pantallas&amp;accion=eliminar&amp;pantalla=".$codigo_cara_mupi,"Eliminar", "Eliminar los datos de esta pantalla");
       $codigo_cara_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;pantalla=".$codigo_cara_mupi,$codigo_cara_mupi, "Editar los datos de esta pantalla");
-      echo "<tr><td>$codigo_cara_mupi</td><td>$codigo_mupi</td><td>$codigo</td><td>$alquilado_desde</td><td>$codigo_evento</td><td>$Foto</td><td>$Eliminar</td></tr>";
+      echo "<tr><td>$codigo_cara_mupi</td><td>$codigo_mupi</td><td>$codigo</td><td>$alquilado_desde</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
    }
    echo "</table><br>";
 }
