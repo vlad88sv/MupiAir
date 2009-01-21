@@ -50,7 +50,7 @@ function Buscar ($MUPI) {
    }
     $datos .=  "</table>";
     
-    /* CARAS */
+    /* Pantallas */
     
     $datos .= "<h2>Pantallas alquiladas de este MUPI</h2>";
     $q = "SELECT * FROM ".TBL_MUPI_FACES." WHERE codigo_mupi='".$MUPI."';";

@@ -140,8 +140,8 @@ Ademas contiene la direccion (path) a la imagen/foto generica de este MUPI en pa
 NOTA: El campo evento tendrá el código de algún evento ocurrido (si hubiera) a este MUPI.
 Si el evento le ocurré al MUPI en general (ej. le choca un automovil) entonces deberá 
 asignarle el evento al MUPI.
-Si el evento llegará a afectar a una sola de las caras, entonces deberá relacionar dicho
-evento con la cara afectada y no con el MUPI. Ver detalles en tabla TBL_MUPI_FACES.
+Si el evento llegará a afectar a una sola de las pantallas, entonces deberá relacionar dicho
+evento con la pantalla afectada y no con el MUPI. Ver detalles en tabla TBL_MUPI_FACES.
 */
 $q="codigo_mupi VARCHAR(100) NOT NULL PRIMARY KEY, direccion VARCHAR(255), foto_generica VARCHAR(255), lon float default NULL, lat float default NULL, codigo_evento VARCHAR(50)";
 CREAR_TBL(TBL_MUPI, $q);
@@ -154,12 +154,12 @@ $q="codigo_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo VARCHAR(100), 
 CREAR_TBL(TBL_MUPI_ORDERS, $q);
 
 /*
-Esta tabla es una tabla relacionada con TBL_MUPI en el sentido de que a travez de ella se determinan las caras alquiladas
-Ademas de su fecha de alquiler, quien es su "alquilador", que tipo de cara es (peatonal/vehicular) y la foto actual del MUPI.
-NOTA: Dado que el daño a un MUPI (llamado "evento") puede producirse en una sola cara (ej. el pintando callejero de una cara)
-entonces también los eventos pueden ser asociados a estas (caras).
+Esta tabla es una tabla relacionada con TBL_MUPI en el sentido de que a travez de ella se determinan las pantallas alquiladas
+Ademas de su fecha de alquiler, quien es su "alquilador", que tipo de pantalla es (peatonal/vehicular) y la foto actual del MUPI.
+NOTA: Dado que el daño a un MUPI (llamado "evento") puede producirse en una sola pantalla (ej. el pintando callejero de una pantalla)
+entonces también los eventos pueden ser asociados a estas (pantallas).
 */
-$q="codigo_cara_mupi VARCHAR(100) NOT NULL PRIMARY KEY, codigo_mupi VARCHAR(100) NOT NULL, codigo_evento VARCHAR(50)";
+$q="codigo_pantalla_mupi VARCHAR(100) NOT NULL PRIMARY KEY, codigo_mupi VARCHAR(100) NOT NULL, codigo_evento VARCHAR(50)";
 CREAR_TBL(TBL_MUPI_FACES, $q);
 
 /*
