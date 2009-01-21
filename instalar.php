@@ -60,6 +60,7 @@ echo '<h1>'._NOMBRE_.' - Instalador</h1><br />
 </tr>
 <tr><td colspan="2"><h2>Google Maps</h2></td></tr>
 <tr>
+<tr><td colspan="2"><blockquote>Puede utilizar la siguiente Google Map API Key si es una instalación en Localhost:<br />ABQIAAAASN5hkWhvednkFD23rB1SbBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSp-JAzoCx9P7_e-8fs8e7L37rPSw</blockquote></td></tr>
 <td>Google Map API Key:</td>
 <td><input type="text" name="MapKey"  maxlength="100" size="20" value="'.$MapKey.'" /></td>
 </tr>
