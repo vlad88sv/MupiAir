@@ -81,6 +81,14 @@ function CONTENIDO_mostrar_principal() {
 			break;
 		}
 
+	case "gestionar pedidos":
+		if($session->isAdmin()){
+			$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
+			$pedido = isset( $_GET['orden'] ) ? $_GET['orden'] : "";
+			CONTENIDO_pedidos($usuario,$pedido);
+			break;
+		}
+
 	case "registro":
 		if($session->isAdmin()){
 			CONTENIDO_usuario_registrar();
@@ -216,8 +224,9 @@ function INICIAR_MENUES () {
 	<div id="menu_herramientas" class="dropmenudiv" style="width: 150px;">'
 	. CREAR_LINK_GET("registro","Registrar cliente", "Agregar un nuevo cliente al sistema")
 	. CREAR_LINK_GET("gestionar+clientes","Gestionar clientes", "Gestionar clientes")
-	. CREAR_LINK_GET("gestionar+mupis","Gestionar MUPIS", "Eliminar o modificar MUPIS")
+	. CREAR_LINK_GET("gestionar+pedidos","Gestionar pedidos", "Eliminar o modificar pedidos")
 	. CREAR_LINK_GET("gestionar+pantallas","Gestionar pantallas", "Eliminar o modificar pantallas")
+	. CREAR_LINK_GET("gestionar+mupis","Gestionar MUPIS", "Eliminar o modificar MUPIS")
 	. CREAR_LINK_GET("ver+ubicaciones","Gestionar ubicaciones", "Agregar, Eliminar o modificar ubicaciones")
 	. CREAR_LINK_GET("ver+eventos","Gestionar eventos", "Agregar, Eliminar o modificar eventos")
 	. CREAR_LINK_GET("ver+estadisticas", 'Estadísticas', "Ver estadísticas administrativas")
