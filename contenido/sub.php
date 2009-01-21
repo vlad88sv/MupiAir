@@ -255,7 +255,8 @@ function Query2Table($result, $tableFeatures="") {
  return $table;
  }
  
- function AnularFechaNula ($time) {
- if ($time) { return date("d-m-Y", $time); } else { return ''; }
+ function AnularFechaNula ($time,$EnVacioHoy=false) {
+ if ( $EnVacioHoy ) { $vacio = date("d-m-Y"); } else { $vacio = ""; }
+ if ( $time ) { return date("d-m-Y", $time); } else { return $vacio; }
  }
 ?>
