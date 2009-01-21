@@ -6,7 +6,7 @@ require_once('sub.php');
 if ( isset( $_GET['MUPI'] ) ) {
 	retornar ( Buscar (strip_tags($_GET['MUPI'])) );
 } else {
-	retornar ( "Este MUPI no tiene caras asignadas" );
+	retornar ( "Ud. esta utilizando incorrectamente este script de soporte." );
 }
 
 function retornar($texto) {
