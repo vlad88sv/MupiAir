@@ -187,7 +187,7 @@ $q="clave VARCHAR(255) NOT NULL PRIMARY KEY, valor VARCHAR(255)";
 CREAR_TBL(TBL_REGISTRY, $q);
 
 echo '<h3>+Creando usuario '.$_POST['admin'].'...</h3><br />';
-$q = "INSERT INTO ".TBL_USERS." VALUES ('".$_POST['admin'] . "', '" . md5($_POST['admin_clave']) . "', 'Administrador Principal', 'Administrador', '" . $_POST['email'] . "', '0','','','','Creado durante de la instalación', 9, 0," . time() . ") ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), clave=VALUES(clave), email=VALUES(email), foto_pantalla=VALUES(foto_pantalla)";
+$q = "INSERT INTO ".TBL_USERS." VALUES ('".$_POST['admin'] . "', '" . md5($_POST['admin_clave']) . "', 'Administrador Principal', 'Administrador', '" . $_POST['email'] . "', '0','','','','Creado durante de la instalación', 9, 0," . time() . ") ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), clave=VALUES(clave), email=VALUES(email)";
 @mysql_query($q, $link)  or die('!->No se pudo insertar el usuario<br /><pre>' . mysql_error() . '</pre>');;
 echo '- Creado<br />';
 mysql_close($link);
