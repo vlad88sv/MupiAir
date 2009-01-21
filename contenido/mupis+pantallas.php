@@ -117,7 +117,10 @@ if ( isset($_POST['CampoUsuario'] ) ) {
 	$q = "INSERT INTO ".TBL_MUPI_FACES." (codigo_cara_mupi) VALUES ('" . $_POST['codigo_pantalla_mupi'] . "')  ON DUPLICATE KEY UPDATE codigo_cara_mupi=VALUES(codigo_cara_mupi);";
 }
 DEPURAR ($q);
-echo $database->query($q);
-echo "Registrado ".  $_POST['codigo_pantalla_mupi'];
+if ( $database->query($q) == 1 ) {
+	echo "<blockquote>Exito al registrar ".  $_POST['codigo_pantalla_mupi'].'</blockquote>';
+} else {
+	echo "<blockquote>Falló el registro de " . $_POST['codigo_pantalla_mupi'].'</blockquote>';
+}
 }
 ?>
