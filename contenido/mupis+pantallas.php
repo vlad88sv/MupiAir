@@ -63,6 +63,7 @@ global $form, $database;
 $CampoFechaHora = '';
 $CampoUsuario = '';
 $BotonCancelar = '';
+$CampoCodigoMUPI = '';
 if ($pantalla) {
 	$q = "SELECT * FROM ".TBL_MUPI_FACES." WHERE codigo_cara_mupi='$pantalla';";
 	$result = $database->query($q);
@@ -70,6 +71,7 @@ if ($pantalla) {
 	$form->setValue("foto", mysql_result($result,0,"foto"));
 	$NombreBotonAccion = "Editar";
 	$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas\'" value="Cancelar">';
+	$CampoCodigoMUPI = '<tr><td>Asignar al '._NOMBRE_.' código</td><td><input type="text" name="CampoCodigoMUPI" style="width: 100%;" maxlength="255" value="' . mysql_result($result,0,"codigo_mupi") . '"></td></tr>';
 	$CampoPantalla = '<input type="hidden" name="codigo_pantalla_mupi" value="'.$pantalla.'">';
 	$CampoUsuario = '<tr><td>Cliente:</td><td><input type="text" name="CampoUsuario" style="width: 100%;" maxlength="255" value="' . mysql_result($result,0,"codigo") . '"></td></tr>';
 	$CampoFechaHora = '<tr><td>Fecha de registro:</td><td><input type="text" name="hora" style="width: 100%;" maxlength="255" value="' . AnularFechaNula(mysql_result($result,0,"alquilado_desde")). '"></td></tr>';
@@ -87,6 +89,7 @@ echo '
 <form action="./?'._ACC_.'=gestionar+pantallas" method="POST">
 <table>
 '.$CampoPantalla.'
+'.$CampoCodigoMUPI.'
 '.$CampoUsuario.'
 <tr><td>Foto:</td><td><input type="text" name="foto" style="width: 100%;" maxlength="255" value="' . $form->value("foto"). '"></td></tr>
 '.$CampoFechaHora.'
@@ -103,13 +106,16 @@ $form->setValue("codigo_pantalla_mupi", $_POST['codigo_pantalla_mupi']);
 $form->setValue("foto", $_POST['foto']);
 
 if ( isset($_POST['CampoUsuario'] ) ) {
-	$q = "INSERT INTO ".TBL_MUPI_FACES." (codigo_cara_mupi, codigo, foto, alquilado_desde) VALUES ('".$_POST['codigo_pantalla_mupi'] . "', '".$_POST['CampoUsuario'] . "', '" . $_POST['foto'] ."', '" . strtotime($_POST['hora']) ."')  ON DUPLICATE KEY UPDATE codigo_cara_mupi=VALUES(codigo_cara_mupi), codigo=VALUES(codigo), foto=VALUES(foto), alquilado_desde=VALUES(alquilado_desde);";
-} else {
-	$q = "INSERT INTO ".TBL_MUPI_FACES." (codigo_cara_mupi, foto) VALUES ('".$_POST['codigo_pantalla_mupi'] . "', '" . $_POST['foto'] ."')  ON DUPLICATE KEY UPDATE codigo_cara_mupi=VALUES(codigo_cara_mupi), foto=VALUES(foto);";
+	$CampoCodigoMUPI2 = '';
+	if ( isset($_POST['CampoCodigoMUPI']) ) {
+		$CampoCodigoMUPI2= $_POST['CampoCodigoMUPI'];
+	}
+	$q = "INSERT INTO ".TBL_MUPI_FACES." (codigo_cara_mupi, codigo, foto, alquilado_desde,codigo_mupi) VALUES ('".$_POST['codigo_pantalla_mupi'] . "', '".$_POST['CampoUsuario'] . "', '" . $_POST['foto'] ."', '" . strtotime($_POST['hora']) ."', '".$CampoCodigoMUPI2."')  ON DUPLICATE KEY UPDATE codigo_cara_mupi=VALUES(codigo_cara_mupi), codigo=VALUES(codigo), foto=VALUES(foto), alquilado_desde=VALUES(alquilado_desde), codigo_mupi=VALUES(codigo_mupi);";
+} else {	
+	$q = "INSERT INTO ".TBL_MUPI_FACES." (codigo_cara_mupi, foto) VALUES ('" . $_POST['codigo_pantalla_mupi'] . "', '" . $_POST['foto'] ."')  ON DUPLICATE KEY UPDATE codigo_cara_mupi=VALUES(codigo_cara_mupi), foto=VALUES(foto);";
 }
-echo "Registrado ".  $_POST['codigo_pantalla_mupi'];
 DEPURAR ($q);
 echo $database->query($q);
-
+echo "Registrado ".  $_POST['codigo_pantalla_mupi'];
 }
 ?>
