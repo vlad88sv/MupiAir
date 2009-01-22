@@ -84,7 +84,7 @@ function CONTENIDO_mostrar_principal() {
 	case "gestionar pedidos":
 		if($session->isAdmin()){
 			$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
-			$pedido = isset( $_GET['orden'] ) ? $_GET['orden'] : "";
+			$pedido = isset( $_GET['pedido'] ) ? $_GET['pedido'] : "";
 			CONTENIDO_pedidos($usuario,$pedido);
 			break;
 		}
