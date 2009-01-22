@@ -24,7 +24,7 @@ function Buscar ($MUPI) {
    if ( $session->isAdmin() ) {
 	$q = "SELECT * FROM ".TBL_MUPI." WHERE codigo_mupi='".$MUPI."';";
    } else {
-	$q = "SELECT * FROM ".TBL_MUPI." WHERE codigo_mupi='".$MUPI.";";
+	$q = "SELECT * FROM ".TBL_MUPI." WHERE codigo_mupi='".$MUPI."';";
    }
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba la disponibilidad del MUPI.');
    /* Error occurred, return given name by default */
