@@ -48,6 +48,7 @@ echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th
       $codigo_mupi = mysql_result($result,$i,"codigo_mupi");
       $codigo_pedido = mysql_result($result,$i,"codigo_pedido");
       $codigo_evento  = mysql_result($result,$i,"codigo_evento");
+      $foto_real  = mysql_result($result,$i,"foto_real");
       $Eliminar = CREAR_LINK_GET("gestionar+pantallas&amp;accion=eliminar&amp;pantalla=".$codigo_pantalla_mupi,"Eliminar", "Eliminar los datos de esta pantalla");
       $codigo_pantalla_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;pantalla=".$codigo_pantalla_mupi,$codigo_pantalla_mupi, "Editar los datos de esta pantalla");
       echo "<tr><td>$codigo_pantalla_mupi</td><td>$codigo_mupi</td><td>$codigo_pedido</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
@@ -60,24 +61,29 @@ $BotonCancelar = '';
 $CampoCodigoMUPI = '';
 $CampoPantalla = '';
 
+$codigo_mupi ='';
+$codigo_pedido = '';
+$foto_real = '';
+
 if ($pantalla) {
 	$q = "SELECT * FROM ".TBL_MUPI_FACES." WHERE codigo_pantalla_mupi='$pantalla';";
 	$result = $database->query($q);
 	
-	$CampoPantalla = '<input type="hidden" name="codigo_pantalla_mupi" value="'.$pantalla.'">';
-	$CampoCodigoMUPI = '<tr><td>Enlazar al '._NOMBRE_.' código</td><td><input type="text" name="codigo_mupi" style="width: 100%;" maxlength="255" value="' . mysql_result($result,0,"codigo_mupi") . '"></td></tr>';
-	$CampoCodigoPedido = '<tr><td>Enlazar al pedido '._NOMBRE_.' código</td><td><input type="text" name="codigo_pedido" style="width: 100%;" maxlength="255" value="' . mysql_result($result,0,"codigo_pedido") . '"></td></tr>';
-
+	$CampoPantalla = '<input type="hidden" name="codigo_pantalla_mupi" value="'.$pantalla.'">';	
+	$codigo_mupi =  mysql_result($result,0,"codigo_mupi") ;
+	$codigo_pedido = mysql_result($result,0,"codigo_pedido");
+	$foto_real = mysql_result($result,0,"foto_real");
 	
 	$NombreBotonAccion = "Editar";
 	$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas\'" value="Cancelar">';
-} else {
-	$CampoPantalla = '<tr><td>Código  Pantalla '._NOMBRE_.':</td><td><input type="text" name="codigo_pantalla_mupi" maxlength="100" style="width: 100%;" value=""></td></tr>';
-	$CampoCodigoMUPI = '<tr><td>Enlazar al '._NOMBRE_.' código</td><td><input type="text" name="codigo_mupi" style="width: 100%;" maxlength="255" value=""></td></tr>';
-	$CampoCodigoPedido = '<tr><td>Enlazar al pedido '._NOMBRE_.' No.:</td><td><input type="text" name="codigo_pedido" maxlength="100" style="width: 100%;" value=""></td></tr>';
-	
+} else {	
+	$CampoPantalla = '<tr><td>Código de Pantalla '._NOMBRE_.'</td><td><input type="text" name="codigo_pantalla" style="width: 100%;" maxlength="255" value=""></td></tr>';
+
 	$NombreBotonAccion = "Registrar";
 }
+	$CampoCodigoMUPI = '<tr><td>Enlazar al '._NOMBRE_.' código</td><td><input type="text" name="codigo_mupi" style="width: 100%;" maxlength="255" value="' . $codigo_mupi	. '"></td></tr>';
+	$CampoCodigoPedido = '<tr><td>Enlazar al pedido '._NOMBRE_.' código</td><td><input type="text" name="codigo_pedido" style="width: 100%;" maxlength="255" value="' . $codigo_pedido . '"></td></tr>';
+	$CampoFotoReal = '<tr><td>Agregar Foto real </td><td><input type="text" name="foto_real" style="width: 100%;" maxlength="255" value="' . $foto_real . '"></td></tr>';
 
 /*
 if ($usuario) {
