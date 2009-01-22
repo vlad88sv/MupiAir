@@ -16,7 +16,7 @@ function retornar($texto) {
 
 function Buscar ($MUPI) {
    global $session;
-   echo $session->codigo;
+   //echo $session->codigo;
    /* La logica aqui es que si el usuario que solicitó la búsqueda es administrador, entonces se le muestran todos los MUPIS, si no solo se le muestran los suyos */
    $datos ="";
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
@@ -46,12 +46,12 @@ function Buscar ($MUPI) {
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
       $codigo_evento = mysql_result($result,$i,"codigo_evento");
-       $datos .=  "<tr><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$lon</td><td>$lat</td><td>$codigo_evento</td></tr>";
+      $datos .=  "<tr><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$lon</td><td>$lat</td><td>$codigo_evento</td></tr>";
    }
     $datos .=  "</table>";
     
     /* Pantallas */
-    
+    $datos .= '<hr />';
     $datos .= "<h2>Pantallas alquiladas de este MUPI</h2>";
     $q = "SELECT * FROM ".TBL_MUPI_FACES." WHERE codigo_mupi='".$MUPI."';";
    $result = @mysql_query($q, $link) or die('!->Ocurrió un error mientras se revisaba la disponibilidad del MUPI.<pre>'.mysql_error().'</pre>');
@@ -67,13 +67,13 @@ function Buscar ($MUPI) {
    }
 
     $datos .=  '<table>';
-    $datos .=  "<tr><th>Código "._NOMBRE_."</th><th>Código</th><th>Alquilado desde</th><th>Código evento</th></tr>";
+    $datos .=  "<tr><th>Código pantalla</th><th>Código pedido</th><th>Foto real</th><th>Código evento</th></tr>";
    for($i=0; $i<$num_rows; $i++){
-      $codigo_mupi  = mysql_result($result,$i,"codigo_mupi");
-      $codigo = mysql_result($result,$i,"codigo");
-      $alquilado_desde = AnularFechaNula(mysql_result($result,$i,"alquilado_desde"));
-      $codigo_evento  = mysql_result($result,$i,"codigo_evento");
-      $datos .=  "<tr><td>$codigo_mupi</td><td>$codigo</td><td>$alquilado_desde</td><td>$codigo_evento</td></tr>";
+      $codigo_pantalla = mysql_result($result,$i,"codigo_pantalla_mupi");
+      $codigo_pedido = mysql_result($result,$i,"codigo_pedido");
+      $foto_real = mysql_result($result,$i,"foto_real");
+      $codigo_evento = mysql_result($result,$i,"codigo_evento");
+      $datos .=  "<tr><td>$codigo_pantalla</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_evento</td></tr>";
    }
     $datos .=  "</table>";
 retornar($datos);
