@@ -45,7 +45,7 @@ echo '<table>';
 echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th>Código pedido</th><th>Foto real</th><th>Evento</th><th>Acción</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_pantalla_mupi  = mysql_result($result,$i,"codigo_pantalla_mupi");
-      $codigo_mupi = mysql_result($result,$i,"codigo_mupi");
+      $codigo_mupi = CREAR_LINK_GET("gestionar+mupis:".mysql_result($result,$i,"codigo_mupi"), mysql_result($result,$i,"codigo_mupi"), "Ver y/o editar los datos de este "._NOMBRE_);
       $codigo_pedido = mysql_result($result,$i,"codigo_pedido");
       $codigo_evento  = mysql_result($result,$i,"codigo_evento");
       $foto_real  = mysql_result($result,$i,"foto_real");
@@ -107,7 +107,7 @@ echo '
 
 function Pantalla_REGISTRAR() {
 global $database;
-$q = "INSERT INTO ".TBL_MUPI_FACES." (codigo_pantalla_mupi, codigo_mupi, codigo_pedido, foto_real) VALUES ('" . $_POST['codigo_pantalla_mupi'] . "', ' " . $_POST['codigo_mupi']  . "', ' " . $_POST['codigo_pedido']  . "', ' " . $_POST['foto_real']  .  "')  ON DUPLICATE KEY UPDATE codigo_pantalla_mupi=VALUES(codigo_pantalla_mupi), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido), foto_real=VALUES(foto_real);";
+$q = "INSERT INTO ".TBL_MUPI_FACES." (codigo_pantalla_mupi, codigo_mupi, codigo_pedido, foto_real) VALUES ('" . $_POST['codigo_pantalla_mupi'] . "', '" . $_POST['codigo_mupi']  . "', '" . $_POST['codigo_pedido']  . "', '" . $_POST['foto_real']  .  "')  ON DUPLICATE KEY UPDATE codigo_pantalla_mupi=VALUES(codigo_pantalla_mupi), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido), foto_real=VALUES(foto_real);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
 	echo "<blockquote>Exito al registrar ".  $_POST['codigo_pantalla_mupi'].'</blockquote>';
