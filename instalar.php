@@ -150,7 +150,7 @@ CREAR_TBL(TBL_MUPI, $q);
 Tabla que contiene la descripción de cada pedido (compra) realizada.
 La finalidad es no repetir los mismos datos para cada pantalla, si no que se enlazaría cada pantalla con un código de pedido que le indicaría el cliente y la foto que debe llevar.
 */
-$q="codigo_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo VARCHAR(100), alquilado_desde int(11)";
+$q="codigo_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo VARCHAR(100), alquilado_desde int(11), foto_pantalla VARCHAR(255)";
 CREAR_TBL(TBL_MUPI_ORDERS, $q);
 
 /*
@@ -159,7 +159,7 @@ Ademas de su fecha de alquiler, quien es su "alquilador", que tipo de pantalla e
 NOTA: Dado que el daño a un MUPI (llamado "evento") puede producirse en una sola pantalla (ej. el pintando callejero de una pantalla)
 entonces también los eventos pueden ser asociados a estas (pantallas).
 */
-$q="codigo_pantalla_mupi VARCHAR(100) NOT NULL PRIMARY KEY, codigo_mupi VARCHAR(100) NOT NULL, codigo_evento VARCHAR(50)";
+$q="codigo_pantalla_mupi VARCHAR(100) NOT NULL PRIMARY KEY, codigo_mupi VARCHAR(100), codigo_pedido INT, codigo_evento VARCHAR(50)";
 CREAR_TBL(TBL_MUPI_FACES, $q);
 
 /*
