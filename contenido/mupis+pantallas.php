@@ -42,7 +42,7 @@ function verPantallas($usuario="", $pantalla=""){
       return;
    }
 echo '<table>';
-echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th>Código pedido</th><th>Evento</th><th>Acción</th></tr>";
+echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th>Código pedido</th><th>Foto real</th><th>Evento</th><th>Acción</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_pantalla_mupi  = mysql_result($result,$i,"codigo_pantalla_mupi");
       $codigo_mupi = mysql_result($result,$i,"codigo_mupi");
@@ -51,7 +51,7 @@ echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th
       $foto_real  = mysql_result($result,$i,"foto_real");
       $Eliminar = CREAR_LINK_GET("gestionar+pantallas&amp;accion=eliminar&amp;pantalla=".$codigo_pantalla_mupi,"Eliminar", "Eliminar los datos de esta pantalla");
       $codigo_pantalla_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;pantalla=".$codigo_pantalla_mupi,$codigo_pantalla_mupi, "Editar los datos de esta pantalla");
-      echo "<tr><td>$codigo_pantalla_mupi</td><td>$codigo_mupi</td><td>$codigo_pedido</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
+      echo "<tr><td>$codigo_pantalla_mupi</td><td>$codigo_mupi</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
    }
    echo "</table><br>";
 }
@@ -77,7 +77,7 @@ if ($pantalla) {
 	$NombreBotonAccion = "Editar";
 	$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas\'" value="Cancelar">';
 } else {	
-	$CampoPantalla = '<tr><td>Código de Pantalla '._NOMBRE_.'</td><td><input type="text" name="codigo_pantalla" style="width: 100%;" maxlength="255" value=""></td></tr>';
+	$CampoPantalla = '<tr><td>Código de Pantalla '._NOMBRE_.'</td><td><input type="text" name="codigo_pantalla_mupi" style="width: 100%;" maxlength="255" value=""></td></tr>';
 
 	$NombreBotonAccion = "Registrar";
 }
@@ -97,6 +97,7 @@ echo '
 '.$CampoPantalla.'
 '.$CampoCodigoMUPI.'
 '.$CampoCodigoPedido.'
+'.$CampoFotoReal.'
 </table>
 <input type="submit" value="'.$NombreBotonAccion.'">
 '.$BotonCancelar.'
@@ -106,7 +107,7 @@ echo '
 
 function Pantalla_REGISTRAR() {
 global $database;
-$q = "INSERT INTO ".TBL_MUPI_FACES." (codigo_pantalla_mupi, codigo_mupi, codigo_pedido) VALUES ('" . $_POST['codigo_pantalla_mupi'] . "', ' " . $_POST['codigo_mupi']  . "', ' " . $_POST['codigo_pedido']  . "')  ON DUPLICATE KEY UPDATE codigo_pantalla_mupi=VALUES(codigo_pantalla_mupi), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido);";
+$q = "INSERT INTO ".TBL_MUPI_FACES." (codigo_pantalla_mupi, codigo_mupi, codigo_pedido, foto_real) VALUES ('" . $_POST['codigo_pantalla_mupi'] . "', ' " . $_POST['codigo_mupi']  . "', ' " . $_POST['codigo_pedido']  . "', ' " . $_POST['foto_real']  .  "')  ON DUPLICATE KEY UPDATE codigo_pantalla_mupi=VALUES(codigo_pantalla_mupi), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido), foto_real=VALUES(foto_real);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
 	echo "<blockquote>Exito al registrar ".  $_POST['codigo_pantalla_mupi'].'</blockquote>';

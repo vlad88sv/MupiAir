@@ -159,7 +159,7 @@ Ademas de su fecha de alquiler, quien es su "alquilador", que tipo de pantalla e
 NOTA: Dado que el daño a un MUPI (llamado "evento") puede producirse en una sola pantalla (ej. el pintando callejero de una pantalla)
 entonces también los eventos pueden ser asociados a estas (pantallas).
 */
-$q="codigo_pantalla_mupi VARCHAR(100) NOT NULL PRIMARY KEY, codigo_mupi VARCHAR(100), codigo_pedido INT, codigo_evento VARCHAR(50)";
+$q="codigo_pantalla_mupi VARCHAR(100) NOT NULL PRIMARY KEY, codigo_mupi VARCHAR(100), codigo_pedido INT, codigo_evento VARCHAR(50), foto_real VARCHAR(255)";
 CREAR_TBL(TBL_MUPI_FACES, $q);
 
 /*
