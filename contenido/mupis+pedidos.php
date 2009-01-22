@@ -1,12 +1,24 @@
 <?php
 function CONTENIDO_pedidos($usuario, $pedido) {
-	global $session, $form;
+	global $session, $form, $database;
 	echo '<h1>Gestión de pedidos de ' . _NOMBRE_ . '</h1>';
+	if ( $usuario ) {
+		if ( !$database->codigoTaken($usuario) ) {
+			echo "<hr /><h2>No existe el Cliente o Usuario $usuario</h2>";
+			return;
+		}
+	}
 	echo '<hr /><h2>Sus Pedidos '._NOMBRE_.".</h2>";
 	if ( $session->isAdmin() && isset($_POST['registrar_pedidos']) ) {
 		//Nos toca registrar un MUPI
 		Pedidos_REGISTRAR();
 	}
+	
+	if ( !$session->isAdmin() ) { 
+		//Solo puede ver sus propios pedidos.
+		$usuario = $session->codigo;
+	}
+	
 	verPedidos($usuario);
 	if ( $session->isAdmin() ) {
 	
@@ -28,6 +40,7 @@ function verPedidos($usuario="", $pedido=""){
    
    $WHERE = "";
    $num_rows = "";
+   echo $usuario;
    if ($usuario) { $WHERE = " WHERE codigo='".$usuario."'"; }
    
    $q = "SELECT * FROM ".TBL_MUPI_ORDERS."$WHERE;";
@@ -48,7 +61,7 @@ echo '<table>';
 echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Código cliente</th><th>Fecha de inicio de alquiler</th><th>Foto Pantalla</th><th>Acciones</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_pedido  = mysql_result($result,$i,"codigo_pedido");
-      $codigo = mysql_result($result,$i,"codigo");
+      $codigo =  CREAR_LINK_GET("gestionar+pedidos:".mysql_result($result,$i,"codigo"), mysql_result($result,$i,"codigo"), "Ver los pedidos de este cliente");
       $alquilado_desde  = AnularFechaNula(mysql_result($result,$i,"alquilado_desde"));
       $foto_pantalla  = mysql_result($result,$i,"foto_pantalla");
       $Eliminar = CREAR_LINK_GET("gestionar+pedidos&amp;accion=eliminar&amp;pedido=".$codigo_pedido,"Eliminar", "Eliminar los datos de este pedido");
