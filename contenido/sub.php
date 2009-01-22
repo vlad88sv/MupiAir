@@ -81,13 +81,12 @@ function CONTENIDO_mostrar_principal() {
 			break;
 		}
 
+	case "ver pedidos":
 	case "gestionar pedidos":
-		if($session->isAdmin()){
 			$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
 			$pedido = isset( $_GET['pedido'] ) ? $_GET['pedido'] : "";
 			CONTENIDO_pedidos($usuario,$pedido);
 			break;
-		}
 
 	case "registro":
 		if($session->isAdmin()){
@@ -195,6 +194,7 @@ function INICIAR_MENUES () {
 	if ( $session->logged_in ) {
 		$optEstado = CREAR_LINK_GET("ver+cliente", 'Mi Cuenta', "Ver los datos de su perfil")
 		. CREAR_LINK_GET("ver+ubicaciones", 'Mis ubicaciones', "Ver las ubicaciones de sus MUPIS")
+		. CREAR_LINK_GET("ver+pedidos", 'Mis pedidos', "Ver sus pantallas alquiladas")
 		. CREAR_LINK_GET("ver+estadisticas", 'Estadísticas', "Ver estadísticas de sus MUPIS")
 		. CREAR_LINK_GET("ver+eventos", 'Eventos', "Ver los eventos de sus MUPIS")
 		. CREAR_LINK_GET("ver+reportes", 'Reportes', "Generar reportes sobres sus MUPIS")
