@@ -73,15 +73,26 @@ require_once("contenido/mupis+pedidos.php");
 <body>
 	<?php CONTENIDO_mostrar_logo(); ?>
 	<img class="fija" src="hoja.gif" />
-	<?php echo INICIAR_MENUES() ?>
+	<?
+	global $session;
+	if ( $session->logged_in ) {
+	echo INICIAR_MENUES();
+	}
+	?>
+	<?php CONTENIDO_mostrar_logo_cliente(); ?>
 	<div id="container">
 		<div id="content">
 			<?php CONTENIDO_mostrar_principal(); ?>
 		</div>
 		<div class="clear"></div>
-		<div id="abajo">
-			<?php  CONTENIDO_en_linea(); ?>
-		</div>
+		<?php 
+		global $session; 
+		if ( $session->logged_in ) {
+		echo '<div id="abajo">';
+		CONTENIDO_en_linea();
+		echo '</div>';
+		}
+		?>
 		<div class="clear"></div>
 	</div>
 	</div>	

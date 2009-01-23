@@ -115,7 +115,8 @@ function CONTENIDO_mostrar_principal() {
 		break;
 		
 	case "ver ubicaciones":
-		CONTENIDO_mupis_ubicaciones();
+		$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
+		CONTENIDO_mupis_ubicaciones($usuario);
 		break;
 		
 	case "ver eventos":
@@ -166,13 +167,16 @@ function IMAGEN ($ruta, $alt="") {
 return '<img src="'. $ruta . '" alt="'. $alt .'" />';
 }
 
-function CONTENIDO_mostrar_logo($cliente="") {
-global $session;
-if ( $session->logged_in && !$session->isAdmin() ) {
-	echo IMAGEN("./logo_generico.gif");
-} else {
+function CONTENIDO_mostrar_logo() {
+	//echo '<center>' . IMAGEN("./logo.gif") . '</center>';
 	echo IMAGEN("./logo.gif");
 }
+
+function CONTENIDO_mostrar_logo_cliente() {
+	global $session;
+	if ( $session->isAdmin() && $session->logged_in ) {
+		echo '<center>' . IMAGEN("./logo_generico.gif") . '</center>';
+	}
 }
 
 function INICIAR_MENUES () {
