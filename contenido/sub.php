@@ -181,50 +181,18 @@ function CONTENIDO_mostrar_logo_cliente() {
 
 function INICIAR_MENUES () {
 	global $session;
-	$s = "";
-	$optEstado =  $session->isAdmin() ? '<li><a href="#" rel="menu_herramientas">Herramientas</a></li>' : "";
+	if ( $session->isAdmin() ) {
 	$s =
 	'
 	<div class="chromestyle" id="chromemenu">
 	<ul>
 	<li><a href="./">Inicio</a></li>
-	<li><a href="#" rel="menu_cliente">Cliente</a></li>
-	<li><a href="#" rel="menu_informacion">Información</a></li>'
-	. $optEstado
-	. '<li><a href="#" rel="menu_ayuda">Ayuda</a></li>	
+	<li><a href="#" rel="menu_herramientas">Herramientas</a></li>
+	<li><a href="./?accion=salir">Cerrar sesión administrativa</a></li>	
 	</ul>
 	</div>
 	';
-	//Menú cliente
-	if ( $session->logged_in ) {
-		$optEstado = CREAR_LINK_GET("ver+cliente", 'Mi Cuenta', "Ver los datos de su perfil")
-		. CREAR_LINK_GET("ver+ubicaciones", 'Mis ubicaciones', "Ver las ubicaciones de sus MUPIS")
-		. CREAR_LINK_GET("ver+pedidos", 'Mis pedidos', "Ver sus pantallas alquiladas")
-		. CREAR_LINK_GET("ver+estadisticas", 'Estadísticas', "Ver estadísticas de sus MUPIS")
-		. CREAR_LINK_GET("ver+eventos", 'Eventos', "Ver los eventos de sus MUPIS")
-		. CREAR_LINK_GET("ver+reportes", 'Reportes', "Generar reportes sobres sus MUPIS")
-		. CREAR_LINK("include/x.php","Cerrar sesión", "Salir del sistema");
-	} else {
-		$optEstado = CREAR_LINK_GET("ingresar", "Iniciar sesión", "Puede ingresar al sistema si ya esta registrado como cliente o administrador");
-	}
-	$s .= '
-	<div id="menu_cliente" class="dropmenudiv">'
-	.$optEstado
-	.'</div>';
-
-	//Información
-	$s .= '
-	<div id="menu_informacion" class="dropmenudiv" style="width: 150px;">'
-	.CREAR_LINK_GET("info+que", "¿Qué es?", "Que es " . _NOMBRE_)
-	.CREAR_LINK_GET("info+precios", "Precios", "Precios de " . _NOMBRE_)
-	.CREAR_LINK_GET("info+servicios", "Servicios", "Precios de " . _NOMBRE_)
-	.CREAR_LINK_GET("info+creativo", "Creativo", "Servicios de " . _NOMBRE_)
-	.CREAR_LINK_GET("info+detalles", "Detalles", "Detalles de " . _NOMBRE_)
-	.CREAR_LINK_GET("info+contacto", "Contacto", "Contactar con " . _NOMBRE_)
-	.'</div>';
-	
 	//Herramientas
-	if ( $session->isAdmin() ) {
 	$s .= '
 	<div id="menu_herramientas" class="dropmenudiv" style="width: 150px;">'
 	. CREAR_LINK_GET("registro","Registrar cliente", "Agregar un nuevo cliente al sistema")
@@ -236,14 +204,21 @@ function INICIAR_MENUES () {
 	. CREAR_LINK_GET("ver+eventos","Gestionar eventos", "Agregar, Eliminar o modificar eventos")
 	. CREAR_LINK_GET("ver+estadisticas", 'Estadísticas', "Ver estadísticas administrativas")
 	.'</div>';
+	} else {
+	$s =
+	'
+	<div class="chromestyle" id="chromemenu">
+	<ul>
+	<li><a href="./?accion=ver+estadisticas">Estadísticas</a></li>
+	<li><a href="./?accion=ver+ubicaciones">Mis Ubicaciones</a></li>
+	<li><a href="./?accion=ver+eventos" >Eventos</a></li>	
+	<li><a href="./?accion=ayuda+contacto">Comenta</a></li>	
+	<li><a href="./?accion=ver+reportes" rel="menu_reportes">Reportes</a></li>	
+	<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	</ul>
+	</div>
+	';
 	}
-	
-	// Ayuda
-	$s .= '
-	<div id="menu_ayuda" class="dropmenudiv" style="width: 150px;">'
-	. CREAR_LINK_GET("ayuda+contacto", "Dudas y comentarios", "Si desea comentar algo o tiene dudas al respecto de nuestro servicio")
-	. CREAR_LINK_GET("intfo+nosotros", "Acerca de...", "Acerca de Eco Mupis y CEPASA C.V.")
-	.'</div>';
 	
 	// Finalmente iniciamos el script.
 	$s .= '<script type="text/javascript">cssdropdown.startchrome("chromemenu")</script>';
