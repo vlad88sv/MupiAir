@@ -29,8 +29,13 @@ echo '</table><span id="datos_cara_mupis">Seleccione un '._NOMBRE_.' por favor</
 }
 
 function AgregarPuntosMupis(){
-   global $database, $map;
-   $q = "SELECT * FROM ".TBL_MUPI.";";
+   global $database, $map, $session;
+   
+   if ( $session->isAdmin() ) {
+	$q = "SELECT * FROM ".TBL_MUPI.";";
+   } else {
+	$q = "SELECT * FROM emupi_mupis where codigo_mupi IN (select distinct codigo_mupi from emupi_mupis_caras WHERE codigo_pedido IN (SELECT codigo_pedido from emupi_mupis_pedidos where codigo='".$session->codigo."'));";
+   }
    $result = $database->query($q);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
