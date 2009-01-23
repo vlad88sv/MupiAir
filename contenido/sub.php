@@ -178,8 +178,9 @@ function CONTENIDO_mostrar_logo() {
 
 function CONTENIDO_mostrar_logo_cliente() {
 	global $session;
-	if ( !$session->isAdmin() && $session->logged_in ) {
+	if ( !$session->isAdmin() ) {
 		echo '<center>' . IMAGEN("./logo_generico.gif") . '</center>';
+		//echo IMAGEN("./logo_generico.gif");
 	}
 }
 
@@ -213,7 +214,7 @@ function INICIAR_MENUES () {
 	'
 	<div class="chromestyle" id="chromemenu">
 	<ul>
-	<li><a href="./?accion=ver+estadisticas">Estadísticas</a></li>
+	<li><a href="./">Estadísticas</a></li>
 	<li><a href="./?accion=ver+ubicaciones">Mis Ubicaciones</a></li>
 	<li><a href="./?accion=ver+eventos" >Eventos</a></li>	
 	<li><a href="./?accion=ayuda+contacto">Comenta</a></li>	

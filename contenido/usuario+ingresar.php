@@ -5,13 +5,8 @@ function CONTENIDO_usuario_ingresar() {
 	
 	/* Ya se encuentra registrado */
 	if($session->logged_in){
-		echo '<h1>Sesión iniciada en el sistema de '._NOMBRE_.'</h1><hr>';
-		echo "¡Bienvenido! <b>$session->codigo</b>, Ud. ha ingresado al sistema.<br />";
-		if($session->isAdmin()){
-		echo '<br />Se ha habilitado el menú "Herramientas".<br />';
-		}
-		echo '<hr />';
-		echo CREAR_LINK_GET("ver+cliente", "Ver los datos de mi cuenta" , "Avanzar hacia su perfil");
+		CONTENIDO_mostrar_logo_cliente();
+		CONTENIDO_global_estadisticas();		
 		/* Limpiamos todo lo que podamos */
 		unset($_SESSION['reguname']);
 		unset($_SESSION['regsuccess']);

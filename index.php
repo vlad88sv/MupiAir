@@ -79,7 +79,6 @@ require_once("contenido/mupis+pedidos.php");
 	echo INICIAR_MENUES();
 	}
 	?>
-	<?php CONTENIDO_mostrar_logo_cliente(); ?>
 	<div id="container">
 		<div id="content">
 			<?php CONTENIDO_mostrar_principal(); ?>
