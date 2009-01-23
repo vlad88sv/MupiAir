@@ -174,7 +174,7 @@ function CONTENIDO_mostrar_logo() {
 
 function CONTENIDO_mostrar_logo_cliente() {
 	global $session;
-	if ( $session->isAdmin() && $session->logged_in ) {
+	if ( !$session->isAdmin() && $session->logged_in ) {
 		echo '<center>' . IMAGEN("./logo_generico.gif") . '</center>';
 	}
 }
