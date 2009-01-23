@@ -158,6 +158,11 @@ function CONTENIDO_mostrar_principal() {
 	case "info nosotros":
 		CONTENIDO_global_info();
 		break;
+	
+	case "salir";
+		global $session;
+		$session->logout();
+		header("Location: ./");
 		
 	default:
 		CONTENIDO_global_404();
