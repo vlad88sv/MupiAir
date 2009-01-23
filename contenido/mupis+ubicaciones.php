@@ -1,6 +1,7 @@
 <?php
-function CONTENIDO_mupis_ubicaciones(){
-global $map;
+function CONTENIDO_mupis_ubicaciones($usuario=''){
+global $map, $session;
+if ( !$session->isAdmin() ) { $usuario = $session->codigo; }
 echo "<h1>Ubicaciones de MUPIS contratados</h1><hr />";
 // setup database for geocode caching
 $map->setDSN('mysql://'.DB_USER.':'.DB_PASS.'@'.DB_SERVER.'/'.DB_NAME);
@@ -11,7 +12,7 @@ $map->setMarkerIcon('hojita.gif','hojita.gif',0,0,10,10);
 // proporción de la ventana que tomará el mapa.
  $map->setWidth('100%');
 // Cargar puntos mupis.
-AgregarPuntosMupis();
+AgregarPuntosMupis($usuario);
 $map->printHeaderJS();
 $map->printMapJS();
 $map->printOnLoad();
@@ -28,13 +29,13 @@ $map->printSidebar();
 echo '</table><span id="datos_cara_mupis">Seleccione un '._NOMBRE_.' por favor</span></body>';
 }
 
-function AgregarPuntosMupis(){
+function AgregarPuntosMupis($usuario=''){
    global $database, $map, $session;
    
-   if ( $session->isAdmin() ) {
+   if ( $session->isAdmin()  && !$usuario ) {
 	$q = "SELECT * FROM ".TBL_MUPI.";";
    } else {
-	$q = "SELECT * FROM emupi_mupis where codigo_mupi IN (select distinct codigo_mupi from emupi_mupis_caras WHERE codigo_pedido IN (SELECT codigo_pedido from emupi_mupis_pedidos where codigo='".$session->codigo."'));";
+	$q = "SELECT * FROM emupi_mupis where codigo_mupi IN (select distinct codigo_mupi from emupi_mupis_caras WHERE codigo_pedido IN (SELECT codigo_pedido from emupi_mupis_pedidos where codigo='".$usuario."'));";
    }
    $result = $database->query($q);
    /* Error occurred, return given name by default */
