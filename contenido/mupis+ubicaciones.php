@@ -35,7 +35,7 @@ function AgregarPuntosMupis($usuario=''){
    if ( $session->isAdmin()  && !$usuario ) {
 	$q = "SELECT * FROM ".TBL_MUPI.";";
    } else {
-	$q = "SELECT * FROM emupi_mupis where codigo_mupi IN (select distinct codigo_mupi from emupi_mupis_caras WHERE codigo_pedido IN (SELECT codigo_pedido from emupi_mupis_pedidos where codigo='".$usuario."'));";
+	$q = "SELECT * FROM " . TBL_MUPI . " WHERE codigo_mupi IN (select distinct codigo_mupi from " . TBL_MUPI_FACES . " WHERE codigo_pedido IN (SELECT codigo_pedido from " . TBL_MUPI_ORDERS . " where codigo='".$usuario."'));";
    }
    $result = $database->query($q);
    /* Error occurred, return given name by default */
