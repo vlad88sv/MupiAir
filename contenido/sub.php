@@ -110,6 +110,14 @@ function CONTENIDO_mostrar_principal() {
 			break;
 		}
 
+	case "gestionar calles":
+		if($session->isAdmin()){
+			$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
+			$calle = isset( $_GET['calle'] ) ? $_GET['calle'] : "";
+			CONTENIDO_calles($usuario,$calle);
+			break;
+		}
+
 	case "ver reportes":
 		ADMIN_reportes();
 		break;
