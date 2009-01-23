@@ -160,7 +160,6 @@ function CONTENIDO_mostrar_principal() {
 		break;
 	
 	case "salir";
-		global $session;
 		$session->logout();
 		header("Location: ./");
 		
