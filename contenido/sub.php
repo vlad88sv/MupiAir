@@ -205,7 +205,7 @@ function INICIAR_MENUES () {
 	. CREAR_LINK_GET("gestionar+pedidos","Gestionar pedidos", "Eliminar o modificar pedidos")
 	. CREAR_LINK_GET("gestionar+pantallas","Gestionar pantallas", "Eliminar o modificar pantallas")
 	. CREAR_LINK_GET("gestionar+mupis","Gestionar MUPIS", "Eliminar o modificar MUPIS")
-	. CREAR_LINK_GET("ver+ubicaciones","Gestionar ubicaciones", "Agregar, Eliminar o modificar ubicaciones")
+	. CREAR_LINK_GET("ver+ubicaciones","Ver MUPIS", "Ver mapa de MUPIS")
 	. CREAR_LINK_GET("ver+eventos","Gestionar eventos", "Agregar, Eliminar o modificar eventos")
 	. CREAR_LINK_GET("ver+estadisticas", 'Estadísticas', "Ver estadísticas administrativas")
 	.'</div>';

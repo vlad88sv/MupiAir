@@ -40,7 +40,6 @@ function verPedidos($usuario="", $pedido=""){
    
    $WHERE = "";
    $num_rows = "";
-   echo $usuario;
    if ($usuario) { $WHERE = " WHERE codigo='".$usuario."'"; }
    
    $q = "SELECT * FROM ".TBL_MUPI_ORDERS."$WHERE;";

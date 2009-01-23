@@ -51,7 +51,7 @@ echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th
       $foto_real  = mysql_result($result,$i,"foto_real");
       $Eliminar = CREAR_LINK_GET("gestionar+pantallas&amp;accion=eliminar&amp;pantalla=".$codigo_pantalla_mupi,"Eliminar", "Eliminar los datos de esta pantalla");
       $codigo_pantalla_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;pantalla=".$codigo_pantalla_mupi,$codigo_pantalla_mupi, "Editar los datos de esta pantalla");
-      echo "<tr><td>$codigo_pantalla_mupi</td><td>$codigo_mupi</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
+      echo "<tr><td>$codigo_pantalla_mupi</td><td>$codigo_mupi</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_calle</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
    }
    echo "</table><br>";
 }

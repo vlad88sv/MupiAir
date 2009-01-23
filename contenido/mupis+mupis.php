@@ -28,7 +28,7 @@ function verMUPIS(){
       return;
    }
 	echo '<table border="0">';
-	echo "<tr><th>Código "._NOMBRE_."</th><th>Dirección</th><th>Foto Genérica</th><th>Longitud</th><th>Latitud</th><th>Evento</th><th>Acciones</th></tr>";
+	echo "<tr><th>Código "._NOMBRE_."</th><th>Dirección</th><th>Foto Genérica</th><th>Longitud</th><th>Latitud</th><th>Código Calle</th><th>Evento</th><th>Acciones</th></tr>";
 	for($i=0; $i<$num_rows; $i++){
 		$codigo_mupi  = CREAR_LINK_GET("gestionar+mupis&amp;mupi=".mysql_result($result,$i,"codigo_mupi"), mysql_result($result,$i,"codigo_mupi"), "Carga los datos del "._NOMBRE_. " seleccionado para editar");
 		$direccion = mysql_result($result,$i,"direccion");
@@ -36,8 +36,9 @@ function verMUPIS(){
 		$Longitud  = mysql_result($result,$i,"lon");
 		$Latitud  = mysql_result($result,$i,"lat");
 		$codigo_evento  = mysql_result($result,$i,"codigo_evento");
+		$codigo_calle  = CREAR_LINK_GET("gestionar+calles&amp;calle=".mysql_result($result,$i,"codigo_calle"), mysql_result($result,$i,"codigo_calle"), "Editar los datos de este pedido");
 		$Eliminar = CREAR_LINK_GET("gestionar+mupis&amp;accion=eliminar&amp;mupi=".mysql_result($result,$i,"codigo_mupi"),"Eliminar", "Eliminar los datos de este "._NOMBRE_);
-	echo "<tr><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$Longitud</td><td>$Latitud</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
+	echo "<tr><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$Longitud</td><td>$Latitud</td><td>$codigo_calle</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
 	}
 	echo "</table><br />";
 }
@@ -57,6 +58,7 @@ if ($mupi) {
 		$form->setValue("foto", mysql_result($result,0,"foto_generica"));
 		$form->setValue("lon", mysql_result($result,0,"lon"));
 		$form->setValue("lat", mysql_result($result,0,"lat"));
+		$form->setValue("codigo_calle", mysql_result($result,0,"codigo_calle"));
 	
 		$CampoCodigoMupi = '<input type="hidden" name="codigo_mupi" value="'.$mupi.'">';
 		$NombreBotonAccion = "Editar";
@@ -86,6 +88,7 @@ echo '
 <tr><td>Foto genérica:</td><td><input type="text" name="foto" style="width: 100%;" maxlength="255" value="' . $form->value("foto"). '"></td></tr>
 <tr><td>Longitud:</td><td><input type="text" name="lon" style="width: 100%;" maxlength="50" value="' . $form->value("lon"). '"></td></tr>
 <tr><td>Latitud:</td><td><input type="text" name="lat" style="width: 100%;" maxlength="50" value="' . $form->value("lat"). '"></td></tr>
+<tr><td>Código calle:</td><td><input type="text" name="codigo_calle" style="width: 100%;" maxlength="50" value="' . $form->value("codigo_calle"). '"></td></tr>
 </table>
 <input type="submit" value="'.$NombreBotonAccion.'">
 '.$BotonCancelar.'
@@ -100,7 +103,8 @@ $form->setValue("direccion", $_POST['direccion']);
 $form->setValue("foto", $_POST['foto']);
 $form->setValue("lon", $_POST['lon']);
 $form->setValue("lat", $_POST['lat']);
-$q = "INSERT INTO ".TBL_MUPI." (codigo_mupi, direccion, foto_generica, lon, lat) VALUES ('".$_POST['codigo_mupi'] . "', '" . $_POST['direccion'] . "', '" . $_POST['foto'] . "', '" . $_POST['lon'] . "', '" . $_POST['lat'] . "') ON DUPLICATE KEY UPDATE codigo_mupi=VALUES(codigo_mupi), direccion=VALUES(direccion), foto_generica=VALUES(foto_generica), lon=VALUES(lon), lat=VALUES(lat);";
+$form->setValue("codigo_calle", $_POST['codigo_calle']);
+$q = "INSERT INTO ".TBL_MUPI." (codigo_mupi, direccion, foto_generica, lon, lat, codigo_calle) VALUES ('".$_POST['codigo_mupi'] . "', '" . $_POST['direccion'] . "', '" . $_POST['foto'] . "', '" . $_POST['lon'] . "', '" . $_POST['lat'] . "', '" . $_POST['codigo_calle'] . "') ON DUPLICATE KEY UPDATE codigo_mupi=VALUES(codigo_mupi), direccion=VALUES(direccion), foto_generica=VALUES(foto_generica), lon=VALUES(lon), lat=VALUES(lat), codigo_calle=VALUES(codigo_calle);";
 DEPURAR ($q);	
 $result = $database->query($q);
 }

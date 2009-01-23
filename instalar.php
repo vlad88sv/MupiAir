@@ -143,7 +143,7 @@ asignarle el evento al MUPI.
 Si el evento llegará a afectar a una sola de las pantallas, entonces deberá relacionar dicho
 evento con la pantalla afectada y no con el MUPI. Ver detalles en tabla TBL_MUPI_FACES.
 */
-$q="codigo_mupi VARCHAR(100) NOT NULL PRIMARY KEY, direccion VARCHAR(255), foto_generica VARCHAR(255), lon float default NULL, lat float default NULL, codigo_evento VARCHAR(50)";
+$q="codigo_mupi VARCHAR(100) NOT NULL PRIMARY KEY, direccion VARCHAR(255), foto_generica VARCHAR(255), lon float default NULL, lat float default NULL, codigo_evento VARCHAR(50), codigo_calle VARCHAR(255)";
 CREAR_TBL(TBL_MUPI, $q);
 
 /*
@@ -151,6 +151,13 @@ Tabla que contiene la descripción de cada pedido (compra) realizada.
 La finalidad es no repetir los mismos datos para cada pantalla, si no que se enlazaría cada pantalla con un código de pedido que le indicaría el cliente y la foto que debe llevar.
 */
 $q="codigo_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo VARCHAR(100), alquilado_desde int(11), foto_pantalla VARCHAR(255)";
+CREAR_TBL(TBL_MUPI_ORDERS, $q);
+
+/*
+Tabla que contiene la descripción de cada calle.
+La finalidad es poder enlazar con la tabla de mupis para que puedan determinar que MUPIS estan sobre la misma calle.
+*/
+$q="codigo_calle INT NOT NULL AUTO_INCREMENT PRIMARY KEY, ubicacion VARCHAR(255)";
 CREAR_TBL(TBL_MUPI_ORDERS, $q);
 
 /*
