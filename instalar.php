@@ -158,7 +158,7 @@ Tabla que contiene la descripción de cada calle.
 La finalidad es poder enlazar con la tabla de mupis para que puedan determinar que MUPIS estan sobre la misma calle.
 */
 $q="codigo_calle INT NOT NULL AUTO_INCREMENT PRIMARY KEY, ubicacion VARCHAR(255)";
-CREAR_TBL(TBL_MUPI_ORDERS, $q);
+CREAR_TBL(TBL_STREETS, $q);
 
 /*
 Esta tabla es una tabla relacionada con TBL_MUPI en el sentido de que a travez de ella se determinan las pantallas alquiladas
