@@ -104,8 +104,9 @@ function CONTENIDO_mostrar_principal() {
 		
 	case "gestionar mupis":
 		if($session->isAdmin()){
-			$mupi= isset( $ACC[1] ) ? $ACC[1] : "";
-			CONTENIDO_mupis($mupi);
+			$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
+			$mupi = isset( $_GET['mupi'] ) ? $_GET['mupi'] : "";
+			CONTENIDO_mupis($usuario,$mupi);
 			break;
 		}
 
