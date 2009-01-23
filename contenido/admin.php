@@ -25,9 +25,10 @@ function displayUsers(){
       $verPedidos = CREAR_LINK_GET("gestionar+pedidos:$uname", "Pedidos", "Le mostrara los pedidos realizados por este cliente y le dará la opción de agregar más.");
       $verPantallas = CREAR_LINK_GET("gestionar+pantallas:$uname", "Pantallas", "Le mostrara las pantallas en las cuales se encuentran colocados los pedidos.");
       $verMUPIS = CREAR_LINK_GET("gestionar+mupis:$uname", "MUPIS", "Le mostrara los MUPIS donde estan instaladas las pantallas de este cliente.");
+      $verUbicaciones = CREAR_LINK_GET("ver+ubicaciones:$uname", "Ubicaciones", "Le mostrara las ubicaciones de los MUPIS de este cliente.");
       $reporte = CREAR_LINK_GET("ver+reportes:$uname", "Reporte", "Le generará un reporte sobre este cliente.");
       $uname = CREAR_LINK_GET("ver+cliente:".$uname, $uname, "Ver datos de este cliente");
-      echo "<tr><td>$uname</td><td>$nombre</td><td>$ulevel</td><td>$email</td><td>$time</td><td>$verMUPIS<br />$verPantallas<br />$verPedidos<hr />$reporte</td></tr>";
+      echo "<tr><td>$uname</td><td>$nombre</td><td>$ulevel</td><td>$email</td><td>$time</td><td>$verMUPIS<br />$verPantallas<br />$verPedidos<br />$verUbicaciones<hr />$reporte</td></tr>";
    }
    echo "</table><br />";
 }
