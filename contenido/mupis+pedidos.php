@@ -83,6 +83,11 @@ $foto_pantalla = '';
 if ($pedido) {
 	$q = "SELECT * FROM ".TBL_MUPI_ORDERS." WHERE codigo_pedido='$pedido';";
 	$result = $database->query($q);
+	$num_rows = mysql_numrows($result);
+	if ( $num_rows == 0 ) {
+		echo "¡No hay Pedido "._NOMBRE_." con este código ingresado!<BR />";
+		return;
+	}
 	$usuario = mysql_result($result,0,"codigo");
 	$alquilado_desde = mysql_result($result,0,"alquilado_desde");
 	$foto_pantalla = mysql_result($result,0,"foto_pantalla");
