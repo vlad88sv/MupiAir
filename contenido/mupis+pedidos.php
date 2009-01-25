@@ -61,11 +61,11 @@ echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Código cliente</th><th>Fecha 
    for($i=0; $i<$num_rows; $i++){
       $codigo_pedido  = mysql_result($result,$i,"codigo_pedido");
       $codigo =  CREAR_LINK_GET("gestionar+pedidos:".mysql_result($result,$i,"codigo"), mysql_result($result,$i,"codigo"), "Ver los pedidos de este cliente");
-      $alquilado_desde  = AnularFechaNula(mysql_result($result,$i,"alquilado_desde"));
+      $catorcena  = AnularFechaNula(mysql_result($result,$i,"catorcena"));
       $foto_pantalla  = mysql_result($result,$i,"foto_pantalla");
       $Eliminar = CREAR_LINK_GET("gestionar+pedidos&amp;accion=eliminar&amp;pedido=".$codigo_pedido,"Eliminar", "Eliminar los datos de este pedido");
       $codigo_pedido  = CREAR_LINK_GET("gestionar+pedidos&amp;pedido=".$codigo_pedido,$codigo_pedido, "Editar los datos de este pedido");
-      echo "<tr><td>$codigo_pedido</td><td>$codigo</td><td>$alquilado_desde</td><td>$foto_pantalla</td><td>$Eliminar</tr>";
+      echo "<tr><td>$codigo_pedido</td><td>$codigo</td><td>$catorcena</td><td>$foto_pantalla</td><td>$Eliminar</tr>";
    }
    echo "</table><br>";
 }
@@ -77,7 +77,7 @@ $CampoFechaHora = '';
 $CampoPantalla = '';
 $BotonCancelar = '';
 $CampoFoto = '';
-$alquilado_desde = '';
+$catorcena = '';
 $foto_pantalla = '';
 
 if ($pedido) {
@@ -89,7 +89,7 @@ if ($pedido) {
 		return;
 	}
 	$usuario = mysql_result($result,0,"codigo");
-	$alquilado_desde = mysql_result($result,0,"alquilado_desde");
+	$catorcena = mysql_result($result,0,"catorcena");
 	$foto_pantalla = mysql_result($result,0,"foto_pantalla");
 	
 	$CampoCodigoPedido = '<input type="hidden" name="codigo_pedido" value="'.$pedido.'">';
@@ -105,7 +105,7 @@ if ($pedido) {
 }
 	$CampoCodigoPedido2 = '<tr><td width="25%">Código de pedido</td><td><b>'. $pedido. '</b></td></tr>';
 	$CampoUsuario = '<tr><td>Cliente:</td><td><input type="text" name="codigo" maxlength="255" value="' . $usuario . '"></td></tr>';
-	$CampoFechaHora = '<tr><td>Fecha de inicio de alquiler:</td><td><input type="text" name="alquilado_desde" maxlength="255" value="' . AnularFechaNula($alquilado_desde,true). '"></td></tr>';
+	$CampoFechaHora = '<tr><td>Fecha de inicio de alquiler:</td><td><input type="text" name="catorcena" maxlength="255" value="' . AnularFechaNula($catorcena,true). '"></td></tr>';
 	$CampoPantalla = '<tr><td>Foto de pantalla:</td><td><input type="text" name="foto_pantalla" maxlength="255" value="' . $foto_pantalla . '"></td></tr>';
 
 echo '
@@ -133,7 +133,7 @@ if ( isset($_POST['codigo_pedido'] ) ) {
 	$extra1 = '';
 	$extra2 = '';
 }
-$q = "INSERT INTO ".TBL_MUPI_ORDERS." ( ".$extra1." codigo, alquilado_desde, foto_pantalla ) VALUES (".$extra2."'" . $_POST['codigo'] . "', '". strtotime($_POST['alquilado_desde']). "', '". $_POST['foto_pantalla']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), alquilado_desde=VALUES(alquilado_desde), foto_pantalla=VALUES(foto_pantalla);";
+$q = "INSERT INTO ".TBL_MUPI_ORDERS." ( ".$extra1." codigo, catorcena, foto_pantalla ) VALUES (".$extra2."'" . $_POST['codigo'] . "', '". strtotime($_POST['catorcena']). "', '". $_POST['foto_pantalla']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), catorcena=VALUES(catorcena), foto_pantalla=VALUES(foto_pantalla);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
 	echo "<blockquote>Exito al registrar el pedido de ".  $_POST['codigo'].'</blockquote>';
