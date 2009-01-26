@@ -1,6 +1,6 @@
 <?php
 function Combobox_catorcenas($nombre="catorcena", $default=NULL, $cuantas = NULL) {
-if ( $default === NULL ) { $default = time(); }
+if ( !$default ) { $default = time(); }
 if ( $cuantas ) {
 	$inicio=mktime(0,0,0,date('n',$default),1,date('Y', $default));
 } else {
