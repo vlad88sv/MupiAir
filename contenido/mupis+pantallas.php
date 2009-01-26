@@ -1,13 +1,20 @@
 <?php
+$Catorcena = NULL;
 function CONTENIDO_pantallas($usuario, $pantalla) {
-	global $session, $form;
+	global $session, $form, $Catorcena;
 	echo '<h1>Gestión de pantallas de ' . _NOMBRE_ . '</h1>';
 	if ( $session->isAdmin() && isset($_POST['registrar_mupi']) ) {
 	//Nos toca registrar un MUPI
 	Pantalla_REGISTRAR();
 	}
-	echo '<hr /><h2>Sus Pantallas '._NOMBRE_.".</h2>";
-	if ( isset($_POST['ver_catorcena']) ) { $BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas\'" value="Volver a catorcena actual">'; $Catorcena = $_POST['ver_catorcena']; } else { $BotonCancelar = ''; $Catorcena = Obtener_catorcena_cercana(); }
+	if ( isset($_POST['ver_catorcena']) ) {
+		$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas\'" value="Volver a catorcena actual">';
+		$Catorcena = $_POST['ver_catorcena'];
+	} else {
+		$BotonCancelar = '';
+		$Catorcena = Obtener_catorcena_cercana();
+	}
+	echo '<hr /><h2>Pantallas '._NOMBRE_." en la catorcena de ".date("d/m/Y",$Catorcena)."</h2>";
 	echo '<form action="./?'._ACC_.'=gestionar+pantallas" method="POST">';
 	echo "Viendo pantallas "._NOMBRE_." de la catorcena " . Combobox_catorcenas("ver_catorcena", $Catorcena) ;
 	echo '<input type="submit" value="Cambiar">';
@@ -62,7 +69,7 @@ echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th
    echo "</table><br>";
 }
 function verPantallasregistro($usuario="", $pantalla="") {
-global $database;
+global $database, $Catorcena;
 $BotonCancelar = '';
 $CampoCodigoMUPI = '';
 $CampoPantalla = '';
@@ -88,7 +95,7 @@ if ($pantalla) {
 	$NombreBotonAccion = "Registrar";
 }
 	$CampoCodigoMUPI = '<tr><td>Enlazar al '._NOMBRE_.' código</td><td>'. $database->Combobox_mupi("codigo_mupi", $codigo_mupi) .'</td></tr>';
-	$CampoCodigoPedido = '<tr><td>Enlazar al pedido '._NOMBRE_.' código</td><td>'. $database->Combobox_pedido("codigo_pedido", $codigo_pedido) . '</td></tr>';
+	$CampoCodigoPedido = '<tr><td>Enlazar al pedido '._NOMBRE_.' código</td><td>'. $database->Combobox_pedido("codigo_pedido", $codigo_pedido, $Catorcena, Fin_de_catorcena($Catorcena)) . '</td></tr>';
 	$CampoFotoReal = '<tr><td>Agregar Foto real </td><td><input type="text" name="foto_real" style="width: 100%;" maxlength="255" value="' . $foto_real . '"></td></tr>';
 
 /*

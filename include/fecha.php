@@ -52,4 +52,9 @@ do {
 function Contar_catorcenas ($inicio=0, $fin=0 ) {
 return ((($fin-$inicio)/60/60/24) + 1) / 14;
 }
+
+function Fin_de_catorcena ($referencia = NULL) {
+if (!$referencia) {return NULL;}
+return strtotime("+13 day",$referencia);
+}
 ?>

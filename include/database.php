@@ -296,8 +296,11 @@ class MySQLDB
    return $s;
    }
    
-    function Combobox_pedido ($nombre="codigo_pedido", $default=NULL) {
-   $q = "SELECT codigo_pedido, CONCAT(codigo_pedido,'. ', (SELECT nombre FROM ".TBL_USERS." AS b WHERE b.codigo = a.codigo)) as nombre FROM ".TBL_MUPI_ORDERS . " as a";
+    function Combobox_pedido ($nombre="codigo_pedido", $default=NULL, $desde = NULL, $hasta = NULL) {
+    $intervalo = '';
+    if ($desde && $hasta) { $intervalo = " WHERE catorcena_inicio>='$desde' AND catorcena_inicio<$hasta"; }
+    //if ($desde && $hasta) { $intervalo .= " AND catorcena_fin<='$hasta'"; }
+   $q = "SELECT codigo_pedido, CONCAT(codigo_pedido,'. ', (SELECT nombre FROM ".TBL_USERS." AS b WHERE b.codigo = a.codigo)) as nombre FROM ".TBL_MUPI_ORDERS . " as a$intervalo;";
    $result = mysql_query($q, $this->connection);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
