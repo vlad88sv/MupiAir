@@ -83,7 +83,7 @@ if ($pantalla) {
 	$NombreBotonAccion = "Editar";
 	$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas\'" value="Cancelar">';
 } else {	
-	$CampoPantalla = '<tr><td>Código de Pantalla '._NOMBRE_.'</td><td><input type="text" name="codigo_pantalla_mupi" style="width: 100%;" maxlength="255" value=""></td></tr>';
+	$CampoPantalla = '<tr><td width="25%">Código de Pantalla '._NOMBRE_.'</td><td><input type="text" name="codigo_pantalla_mupi" style="width: 100%;" maxlength="255" value=""></td></tr>';
 
 	$NombreBotonAccion = "Registrar";
 }
