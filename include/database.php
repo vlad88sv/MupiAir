@@ -348,6 +348,32 @@ class MySQLDB
    return $s;
    }
    
+    function Combobox_calle ($nombre="codigo_calle", $default=NULL) {
+      $q = "SELECT codigo_calle, CONCAT(codigo_calle,'. ',ubicacion) as nombre FROM ".TBL_STREETS;
+   $result = mysql_query($q, $this->connection);
+   /* Error occurred, return given name by default */
+   $num_rows = mysql_numrows($result);
+   $s='';
+   if(!$result || ($num_rows < 0)){
+      $s.= "Error mostrando la información";
+      return $s;
+   }
+   if($num_rows == 0){
+      /*Esto nunca deberia de pasar realmente...*/
+      $s.= "¡No hay calles "._NOMBRE_." ingresadas!";
+      return $s;
+   }
+  $s='<select name="'.$nombre.'">';
+  for($i=0; $i<$num_rows; $i++){
+      $codigo_calle  = mysql_result($result,$i,"codigo_calle");
+      $nombre = mysql_result($result,$i,"nombre");
+      if ( $codigo_calle == $default ) { $selected = ' selected="selected"'; } else { $selected = ""; }
+      $s.='<option value="'.$codigo_calle.'"'.$selected.'>'. $nombre .'</option>';
+   }
+   $s.= '</select>';
+   return $s;
+   }
+   
    /**
     * query - Performs the given query on the database and
     * returns the result, which may be false, true or a
