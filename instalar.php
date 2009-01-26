@@ -150,7 +150,7 @@ CREAR_TBL(TBL_MUPI, $q);
 Tabla que contiene la descripción de cada pedido (compra) realizada.
 La finalidad es no repetir los mismos datos para cada pantalla, si no que se enlazaría cada pantalla con un código de pedido que le indicaría el cliente y la foto que debe llevar.
 */
-$q="codigo_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo VARCHAR(100), catorcena int(11), foto_pantalla VARCHAR(255)";
+$q="codigo_pedido INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo VARCHAR(100), catorcena_inicio int(11), catorcena_fin int(11), foto_pantalla VARCHAR(255)";
 CREAR_TBL(TBL_MUPI_ORDERS, $q);
 
 /*
