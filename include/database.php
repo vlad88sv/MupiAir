@@ -271,7 +271,7 @@ class MySQLDB
    }
    
    function Combobox_usuarios ($nombre="codigo", $default=NULL) {
-      $q = "SELECT codigo, nombre FROM ".TBL_USERS." ORDER BY userlevel DESC;";
+      $q = "SELECT codigo, nombre FROM ".TBL_USERS." WHERE userlevel <> 9;";
    $result = mysql_query($q, $this->connection);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
@@ -297,7 +297,7 @@ class MySQLDB
    }
    
     function Combobox_pedido ($nombre="codigo_pedido", $default=NULL) {
-      $q = "SELECT codigo_pedido, CONCAT(codigo_pedido,'. ',codigo) as nombre FROM ".TBL_MUPI_ORDERS;
+   $q = "SELECT codigo_pedido, CONCAT(codigo_pedido,'. ', (SELECT nombre FROM ".TBL_USERS." AS b WHERE b.codigo = a.codigo)) as nombre FROM ".TBL_MUPI_ORDERS . " as a";
    $result = mysql_query($q, $this->connection);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
