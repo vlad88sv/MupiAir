@@ -15,7 +15,7 @@ function CONTENIDO_mupis($usuario="",$mupi="") {
 function verMUPIS(){
    global $database;
    //$q = "SELECT codigo_mupi 'Código "._NOMBRE_."', direccion 'Dirección', foto_generica 'Foto Genérica', lon 'Longitud', lat 'Latitud', codigo_evento 'Evento' FROM ".TBL_MUPI.";";
-   $q = "SELECT * FROM ".TBL_MUPI.";";
+   $q = "SELECT codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT ubicacion FROM ".TBL_STREETS." AS b WHERE a.codigo_calle=b.codigo_calle) AS 'calle' FROM ".TBL_MUPI." as a;";
    $result = $database->query($q);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
@@ -28,7 +28,7 @@ function verMUPIS(){
       return;
    }
 	echo '<table border="0">';
-	echo "<tr><th>Código "._NOMBRE_."</th><th>Dirección</th><th>Foto Genérica</th><th>Longitud</th><th>Latitud</th><th>Código Calle</th><th>Evento</th><th>Acciones</th></tr>";
+	echo "<tr><th>Código "._NOMBRE_."</th><th>Dirección</th><th>Foto Genérica</th><th>Longitud</th><th>Latitud</th><th>Calle</th><th>Evento</th><th>Acciones</th></tr>";
 	for($i=0; $i<$num_rows; $i++){
 		$codigo_mupi  = CREAR_LINK_GET("gestionar+mupis&amp;mupi=".mysql_result($result,$i,"codigo_mupi"), mysql_result($result,$i,"codigo_mupi"), "Carga los datos del "._NOMBRE_. " seleccionado para editar");
 		$direccion = mysql_result($result,$i,"direccion");
@@ -36,7 +36,7 @@ function verMUPIS(){
 		$Longitud  = mysql_result($result,$i,"lon");
 		$Latitud  = mysql_result($result,$i,"lat");
 		$codigo_evento  = mysql_result($result,$i,"codigo_evento");
-		$codigo_calle  = CREAR_LINK_GET("gestionar+calles&amp;calle=".mysql_result($result,$i,"codigo_calle"), mysql_result($result,$i,"codigo_calle"), "Editar los datos de este pedido");
+		$codigo_calle  = CREAR_LINK_GET("gestionar+calles&amp;calle=".mysql_result($result,$i,"codigo_calle"), mysql_result($result,$i,"calle"), "Editar los datos de este pedido");
 		$Eliminar = CREAR_LINK_GET("gestionar+mupis&amp;accion=eliminar&amp;mupi=".mysql_result($result,$i,"codigo_mupi"),"Eliminar", "Eliminar los datos de este "._NOMBRE_);
 	echo "<tr><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$Longitud</td><td>$Latitud</td><td>$codigo_calle</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
 	}
