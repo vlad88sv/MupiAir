@@ -65,7 +65,7 @@ echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Código cliente</th><th>Interv
       $catorcena_fin  = AnularFechaNula(mysql_result($result,$i,"catorcena_fin"));
       $NumeroDeCatorcenas = Contar_catorcenas(mysql_result($result,$i,"catorcena_inicio"), mysql_result($result,$i,"catorcena_fin"));
       $foto_pantalla  = mysql_result($result,$i,"foto_pantalla");
-      $Eliminar = CREAR_LINK_GET("gestionar+pedidos&amp;accion=eliminar&amp;pedido=".$codigo_pedido,"EliminarFecha", "Eliminar los datos de este pedido");
+      $Eliminar = CREAR_LINK_GET("gestionar+pedidos&amp;accion=eliminar&amp;pedido=".$codigo_pedido,"Eliminar", "Eliminar los datos de este pedido");
       $codigo_pedido  = CREAR_LINK_GET("gestionar+pedidos&amp;pedido=".$codigo_pedido,$codigo_pedido, "Editar los datos de este pedido");
       echo "<tr><td>$codigo_pedido</td><td>$codigo</td><td>$catorcena_inicio al $catorcena_fin</td><td>$NumeroDeCatorcenas</td><td>$foto_pantalla</td><td>$Eliminar</tr>";
    }
