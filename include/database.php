@@ -308,7 +308,7 @@ class MySQLDB
    }
    if($num_rows == 0){
       /*Esto nunca deberia de pasar realmente...*/
-      $s.= "¡No hay clientes/usuarios ingresados!";
+      $s.= "¡No hay pedidos ingresados!";
       return $s;
    }
   $s='<select name="'.$nombre.'">';
