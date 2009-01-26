@@ -270,6 +270,32 @@ class MySQLDB
       $this->calcNumActiveGuests();
    }
    
+   function Combobox_usuarios ($nombre="codigo", $default=NULL) {
+      $q = "SELECT codigo, nombre FROM ".TBL_USERS." ORDER BY userlevel DESC;";
+   $result = mysql_query($q, $this->connection);
+   /* Error occurred, return given name by default */
+   $num_rows = mysql_numrows($result);
+   $s='';
+   if(!$result || ($num_rows < 0)){
+      $s.= "Error mostrando la información";
+      return $s;
+   }
+   if($num_rows == 0){
+      /*Esto nunca deberia de pasar realmente...*/
+      $s.= "¡No hay clientes/usuarios ingresados!";
+      return $s;
+   }
+  $s='<select name="'.$nombre.'">';
+  for($i=0; $i<$num_rows; $i++){
+      $uname  = mysql_result($result,$i,"codigo");
+      $nombre = mysql_result($result,$i,"nombre");
+      if ( $uname == $default ) { $selected = ' selected="selected"'; } else { $selected = ""; }
+      $s.='<option value="'.$uname.'"'.$selected.'>'. $nombre .'</option>';
+   }
+   $s.= '</select>';
+   return $s;
+   }
+   
    /**
     * query - Performs the given query on the database and
     * returns the result, which may be false, true or a

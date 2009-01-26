@@ -104,7 +104,7 @@ if ($pedido) {
 	$NombreBotonAccion = "Registrar";
 }
 	$CampoCodigoPedido2 = '<tr><td width="25%">Código de pedido</td><td><b>'. $pedido. '</b></td></tr>';
-	$CampoUsuario = '<tr><td>Cliente:</td><td><input type="text" name="codigo" maxlength="255" value="' . $usuario . '"></td></tr>';
+	$CampoUsuario = '<tr><td>Cliente:</td><td>'.$database->Combobox_usuarios("codigo",$usuario) . '</td></tr>';
 	$CampoCatorcena = '<tr><td>Catorcena:</td><td>'. Combobox_catorcenas("catorcena", $catorcena). '</td></tr>';
 	$CampoPantalla = '<tr><td>Foto de pantalla:</td><td><input type="text" name="foto_pantalla" maxlength="255" value="' . $foto_pantalla . '"></td></tr>';
 
