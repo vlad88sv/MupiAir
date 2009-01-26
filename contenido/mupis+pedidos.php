@@ -73,7 +73,7 @@ function verPedidosregistro($usuario="", $pedido="") {
 global $form, $database;
 $CampoCodigoPedido = '';
 $CampoUsuario = '';
-$CampoFechaHora = '';
+$CampoCatorcena = '';
 $CampoPantalla = '';
 $BotonCancelar = '';
 $CampoFoto = '';
@@ -105,7 +105,7 @@ if ($pedido) {
 }
 	$CampoCodigoPedido2 = '<tr><td width="25%">Código de pedido</td><td><b>'. $pedido. '</b></td></tr>';
 	$CampoUsuario = '<tr><td>Cliente:</td><td><input type="text" name="codigo" maxlength="255" value="' . $usuario . '"></td></tr>';
-	$CampoFechaHora = '<tr><td>Fecha de inicio de alquiler:</td><td><input type="text" name="catorcena" maxlength="255" value="' . AnularFechaNula($catorcena,true). '"></td></tr>';
+	$CampoCatorcena = '<tr><td>Catorcena:</td><td>'. Combobox_catorcenas("catorcena", $catorcena). '</td></tr>';
 	$CampoPantalla = '<tr><td>Foto de pantalla:</td><td><input type="text" name="foto_pantalla" maxlength="255" value="' . $foto_pantalla . '"></td></tr>';
 
 echo '
@@ -114,7 +114,7 @@ echo '
 '.$CampoCodigoPedido.'
 '.$CampoCodigoPedido2.'
 '.$CampoUsuario.'
-'.$CampoFechaHora.'
+'.$CampoCatorcena.'
 '.$CampoPantalla.'
 </table>
 <input type="submit" value="'.$NombreBotonAccion.'">
@@ -133,7 +133,7 @@ if ( isset($_POST['codigo_pedido'] ) ) {
 	$extra1 = '';
 	$extra2 = '';
 }
-$q = "INSERT INTO ".TBL_MUPI_ORDERS." ( ".$extra1." codigo, catorcena, foto_pantalla ) VALUES (".$extra2."'" . $_POST['codigo'] . "', '". strtotime($_POST['catorcena']). "', '". $_POST['foto_pantalla']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), catorcena=VALUES(catorcena), foto_pantalla=VALUES(foto_pantalla);";
+$q = "INSERT INTO ".TBL_MUPI_ORDERS." ( ".$extra1." codigo, catorcena, foto_pantalla ) VALUES (".$extra2."'" . $_POST['codigo'] . "', '". $_POST['catorcena']. "', '". $_POST['foto_pantalla']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), catorcena=VALUES(catorcena), foto_pantalla=VALUES(foto_pantalla);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
 	echo "<blockquote>Exito al registrar el pedido de ".  $_POST['codigo'].'</blockquote>';

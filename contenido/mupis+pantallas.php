@@ -1,7 +1,7 @@
 <?php
 function CONTENIDO_pantallas($usuario, $pantalla) {
 	global $session, $form;
-	echo "Ver las pantallas "._NOMBRE_." en la catorcena " . Combobox_catorcenas_todas();
+	echo "Ver las pantallas "._NOMBRE_." en la catorcena " . Combobox_catorcenas("catorcena","");
 	echo '<h1>Gestión de pantallas de ' . _NOMBRE_ . '</h1>';
 	if ( $session->isAdmin() && isset($_POST['registrar_mupi']) ) {
 	//Nos toca registrar un MUPI
