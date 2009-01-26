@@ -1,13 +1,18 @@
 <?php
 function CONTENIDO_pantallas($usuario, $pantalla) {
 	global $session, $form;
-	echo "Ver las pantallas "._NOMBRE_." en la catorcena " . Combobox_catorcenas("catorcena");
 	echo '<h1>Gestión de pantallas de ' . _NOMBRE_ . '</h1>';
 	if ( $session->isAdmin() && isset($_POST['registrar_mupi']) ) {
 	//Nos toca registrar un MUPI
 	Pantalla_REGISTRAR();
 	}
 	echo '<hr /><h2>Sus Pantallas '._NOMBRE_.".</h2>";
+	if ( isset($_POST['ver_catorcena']) ) { $BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas\'" value="Volver a catorcena actual">'; $Catorcena = $_POST['ver_catorcena']; } else { $BotonCancelar = ''; $Catorcena = Obtener_catorcena_cercana(); }
+	echo '<form action="./?'._ACC_.'=gestionar+pantallas" method="POST">';
+	echo "Viendo pantallas "._NOMBRE_." de la catorcena " . Combobox_catorcenas("ver_catorcena", $Catorcena) ;
+	echo '<input type="submit" value="Cambiar">';
+	echo $BotonCancelar;
+	echo '</form>';
 	verPantallas($usuario);
 	if ( $session->isAdmin() ) {
 	$paraUsuario = "";
