@@ -77,7 +77,7 @@ $CampoCatorcena = '';
 $CampoPantalla = '';
 $BotonCancelar = '';
 $CampoFoto = '';
-$catorcena = '';
+
 $foto_pantalla = '';
 
 if ($pedido) {
@@ -100,6 +100,7 @@ if ($pedido) {
 } else {
 	$q = "SELECT LAST_INSERT_ID() FROM ".TBL_MUPI_ORDERS; 
 	$pedido = mysql_num_rows($database->query($q)) + 1;
+	$catorcena = Obtener_catorcena_cercana();
 	
 	$NombreBotonAccion = "Registrar";
 }
