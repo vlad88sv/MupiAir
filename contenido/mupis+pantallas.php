@@ -36,14 +36,15 @@ function CONTENIDO_pantallas($usuario, $pantalla) {
 	}
 }
 function verPantallas($usuario="", $pantalla=""){
-   global $database;
+   global $database, $Catorcena;
    
    $WHERE = "";
    $num_rows = "";
    if ($usuario) {
     $WHERE = " WHERE codigo='".$usuario."'";
     }
-   $q = "SELECT * FROM ".TBL_MUPI_FACES."$WHERE;";
+   $q="SELECT * FROM ".TBL_MUPI_FACES." WHERE codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos where catorcena_inicio>='$Catorcena' AND catorcena_inicio<='".Fin_de_catorcena($Catorcena)."');";
+
    $result = $database->query($q);
    if ( !$result ) {
       echo "Error mostrando la información";
