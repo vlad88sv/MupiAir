@@ -296,6 +296,32 @@ class MySQLDB
    return $s;
    }
    
+    function Combobox_pedido ($nombre="codigo_pedido", $default=NULL) {
+      $q = "SELECT codigo_pedido, CONCAT(codigo_pedido,'. ',codigo) as nombre FROM ".TBL_MUPI_ORDERS;
+   $result = mysql_query($q, $this->connection);
+   /* Error occurred, return given name by default */
+   $num_rows = mysql_numrows($result);
+   $s='';
+   if(!$result || ($num_rows < 0)){
+      $s.= "Error mostrando la información";
+      return $s;
+   }
+   if($num_rows == 0){
+      /*Esto nunca deberia de pasar realmente...*/
+      $s.= "¡No hay clientes/usuarios ingresados!";
+      return $s;
+   }
+  $s='<select name="'.$nombre.'">';
+  for($i=0; $i<$num_rows; $i++){
+      $codigo_pedido  = mysql_result($result,$i,"codigo_pedido");
+      $nombre = mysql_result($result,$i,"nombre");
+      if ( $codigo_pedido == $default ) { $selected = ' selected="selected"'; } else { $selected = ""; }
+      $s.='<option value="'.$codigo_pedido.'"'.$selected.'>'. $nombre .'</option>';
+   }
+   $s.= '</select>';
+   return $s;
+   }
+   
    /**
     * query - Performs the given query on the database and
     * returns the result, which may be false, true or a

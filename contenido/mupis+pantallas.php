@@ -83,7 +83,7 @@ if ($pantalla) {
 	$NombreBotonAccion = "Registrar";
 }
 	$CampoCodigoMUPI = '<tr><td>Enlazar al '._NOMBRE_.' código</td><td><input type="text" name="codigo_mupi" style="width: 100%;" maxlength="255" value="' . $codigo_mupi	. '"></td></tr>';
-	$CampoCodigoPedido = '<tr><td>Enlazar al pedido '._NOMBRE_.' código</td><td><input type="text" name="codigo_pedido" style="width: 100%;" maxlength="255" value="' . $codigo_pedido . '"></td></tr>';
+	$CampoCodigoPedido = '<tr><td>Enlazar al pedido '._NOMBRE_.' código</td><td>'. $database->Combobox_pedido("codigo_pedido", $codigo_pedido) . '</td></tr>';
 	$CampoFotoReal = '<tr><td>Agregar Foto real </td><td><input type="text" name="foto_real" style="width: 100%;" maxlength="255" value="' . $foto_real . '"></td></tr>';
 
 /*
