@@ -18,7 +18,7 @@ $inicio=Obtener_catorcena_cercana(mktime(0,0,0,1,1,date('Y')));
 $s='<select name="'.$nombre.'">';
 for ($i=0; $i<$cuantas; $i++){
   $catorcena = strtotime("+13 day",$inicio);
-  if ( $default && $inicio == $default ) { $selected = ' selected="selected"'; } else { $selected = ""; }
+  if ( $inicio == $default || $catorcena == $default ) { $selected = ' selected="selected"'; } else { $selected = ""; }
   
   switch ( $tipo ) {
   case _F_AMBAS:
