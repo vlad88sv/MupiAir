@@ -2,17 +2,13 @@
 /* Configuración */
 $MesInicio = 1;
 $DiaInicio = 13;
+$AnioInicio = 2009;
 
 /*****************************/
-function Combobox_catorcenas($nombre="catorcena", $default=NULL, $cuantas = NULL) {
-global $MesInicio, $DiaInicio;
-if ( !$default ) { $default = time(); }
-if ( $cuantas ) {
-	$inicio=mktime(0,0,0,date('n',$default),1,date('Y', $default));
-} else {
-	$inicio=mktime(0,0,0,$MesInicio,$DiaInicio,date('Y', $default));
-	$cuantas = 26;
-}
+function Combobox_catorcenas($nombre="catorcena", $default=NULL, $cuantas = 26) {
+global $MesInicio, $DiaInicio, $AnioInicio;
+if ( !$default ) { $default=time(); }
+$inicio=Obtener_catorcena_cercana($default);
 $s='<select name="'.$nombre.'">';
 for ($i=0; $i<$cuantas; $i++){
   $catorcena = strtotime("+13 day",$inicio);
@@ -25,15 +21,14 @@ return $s;
 }
 
 function Obtener_catorcena_cercana ($referencia = NULL ) {
-global $MesInicio, $DiaInicio;
+global $MesInicio, $DiaInicio, $AnioInicio;
 if ( !$referencia ) { $referencia = time(); }
-$inicio=mktime(0,0,0,$MesInicio,$DiaInicio,date('Y', $referencia));
-for ($i=0; $i<27; $i++){
-  $catorcena = strtotime("+13 day",$inicio);
-  if ( ($referencia >= $inicio) && ($referencia <= $catorcena) ){ return $inicio; }
-  $inicio =  strtotime("+1 day",$catorcena);
+$inicio=mktime(0,0,0,$MesInicio,$DiaInicio,$AnioInicio);
+if ($referencia < $inicio ) { return NULL;}
+do {
+   $catorcena = strtotime("+13 day",$inicio);
+   if (($referencia >= $inicio) && ($referencia <= $catorcena)) { return $inicio; }
+   $inicio =  strtotime("+1 day",$catorcena);
+} while ( 1 );
 }
-return NULL;
-}
-
 ?>
