@@ -323,7 +323,7 @@ class MySQLDB
    }
    
     function Combobox_mupi ($nombre="codigo_mupi", $default=NULL) {
-      $q = "SELECT codigo_mupi, CONCAT(codigo_mupi,'. ',direccion) as nombre FROM ".TBL_MUPI;
+      $q = "SELECT codigo_mupi, CONCAT(codigo_mupi, '. ' , (SELECT ubicacion from ".TBL_STREETS." as b WHERE b.codigo_calle = a.codigo_calle), ', ' , direccion) AS nombre from ".TBL_MUPI." as a;";
    $result = mysql_query($q, $this->connection);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
