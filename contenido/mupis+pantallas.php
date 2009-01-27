@@ -88,6 +88,7 @@ if ($id) {
 	$Pantalla = mysql_result($result,0,"codigo_pantalla_mupi") ;
 	$codigo_mupi =  mysql_result($result,0,"codigo_mupi") ;
 	$codigo_pedido = mysql_result($result,0,"codigo_pedido");
+	$Catorcena = mysql_result($result,0,"catorcena");
 	$foto_real = mysql_result($result,0,"foto_real");
 	$NombreBotonAccion = "Editar";
 	$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas\'" value="Cancelar">';
