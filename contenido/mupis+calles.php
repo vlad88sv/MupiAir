@@ -87,6 +87,7 @@ if ($calle) {
 	$q = "SELECT LAST_INSERT_ID() FROM ".TBL_STREETS; 
 	$codigo_calle = mysql_num_rows($database->query($q)) + 1;
 	
+	$CampoCodigocalle = '<input type="hidden" name="codigo_calle" value="0">';
 	$NombreBotonAccion = "Registrar";
 }
 	$CampoCodigocalle2 = '<tr><td width="25%">Código de calle</td><td><b>'. $codigo_calle. '</b></td></tr>';
@@ -108,7 +109,7 @@ echo '
 function calles_REGISTRAR() {
 global $database,$form;
 
-$q = "INSERT INTO ".TBL_STREETS." ( ubicacion ) VALUES ('". $_POST['ubicacion']. "')  ON DUPLICATE KEY UPDATE ubicacion=VALUES(ubicacion);";
+$q = "INSERT INTO ".TBL_STREETS." (codigo_calle, ubicacion ) VALUES ('".$_POST['codigo_calle']."', '" . $_POST['ubicacion']. "')  ON DUPLICATE KEY UPDATE ubicacion=VALUES(ubicacion);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
 	echo "<blockquote>Exito al registrar calle de ".  $_POST['ubicacion'].'</blockquote>';
