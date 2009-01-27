@@ -33,7 +33,7 @@ function CONTENIDO_mostrar_principal() {
 	global $session;
 	if ( isset( $_GET[_ACC_]) ) {
 		$ACC = explode(":",$_GET[_ACC_]);
-		if ( isset( $ACC[0] ) ) { $accion = $ACC[0]; } 
+		if ( isset( $ACC[0] ) ) { $accion = urldecode($ACC[0]); } 
 	} else {
 		$accion = "ingresar";
 	}
@@ -77,7 +77,8 @@ function CONTENIDO_mostrar_principal() {
 		if($session->isAdmin()){
 			$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
 			$pantalla= isset( $_GET['id'] ) ? $_GET['id'] : "";
-			CONTENIDO_pantallas($usuario,$pantalla);
+			$catorcena= isset( $_GET['catorcena'] ) ? $_GET['catorcena'] : "";
+			CONTENIDO_pantallas($usuario,$pantalla,$catorcena);
 			break;
 		}
 

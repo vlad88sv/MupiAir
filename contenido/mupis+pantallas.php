@@ -1,25 +1,27 @@
 <?php
 $Catorcena = NULL;
-function CONTENIDO_pantallas($usuario, $pantalla) {
+function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 	global $session, $form, $Catorcena;
 	echo '<h1>Gestión de pantallas de ' . _NOMBRE_ . '</h1>';
 	if ( $session->isAdmin() && isset($_POST['registrar_mupi']) ) {
 	//Nos toca registrar un MUPI
 	Pantalla_REGISTRAR();
 	}
-	if ( isset($_POST['ver_catorcena']) ) {
-		$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas\'" value="Volver a catorcena actual">';
-		$Catorcena = $_POST['ver_catorcena'];
-	} else {
+	if ( !$catorcena_inicio ) {
 		$BotonCancelar = '';
 		$Catorcena = Obtener_catorcena_cercana();
+	} else {
+		$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas\'" value="Volver a catorcena actual">';
+		$Catorcena = $catorcena_inicio;
 	}
+
 	echo '<hr /><h2>Pantallas '._NOMBRE_." en la catorcena de ".date("d/m/Y",$Catorcena)."</h2>";
-	echo '<form action="./?'._ACC_.'=gestionar+pantallas" method="POST">';
-	echo "Viendo pantallas "._NOMBRE_." de la catorcena " . Combobox_catorcenas("ver_catorcena", $Catorcena) ;
-	echo '<input type="submit" value="Cambiar">';
+	
+	echo "Viendo pantallas "._NOMBRE_." de la catorcena " . Combobox_catorcenas("miSelect", $Catorcena) ;
+	$BotonCambiar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena=\'+document.getElementsByName(\'miSelect\')[0].value" value="Cambiar">';
+	echo $BotonCambiar;
 	echo $BotonCancelar;
-	echo '</form>';
+	echo "<hr />";
 	verPantallas($usuario);
 	if ( $session->isAdmin() ) {
 	$paraUsuario = "";
@@ -63,8 +65,8 @@ echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th
       $codigo_pedido = CREAR_LINK_GET("gestionar+pedidos&amp;pedido=" . mysql_result($result,$i,"codigo_pedido"), mysql_result($result,$i,"codigo_pedido"), "Ver a quien pertenece este pedido");
       $codigo_evento  = mysql_result($result,$i,"codigo_evento");
       $foto_real  = mysql_result($result,$i,"foto_real");
-      $Eliminar = CREAR_LINK_GET("gestionar+pantallas&amp;accion=eliminar&amp;pantalla=".$codigo_pantalla_mupi,"Eliminar", "Eliminar los datos de esta pantalla");
-      $codigo_pantalla_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;id=".mysql_result($result,$i,"Id"),$codigo_pantalla_mupi, "Editar los datos de esta pantalla");
+      $Eliminar = CREAR_LINK_GET("gestionar+pantallas&amp;accion=eliminar&amp;pantalla=".$codigo_pantalla_mupi."&amp;catorcena=$Catorcena","Eliminar", "Eliminar los datos de esta pantalla");
+      $codigo_pantalla_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;id=".mysql_result($result,$i,"Id")."&amp;catorcena=$Catorcena",$codigo_pantalla_mupi, "Editar los datos de esta pantalla");
       echo "<tr><td>$codigo_pantalla_mupi</td><td>$codigo_mupi</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
    }
    echo "</table><br>";
@@ -111,15 +113,15 @@ if ($usuario) {
 */
 
 echo '
-<form action="./?'._ACC_.'=gestionar+pantallas" method="POST">
+<form action="./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'" method="POST">
 <table>
 '.$CampoCatorcena.'
 '.$CampoId.'
-'.$CampoId2.'
 '.$CampoPantalla.'
 '.$CampoCodigoMUPI.'
 '.$CampoCodigoPedido.'
 '.$CampoFotoReal.'
+'.$CampoId2.'
 </table>
 <input type="submit" value="'.$NombreBotonAccion.'">
 '.$BotonCancelar.'
