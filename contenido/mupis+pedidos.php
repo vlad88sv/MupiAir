@@ -42,7 +42,7 @@ function verPedidos($usuario="", $pedido=""){
    $num_rows = "";
    if ($usuario) { $WHERE = " WHERE codigo='".$usuario."'"; }
    
-   $q = "SELECT * FROM ".TBL_MUPI_ORDERS."$WHERE;";
+   $q = "SELECT codigo_pedido, codigo, (SELECT nombre from ". TBL_USERS . " AS b WHERE a.codigo = b.codigo) as nombre, catorcena_inicio, catorcena_fin, foto_pantalla FROM ".TBL_MUPI_ORDERS." AS a$WHERE;";
    $result = $database->query($q);
    
    if ( !$result ) {
@@ -57,10 +57,10 @@ function verPedidos($usuario="", $pedido=""){
    }
    
 echo '<table>';
-echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Código cliente</th><th>Intervalo de alquiler</th><th>Número de catorcenas</th><th>Foto Pantalla</th><th>Acciones</th></tr>";
+echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Intervalo de alquiler</th><th>Número de catorcenas</th><th>Foto Pantalla</th><th>Acciones</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_pedido  = mysql_result($result,$i,"codigo_pedido");
-      $codigo =  CREAR_LINK_GET("gestionar+pedidos:".mysql_result($result,$i,"codigo"), mysql_result($result,$i,"codigo"), "Ver los pedidos de este cliente");
+      $codigo =  CREAR_LINK_GET("gestionar+pedidos:".mysql_result($result,$i,"codigo"), mysql_result($result,$i,"nombre"), "Ver los pedidos de este cliente");
       $catorcena_inicio  = AnularFechaNula(mysql_result($result,$i,"catorcena_inicio"));
       $catorcena_fin  = AnularFechaNula(mysql_result($result,$i,"catorcena_fin"));
       $NumeroDeCatorcenas = Contar_catorcenas(mysql_result($result,$i,"catorcena_inicio"), mysql_result($result,$i,"catorcena_fin"));
