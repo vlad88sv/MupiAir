@@ -43,7 +43,7 @@ function verPantallas($usuario="", $pantalla=""){
    if ($usuario) {
     $WHERE = " WHERE codigo='".$usuario."'";
     }
-   $q="SELECT * FROM ".TBL_MUPI_FACES." WHERE codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos where catorcena_inicio>='$Catorcena' AND catorcena_inicio<='".Fin_de_catorcena($Catorcena)."');";
+   $q="SELECT * FROM ".TBL_MUPI_FACES." WHERE catorcena = $Catorcena;";
 
    $result = $database->query($q);
    if ( !$result ) {
@@ -64,37 +64,41 @@ echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th
       $codigo_evento  = mysql_result($result,$i,"codigo_evento");
       $foto_real  = mysql_result($result,$i,"foto_real");
       $Eliminar = CREAR_LINK_GET("gestionar+pantallas&amp;accion=eliminar&amp;pantalla=".$codigo_pantalla_mupi,"Eliminar", "Eliminar los datos de esta pantalla");
-      $codigo_pantalla_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;pantalla=".$codigo_pantalla_mupi,$codigo_pantalla_mupi, "Editar los datos de esta pantalla");
+      $codigo_pantalla_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;id=".mysql_result($result,$i,"Id"),$codigo_pantalla_mupi, "Editar los datos de esta pantalla");
       echo "<tr><td>$codigo_pantalla_mupi</td><td>$codigo_mupi</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
    }
    echo "</table><br>";
 }
-function verPantallasregistro($usuario="", $pantalla="") {
+function verPantallasregistro($usuario="", $id="") {
 global $database, $Catorcena;
 $BotonCancelar = '';
 $CampoCodigoMUPI = '';
-$CampoPantalla = '';
-
+$Pantalla = '';
 $codigo_mupi ='';
 $codigo_pedido = '';
 $foto_real = '';
+$CampoId = '';
+$CampoCatorcena = '';
 
-if ($pantalla) {
-	$q = "SELECT * FROM ".TBL_MUPI_FACES." WHERE codigo_pantalla_mupi='$pantalla';";
+if ($id) {
+	$q = "SELECT * FROM ".TBL_MUPI_FACES." WHERE Id='$id';";
 	$result = $database->query($q);
 	
-	$CampoPantalla = '<input type="hidden" name="codigo_pantalla_mupi" value="'.$pantalla.'">';	
+	$CampoId =  '<input type="hidden" name="Id" value="'.$id.'">';
+	$Pantalla = mysql_result($result,0,"codigo_pantalla_mupi") ;
 	$codigo_mupi =  mysql_result($result,0,"codigo_mupi") ;
 	$codigo_pedido = mysql_result($result,0,"codigo_pedido");
 	$foto_real = mysql_result($result,0,"foto_real");
-	
 	$NombreBotonAccion = "Editar";
 	$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas\'" value="Cancelar">';
-} else {	
-	$CampoPantalla = '<tr><td width="25%">Código de Pantalla '._NOMBRE_.'</td><td><input type="text" name="codigo_pantalla_mupi" style="width: 100%;" maxlength="255" value=""></td></tr>';
-
+} else {
+	$q = "SELECT LAST_INSERT_ID() FROM ".TBL_MUPI_FACES; 
+	$id = mysql_num_rows($database->query($q)) + 1;
 	$NombreBotonAccion = "Registrar";
 }
+	$CampoCatorcena =  '<input type="hidden" name="catorcena" value="'.$Catorcena.'">';
+	$CampoId2 = '<tr><td width="25%">Identificador</td><td><b>'. $id. '</b></td></tr>';
+	$CampoPantalla = '<tr><td width="25%">Código de Pantalla '._NOMBRE_.'</td><td><input type="text" name="codigo_pantalla_mupi" style="width: 100%;" maxlength="255" value="'.$Pantalla.'"></td></tr>';
 	$CampoCodigoMUPI = '<tr><td>Enlazar al '._NOMBRE_.' código</td><td>'. $database->Combobox_mupi("codigo_mupi", $codigo_mupi) .'</td></tr>';
 	$CampoCodigoPedido = '<tr><td>Enlazar al pedido '._NOMBRE_.' código</td><td>'. $database->Combobox_pedido("codigo_pedido", $codigo_pedido, $Catorcena, Fin_de_catorcena($Catorcena)) . '</td></tr>';
 	$CampoFotoReal = '<tr><td>Agregar Foto real </td><td><input type="text" name="foto_real" style="width: 100%;" maxlength="255" value="' . $foto_real . '"></td></tr>';
@@ -108,6 +112,9 @@ if ($usuario) {
 echo '
 <form action="./?'._ACC_.'=gestionar+pantallas" method="POST">
 <table>
+'.$CampoCatorcena.'
+'.$CampoId.'
+'.$CampoId2.'
 '.$CampoPantalla.'
 '.$CampoCodigoMUPI.'
 '.$CampoCodigoPedido.'
@@ -121,7 +128,14 @@ echo '
 
 function Pantalla_REGISTRAR() {
 global $database;
-$q = "INSERT INTO ".TBL_MUPI_FACES." (codigo_pantalla_mupi, codigo_mupi, codigo_pedido, foto_real) VALUES ('" . $_POST['codigo_pantalla_mupi'] . "', '" . $_POST['codigo_mupi']  . "', '" . $_POST['codigo_pedido']  . "', '" . $_POST['foto_real']  .  "')  ON DUPLICATE KEY UPDATE codigo_pantalla_mupi=VALUES(codigo_pantalla_mupi), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido), foto_real=VALUES(foto_real);";
+if ( isset($_POST['Id'] ) ) {
+	$extra1 = 'Id, ';
+	$extra2 = "'".$_POST['Id']."', ";
+} else {
+	$extra1 = '';
+	$extra2 = '';
+}
+$q = "INSERT INTO ".TBL_MUPI_FACES." (".$extra1."codigo_pantalla_mupi, codigo_mupi, codigo_pedido, foto_real, catorcena) VALUES (".$extra2."'" . $_POST['codigo_pantalla_mupi'] . "', '" . $_POST['codigo_mupi']  . "', '" . $_POST['codigo_pedido']  . "', '" . $_POST['foto_real']  .  "', '" . $_POST['catorcena']  .  "')  ON DUPLICATE KEY UPDATE codigo_pantalla_mupi=VALUES(codigo_pantalla_mupi), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido), foto_real=VALUES(foto_real);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
 	echo "<blockquote>Exito al registrar ".  $_POST['codigo_pantalla_mupi'].'</blockquote>';
