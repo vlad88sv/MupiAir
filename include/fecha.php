@@ -49,6 +49,10 @@ do {
 } while ( 1 );
 }
 
+function Obtener_catorcena_siguiente() {
+	return strtotime("+14 day",Obtener_catorcena_cercana());
+}
+
 function Contar_catorcenas ($inicio=0, $fin=0 ) {
 if ($fin)
 return ceil((($fin-$inicio)/1209600));
