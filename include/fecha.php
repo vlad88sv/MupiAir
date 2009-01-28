@@ -50,7 +50,9 @@ do {
 }
 
 function Contar_catorcenas ($inicio=0, $fin=0 ) {
-return ((($fin-$inicio)/60/60/24) + 1) / 14;
+if ($fin)
+return ceil((($fin-$inicio)/1209600));
+return ceil((($inicio)/1209600));
 }
 
 function Fin_de_catorcena ($referencia = NULL) {
