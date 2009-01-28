@@ -54,6 +54,21 @@ function Buscar ($catorcena) {
    $datos .= (int) ($personasDiaro) . " personas al menos visualizan su anuncio diariamente" . '<br />';
    $datos .= (int) ($personasCatorcena) . " personas al menos visualizan su anuncio en esta catorcena" . '<br />';
    
+   $q = "select SUM(costo) AS cuenta from emupi_mupis_pedidos where codigo_pedido IN (select distinct codigo_pedido from emupi_mupis_caras where catorcena=$catorcena and codigo_pedido IN (SELECT codigo_pedido from emupi_mupis_pedidos where codigo='".$session->codigo."'));";
+   $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba las estadísticas.');
+   
+   if(!$result || ($num_rows < 0)){
+      retornar("Error mostrando la información");
+   }
+ 
+   if($num_rows == 0){
+      retornar ("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!");
+   }
+   
+   $costo = mysql_result($result,0,"cuenta");
+   $datos .= 'Costo por impacto: $' . ($costo/$ImpactosCatorcena) . '<br />';
+   $datos .= 'Número de impactos por persona: ' . (int) ($Impactos/$personasDiaro) . '<br />';
+   
    retornar($datos);
 }
 ?>
