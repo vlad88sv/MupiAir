@@ -1,0 +1,59 @@
+<?php
+error_reporting(E_STRICT | E_ALL);
+date_default_timezone_set ('America/El_Salvador');
+require_once('../include/const.php');
+require_once('../include/sesion.php');
+require_once('sub.php');
+
+if ( isset( $_GET['catorcena'] ) ) {
+	retornar ( Buscar (strip_tags($_GET['catorcena'])) );
+} else {
+	retornar ( "Ud. esta utilizando incorrectamente este script de soporte." );
+}
+
+function retornar($texto) {
+	exit ('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' . $texto . '<br />');
+}
+
+function Buscar ($catorcena) {
+   global $session;
+   $datos ="";
+   $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
+   mysql_select_db(DB_NAME, $link) or die('!->La base de datos seleccionada "'.$DB_base.'" no existe');
+   $q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.codigo_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$session->codigo."')".";";
+   $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba las estadísticas.');
+   /* Error occurred, return given name by default */
+   $num_rows = mysql_numrows($result);
+   
+   if(!$result || ($num_rows < 0)){
+      retornar("Error mostrando la información");
+   }
+ 
+   if($num_rows == 0){
+      retornar ("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!");
+   }
+
+   $Impactos  = mysql_result($result,0,"Impactos");
+   $ImpactosCatorcena  = ($Impactos * 14);
+   $datos .= (int) ($Impactos) . " Impactos diarios" . '<br />';
+   $datos .= (int) ($ImpactosCatorcena) . " Impactos en esta catorcena" . '<br />';
+
+   $q = "SELECT SUM(Impactos) AS impactos FROM (SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS c WHERE c.codigo_mupi=a.codigo_mupi) AS 'Calle', (SELECT impactos FROM emupi_calles WHERE codigo_calle = @calle) AS 'Impactos' FROM emupi_mupis_caras AS a WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='".$session->codigo."')) AS a;";
+   $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba las estadísticas.');
+   
+   if(!$result || ($num_rows < 0)){
+      retornar("Error mostrando la información");
+   }
+ 
+   if($num_rows == 0){
+      retornar ("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!");
+   }
+   
+   $personasDiaro = mysql_result($result,0,"Impactos");
+   $personasCatorcena = $personasDiaro * 14;
+   $datos .= (int) ($personasDiaro) . " personas al menos visualizan su anuncio diariamente" . '<br />';
+   $datos .= (int) ($personasCatorcena) . " personas al menos visualizan su anuncio en esta catorcena" . '<br />';
+   
+   retornar($datos);
+}
+?>
