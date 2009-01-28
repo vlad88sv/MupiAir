@@ -14,9 +14,9 @@ $q = "SELECT COUNT(distinct catorcena_inicio) AS cuenta FROM ".TBL_MUPI_ORDERS."
 $result = $database->query($q);
 echo "Número de catorcenas contratadas: " . mysql_result($result,0,"cuenta")."<br />";
 
-$q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.codigo_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=1231826400 AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='cliente2')".";";
+$q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.codigo_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=1231826400 AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$session->codigo."')".";";
 $result = $database->query($q);
-echo "Número de impactos publicitarios diarios: " . mysql_result($result,0,"Impactos")."<br />";
+echo "Número de impactos publicitarios diarios: " . (int) (mysql_result($result,0,"Impactos"))."<br />";
 
 return;
 }
