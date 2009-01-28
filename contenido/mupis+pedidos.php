@@ -42,7 +42,7 @@ function verPedidos($usuario="", $pedido=""){
    $num_rows = "";
    if ($usuario) { $WHERE = " WHERE codigo='".$usuario."'"; }
    
-   $q = "SELECT codigo_pedido, codigo, (SELECT nombre from ". TBL_USERS . " AS b WHERE a.codigo = b.codigo) as nombre, catorcena_inicio, catorcena_fin, foto_pantalla FROM ".TBL_MUPI_ORDERS." AS a$WHERE;";
+   $q = "SELECT codigo_pedido, codigo, (SELECT nombre from ". TBL_USERS . " AS b WHERE a.codigo = b.codigo) as nombre, catorcena_inicio, catorcena_fin, foto_pantalla, costo FROM ".TBL_MUPI_ORDERS." AS a$WHERE;";
    $result = $database->query($q);
    
    if ( !$result ) {
@@ -57,7 +57,7 @@ function verPedidos($usuario="", $pedido=""){
    }
    
 echo '<table>';
-echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Intervalo de alquiler</th><th>Número de catorcenas</th><th>Foto Pantalla</th><th>Acciones</th></tr>";
+echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Intervalo de alquiler</th><th>Número de catorcenas</th><th>Foto Pantalla</th><th>Costo</th><th>Acciones</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_pedido  = mysql_result($result,$i,"codigo_pedido");
       $codigo =  CREAR_LINK_GET("gestionar+pedidos:".mysql_result($result,$i,"codigo"), mysql_result($result,$i,"nombre"), "Ver los pedidos de este cliente");
@@ -65,9 +65,10 @@ echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Interva
       $catorcena_fin  = AnularFechaNula(mysql_result($result,$i,"catorcena_fin"));
       $NumeroDeCatorcenas = Contar_catorcenas(mysql_result($result,$i,"catorcena_inicio"), mysql_result($result,$i,"catorcena_fin"));
       $foto_pantalla  = mysql_result($result,$i,"foto_pantalla");
+      $costo = "$". (int)(mysql_result($result,$i,"costo"));
       $Eliminar = CREAR_LINK_GET("gestionar+pedidos&amp;accion=eliminar&amp;pedido=".$codigo_pedido,"Eliminar", "Eliminar los datos de este pedido");
       $codigo_pedido  = CREAR_LINK_GET("gestionar+pedidos&amp;pedido=".$codigo_pedido,$codigo_pedido, "Editar los datos de este pedido");
-      echo "<tr><td>$codigo_pedido</td><td>$codigo</td><td>$catorcena_inicio al $catorcena_fin</td><td>$NumeroDeCatorcenas</td><td>$foto_pantalla</td><td>$Eliminar</tr>";
+      echo "<tr><td>$codigo_pedido</td><td>$codigo</td><td>$catorcena_inicio al $catorcena_fin</td><td>$NumeroDeCatorcenas</td><td>$foto_pantalla</td><td>$costo</td><td>$Eliminar</tr>";
    }
    echo "</table><br>";
 }
@@ -80,7 +81,7 @@ $Campocatorcena_fin = '';
 $CampoPantalla = '';
 $BotonCancelar = '';
 $CampoFoto = '';
-
+$costo='';
 $foto_pantalla = '';
 
 if ($pedido) {
@@ -95,7 +96,7 @@ if ($pedido) {
 	$catorcena_inicio = mysql_result($result,0,"catorcena_inicio");
 	$catorcena_fin = mysql_result($result,0,"catorcena_fin");
 	$foto_pantalla = mysql_result($result,0,"foto_pantalla");
-	
+	$costo = mysql_result($result,0,"costo");
 	$CampoCodigoPedido = '<input type="hidden" name="codigo_pedido" value="'.$pedido.'">';
 	
 	
@@ -113,6 +114,7 @@ if ($pedido) {
 	$Campocatorcena_inicio = '<tr><td>Inicio del contrato:</td><td>'. Combobox_catorcenas("catorcena_inicio", $catorcena_inicio, 26, _F_INICIOS). '</td></tr>';
 	$Campocatorcena_fin = '<tr><td>Fin del contrato:</td><td>'. Combobox_catorcenas("catorcena_fin", $catorcena_fin, 26, _F_FINES). '</td></tr>';
 	$CampoPantalla = '<tr><td>Foto de pantalla:</td><td><input type="text" name="foto_pantalla" maxlength="255" value="' . $foto_pantalla . '"></td></tr>';
+	$CampoCosto ='<tr><td>Costo:</td><td><input type="text" name="costo" maxlength="100" value="' . $costo. '"></td></tr>';
 
 echo '
 <form action="./?'._ACC_.'=gestionar+pedidos" method="POST">
@@ -123,6 +125,7 @@ echo '
 '.$Campocatorcena_inicio.'
 '.$Campocatorcena_fin.'
 '.$CampoPantalla.'
+'.$CampoCosto.'
 </table>
 <input type="submit" value="'.$NombreBotonAccion.'">
 '.$BotonCancelar.'
@@ -140,7 +143,7 @@ if ( isset($_POST['codigo_pedido'] ) ) {
 	$extra1 = '';
 	$extra2 = '';
 }
-$q = "INSERT INTO ".TBL_MUPI_ORDERS." ( ".$extra1." codigo, catorcena_inicio, catorcena_fin,  foto_pantalla ) VALUES (".$extra2."'" . $_POST['codigo'] . "', '". $_POST['catorcena_inicio']. "', '". $_POST['catorcena_fin']. "', '". $_POST['foto_pantalla']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), catorcena_inicio=VALUES(catorcena_inicio), catorcena_fin=VALUES(catorcena_fin), foto_pantalla=VALUES(foto_pantalla);";
+$q = "INSERT INTO ".TBL_MUPI_ORDERS." ( ".$extra1." codigo, catorcena_inicio, catorcena_fin,  foto_pantalla, costo ) VALUES (".$extra2."'" . $_POST['codigo'] . "', '". $_POST['catorcena_inicio']. "', '". $_POST['catorcena_fin']. "', '". $_POST['foto_pantalla']."', '". $_POST['costo']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), catorcena_inicio=VALUES(catorcena_inicio), catorcena_fin=VALUES(catorcena_fin), foto_pantalla=VALUES(foto_pantalla), costo=VALUES(costo);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
 	echo "<blockquote>Exito al registrar el pedido de ".  $_POST['codigo'].'</blockquote>';
