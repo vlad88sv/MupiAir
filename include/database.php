@@ -377,6 +377,32 @@ class MySQLDB
    return $s;
    }
    
+  function Combobox_CatorcenasConPresencia ($nombre="catorcena_presencia", $codigo=NULL, $OnChange) {
+   $q = "SELECT DISTINCT catorcena FROM ".TBL_MUPI_FACES." WHERE catorcena <=".Obtener_catorcena_siguiente()." AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$codigo."');";
+   $result = mysql_query($q, $this->connection);
+   /* Error occurred, return given name by default */
+   $num_rows = mysql_numrows($result);
+   $s='';
+   if(!$result || ($num_rows < 0)){
+      $s.= "Error mostrando la información";
+      return $s;
+   }
+   if($num_rows == 0){
+      $s.= "¡No tiene ninguna pantalla alquilada en ninguna catorcena!";
+      return $s;
+   }
+   $catorcena_actual = Obtener_catorcena_cercana();
+  $s='<select name="'.$nombre.'" onkeyup="'.$OnChange.'" onclick="'.$OnChange.'">';
+  for($i=0; $i<$num_rows; $i++){
+      $catorcena_inicio  = mysql_result($result,$i,"catorcena");
+      $catorcena_fin = Fin_de_catorcena($catorcena_inicio);
+      if ( $catorcena_inicio == $catorcena_actual ) { $selected = ' selected="selected"'; } else { $selected = ""; }
+      $s.='<option value="'.$catorcena_inicio.'"'.$selected.'>'."Del " . date('d-m-Y',$catorcena_inicio) . ' al ' . date('d-m-Y',$catorcena_fin) .'</option>';
+   }
+   $s.= '</select>';
+   return $s;
+   }
+   
    /**
     * query - Performs the given query on the database and
     * returns the result, which may be false, true or a
