@@ -74,7 +74,7 @@ echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Interva
 }
 function verPedidosregistro($usuario="", $pedido="") {
 global $form, $database;
-$CampoCodigoPedido = '';
+$CampoCodigoPedido = 0;
 $CampoUsuario = '';
 $Campocatorcena_inicio = '';
 $Campocatorcena_fin = '';
@@ -97,9 +97,7 @@ if ($pedido) {
 	$catorcena_fin = mysql_result($result,0,"catorcena_fin");
 	$foto_pantalla = mysql_result($result,0,"foto_pantalla");
 	$costo = mysql_result($result,0,"costo");
-	$CampoCodigoPedido = '<input type="hidden" name="codigo_pedido" value="'.$pedido.'">';
-	
-	
+	$CampoCodigoPedido = '<input type="hidden" name="codigo_pedido" value="'.$pedido.'">';	
 	$NombreBotonAccion = "Editar";
 	$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pedidos\'" value="Cancelar">';
 } else {
@@ -107,6 +105,7 @@ if ($pedido) {
 	$pedido = mysql_num_rows($database->query($q)) + 1;
 	$catorcena_inicio = Obtener_catorcena_cercana();
 	$catorcena_fin = $catorcena_inicio;
+	$CampoCodigoPedido = '<input type="hidden" name="codigo_pedido" value="0">';
 	$NombreBotonAccion = "Registrar";
 }
 	$CampoCodigoPedido2 = '<tr><td width="25%">Código de pedido</td><td><b>'. $pedido. '</b></td></tr>';
@@ -136,14 +135,7 @@ echo '
 function Pedidos_REGISTRAR() {
 global $database,$form;
 
-if ( isset($_POST['codigo_pedido'] ) ) {
-	$extra1 = 'codigo_pedido, ';
-	$extra2 = "'".$_POST['codigo_pedido']."', ";
-} else {
-	$extra1 = '';
-	$extra2 = '';
-}
-$q = "INSERT INTO ".TBL_MUPI_ORDERS." ( ".$extra1." codigo, catorcena_inicio, catorcena_fin,  foto_pantalla, costo ) VALUES (".$extra2."'" . $_POST['codigo'] . "', '". $_POST['catorcena_inicio']. "', '". $_POST['catorcena_fin']. "', '". $_POST['foto_pantalla']."', '". $_POST['costo']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), catorcena_inicio=VALUES(catorcena_inicio), catorcena_fin=VALUES(catorcena_fin), foto_pantalla=VALUES(foto_pantalla), costo=VALUES(costo);";
+$q = "INSERT INTO ".TBL_MUPI_ORDERS." ( codigo_pedido, codigo, catorcena_inicio, catorcena_fin,  foto_pantalla, costo ) VALUES (" . $_POST['codigo_pedido'] . ", '" . $_POST['codigo'] . "', '". $_POST['catorcena_inicio']. "', '". $_POST['catorcena_fin']. "', '". $_POST['foto_pantalla']."', '". $_POST['costo']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), catorcena_inicio=VALUES(catorcena_inicio), catorcena_fin=VALUES(catorcena_fin), foto_pantalla=VALUES(foto_pantalla), costo=VALUES(costo);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
 	echo "<blockquote>Exito al registrar el pedido de ".  $_POST['codigo'].'</blockquote>';
