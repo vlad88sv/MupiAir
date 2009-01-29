@@ -240,20 +240,7 @@ class GoogleMapAPI {
      * @var string service name
      */
     var $lookup_service = 'GOOGLE';
-	var $lookup_server = array('GOOGLE' => 'maps.google.com', 'YAHOO' => 'api.local.yahoo.com');
-    
-    var $driving_dir_text = array(
-            'dir_to' => 'Dirección de inicio: (incluya dirección y ciudad)',
-            'to_button_value' => 'Obtener direcciones',
-            'to_button_type' => 'submit',
-            'dir_from' => 'Dirección final: (incluya dirección y ciudad)',
-            'from_button_value' => 'Obtener direcciones',
-            'from_button_type' => 'submit',
-            'dir_text' => 'Direcciones: ',
-            'dir_tohere' => 'A aquí',
-            'dir_fromhere' => 'Desde aquí'
-            );             
-               
+	var $lookup_server = array('GOOGLE' => 'maps.google.com', 'YAHOO' => 'api.local.yahoo.com');               
     
     /**
      * version number
@@ -1003,50 +990,10 @@ class GoogleMapAPI {
         $_output .= 'function isFunction(a) {return typeof a == \'function\';}' . "\n";
 
         if($this->sidebar) {
-            $_output .= '
-             var xmlhttp;
-             function loadXMLDoc(url)
-             {
-             xmlhttp=null;
-             if (window.XMLHttpRequest)
-               {// code for Firefox, Opera, IE7, etc.
-               xmlhttp=new XMLHttpRequest();
-               }
-             else if (window.ActiveXObject)
-               {// code for IE6, IE5
-               xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-               }
-             if (xmlhttp!=null)
-               {
-               xmlhttp.onreadystatechange=state_Change;
-               xmlhttp.open("GET",url,true);
-               xmlhttp.send(null);
-               }
-             else
-               {
-               alert("Your browser does not support XMLHTTP.");
-               }
-             }
-
-             function state_Change()
-             {
-             if (xmlhttp.readyState==4)
-               {// 4 = "loaded"
-               if (xmlhttp.status==200)
-                 {// 200 = "OK"
-                 document.getElementById(\'datos_cara_mupis\').innerHTML=xmlhttp.responseText;
-                 }
-               else
-                 {
-                 alert("Problem retrieving data:" + xmlhttp.statusText);
-                 }
-               }
-             }            
-            ';
             $_output .= 'function click_sidebar(idx) {' . "\n";
             // HACK //
             $_output .= "  var titulo = document.getElementById('gmapSidebarItem_' + idx).innerHTML;\n";
-            $_output .= '  document.getElementById(\'datos_cara_mupis\').firstChild.nodeValue = loadXMLDoc(\'contenido/mupis+ubicaciones+dinamico.php?MUPI=\'+titulo)' . "\n";
+            $_output .= '  document.getElementById(\'datos_cara_mupis\').firstChild.nodeValue = loadXMLDoc(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&amp;MUPI=\'+titulo)' . "\n";
             // HACK //
             $_output .= '  if(isArray(marker_html[idx])) { markers[idx].openInfoWindowTabsHtml(marker_html[idx]); }' . "\n";
             $_output .= '  else { markers[idx].openInfoWindowHtml(marker_html[idx]); }' . "\n";
@@ -1144,7 +1091,7 @@ class GoogleMapAPI {
         
         if($this->info_window) {
             $_output .= sprintf('if(isArray(html)) { GEvent.addListener(marker, "%s", function() { marker.openInfoWindowTabsHtml(html); }); }',$this->window_trigger) . "\n";
-            $_output .= sprintf('else { GEvent.addListener(marker, "%s", function() { marker.openInfoWindowHtml(html); }); }',$this->window_trigger) . "\n";
+            $_output .= sprintf('else { GEvent.addListener(marker, "%s", function() { marker.openInfoWindowHtml(html); alert(counter); click_sidebar(\' + counter + \'); }); }',$this->window_trigger) . "\n";
         }
         $_output .= 'points[counter] = point;' . "\n";
         $_output .= 'markers[counter] = marker;' . "\n";

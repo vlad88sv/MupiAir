@@ -392,12 +392,33 @@ class MySQLDB
       return $s;
    }
    $catorcena_actual = Obtener_catorcena_cercana();
-  $s='<select name="'.$nombre.'" onkeyup="'.$OnChange.'" onclick="'.$OnChange.'">';
+  $s='<select id="'.$nombre.'" name="'.$nombre.'" onkeyup="'.$OnChange.'" onclick="'.$OnChange.'">';
   for($i=0; $i<$num_rows; $i++){
       $catorcena_inicio  = mysql_result($result,$i,"catorcena");
       $catorcena_fin = Fin_de_catorcena($catorcena_inicio);
       if ( $catorcena_inicio == $catorcena_actual ) { $selected = ' selected="selected"'; } else { $selected = ""; }
       $s.='<option value="'.$catorcena_inicio.'"'.$selected.'>'."Del " . date('d-m-Y',$catorcena_inicio) . ' al ' . date('d-m-Y',$catorcena_fin) .'</option>';
+   }
+   $s.= '</select>';
+   return $s;
+   }
+   
+   function Combobox_CallesConPresencia($nombre, $codigo, $catorcena){
+   $q = "SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS b WHERE a.codigo_mupi=b.codigo_mupi) AS 'calle', (SELECT ubicacion FROM emupi_calles WHERE codigo_calle=@calle) AS ubicacion FROM emupi_mupis_caras AS a WHERE catorcena=".$_GET['catorcena']." AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='".$codigo."') ;";
+   $result = mysql_query($q, $this->connection);
+   $num_rows = mysql_numrows($result);
+   $s='';
+   if(!$result || ($num_rows < 0)){
+      $s.= "Error mostrando la información";
+      return $s;
+   }
+   if($num_rows == 0){
+      $s.= "¡No tiene presencia en ninguna calle para esta catorcena!";
+      return $s;
+   }
+   $s='<select id="'.$nombre.'" name="'.$nombre.'">';
+  for($i=0; $i<$num_rows; $i++){
+      $s.='<option value="'.mysql_result($result,$i,"calle").'">'. mysql_result($result,$i,"ubicacion") .'</option>';
    }
    $s.= '</select>';
    return $s;

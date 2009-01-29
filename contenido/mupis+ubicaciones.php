@@ -1,8 +1,16 @@
 <?php
 function CONTENIDO_mupis_ubicaciones($usuario=''){
-global $map, $session;
+global $map, $session, $database;
 if ( !$session->isAdmin() ) { $usuario = $session->codigo; }
 echo "<h1>Ubicaciones de MUPIS contratados</h1><hr />";
+/* Iniciar gestor de mapas de google */
+// AJAX ;)
+echo 
+SCRIPT('
+	$("#ver_catorcenas").click(function (){
+	    $("#ver_calles").load("contenido/mupis+ubicaciones+dinamico.php?accion=calles&catorcena="+document.getElementsByName(\'ver_catorcenas\')[0].value);
+	});
+');
 // setup database for geocode caching
 $map->setDSN('mysql://'.DB_USER.':'.DB_PASS.'@'.DB_SERVER.'/'.DB_NAME);
 //Google Map Key
@@ -16,17 +24,22 @@ AgregarPuntosMupis($usuario);
 $map->printHeaderJS();
 $map->printMapJS();
 $map->printOnLoad();
-echo '
-<table>
-<tr>
-<td width="80%">';
-$map->printMap();
-echo '
-</td>
-<td width="20%">
-<h2>Sus MUPIS</h2>';
-$map->printSidebar();
-echo '</table><span id="datos_cara_mupis">Seleccione un '._NOMBRE_.' por favor</span></body>';
+echo '<table>';
+echo '<tr>';
+
+echo '<td width="80%">';
+echo $map->printMap();
+echo '</td>';
+
+echo '<td>';
+echo 'Ver Catorcena:<br />' . $database->Combobox_CatorcenasConPresencia("ver_catorcenas",$usuario).'<br /><br />';
+echo '<span id="ver_calles">Seleccione una catorcena por favor<br /></span>';
+echo 'Ver Eco Mupis:<br /> '.$map->getSidebar().'<br /><br />';
+echo '</td>';
+
+echo '</tr>';
+echo '</table>';
+echo '<span id="datos_cara_mupis">Seleccione un '._NOMBRE_.' por favor</span>';
 }
 
 function AgregarPuntosMupis($usuario=''){

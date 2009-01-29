@@ -4,10 +4,27 @@ date_default_timezone_set ('America/El_Salvador');
 require_once('../include/const.php');
 require_once('../include/sesion.php');
 require_once('sub.php');
-if ( isset( $_GET['MUPI'] ) ) {
-	retornar ( Buscar (strip_tags($_GET['MUPI'])) );
+
+if ( isset( $_GET['accion'] ) ) {
+	switch ( $_GET['accion'] ) {
+	case "mupi":
+		if ( isset( $_GET['MUPI'] ) ) {
+			retornar ( Buscar (strip_tags($_GET['MUPI'])) );
+		} else {
+			retornar ( "Ud. esta utilizando incorrectamente este script de soporte." );
+		}
+		break;
+	case "calles":
+		if ( isset( $_GET['catorcena'] ) ) {
+			//retornar ( Combobox_calles (strip_tags($_GET['calle'])) );
+			retornar ('Ver Calle:<br />' . $database->Combobox_CallesConPresencia("ver_calles",$session->codigo,$_GET['catorcena']).'<br /><br />');
+		} else {
+			retornar ( "Ud. esta utilizando incorrectamente este script de soporte. 2" );
+		}
+		break;
+	}
 } else {
-	retornar ( "Ud. esta utilizando incorrectamente este script de soporte." );
+		retornar ( "Ud. esta utilizando incorrectamente este script de soporte." );
 }
 
 function retornar($texto) {
