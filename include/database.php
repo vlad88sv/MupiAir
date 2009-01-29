@@ -377,7 +377,7 @@ class MySQLDB
    return $s;
    }
    
-  function Combobox_CatorcenasConPresencia ($nombre="catorcena_presencia", $codigo=NULL, $OnChange) {
+  function Combobox_CatorcenasConPresencia ($nombre="catorcena_presencia", $codigo=NULL, $OnChange=NULL) {
    $q = "SELECT DISTINCT catorcena FROM ".TBL_MUPI_FACES." WHERE catorcena <=".Obtener_catorcena_siguiente()." AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$codigo."')  ORDER BY catorcena;";
    $result = mysql_query($q, $this->connection);
    /* Error occurred, return given name by default */
