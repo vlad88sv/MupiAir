@@ -7,7 +7,12 @@ if ( $session->isAdmin() ) {
   return;
 }
 echo "<h1>Estadísticas</h1>";
-
+//Dinamismo en selección de catorcenas.
+echo SCRIPT('
+                $("#catorcenas_presencia").click(function (){
+                    $("#datos_catorcena").load("contenido/global+estadisticas+dinamico.php?catorcena="+document.getElementsByName(\'catorcenas_presencia\')[0].value);
+                });
+');
 echo "Catorcena actual: <b>" . date("d/m/Y", Obtener_catorcena_cercana()) . ' a ' . date("d/m/Y", Fin_de_catorcena(Obtener_catorcena_cercana())) . "</b><br />";
 
 $q = "SELECT COUNT(*) as cuenta FROM ". TBL_MUPI_FACES ." WHERE catorcena=".Obtener_catorcena_cercana()." AND codigo_pedido IN (SELECT codigo_pedido from ".TBL_MUPI_ORDERS." WHERE codigo = '".$session->codigo."');";
@@ -25,10 +30,9 @@ echo "Número de impactos publicitarios diarios: <b>" . (int) (mysql_result($res
 /*********************************************************************************************/
 // Inicio de parte dinámica.
 /*********************************************************************************************/
-JS_loadXMLDoc('datos_catorcena');
-
-echo "<br />".$database->Combobox_CatorcenasConPresencia("catorcenas_presencia",$session->codigo,'document.getElementById(\'datos_catorcena\').firstChild.nodeValue = loadXMLDoc(\'contenido/global+estadisticas+dinamico.php?catorcena=\'+document.getElementsByName(\'catorcenas_presencia\')[0].value)');
+echo "<br />".$database->Combobox_CatorcenasConPresencia("catorcenas_presencia",$session->codigo);
 echo '<hr><span id="datos_catorcena">Seleccione una catorcena por favor</span>';
+
 return;
 }
 ?>

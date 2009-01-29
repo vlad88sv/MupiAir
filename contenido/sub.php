@@ -267,7 +267,7 @@ function Query2Table($result, $tableFeatures="") {
 echo'
 <SCRIPT>
 var xmlhttp;
-function loadXMLDoc_'.$element.'(url)
+function loadXMLDoc(url)
 {
 xmlhttp=null;
 if (window.XMLHttpRequest)
@@ -306,5 +306,9 @@ else
 }            
 </SCRIPT>
 ';
+}
+
+function SCRIPT ($Script) {
+	return '<script  type="text/javascript">$(document).ready(function (){'.$Script.'});</script>';
 }
 ?>
