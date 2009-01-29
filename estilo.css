@@ -3,7 +3,11 @@
 #abajo{background-color:#D8F3C9;color:#000000;font-weight:bold;border:2px solid #FFFFFF;margin-bottom:4px;padding:5px;}
 img.fija{z-index: 1;  position:fixed; _position:absolute; top:0; _top:expression(eval(document.body.scrollTop)); right:0; margin:0; padding:0;}
 body{background-color:#9CC089;color:#101010;font-family:"Tahoma","Verdana","Arial",serif;font-size:13px;margin:1px;}
-blockquote{background-color:#9CC089;border:2px solid #C1DAD6;margin:0;padding:5px;quotes:"\201C""\201D";width:100%-5px	;font-weight:bold;color:#FFFFFF}
+blockquote{background-color:#9CC089;border:2px solid #C1DAD6;margin:0;padding:5px;quotes:"\201C""\201D";max-width:100%;font-weight:bold;color:#FFFFFF}
+#error{background-color:#FF0000;border:2px solid #C1DAD6;margin:0;padding:5px;max-width:100%;font-weight:bold;color:#FFFFFF;text-align:center}
+#error:before{content:'Error: '}
+#info{background-color:#FFFF00;border:2px solid #000000;margin:0;padding:5px;max-width:100%;font-weight:bold;color:#000000;text-align:center}
+#info:before{content:"Información: "}
 p{background-color:#9CC089;border:2px solid #C1DAD6;margin:0;padding:10px;width:95%}
 textarea,input[type=text],input[type=password]{background-color:#FFFFE0;color:#9CC089;font-weight:bold; width: 100%;}
 pre{border-left:2px solid #cce;margin-left:3px;overflow:auto;padding:.5em}
