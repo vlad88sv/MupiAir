@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(E_STRICT | E_ALL);
 /**
  * Project:     GoogleMapAPI: a PHP library inteface to the Google Map API
  * File:        GoogleMapAPI.class.php
@@ -674,6 +674,11 @@ class GoogleMapAPI {
         // HACK
     }
 
+    // HACK
+    function deleteMarkers() {
+	unset ($this->_markers);
+	return;
+    }
     /**
      * adds a map polyline by address
      * if color, weight and opacity are not defined, use the google maps defaults
@@ -1121,7 +1126,7 @@ class GoogleMapAPI {
         $_output = '<script type="text/javascript" charset="utf-8">' . "\n" . '//<![CDATA[' . "\n";
         $_output .= 'if (GBrowserIsCompatible()) {' . "\n";
         if(strlen($this->width) > 0 && strlen($this->height) > 0) {
-            $_output .= sprintf('document.write(\'<div id="%s" style="width: %s; height: %s"><\/div>\');',$this->map_id,$this->width,$this->height) . "\n";
+            $_output .= sprintf('document.write(\'<div id="%s" style="width: %s; height: %s"></div>\');',$this->map_id,$this->width,$this->height) . "\n";
         } else {
             $_output .= sprintf('document.write(\'<div id="%s"><\/div>\');',$this->map_id) . "\n";     
         }
@@ -1309,7 +1314,7 @@ class GoogleMapAPI {
      * @param float $lon2
      * @param float $unit   M=miles, K=kilometers, N=nautical miles, I=inches, F=feet
      */
-    function geoGetDistance($lat1,$lon1,$lat2,$lon2,$unit='M') {
+    function geoGetDistance($lat1,$lon1,$lat2,$lon2,$unit='K') {
         
       // calculate miles
       $M =  69.09 * rad2deg(acos(sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($lon1 - $lon2)))); 
@@ -1343,4 +1348,5 @@ class GoogleMapAPI {
     
 }
 
+$map = new GoogleMapAPI('map');
 ?>

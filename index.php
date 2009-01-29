@@ -5,7 +5,6 @@ error_reporting(E_STRICT | E_ALL);
 ob_start("ob_gzhandler"); 
 /* Para los mapas de google */
 require_once('include/maps/GoogleMapAPI.class.php');
-$map = new GoogleMapAPI('map');
 /* Constantes */
 require_once("include/const.php");
 /* Controlador principal de la sesión */

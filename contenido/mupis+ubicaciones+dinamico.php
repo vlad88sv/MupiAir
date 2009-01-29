@@ -4,7 +4,8 @@ date_default_timezone_set ('America/El_Salvador');
 require_once('../include/const.php');
 require_once('../include/sesion.php');
 require_once('sub.php');
-
+/* Para los mapas de google */
+require_once('../include/maps/GoogleMapAPI.class.php');
 if ( isset( $_GET['accion'] ) ) {
 	switch ( $_GET['accion'] ) {
 	case "mupi":
@@ -16,11 +17,19 @@ if ( isset( $_GET['accion'] ) ) {
 		break;
 	case "calles":
 		if ( isset( $_GET['catorcena'] ) ) {
-			//retornar ( Combobox_calles (strip_tags($_GET['calle'])) );
-			retornar ('Ver Calle:<br />' . $database->Combobox_CallesConPresencia("ver_calles",$session->codigo,$_GET['catorcena']).'<br /><br />');
+			$script = SCRIPT('$("#combo_calles").click(function (){$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&catorcena="+document.getElementsByName(\'combo_catorcenas\')[0].value+"&calle="+document.getElementsByName(\'combo_calles\')[0].value);});').'<br /><br />';
+			retornar ('Ver Calle:<br />' . $database->Combobox_CallesConPresencia("combo_calles",$session->codigo,$_GET['catorcena']).$script);
 		} else {
 			retornar ( "Ud. esta utilizando incorrectamente este script de soporte. 2" );
 		}
+		break;
+	case "mapas":
+		if ( isset( $_GET['catorcena'] ) && isset( $_GET['calle'] ) ) {
+			$datos = '';
+			retornar ($datos);
+		} else {
+			retornar ( "Ud. esta utilizando incorrectamente este script de soporte. 2" );
+		}	
 		break;
 	}
 } else {
@@ -95,4 +104,5 @@ function Buscar ($MUPI) {
     $datos .=  "</table>";
 retornar($datos);
 }
+
 ?>

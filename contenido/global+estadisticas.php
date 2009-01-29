@@ -9,9 +9,7 @@ if ( $session->isAdmin() ) {
 echo "<h1>Estadísticas</h1>";
 //Dinamismo en selección de catorcenas.
 echo SCRIPT('
-                $("#catorcenas_presencia").click(function (){
-                    $("#datos_catorcena").load("contenido/global+estadisticas+dinamico.php?catorcena="+document.getElementsByName(\'catorcenas_presencia\')[0].value);
-                });
+                $("#catorcenas_presencia").click(function (){$("#datos_catorcena").load("contenido/global+estadisticas+dinamico.php?catorcena="+document.getElementsByName(\'catorcenas_presencia\')[0].value);});
 ');
 echo "Catorcena actual: <b>" . date("d/m/Y", Obtener_catorcena_cercana()) . ' a ' . date("d/m/Y", Fin_de_catorcena(Obtener_catorcena_cercana())) . "</b><br />";
 
