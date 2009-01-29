@@ -228,7 +228,7 @@ function INICIAR_MENUES () {
 	<li><a href="./?accion=ver+ubicaciones">Mis Ubicaciones</a></li>
 	<li><a href="./?accion=ver+eventos" >Eventos</a></li>	
 	<li><a href="./?accion=ayuda+contacto">Comenta</a></li>	
-	<li><a href="./?accion=ver+reportes" rel="menu_reportes">Reportes</a></li>	
+	<li><a href="./?accion=ver+reportes">Reportes</a></li>	
 	<li><a href="./?accion=salir">Cerrar sesión</a></li>	
 	</ul>
 	</div>
@@ -267,7 +267,7 @@ function Query2Table($result, $tableFeatures="") {
 echo'
 <SCRIPT>
 var xmlhttp;
-function loadXMLDoc(url)
+function loadXMLDoc_'.$element.'(url)
 {
 xmlhttp=null;
 if (window.XMLHttpRequest)
