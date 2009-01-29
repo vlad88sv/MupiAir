@@ -2,7 +2,9 @@
 function CONTENIDO_global_estadisticas(){
 global $session, $database;
 if ( $session->isAdmin() ) {
-  echo "<h1>Estadísticas de clientes</h1><hr />";
+  echo '<div id="info">se muestra las estadísticas de administrativas.<br />Para ver las estadísticas de un usuaria particular por favor dirigirse al menú Gestionar Clientes -> Cliente -> Estadísticas</div>';
+  echo "<h1>Estadísticas administrativas</h1><hr />";
+  return;
 }
 echo "<h1>Estadísticas</h1>";
 
@@ -23,55 +25,10 @@ echo "Número de impactos publicitarios diarios: <b>" . (int) (mysql_result($res
 /*********************************************************************************************/
 // Inicio de parte dinámica.
 /*********************************************************************************************/
-JS_AJAX_ESTADISTICAS();
+JS_loadXMLDoc('datos_catorcena');
 
 echo "<br />".$database->Combobox_CatorcenasConPresencia("catorcenas_presencia",$session->codigo,'document.getElementById(\'datos_catorcena\').firstChild.nodeValue = loadXMLDoc(\'contenido/global+estadisticas+dinamico.php?catorcena=\'+document.getElementsByName(\'catorcenas_presencia\')[0].value)');
 echo '<hr><span id="datos_catorcena">Seleccione una catorcena por favor</span>';
 return;
-}
-
-function JS_AJAX_ESTADISTICAS() {
-echo'
-<SCRIPT>
-var xmlhttp;
-function loadXMLDoc(url)
-{
-xmlhttp=null;
-if (window.XMLHttpRequest)
-{// code for Firefox, Opera, IE7, etc.
-xmlhttp=new XMLHttpRequest();
-}
-else if (window.ActiveXObject)
-{// code for IE6, IE5
-xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-}
-if (xmlhttp!=null)
-{
-xmlhttp.onreadystatechange=state_Change;
-xmlhttp.open("GET",url,true);
-xmlhttp.send(null);
-}
-else
-{
-alert("Your browser does not support XMLHTTP.");
-}
-}
-
-function state_Change()
-{
-if (xmlhttp.readyState==4)
-{// 4 = "loaded"
-if (xmlhttp.status==200)
- {// 200 = "OK"
- document.getElementById(\'datos_catorcena\').innerHTML=xmlhttp.responseText;
- }
-else
- {
- alert("Problem retrieving data:" + xmlhttp.statusText);
- }
-}
-}            
-</SCRIPT>
-';
 }
 ?>
