@@ -201,8 +201,10 @@ function INICIAR_MENUES () {
 	<div class="chromestyle" id="chromemenu">
 	<ul>
 	<li><a href="./">Inicio</a></li>
-	<li><a href="#" rel="menu_herramientas">Herramientas</a></li>
-	<li><a href="./?accion=salir">Cerrar sesión administrativa</a></li>	
+	<li><a href="#" rel="menu_herramientas">Herramientas</a></li>'
+	.'<li>'.  CREAR_LINK_GET("gestionar+pantallas","Gestionar pantallas", "Eliminar o modificar pantallas") .'</li>'
+	.'<li>'.  CREAR_LINK_GET("gestionar+pedidos","Gestionar pedidos", "Eliminar o modificar pedidos") .'</li>'
+	.'<li><a href="./?accion=salir">Cerrar sesión administrativa</a></li>	
 	</ul>
 	</div>
 	';
@@ -211,8 +213,6 @@ function INICIAR_MENUES () {
 	<div id="menu_herramientas" class="dropmenudiv" style="width: 150px;">'
 	. CREAR_LINK_GET("registro","Registrar cliente", "Agregar un nuevo cliente al sistema")
 	. CREAR_LINK_GET("gestionar+clientes","Gestionar clientes", "Gestionar clientes")
-	. CREAR_LINK_GET("gestionar+pedidos","Gestionar pedidos", "Eliminar o modificar pedidos")
-	. CREAR_LINK_GET("gestionar+pantallas","Gestionar pantallas", "Eliminar o modificar pantallas")
 	. CREAR_LINK_GET("gestionar+mupis","Gestionar MUPIS", "Eliminar o modificar MUPIS")
 	. CREAR_LINK_GET("gestionar+calles","Gestionar calles", "Eliminar o modificar calles")
 	. CREAR_LINK_GET("ver+ubicaciones","Ver MUPIS", "Ver mapa de MUPIS")
@@ -263,4 +263,7 @@ function Query2Table($result, $tableFeatures="") {
  if ( $EnVacioHoy ) { $vacio = date("d-m-Y"); } else { $vacio = ""; }
  if ( $time ) { return date("d-m-Y", $time); } else { return $vacio; }
  }
+ function SCRIPT ($Script) {
+       return '<script  type="text/javascript">$(document).ready(function (){'.$Script.'});</script>';
+}
 ?>
