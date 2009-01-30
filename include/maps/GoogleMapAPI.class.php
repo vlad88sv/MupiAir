@@ -824,39 +824,7 @@ class GoogleMapAPI {
         return count($this->_icons) - 1;
     }
 
-    /**
-     * print map header javascript (goes between <head></head>)
-     * 
-     */
-    function printHeaderJS() {
-        echo $this->getHeaderJS();   
-    }
-    
-    /**
-     * return map header javascript (goes between <head></head>)
-     * 
-     */
-    function getHeaderJS() {
-        return sprintf('<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s" type="text/javascript" charset="utf-8"></script>', $this->api_key);
-    }    
-    
-   /**                                                                                                                          
-    * prints onLoad() without having to manipulate body tag.                                                                     
-    * call this after the print map like so...                                                                             
-    *      $map->printMap();                                                                                                     
-    *      $map->printOnLoad();                                                                                                  
-    */                                                                                                                           
-    function printOnLoad() {
-        echo $this->getOnLoad();
-    }
-
-    /**
-     * return js to set onload function
-     */
-    function getOnLoad() {
-        return '<script language="javascript" type="text/javascript" charset="utf-8">window.onload=onLoad;</script>';                       
-    }
-
+ 
     /**
      * print map javascript (put just before </body>, or in <header> if using onLoad())
      * 
@@ -1123,27 +1091,12 @@ class GoogleMapAPI {
      * 
      */
     function getMap() {
-        $_output = '<script type="text/javascript" charset="utf-8">' . "\n" . '//<![CDATA[' . "\n";
-        $_output .= 'if (GBrowserIsCompatible()) {' . "\n";
+	$_output = '';
         if(strlen($this->width) > 0 && strlen($this->height) > 0) {
-            $_output .= sprintf('document.write(\'<div id="%s" style="width: %s; height: %s"></div>\');',$this->map_id,$this->width,$this->height) . "\n";
+            $_output .= sprintf('<div id="%s" style="width: %s; height: %s"></div>',$this->map_id,$this->width,$this->height) . "\n";
         } else {
-            $_output .= sprintf('document.write(\'<div id="%s"><\/div>\');',$this->map_id) . "\n";     
+            $_output .= sprintf('<div id="%s"></div>;',$this->map_id) . "\n";     
         }
-        $_output .= '}';
-
-        if(!empty($this->js_alert)) {
-            $_output .= ' else {' . "\n";
-            $_output .= sprintf('document.write(\'%s\');', str_replace('/','\/',$this->js_alert)) . "\n";
-            $_output .= '}' . "\n";
-        }
-
-        $_output .= '//]]>' . "\n" . '</script>' . "\n";
-
-        if(!empty($this->js_alert)) {
-            $_output .= '<noscript>' . $this->js_alert . '</noscript>' . "\n";
-        }
-
         return $_output;
     }
 
@@ -1346,7 +1299,5 @@ class GoogleMapAPI {
       
     }    
     
-}
-
-$map = new GoogleMapAPI('map');
+}    
 ?>
