@@ -17,7 +17,7 @@ echo '<td id="grafico_mapa" width="80%">';
 echo 'Esperando información para generar mapa';
 echo '</td>';
 
-echo '<td>';
+echo '<td valign="top">';
 echo 'Ver Catorcena:<br />' . $database->Combobox_CatorcenasConPresencia("combo_catorcenas",$usuario).'<br /><br />';
 echo '<span id="datos_calles">Seleccione una catorcena por favor<br /><br /></span>';
 echo '<span id="lista_mupis">Seleccione una calle por favor<br /><br /></span>';

@@ -97,7 +97,8 @@ $usuario = $session->codigo;
  if ( $session->isAdmin()  && !$usuario ) {
 	$q = "SELECT * FROM ".TBL_MUPI.";";
    } else {
-	$q = "select * from emupi_mupis where codigo_calle=$calle and codigo_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario'));";
+	$q = "select codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT logotipo from emupi_usuarios where codigo='$usuario') as logotipo  from emupi_mupis where codigo_calle=$calle and codigo_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario'));";
+	echo $q."<br>";
    }
    //echo $q;
    $result = $database->query($q);
@@ -113,12 +114,15 @@ $usuario = $session->codigo;
    
    for($i=0; $i<$num_rows; $i++){
       $codigo_mupi  = mysql_result($result,$i,"codigo_mupi");
-      $direccion = mysql_result($result,$i,"direccion");
+      $direccion = "<b>Dirección: </b>".mysql_result($result,$i,"direccion")."<br />";
       $foto_generica = mysql_result($result,$i,"foto_generica");
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
       $codigo_evento = mysql_result($result,$i,"codigo_evento");
-      $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $direccion . "<br />[" . $codigo_mupi . "]", $codigo_mupi, $codigo_mupi . "|" . $catorcena . "|" . $usuario);
+      $logotipo = "<br />".mysql_result($result,$i,"logotipo");
+      $html = $direccion.$logotipo;
+      
+      $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $codigo_mupi . "|" . $catorcena . "|" . $usuario);
    }
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 $datos = '';
