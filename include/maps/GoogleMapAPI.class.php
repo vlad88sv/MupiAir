@@ -80,7 +80,7 @@ class GoogleMapAPI {
      *
      * @var string
      */
-    var $sidebar_id = null;    
+    var $sidebar_id = NULL;    
     
     /**
      * GoogleMapAPI uses the Yahoo geocode lookup API.
@@ -940,7 +940,9 @@ class GoogleMapAPI {
         $_output .= $this->getPolylineJS();
 
         if($this->sidebar) {
-            $_output .= sprintf('document.getElementById("%s").innerHTML = "<ul class=\"gmapSidebar\">"+ sidebar_html +"<\/ul>";', $this->sidebar_id) . "\n";
+		// HACK HACK
+            //$_output .= sprintf('document.getElementById("%s").innerHTML = "<ul class=\"gmapSidebar\">"+ sidebar_html +"<\/ul>";', $this->sidebar_id) . "\n";
+            $_output .= sprintf('document.getElementById("%s").innerHTML = "Ver Eco Mupis:<br /><select class=\"gmapSidebar\">"+ sidebar_html +"</select>";', 'lista_mupis') . "\n";
         }
 
         $_output .= '}' . "\n";        
@@ -966,7 +968,7 @@ class GoogleMapAPI {
             $_output .= 'function click_sidebar(idx) {' . "\n";
             // HACK //
             $_output .= "  var titulo = document.getElementById('gmapSidebarItem_' + idx).innerHTML;\n";
-            $_output .= '  document.getElementById(\'datos_cara_mupis\').firstChild.nodeValue = loadXMLDoc(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&amp;MUPI=\'+titulo)' . "\n";
+            $_output .= '  document.getElementById(\'datos_mupis\').firstChild.nodeValue = loadXMLDoc(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&amp;MUPI=\'+titulo)' . "\n";
             // HACK //
             $_output .= '  if(isArray(marker_html[idx])) { markers[idx].openInfoWindowTabsHtml(marker_html[idx]); }' . "\n";
             $_output .= '  else { markers[idx].openInfoWindowHtml(marker_html[idx]); }' . "\n";
@@ -1070,7 +1072,9 @@ class GoogleMapAPI {
         $_output .= 'markers[counter] = marker;' . "\n";
         if($this->sidebar) {        
             $_output .= 'marker_html[counter] = html;' . "\n";
-            $_output .= "sidebar_html += '<li class=\"gmapSidebarItem\" id=\"gmapSidebarItem_'+ counter +'\"><a href=\"javascript:click_sidebar(' + counter + ')\">' + title + '<\/a><\/li>';" . "\n";
+            // HACK HACK
+	    //$_output .= "sidebar_html += '<li class=\"gmapSidebarItem\" id=\"gmapSidebarItem_'+ counter +'\"><a href=\"javascript:click_sidebar(' + counter + ')\">' + title + '<\/a><\/li>';" . "\n";
+            $_output .= "sidebar_html += '<option class=\"gmapSidebarItem\" id=\"gmapSidebarItem_'+ counter +'\">' + title + '</option>';" . "\n";
         }
         $_output .= 'counter++;' . "\n";
         $_output .= 'return marker;' . "\n";
