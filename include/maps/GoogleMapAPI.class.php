@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_STRICT | E_ALL);
+
 /**
  * Project:     GoogleMapAPI: a PHP library inteface to the Google Map API
  * File:        GoogleMapAPI.class.php
@@ -643,7 +644,7 @@ class GoogleMapAPI {
      * @param string $title the title display in the sidebar
      * @param string $html the HTML block to display in the info bubble (if empty, title is used)
      */
-    function addMarkerByAddress($address,$title = '',$html = '',$tooltip = '') {
+    function addMarkerByAddress($address,$title = '',$html = '',$tooltip = '',$id = '') {
         if(($_geocode = $this->getGeocode($address)) === false)
             return false;
         return $this->addMarkerByCoords($_geocode['lon'],$_geocode['lat'],$title,$html,$tooltip);
@@ -660,12 +661,13 @@ class GoogleMapAPI {
      *     array: The title => content pairs for a tabbed info bubble     
      */
     // TODO make it so you can specify which tab you want the directions to appear in (add another arg)
-    function addMarkerByCoords($lon,$lat,$title = '',$html = '',$tooltip = '') {
+    function addMarkerByCoords($lon,$lat,$title = '',$html = '',$tooltip = '',$id = '') {
         $_marker['lon'] = $lon;
         $_marker['lat'] = $lat;
         $_marker['html'] = (is_array($html) || strlen($html) > 0) ? $html : $title;
         $_marker['title'] = $title;
         $_marker['tooltip'] = $tooltip;
+        $_marker['id'] = $id;
         $this->_markers[] = $_marker;
         $this->adjustCenterCoords($_marker['lon'],$_marker['lat']);
         // return index of marker
@@ -1021,12 +1023,14 @@ class GoogleMapAPI {
             } else {
                 $iw_html = sprintf('"%s"',str_replace('"','\"','<div id="gmapmarker">' . str_replace(array("\n", "\r"), "", $_marker['html']) . '</div>'));
             }
+	    // HACK ID
             $_output .= sprintf('var point = new GLatLng(%s,%s);',$_marker['lat'],$_marker['lon']) . "\n";         
-            $_output .= sprintf('var marker = createMarker(point,"%s",%s, %s,"%s");',
+            $_output .= sprintf('var marker = createMarker(point,"%s",%s, %s,"%s","%s");',
                                 str_replace('"','\"',$_marker['title']),
                                 str_replace('/','\/',$iw_html),
                                 $i,
-                                str_replace('"','\"',$_marker['tooltip'])) . "\n";
+                                str_replace('"','\"',$_marker['tooltip']),
+				$_marker['id']) . "\n";
             //TODO: in above createMarker call, pass the index of the tab in which to put directions, if applicable
             $_output .= 'map.addOverlay(marker);' . "\n";
             $i++;
@@ -1050,8 +1054,10 @@ class GoogleMapAPI {
     /**
      * overridable function to generate the js for the js function for creating a marker.
      */
+     // IMPORTANTE!, acá tiene que ir el hack mayor!.
     function getCreateMarkerJS() {
-        $_output = 'function createMarker(point, title, html, n, tooltip) {' . "\n";
+        $_SCRIPT_ = '$("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI=\'+id);';
+        $_output = 'function createMarker(point, title, html, n, tooltip, id) {' . "\n";
         $_output .= 'if(n >= '. sizeof($this->_icons) .') { n = '. (sizeof($this->_icons) - 1) ."; }\n";
         if(!empty($this->_icons)) {
             $_output .= 'var marker = new GMarker(point,{\'icon\': icon[n], \'title\': tooltip});' . "\n";
@@ -1066,7 +1072,7 @@ class GoogleMapAPI {
         
         if($this->info_window) {
             $_output .= sprintf('if(isArray(html)) { GEvent.addListener(marker, "%s", function() { marker.openInfoWindowTabsHtml(html); }); }',$this->window_trigger) . "\n";
-            $_output .= sprintf('else { GEvent.addListener(marker, "%s", function() { marker.openInfoWindowHtml(html); alert(counter); click_sidebar(\' + counter + \'); }); }',$this->window_trigger) . "\n";
+            $_output .= sprintf('else { GEvent.addListener(marker, "%s", function() { marker.openInfoWindowHtml(html); '.$_SCRIPT_.' }); }',$this->window_trigger) . "\n";
         }
         $_output .= 'points[counter] = point;' . "\n";
         $_output .= 'markers[counter] = marker;' . "\n";
@@ -1074,7 +1080,7 @@ class GoogleMapAPI {
             $_output .= 'marker_html[counter] = html;' . "\n";
             // HACK HACK
 	    //$_output .= "sidebar_html += '<li class=\"gmapSidebarItem\" id=\"gmapSidebarItem_'+ counter +'\"><a href=\"javascript:click_sidebar(' + counter + ')\">' + title + '<\/a><\/li>';" . "\n";
-            $_output .= "sidebar_html += '<option class=\"gmapSidebarItem\" id=\"gmapSidebarItem_'+ counter +'\">' + title + '</option>';" . "\n";
+            $_output .= 'sidebar_html += \'<option class="gmapSidebarItem" id="gmapSidebarItem" value="\'+title+\'">\' + title + \'</option>\';' . "\n";
         }
         $_output .= 'counter++;' . "\n";
         $_output .= 'return marker;' . "\n";
