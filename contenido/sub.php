@@ -299,7 +299,11 @@ if ( !$_FILES[$NombreCampo]['error'] ) {
 return NULL;
 }
 
-function CargarImagenDesdeBD ($id) {
-	return '<img src="include/ver.php?id='.$id.'" />';
+function CargarImagenDesdeBD ($id, $width='100%', $height='100%') {
+	return '<img style="max-width:'.$width.';max-height:'.$height.';" src="include/ver.php?id='.$id.'" />';
+}
+
+function GenerarTooltip ($texto) {
+	return ' onMouseOver=\'toolTip("'.addslashes($texto).'")\' onMouseOut="toolTip()" ';
 }
 ?>
