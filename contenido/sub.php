@@ -168,9 +168,16 @@ function CONTENIDO_mostrar_principal() {
 		CONTENIDO_global_info();
 		break;
 	
-	case "salir";
+	case "salir":
 		$session->logout();
 		header("Location: ./");
+		break;
+	
+	case "ver":
+		$id = isset( $ACC[1] ) ? $ACC[1] : "";
+		echo '<h1>Mostrando imagen con Id. '.$id.'</h1>';
+		echo CargarImagenDesdeBD($id);
+		break;
 		
 	default:
 		CONTENIDO_global_404();
@@ -266,14 +273,33 @@ function Query2Table($result, $tableFeatures="") {
  function SCRIPT ($Script) {
        return '<script  type="text/javascript">$(document).ready(function (){'.$Script.'});</script>';
 }
-function CargarImagenEnBD ($NombreCampo, $Categoria) {
+function CargarImagenEnBD ($NombreCampo, $Categoria, $Id_Imagen = 0) {
 global $database;
 /*
-Verificamos que exista la superglobal $_FILES para no trabajar de gusto...
+Verificamos que exista la superglobal $_FILES para el indice del supuesto campo INPUT=FILE para no trabajar de gusto...
 */
-if ( isset($_FILES) ) {
-	$q = "INSERT...";
+//print_ar($_FILES);
+if ( !$_FILES[$NombreCampo]['error'] ) {
+	$ParsedIMG = addslashes(file_get_contents($_FILES[$NombreCampo]['tmp_name']));
+	//echo $ParsedIMG;
+	$q = "INSERT INTO ".TBL_IMG." (id_imagen, data, categoria, mime) VALUES(".$Id_Imagen.", '".$ParsedIMG."', '".$Categoria."', '".$_FILES[$NombreCampo]['type']."') ON DUPLICATE KEY UPDATE data=VALUES(data), categoria=VALUES(categoria), mime=VALUES(mime);";
 	$database->query($q);
 	return mysql_insert_id($database->connection);
+} else {
+	/*
+		Ok, si no esta establecida ninguna imagen y nos dieron y $Id_Imagen es porque quieren eliminarla.
+		* Eliminamos los datos de esa fila para recuperar el espacio.
+		* Retornamos NULL para denotar la nueva anti-referencia.
+	*/
+	if ( $Id_Imagen ) {
+		$q = "DELETE FROM ".TBL_IMG." WHERE id_imagen=".$Id_Imagen.";";
+		$database->query($q);
+	}
+}
+return NULL;
+}
+
+function CargarImagenDesdeBD ($id) {
+	return '<img src="include/ver.php?id='.$id.'" />';
 }
 ?>

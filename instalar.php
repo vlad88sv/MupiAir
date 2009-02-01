@@ -197,7 +197,7 @@ CREAR_TBL(TBL_REGISTRY, $q);
 Esta tabla albergara todas las imagenes usadas.
 Se diferenciaran por su categoria y podrán verla a travez de su ID.
 */
-$q="Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo_pantalla_mupi BLOB, categoria VARCHAR(100)";
+$q="id_imagen INT NOT NULL AUTO_INCREMENT PRIMARY KEY, data BLOB, categoria VARCHAR(100), mime VARCHAR(100)";
 CREAR_TBL(TBL_IMG, $q);
 
 echo '<h3>+Creando usuario '.$_POST['admin'].'...</h3><br />';
