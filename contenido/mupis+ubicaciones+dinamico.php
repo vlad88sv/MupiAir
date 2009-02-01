@@ -76,9 +76,9 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
       }else{
 		$tipoPantalla = 'Peatonal';
       }
-	$datos .= "<h3>Imagen actual de su pantalla ".$tipoPantalla.":</h3>".$foto_real;	
+	$datos .= "<h3>Imagen actual de su pantalla ".$tipoPantalla.":</h3>".'<img src="include/ver.php?id='.$foto_real.'">';	
    }
-   $datos .= "<h3>Arte digital de su pantalla:</h3>".$arte;
+   $datos .= "<h3>Arte digital de su pantalla:</h3>".'<img src="include/ver.php?id='.$arte.'">';
 retornar($datos);
 }
 
@@ -98,7 +98,7 @@ $usuario = $session->codigo;
 	$q = "SELECT * FROM ".TBL_MUPI.";";
    } else {
 	$q = "select codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT logotipo from emupi_usuarios where codigo='$usuario') as logotipo  from emupi_mupis where codigo_calle=$calle and codigo_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario'));";
-	echo $q."<br>";
+	//echo $q."<br>";
    }
    //echo $q;
    $result = $database->query($q);
