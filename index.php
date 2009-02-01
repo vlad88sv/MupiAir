@@ -64,6 +64,7 @@ require_once("contenido/mupis+calles.php");
 	<meta name="keywords" content="MUPI, Publicidad, El Salvador" />
 	<meta name="description" content="MUPI es un servicio publicitario." />
 	<script src="include/jquery-1.3.1.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="include/tooltip.js">
 	<script type="text/javascript" src="include/chromejs/chrome.js">
 	/***********************************************
 	* Chrome CSS Drop Down Menu- (c) Dynamic Drive DHTML code library (www.dynamicdrive.com)
