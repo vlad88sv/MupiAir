@@ -266,4 +266,14 @@ function Query2Table($result, $tableFeatures="") {
  function SCRIPT ($Script) {
        return '<script  type="text/javascript">$(document).ready(function (){'.$Script.'});</script>';
 }
+function CargarImagenEnBD ($NombreCampo, $Categoria) {
+global $database;
+/*
+Verificamos que exista la superglobal $_FILES para no trabajar de gusto...
+*/
+if ( isset($_FILES) ) {
+	$q = "INSERT...";
+	$database->query($q);
+	return mysql_insert_id($database->connection);
+}
 ?>
