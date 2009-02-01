@@ -20,6 +20,7 @@ define("TBL_MUPI_FACES", "emupi_mupis_caras");
 define("TBL_MUPI_EVENTS", "emupi_mupis_eventos");
 define("TBL_GEOCODE_CACHE", "emupi_geocode_cache");
 define("TBL_STREETS", "emupi_calles");
+define("TBL_IMG","emupi_imagenes");
 define("ADMIN_NAME", "admin");
 define("GUEST_NAME", "Visitante");
 define("ADMIN_LEVEL", 9);

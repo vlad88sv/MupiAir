@@ -193,6 +193,13 @@ Servirá para llevar las estadísticas de todo el sitio:
 $q="clave VARCHAR(255) NOT NULL PRIMARY KEY, valor VARCHAR(255)";
 CREAR_TBL(TBL_REGISTRY, $q);
 
+/*
+Esta tabla albergara todas las imagenes usadas.
+Se diferenciaran por su categoria y podrán verla a travez de su ID.
+*/
+$q="Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo_pantalla_mupi BLOB, categoria VARCHAR(100)";
+CREAR_TBL(TBL_IMG, $q);
+
 echo '<h3>+Creando usuario '.$_POST['admin'].'...</h3><br />';
 $q = "INSERT INTO ".TBL_USERS." VALUES ('".$_POST['admin'] . "', '" . md5($_POST['admin_clave']) . "', 'Administrador Principal', 'Administrador', '" . $_POST['email'] . "', '0','','','','Creado durante de la instalación', 9, 0," . time() . ") ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), clave=VALUES(clave), email=VALUES(email)";
 @mysql_query($q, $link)  or die('!->No se pudo insertar el usuario<br /><pre>' . mysql_error() . '</pre>');;
