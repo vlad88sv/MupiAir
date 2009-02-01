@@ -81,7 +81,7 @@ if ($mupi) {
 	if ($mupi) $mupiex = " (".$mupi.")";
 echo '<hr /><h2>'.$NombreBotonAccion.' '._NOMBRE_.$mupiex.'</h2>';
 echo '
-<form action="./?'._ACC_.'=gestionar+mupis" method="POST">
+<form action="./?'._ACC_.'=gestionar+mupis" enctype="multipart/form-data" method="POST">
 <table>
 '.$CampoCodigoMupi.'
 <tr><td width="20%">Dirección específica:</td><td><input type="text" name="direccion" style="width: 100%;" maxlength="255" value="' . $form->value("direccion"). '"></tr>

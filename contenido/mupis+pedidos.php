@@ -116,7 +116,7 @@ if ($pedido) {
 	$CampoCosto ='<tr><td>Costo:</td><td><input type="text" name="costo" maxlength="100" value="' . $costo. '"></td></tr>';
 
 echo '
-<form action="./?'._ACC_.'=gestionar+pedidos" method="POST">
+<form action="./?'._ACC_.'=gestionar+pedidos" enctype="multipart/form-data" method="POST">
 <table>
 '.$CampoCodigoPedido.'
 '.$CampoCodigoPedido2.'

@@ -21,7 +21,7 @@ unset( $_SESSION['reguname'] );
 unset( $_SESSION['regsuccess'] );
 ?>
 <h2>Registro de Clientes</h2><hr />
-<form action="include/x.php" method="POST">
+<form action="include/x.php" enctype="multipart/form-data" method="POST">
 <table>
 <tr><td>Código fiscal:</td><td><input type="text" name="codigo" maxlength="50" style="width: 100%;" value="<? echo $form->value("codigo"); ?>"></td></tr>
 <tr><td>Clave (contraseña):</td><td><input type="password" name="clave" style="width: 100%;" maxlength="30" value="<? echo $form->value("clave"); ?>"></tr>

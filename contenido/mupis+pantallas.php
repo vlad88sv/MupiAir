@@ -113,7 +113,7 @@ if ($usuario) {
 */
 
 echo '
-<form action="./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'" method="POST">
+<form action="./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'" enctype="multipart/form-data" method="POST">
 <table>
 '.$CampoCatorcena.'
 '.$CampoId.'
