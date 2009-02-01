@@ -31,7 +31,7 @@ unset( $_SESSION['regsuccess'] );
 <tr><td>Teléfono #1:</td><td><input type="text" name="telefono1" style="width: 100%;" maxlength="50" value="<? echo $form->value("telefono1"); ?>"></td></tr>
 <tr><td>Teléfono #2:</td><td><input type="text" name="telefono2" style="width: 100%;" maxlength="50" value="<? echo $form->value("telefono2"); ?>"></td></tr>
 <tr><td>Teléfono #3:</td><td><input type="text" name="telefono3" style="width: 100%;" maxlength="50" value="<? echo $form->value("telefono3"); ?>"></td></tr>
-<tr><td>Logotipo:</td><td><input type="text" name="logotipo" style="width: 100%;" maxlength="50" value="<? echo $form->value("logotipo"); ?>"></td></tr>
+<tr><td>Logotipo:</td><td><input type="file" name="logotipo" style="width: 100%;" maxlength="50" value="<? echo $form->value("logotipo"); ?>"></td></tr>
 <tr><td>Notas u otras observaciones:</td><td><TEXTAREA style="width: 100%;" name="notas" rows="5" cols="80"><? echo $form->value("notas"); ?></TEXTAREA></td></tr>
 </table>
 <input type="submit" value="Registrar">

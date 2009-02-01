@@ -85,7 +85,7 @@ echo '
 <table>
 '.$CampoCodigoMupi.'
 <tr><td width="20%">Dirección específica:</td><td><input type="text" name="direccion" style="width: 100%;" maxlength="255" value="' . $form->value("direccion"). '"></tr>
-<tr><td>Foto genérica:</td><td><input type="text" name="foto" style="width: 100%;" maxlength="255" value="' . $form->value("foto"). '"></td></tr>
+<tr><td>Foto genérica:</td><td><input type="file" name="foto" style="width: 100%;" maxlength="255" value="' . $form->value("foto"). '"></td></tr>
 <tr><td>Longitud Decimal:</td><td><input type="text" name="lon" style="width: 100%;" maxlength="50" value="' . $form->value("lon"). '"></td></tr>
 <tr><td>Latitud Decimal:</td><td><input type="text" name="lat" style="width: 100%;" maxlength="50" value="' . $form->value("lat"). '"></td></tr>
 <tr><td>Código calle:</td><td>'. $database->Combobox_calle("codigo_calle", $form->value("codigo_calle")). '</td></tr>
