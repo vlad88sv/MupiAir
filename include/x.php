@@ -1,5 +1,6 @@
 <?
 require_once("sesion.php");
+require_once("../contenido/sub.php");
 
 class Process
 {
@@ -89,7 +90,7 @@ class Process
          $_POST['codigo'] = strtolower($_POST['codigo']);
       }
       /* Registration attempt */
-      $retval = $session->register($_POST['codigo'], $_POST['clave'], $_POST['nombre'],$_POST['razon'], $_POST['email'], $_POST['telefono1'], $_POST['telefono2'], $_POST['telefono3'], $_POST['logotipo'], $_POST['notas']);
+      $retval = $session->register($_POST['codigo'], $_POST['clave'], $_POST['nombre'],$_POST['razon'], $_POST['email'], $_POST['telefono1'], $_POST['telefono2'], $_POST['telefono3'], '', $_POST['notas']);
       //echo $retval;
       /* Registration Successful */
       $_SESSION['reguname'] = $_POST['codigo'];

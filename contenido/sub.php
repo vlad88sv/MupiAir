@@ -31,6 +31,9 @@ function CONTENIDO_en_linea(){
 
 function CONTENIDO_mostrar_principal() {
 	global $session;
+	
+	CONTENIDO_mostrar_logo_cliente();
+	
 	if ( isset( $_GET[_ACC_]) ) {
 		$ACC = explode(":",$_GET[_ACC_]);
 		if ( isset( $ACC[0] ) ) { $accion = urldecode($ACC[0]); } 
@@ -193,9 +196,11 @@ function CONTENIDO_mostrar_logo() {
 }
 
 function CONTENIDO_mostrar_logo_cliente() {
-	global $session;
+	global $session, $database;
 	if ( !$session->isAdmin() ) {
-		echo '<center>' . IMAGEN("./logo_generico.gif") . '</center>';
+		$q = "SELECT logotipo FROM ". TBL_USERS . " WHERE codigo='".$session->codigo."';";
+		$result = $database->query($q);		
+		echo '<center>' . CargarImagenDesdeBD(mysql_result($result,0,"logotipo"),'200px','200px') . '</center>';
 		//echo IMAGEN("./logo_generico.gif");
 	}
 }

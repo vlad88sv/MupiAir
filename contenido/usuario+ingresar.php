@@ -5,7 +5,6 @@ function CONTENIDO_usuario_ingresar() {
 	
 	/* Ya se encuentra registrado */
 	if($session->logged_in){
-		CONTENIDO_mostrar_logo_cliente();
 		CONTENIDO_global_estadisticas();		
 		/* Limpiamos todo lo que podamos */
 		unset($_SESSION['reguname']);

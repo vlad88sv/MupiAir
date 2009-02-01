@@ -232,7 +232,6 @@ class Session
       $form->setValue("telefono1", $telefono1);
       $form->setValue("telefono2", $telefono2);
       $form->setValue("telefono3", $telefono3);
-      $form->setValue("logotipo", $logotipo);
       $form->setValue("notas", $notas);
 
       //print_r (array($codigo, $clave, $nombre, $razon, $email, $telefono1, $telefono2, $telefono3, $logotipo, $notas));
@@ -299,14 +298,13 @@ class Session
          }
          $email = stripslashes($email);
       }
-
+	  
       /* Errors exist, have user correct them */
       if($form->num_errors > 0){
          return 1;  //Errors with form
-      }
-      /* No errors, add the new account to the */
-      else{
-         if($database->addNewUser($codigo, md5($clave), $nombre, $razon, $email, $telefono1, $telefono2, $telefono3, $logotipo, $notas)){
+      } else {
+		  $idImg = CargarImagenEnBD("logotipo","LOGOTIPOS");
+         if($database->addNewUser($codigo, md5($clave), $nombre, $razon, $email, $telefono1, $telefono2, $telefono3, $idImg, $notas)){
             if(EMAIL_WELCOME){
                $mailer->sendWelcome($codigo,$email,$clave);
             }
