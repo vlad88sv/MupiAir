@@ -79,11 +79,13 @@ $CampoUsuario = '';
 $Campocatorcena_inicio = '';
 $Campocatorcena_fin = '';
 $CampoPantalla = '';
+$CampoConservarPantalla = '';
 $BotonCancelar = '';
 $CampoFoto = '';
 $costo='';
 $foto_pantalla = '';
-
+$OnChangePantalla = '';
+$CampoConservarPantalla2 = '';
 if ($pedido) {
 	$q = "SELECT * FROM ".TBL_MUPI_ORDERS." WHERE codigo_pedido='$pedido';";
 	$result = $database->query($q);
@@ -96,6 +98,11 @@ if ($pedido) {
 	$catorcena_inicio = mysql_result($result,0,"catorcena_inicio");
 	$catorcena_fin = mysql_result($result,0,"catorcena_fin");
 	$foto_pantalla = mysql_result($result,0,"foto_pantalla");
+	if ( $foto_pantalla ) {
+		$CampoConservarPantalla = '<tr><td>Conservar Arte Digital con Id.'.$foto_pantalla.'</td></td><td><span id="CampoConservarPantalla"><input type="checkbox" name="ConservarPantalla" value="'.$foto_pantalla.'" checked="checked"></span></td></tr>';
+		$CampoConservarPantalla2 = '<input type="hidden" name="ConservarPantalla2" value="'.$foto_pantalla.'">';	
+		$OnChangePantalla = 'onchange="document.getElementById(\'CampoConservarPantalla\').innerHTML=\'Se reemplazará la imagen actual con la seleccionada\'"';
+	}
 	$costo = mysql_result($result,0,"costo");
 	$CampoCodigoPedido = '<input type="hidden" name="codigo_pedido" value="'.$pedido.'">';	
 	$NombreBotonAccion = "Editar";
@@ -112,7 +119,7 @@ if ($pedido) {
 	$CampoUsuario = '<tr><td>Cliente:</td><td>'.$database->Combobox_usuarios("codigo",$usuario) . '</td></tr>';
 	$Campocatorcena_inicio = '<tr><td>Inicio del contrato:</td><td>'. Combobox_catorcenas("catorcena_inicio", $catorcena_inicio, 26, _F_INICIOS). '</td></tr>';
 	$Campocatorcena_fin = '<tr><td>Fin del contrato:</td><td>'. Combobox_catorcenas("catorcena_fin", $catorcena_fin, 26, _F_FINES). '</td></tr>';
-	$CampoPantalla = '<tr><td>Foto de pantalla:</td><td><input type="file" name="foto_pantalla" maxlength="255" value="' . $foto_pantalla . '"></td></tr>';
+	$CampoPantalla = '<tr><td>Arte digital:</td><td><input type="file" name="foto_pantalla" '.$OnChangePantalla.'></td></tr>';
 	$CampoCosto ='<tr><td>Costo:</td><td><input type="text" name="costo" maxlength="100" value="' . $costo. '"></td></tr>';
 
 echo '
@@ -123,6 +130,8 @@ echo '
 '.$CampoUsuario.'
 '.$Campocatorcena_inicio.'
 '.$Campocatorcena_fin.'
+'.$CampoConservarPantalla.'
+'.$CampoConservarPantalla2.'
 '.$CampoPantalla.'
 '.$CampoCosto.'
 </table>
@@ -134,9 +143,19 @@ echo '
  
 function Pedidos_REGISTRAR() {
 global $database,$form;
-
-$q = "INSERT INTO ".TBL_MUPI_ORDERS." ( codigo_pedido, codigo, catorcena_inicio, catorcena_fin,  foto_pantalla, costo ) VALUES (" . $_POST['codigo_pedido'] . ", '" . $_POST['codigo'] . "', '". $_POST['catorcena_inicio']. "', '". $_POST['catorcena_fin']. "', '". $_POST['foto_pantalla']."', '". $_POST['costo']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), catorcena_inicio=VALUES(catorcena_inicio), catorcena_fin=VALUES(catorcena_fin), foto_pantalla=VALUES(foto_pantalla), costo=VALUES(costo);";
+if ( !isset($_POST['ConservarPantalla']) ) {
+	/*
+		Corroborar si ya tenia una imagen antes, para reutilizar la fila y a la vez
+		que la imagen anterior no quede huerfana.
+	*/
+	$Pre_Id = isset($_POST['ConservarPantalla2']) ? $_POST['ConservarPantalla2'] : 0;
+	$idImg = CargarImagenEnBD("foto_pantalla","PEDIDOS", $Pre_Id);
+} else {
+	$idImg = $_POST['ConservarPantalla'];
+}
+$q = "INSERT INTO ".TBL_MUPI_ORDERS." ( codigo_pedido, codigo, catorcena_inicio, catorcena_fin,  foto_pantalla, costo ) VALUES (" . $_POST['codigo_pedido'] . ", '" . $_POST['codigo'] . "', '". $_POST['catorcena_inicio']. "', '". $_POST['catorcena_fin']. "', '". $idImg."', '". $_POST['costo']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), catorcena_inicio=VALUES(catorcena_inicio), catorcena_fin=VALUES(catorcena_fin), foto_pantalla=VALUES(foto_pantalla), costo=VALUES(costo);";
 DEPURAR ($q);
+//print_ar($_POST);
 if ( $database->query($q) == 1 ) {
 	echo "<blockquote>Exito al registrar el pedido de ".  $_POST['codigo'].'</blockquote>';
 } else {
