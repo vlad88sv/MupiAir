@@ -13,7 +13,7 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 	if ( isset($_GET['eliminar']) && isset($_GET['imagen']) ) {
 			global $database;
 			// Eliminamos la pantalla
-			$q = "DELETE FROM " . TBL_MUPI_FACES . " WHERE Id=" . $_GET['eliminar'] . ";";
+			$q = "DELETE FROM " . TBL_MUPI_FACES . " WHERE Id='" . $_GET['eliminar'] . "';";
 			$result = $database->query($q);
 			if ( $result ) { echo "Pantalla eliminada<br />"; }
 			
