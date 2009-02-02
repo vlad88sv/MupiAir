@@ -76,9 +76,9 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
       }else{
 		$tipoPantalla = 'Peatonal';
       }
-	$datos .= "<h3>Imagen actual de su pantalla ".$tipoPantalla.":</h3>".'<img src="include/ver.php?id='.$foto_real.'">';	
+	$datos .= "<h3>Imagen actual de su pantalla ".$tipoPantalla.":</h3>".CargarImagenDesdeBD($foto_real);	
    }
-   $datos .= "<h3>Arte digital de su pantalla:</h3>".'<img src="include/ver.php?id='.$arte.'">';
+   $datos .= "<h3>Arte digital de su pantalla:</h3>".CargarImagenDesdeBD($arte);
 retornar($datos);
 }
 
@@ -119,7 +119,7 @@ $usuario = $session->codigo;
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
       $codigo_evento = mysql_result($result,$i,"codigo_evento");
-      $logotipo = "<br />".mysql_result($result,$i,"logotipo");
+      $logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"), "200px","200px");
       $html = $direccion.$logotipo;
       
       $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $codigo_mupi . "|" . $catorcena . "|" . $usuario);

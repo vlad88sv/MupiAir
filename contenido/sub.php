@@ -197,7 +197,7 @@ function CONTENIDO_mostrar_logo() {
 
 function CONTENIDO_mostrar_logo_cliente() {
 	global $session, $database;
-	if ( !$session->isAdmin() ) {
+	if ( !$session->isAdmin() && $session->logged_in ) {
 		$q = "SELECT logotipo FROM ". TBL_USERS . " WHERE codigo='".$session->codigo."';";
 		$result = $database->query($q);		
 		echo '<center>' . CargarImagenDesdeBD(mysql_result($result,0,"logotipo"),'200px','200px') . '</center>';

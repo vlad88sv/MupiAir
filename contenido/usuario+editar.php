@@ -24,7 +24,7 @@ $_SESSION['user_edic'] = $usuario;
 $req_user_info = $database->getUserInfo($_SESSION['user_edic']);
 ?>
 <h1>Editar cuenta del Cliente: <? echo $_SESSION['user_edic']; ?></h1>
-<form action="include/x.php" method="POST">
+<form action="include/x.php" enctype="multipart/form-data" method="POST">
 <table  border="0" cellspacing="0">
 <tr>
 <td>Nueva clave:</td>
@@ -64,6 +64,25 @@ $req_user_info = $database->getUserInfo($_SESSION['user_edic']);
 <tr>
 <td>Teléfono #3:</td>
 <td><input type="text" name="telefono3" maxlength="100" style="width: 98%;" value="<? echo $req_user_info['telefono3']; ?>"></td>
+</tr>
+
+<?php
+$OnChangePantalla = '';
+if ( $req_user_info['telefono3'] ) {
+echo '
+<tr>
+<td>Conservar logotipo con Id. '.$req_user_info['logotipo'].':</td>
+<td><span id="CampoConservarLogotipo"><input type="checkbox" name="ConservarLogotipo" value="'.$req_user_info['logotipo'].'" checked="checked"></span></td>
+</tr>
+';
+echo '<input type="hidden" name="ConservarLogotipo2" value="'.$req_user_info['logotipo'].'">';
+$OnChangePantalla = 'onchange="document.getElementById(\'CampoConservarLogotipo\').innerHTML=\'Se reemplazará la imagen actual con la seleccionada\'"';
+}
+?>
+
+<tr>
+<td>Logotipo:</td>
+<td><input type="file" name="logotipo" <?php echo $OnChangePantalla ?>/></td>
 </tr>
 
 <tr>

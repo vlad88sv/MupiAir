@@ -171,7 +171,7 @@ class Process
    function procEditAccount(){
       global $session, $form;
       /* Account edit attempt */
-      $retval = $session->editAccount($_POST['newpass'], $_POST['codigo'], $_POST['nombre'],$_POST['razon'], $_POST['email'], $_POST['telefono1'], $_POST['telefono2'], $_POST['telefono3'], $_POST['logotipo'], $_POST['notas']);
+      $retval = $session->editAccount($_POST['newpass'], $_POST['codigo'], $_POST['nombre'],$_POST['razon'], $_POST['email'], $_POST['telefono1'], $_POST['telefono2'], $_POST['telefono3'], '', $_POST['notas']);
 
       /* Account edit successful */
       if($retval){
@@ -182,7 +182,7 @@ class Process
          $_SESSION['value_array'] = $_POST;
          $_SESSION['error_array'] = $form->getErrorArray();
       }
-	header("Location: ../?"._ACC_."=editar+usuario"); 
+	header("Location: ../?"._ACC_."=editar+usuario:".$_POST['codigo']); 
    }
 };
 

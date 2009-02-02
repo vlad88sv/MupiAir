@@ -331,7 +331,6 @@ class Session
       $form->setValue("telefono1", $telefono1);
       $form->setValue("telefono2", $telefono2);
       $form->setValue("telefono3", $telefono3);
-      $form->setValue("logotipo", $logotipo);
       $form->setValue("notas", $notas);
       /* Email error checking */
       $field = "email";  //Use field name for email
@@ -350,7 +349,17 @@ class Session
       if($form->num_errors > 0){
          return false;  //Errors with form
       }
-      
+	  
+	if ( !isset($_POST['ConservarLogotipo']) ) {
+		/*
+			Corroborar si ya tenia una imagen antes, para reutilizar la fila y a la vez
+			que la imagen anterior no quede huerfana.
+		*/
+		$Pre_Id = isset($_POST['ConservarLogotipo2']) ? $_POST['ConservarLogotipo2'] : 0;
+		$idImg = CargarImagenEnBD("logotipo","PEDIDOS", $Pre_Id);
+	} else {
+		$idImg = $_POST['ConservarLogotipo'];
+	}  
 	$database->updateUserField($codigo,"clave",md5($subnewpass));
 	$database->updateUserField($codigo,"nombre",$nombre);
 	$database->updateUserField($codigo,"razon",$razon);
@@ -358,7 +367,7 @@ class Session
 	$database->updateUserField($codigo,"telefono1",$telefono1);
 	$database->updateUserField($codigo,"telefono2",$telefono2);
 	$database->updateUserField($codigo,"telefono3",$telefono3);
-	$database->updateUserField($codigo,"logotipo",$logotipo);
+	$database->updateUserField($codigo,"logotipo",$idImg);
 	$database->updateUserField($codigo,"notas",$notas);
 
       
