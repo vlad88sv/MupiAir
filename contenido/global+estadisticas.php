@@ -11,20 +11,34 @@ if ( $session->isAdmin() ) {
   $num_rows = mysql_numrows($result);
   if ( $num_rows == 0 ) {
 	  echo "¡No hay comentarios ingresados!<BR />";
-      return;
    }
 	echo '<table>';
-	echo "<tr><th>Cliente</th><th>Comentario</th><th>Fecha</th><th>Tipo</th><th>Acciones</th></tr>";
+	echo "<tr><th>Cliente</th><th>Comentario</th><th>Fecha</th><th>Tipo</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo  = mysql_result($result,$i,"codigo");
       $comentario  = mysql_result($result,$i,"comentario");
       $timestamp = date( "h:i:s @ d/m/Y", mysql_result($result,$i,"timestamp"));
       $tipo  = mysql_result($result,$i,"tipo") == '1' ? 'Público' : 'Privado';
-      $Eliminar = CREAR_LINK_GET("gestionar+pedidos&amp;accion=eliminar&amp;pedido=".$i,"Eliminar", "Eliminar los datos de este pedido");
-      echo "<tr><td>$codigo</td><td>$comentario</td><td>$timestamp</td><td>$tipo</td><td>$Eliminar</tr>";
+      echo "<tr><td>$codigo</td><td>$comentario</td><td>$timestamp</td><td>$tipo</td></tr>";
    }
    echo "</table><br><hr />";
    echo "<h2>Pantallas activas esta catorcena</h2>";
+	$q = "SELECT codigo_pantalla_mupi, codigo_mupi, codigo_pedido FROM emupi_mupis_caras WHERE catorcena>=$inicioCatorcena AND catorcena<=$finCatorcena ORDER BY codigo_pantalla_mupi;";
+	$result = $database->query($q);
+	$num_rows = mysql_numrows($result);
+	if ( $num_rows == 0 ) {
+	  echo "¡No hay pantallas ingresadas!<BR />";
+	}
+		echo '<table>';
+	echo "<tr><th>Código Pantalla</th><th>Código Eco Mupis</th><th>Código pedido</th></tr>";
+   for($i=0; $i<$num_rows; $i++){
+      $codigo_pantalla_mupi  = mysql_result($result,$i,"codigo_pantalla_mupi");
+      $codigo_mupi  = mysql_result($result,$i,"codigo_mupi");
+      $codigo_pedido = mysql_result($result,$i,"codigo_pedido");
+      echo "<tr><td>$codigo_pantalla_mupi</td><td>$codigo_mupi</td><td>$codigo_pedido</td></tr>";
+   }
+   echo "</table><br><hr />";
+   echo "<h2>Eventos en esta catorcena</h2>";
   return;
 }
 echo "<h1>Estadísticas</h1>";
