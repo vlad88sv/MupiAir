@@ -3,9 +3,28 @@ $Catorcena = NULL;
 function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 	global $session, $form, $Catorcena;
 	echo '<h1>Gestión de pantallas de ' . _NOMBRE_ . '</h1>';
-	if ( $session->isAdmin() && isset($_POST['registrar_mupi']) ) {
-	//Nos toca registrar un MUPI
-	Pantalla_REGISTRAR();
+	if ( $session->isAdmin() ) {
+	
+	if ( isset($_POST['registrar_mupi'])) {
+		//Nos toca registrar un MUPI
+		Pantalla_REGISTRAR();
+	}
+	
+	if ( isset($_GET['eliminar']) && isset($_GET['imagen']) ) {
+			global $database;
+			// Eliminamos la pantalla
+			$q = "DELETE FROM " . TBL_MUPI_FACES . " WHERE Id=" . $_GET['eliminar'] . ";";
+			$result = $database->query($q);
+			if ( $result ) { echo "Pantalla eliminada<br />"; }
+			
+			// Eliminamos cualquier imagen que estuviera asociada a esa pantalla
+			if ($_GET['imagen']) {
+			$q = "DELETE FROM " . TBL_IMG . " WHERE id_imagen=" . $_GET['imagen'] . ";";
+			$result = $database->query($q);
+			if ( $result ) { echo "Imagen asociada a la pantalla eliminada<br />"; } 
+			}
+	}
+	
 	}
 	if ( !$catorcena_inicio ) {
 		$BotonCancelar = '';
@@ -65,7 +84,7 @@ echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th
       $codigo_pedido = CREAR_LINK_GET("gestionar+pedidos&amp;pedido=" . mysql_result($result,$i,"codigo_pedido"), mysql_result($result,$i,"codigo_pedido"), "Ver a quien pertenece este pedido");
       $codigo_evento  = mysql_result($result,$i,"codigo_evento");
       $foto_real  = mysql_result($result,$i,"foto_real");
-      $Eliminar = CREAR_LINK_GET("gestionar+pantallas&amp;accion=eliminar&amp;pantalla=".$codigo_pantalla_mupi."&amp;catorcena=$Catorcena","Eliminar", "Eliminar los datos de esta pantalla");
+      $Eliminar = CREAR_LINK_GET("gestionar+pantallas&amp;eliminar=".mysql_result($result,$i,"Id")."&amp;imagen=".mysql_result($result,$i,"foto_real")."&amp;catorcena=$Catorcena","Eliminar", "Eliminar los datos de esta pantalla");
       $codigo_pantalla_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;id=".mysql_result($result,$i,"Id")."&amp;catorcena=$Catorcena",$codigo_pantalla_mupi, "Editar los datos de esta pantalla");
       echo "<tr><td>$codigo_pantalla_mupi</td><td>$codigo_mupi</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
    }
