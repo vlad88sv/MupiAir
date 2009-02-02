@@ -60,6 +60,10 @@ function verMUPISregistro($usuario="",$mupi="") {
 global $form, $database;
 $BotonCancelar = '';
 $NombreBotonAccion = '';
+$foto_pantalla = '';
+$OnChangePantalla = '';
+$CampoConservarPantalla = '';
+$CampoConservarPantalla2 = '';
 if ($mupi) {
 	$q = "SELECT * FROM ".TBL_MUPI." WHERE codigo_mupi='$mupi';";
 	$result = $database->query($q);
@@ -68,10 +72,15 @@ if ($mupi) {
 	case 1:
 		$form->setValue("codigo", mysql_result($result,0,"codigo_mupi"));
 		$form->setValue("direccion", mysql_result($result,0,"direccion"));
-		$form->setValue("foto", mysql_result($result,0,"foto_generica"));
 		$form->setValue("lon", mysql_result($result,0,"lon"));
 		$form->setValue("lat", mysql_result($result,0,"lat"));
 		$form->setValue("codigo_calle", mysql_result($result,0,"codigo_calle"));
+		$foto_pantalla =  mysql_result($result,0,"foto_generica");
+	if ( $foto_pantalla ) {
+		$CampoConservarPantalla = '<tr><td>Conservar foto genérica con Id.'.$foto_pantalla.'</td></td><td><span id="CampoConservarPantalla"><input type="checkbox" name="ConservarPantalla" value="'.$foto_pantalla.'" checked="checked"></span></td></tr>';
+		$CampoConservarPantalla2 = '<input type="hidden" name="ConservarPantalla2" value="'.$foto_pantalla.'">';	
+		$OnChangePantalla = 'onchange="document.getElementById(\'CampoConservarPantalla\').innerHTML=\'Se reemplazará la imagen actual con la seleccionada\'"';
+	}
 	
 		$CampoCodigoMupi = '<input type="hidden" name="codigo_mupi" value="'.$mupi.'">';
 		$NombreBotonAccion = "Editar";
@@ -98,7 +107,9 @@ echo '
 <table>
 '.$CampoCodigoMupi.'
 <tr><td width="20%">Dirección específica:</td><td><input type="text" name="direccion" style="width: 100%;" maxlength="255" value="' . $form->value("direccion"). '"></tr>
-<tr><td>Foto genérica:</td><td><input type="file" name="foto" style="width: 100%;" maxlength="255" value="' . $form->value("foto"). '"></td></tr>
+'.$CampoConservarPantalla.'
+'.$CampoConservarPantalla2.'
+<tr><td>Foto genérica:</td><td><input type="file" name="foto_generica"></td></tr>
 <tr><td>Longitud Decimal:</td><td><input type="text" name="lon" style="width: 100%;" maxlength="50" value="' . $form->value("lon"). '"></td></tr>
 <tr><td>Latitud Decimal:</td><td><input type="text" name="lat" style="width: 100%;" maxlength="50" value="' . $form->value("lat"). '"></td></tr>
 <tr><td>Código calle:</td><td>'. $database->Combobox_calle("codigo_calle", $form->value("codigo_calle")). '</td></tr>
@@ -111,13 +122,22 @@ echo '
 
 function MUPI_REGISTRAR() {
 global $database,$form;
+if ( !isset($_POST['ConservarPantalla']) ) {
+	/*
+		Corroborar si ya tenia una imagen antes, para reutilizar la fila y a la vez
+		que la imagen anterior no quede huerfana.
+	*/
+	$Pre_Id = isset($_POST['ConservarPantalla2']) ? $_POST['ConservarPantalla2'] : 0;
+	$idImg = CargarImagenEnBD("foto_generica","MUPIS", $Pre_Id);
+} else {
+	$idImg = $_POST['ConservarPantalla'];
+}
 $form->setValue("codigo_mupi", $_POST['codigo_mupi']);
 $form->setValue("direccion", $_POST['direccion']);
-$form->setValue("foto", $_POST['foto']);
 $form->setValue("lon", $_POST['lon']);
 $form->setValue("lat", $_POST['lat']);
 $form->setValue("codigo_calle", $_POST['codigo_calle']);
-$q = "INSERT INTO ".TBL_MUPI." (codigo_mupi, direccion, foto_generica, lon, lat, codigo_calle) VALUES ('".$_POST['codigo_mupi'] . "', '" . $_POST['direccion'] . "', '" . $_POST['foto'] . "', '" . $_POST['lon'] . "', '" . $_POST['lat'] . "', '" . $_POST['codigo_calle'] . "') ON DUPLICATE KEY UPDATE codigo_mupi=VALUES(codigo_mupi), direccion=VALUES(direccion), foto_generica=VALUES(foto_generica), lon=VALUES(lon), lat=VALUES(lat), codigo_calle=VALUES(codigo_calle);";
+$q = "INSERT INTO ".TBL_MUPI." (codigo_mupi, direccion, foto_generica, lon, lat, codigo_calle) VALUES ('".$_POST['codigo_mupi'] . "', '" . $_POST['direccion'] . "'," . $idImg . ", '" . $_POST['lon'] . "', '" . $_POST['lat'] . "', '" . $_POST['codigo_calle'] . "') ON DUPLICATE KEY UPDATE codigo_mupi=VALUES(codigo_mupi), direccion=VALUES(direccion), foto_generica=VALUES(foto_generica), lon=VALUES(lon), lat=VALUES(lat), codigo_calle=VALUES(codigo_calle);";
 DEPURAR ($q);	
 $result = $database->query($q);
 }
