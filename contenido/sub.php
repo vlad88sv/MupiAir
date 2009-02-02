@@ -285,7 +285,7 @@ Verificamos que exista la superglobal $_FILES para el indice del supuesto campo 
 */
 //print_ar($_FILES);
 if ( !$_FILES[$NombreCampo]['error'] ) {
-	$ParsedIMG = addslashes(file_get_contents($_FILES[$NombreCampo]['tmp_name']));
+	$ParsedIMG = mysql_real_escape_string(file_get_contents($_FILES[$NombreCampo]['tmp_name']));
 	//echo $ParsedIMG;
 	$q = "INSERT INTO ".TBL_IMG." (id_imagen, data, categoria, mime) VALUES(".$Id_Imagen.", '".$ParsedIMG."', '".$Categoria."', '".$_FILES[$NombreCampo]['type']."') ON DUPLICATE KEY UPDATE data=VALUES(data), categoria=VALUES(categoria), mime=VALUES(mime);";
 	$database->query($q);
