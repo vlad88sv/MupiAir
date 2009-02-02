@@ -10,9 +10,18 @@ function CONTENIDO_calles($usuario, $calle) {
 		}
 	}
 	echo '<hr /><h2>Sus calles '._NOMBRE_.".</h2>";
+	//Nos toca registrar un MUPI
 	if ( isset($_POST['registrar_calles']) ) {
-		//Nos toca registrar un MUPI
 		calles_REGISTRAR();
+	}
+
+	//Nos toca elimiinar un MUPI
+	if ( isset($_GET['eliminar']) ) {
+	global $database;
+	// Eliminamos la pantalla
+	$q = "DELETE FROM " . TBL_STREETS . " WHERE codigo_calle='" . $_GET['eliminar'] . "';";
+	$result = $database->query($q);
+	if ( $result ) { echo "Calle eliminada<br />"; }
 	}
 
 	vercalles($usuario);
@@ -55,7 +64,7 @@ echo "<tr><th>Código calle "._NOMBRE_."</th><th>Ubicación</th><th>Impactos</th
       $codigo_calle  = mysql_result($result,$i,"codigo_calle");
       $ubicacion =  mysql_result($result,$i,"ubicacion");
       $impactos =  mysql_result($result,$i,"impactos");
-      $Eliminar = CREAR_LINK_GET("gestionar+calles&amp;accion=eliminar&amp;calle=".$codigo_calle,"Eliminar", "Eliminar los datos de esta calle");
+      $Eliminar = CREAR_LINK_GET("gestionar+calles&amp;eliminar=".mysql_result($result,$i,"codigo_calle"),"Eliminar", "Eliminar los datos de esta calle");
       $codigo_calle  = CREAR_LINK_GET("gestionar+calles&amp;calle=".$codigo_calle,$codigo_calle, "Editar los datos de esta calle");
       echo "<tr><td>$codigo_calle</td><td>$ubicacion</td><td>$impactos</td><td>$Eliminar</tr>";
    }
