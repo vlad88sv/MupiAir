@@ -8,7 +8,7 @@ echo "<h1>Ubicaciones de MUPIS contratados</h1><hr />";
 // AJAX ;)
 echo 
 SCRIPT('
-	$("#combo_catorcenas").click(function (){$("#datos_calles").load("contenido/mupis+ubicaciones+dinamico.php?accion=calles&catorcena="+document.getElementsByName(\'combo_catorcenas\')[0].value);});
+	$("#combo_catorcenas").click(function (){$("#datos_calles").load("contenido/mupis+ubicaciones+dinamico.php?accion=calles&usuario='.$usuario.'&catorcena="+document.getElementsByName(\'combo_catorcenas\')[0].value);});
 ');
 echo '<table>';
 echo '<tr>';

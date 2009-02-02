@@ -378,8 +378,12 @@ class MySQLDB
    }
    
   function Combobox_CatorcenasConPresencia ($nombre="catorcena_presencia", $codigo=NULL, $OnChange=NULL) {
-   $q = "SELECT DISTINCT catorcena FROM ".TBL_MUPI_FACES." WHERE catorcena <=".Obtener_catorcena_siguiente()." AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$codigo."')  ORDER BY catorcena;";
+	  global $session;
+	  $WHERE_USER = '';
+	  if ( !$session->isAdmin() || $codigo ) {$WHERE_USER = "WHERE codigo='".$codigo."'";}
+   $q = "SELECT DISTINCT catorcena FROM ".TBL_MUPI_FACES." WHERE catorcena <=".Obtener_catorcena_siguiente()." AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." $WHERE_USER)  ORDER BY catorcena;";
    $result = mysql_query($q, $this->connection);
+   //echo $q.'<br />';
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
    $s='';
@@ -404,7 +408,11 @@ class MySQLDB
    }
    
    function Combobox_CallesConPresencia($nombre, $codigo, $catorcena){
-   $q = "SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS b WHERE a.codigo_mupi=b.codigo_mupi) AS 'calle', (SELECT ubicacion FROM emupi_calles WHERE codigo_calle=@calle) AS ubicacion FROM emupi_mupis_caras AS a WHERE catorcena=".$_GET['catorcena']." AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='".$codigo."') ;";
+	  global $session;
+	  $WHERE_USER = '';
+	  if ( !$session->isAdmin() || $codigo ) {$WHERE_USER = " AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='".$codigo."')";}
+   $q = "SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS b WHERE a.codigo_mupi=b.codigo_mupi) AS 'calle', (SELECT ubicacion FROM emupi_calles WHERE codigo_calle=@calle) AS ubicacion FROM emupi_mupis_caras AS a WHERE catorcena=".$_GET['catorcena']. $WHERE_USER .";";
+   //echo $q.'<br />';
    $result = mysql_query($q, $this->connection);
    $num_rows = mysql_numrows($result);
    $s='';
