@@ -412,7 +412,7 @@ class MySQLDB
 	  $WHERE_USER = '';
 	  if ( !$session->isAdmin() || $codigo ) {$WHERE_USER = " AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='".$codigo."')";}
    $q = "SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS b WHERE a.codigo_mupi=b.codigo_mupi) AS 'calle', (SELECT ubicacion FROM emupi_calles WHERE codigo_calle=@calle) AS ubicacion FROM emupi_mupis_caras AS a WHERE catorcena=".$_GET['catorcena']. $WHERE_USER .";";
-   echo $q.'<br />';
+   //echo $q.'<br />';
    $result = mysql_query($q, $this->connection);
    $num_rows = mysql_numrows($result);
    $s='';
