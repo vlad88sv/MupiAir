@@ -9,12 +9,30 @@ function CONTENIDO_pedidos($usuario, $pedido) {
 		}
 	}
 	echo '<hr /><h2>Sus Pedidos '._NOMBRE_.".</h2>";
-	if ( $session->isAdmin() && isset($_POST['registrar_pedidos']) ) {
-		//Nos toca registrar un MUPI
+	if ( $session->isAdmin() ) {
+		
+		//Nos toca registrar un Pedido
+		if ( isset($_POST['registrar_pedidos']) ) {
 		Pedidos_REGISTRAR();
-	}
-	
-	if ( !$session->isAdmin() ) { 
+		}
+		
+		//Nos toca elimiinar un pedido
+		if ( isset($_GET['eliminar']) && isset($_GET['imagen']) ) {
+		global $database;
+		// Eliminamos la pantalla
+		$q = "DELETE FROM " . TBL_MUPI_ORDERS . " WHERE codigo_pedido=" . $_GET['eliminar'] . ";";
+		$result = $database->query($q);
+		if ( $result ) { echo "Pedido eliminado<br />"; }
+		
+		// Eliminamos cualquier imagen que estuviera asociada a esa pantalla
+		if ($_GET['imagen']) {
+		$q = "DELETE FROM " . TBL_IMG . " WHERE id_imagen=" . $_GET['imagen'] . ";";
+		$result = $database->query($q);
+		if ( $result ) { echo "Imagen asociada al pedido eliminada<br />"; } 
+		}
+		}
+		
+	} else { 
 		//Solo puede ver sus propios pedidos.
 		$usuario = $session->codigo;
 	}
@@ -67,7 +85,7 @@ echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Interva
       $foto_pantalla  = mysql_result($result,$i,"foto_pantalla");
 	  if ( $foto_pantalla ) { $foto_pantalla = "<span ".GenerarTooltip(CargarImagenDesdeBD(mysql_result($result,$i,"foto_pantalla"),'200px','200px'))." />". $foto_pantalla."</span>"; }
       $costo = "$". (int)(mysql_result($result,$i,"costo"));
-      $Eliminar = CREAR_LINK_GET("gestionar+pedidos&amp;accion=eliminar&amp;pedido=".$codigo_pedido,"Eliminar", "Eliminar los datos de este pedido");
+      $Eliminar = CREAR_LINK_GET("gestionar+pedidos&amp;eliminar=".mysql_result($result,$i,"codigo_pedido")."&amp;imagen=" . mysql_result($result,$i,"foto_pantalla") ,"Eliminar", "Eliminar los datos de este pedido");
       $codigo_pedido  = CREAR_LINK_GET("gestionar+pedidos&amp;pedido=".$codigo_pedido,$codigo_pedido, "Editar los datos de este pedido");
       echo "<tr><td>$codigo_pedido</td><td>$codigo</td><td>$catorcena_inicio al $catorcena_fin</td><td>$NumeroDeCatorcenas</td><td>$foto_pantalla</td><td>$costo</td><td>$Eliminar</tr>";
    }
