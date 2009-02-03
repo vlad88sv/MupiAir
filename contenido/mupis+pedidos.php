@@ -60,7 +60,7 @@ function verPedidos($usuario="", $pedido=""){
    $num_rows = "";
    if ($usuario) { $WHERE = " WHERE codigo='".$usuario."'"; }
    
-   $q = "SELECT codigo_pedido, codigo, (SELECT nombre from ". TBL_USERS . " AS b WHERE a.codigo = b.codigo) as nombre, catorcena_inicio, catorcena_fin, foto_pantalla, costo FROM ".TBL_MUPI_ORDERS." AS a$WHERE;";
+   $q = "SELECT codigo_pedido, codigo, (SELECT nombre from ". TBL_USERS . " AS b WHERE a.codigo = b.codigo) as nombre, catorcena_inicio, catorcena_fin, foto_pantalla, costo , descripcion FROM ".TBL_MUPI_ORDERS." AS a$WHERE;";
    $result = $database->query($q);
    
    if ( !$result ) {
@@ -75,7 +75,7 @@ function verPedidos($usuario="", $pedido=""){
    }
    
 echo '<table>';
-echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Intervalo de alquiler</th><th>Número de catorcenas</th><th>Foto Pantalla</th><th>Costo</th><th>Acciones</th></tr>";
+echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Intervalo de alquiler</th><th>Número de catorcenas</th><th>Foto Pantalla</th><th>Costo</th><th>Descripción</th><th>Acciones</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_pedido  = mysql_result($result,$i,"codigo_pedido");
       $codigo =  CREAR_LINK_GET("gestionar+pedidos:".mysql_result($result,$i,"codigo"), mysql_result($result,$i,"nombre"), "Ver los pedidos de este cliente");
@@ -85,9 +85,10 @@ echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Interva
       $foto_pantalla  = mysql_result($result,$i,"foto_pantalla");
 	  if ( $foto_pantalla ) { $foto_pantalla = "<span ".GenerarTooltip(CargarImagenDesdeBD(mysql_result($result,$i,"foto_pantalla"),'200px','200px'))." />". $foto_pantalla."</span>"; }
       $costo = "$". (int)(mysql_result($result,$i,"costo"));
+	  $descripcion = (mysql_result($result,$i,"descripcion"));
       $Eliminar = CREAR_LINK_GET("gestionar+pedidos&amp;eliminar=".mysql_result($result,$i,"codigo_pedido")."&amp;imagen=" . mysql_result($result,$i,"foto_pantalla") ,"Eliminar", "Eliminar los datos de este pedido");
       $codigo_pedido  = CREAR_LINK_GET("gestionar+pedidos&amp;pedido=".$codigo_pedido,$codigo_pedido, "Editar los datos de este pedido");
-      echo "<tr><td>$codigo_pedido</td><td>$codigo</td><td>$catorcena_inicio al $catorcena_fin</td><td>$NumeroDeCatorcenas</td><td>$foto_pantalla</td><td>$costo</td><td>$Eliminar</tr>";
+      echo "<tr><td>$codigo_pedido</td><td>$codigo</td><td>$catorcena_inicio al $catorcena_fin</td><td>$NumeroDeCatorcenas</td><td>$foto_pantalla</td><td>$costo</td><td>$descripcion</td><td>$Eliminar</tr>";
    }
    echo "</table><br>";
 }
@@ -105,6 +106,7 @@ $costo='';
 $foto_pantalla = '';
 $OnChangePantalla = '';
 $CampoConservarPantalla2 = '';
+$descripcion = '';
 if ($pedido) {
 	$q = "SELECT * FROM ".TBL_MUPI_ORDERS." WHERE codigo_pedido='$pedido';";
 	$result = $database->query($q);
@@ -123,6 +125,7 @@ if ($pedido) {
 		$OnChangePantalla = 'onchange="document.getElementById(\'CampoConservarPantalla\').innerHTML=\'Se reemplazará la imagen actual con la seleccionada\'"';
 	}
 	$costo = mysql_result($result,0,"costo");
+	$descripcion = mysql_result($result,0,"descripcion");
 	$CampoCodigoPedido = '<input type="hidden" name="codigo_pedido" value="'.$pedido.'">';	
 	$NombreBotonAccion = "Editar";
 	$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pedidos\'" value="Cancelar">';
@@ -140,7 +143,7 @@ if ($pedido) {
 	$Campocatorcena_fin = '<tr><td>Fin del contrato:</td><td>'. Combobox_catorcenas("catorcena_fin", $catorcena_fin, 26, _F_FINES). '</td></tr>';
 	$CampoPantalla = '<tr><td>Arte digital:</td><td><input type="file" name="foto_pantalla" '.$OnChangePantalla.'></td></tr>';
 	$CampoCosto ='<tr><td>Costo:</td><td><input type="text" name="costo" maxlength="100" value="' . $costo. '"></td></tr>';
-
+	$CampoDescripcion ='<tr><td>Descripción:</td><td><input type="text" name="descripcion" maxlength="100" value="' . $descripcion. '"></td></tr>';
 echo '
 <form action="./?'._ACC_.'=gestionar+pedidos" enctype="multipart/form-data" method="POST">
 <table>
@@ -153,6 +156,7 @@ echo '
 '.$CampoConservarPantalla2.'
 '.$CampoPantalla.'
 '.$CampoCosto.'
+'.$CampoDescripcion.'
 </table>
 <input type="submit" value="'.$NombreBotonAccion.'">
 '.$BotonCancelar.'
@@ -172,7 +176,7 @@ if ( !isset($_POST['ConservarPantalla']) ) {
 } else {
 	$idImg = $_POST['ConservarPantalla'];
 }
-$q = "INSERT INTO ".TBL_MUPI_ORDERS." ( codigo_pedido, codigo, catorcena_inicio, catorcena_fin,  foto_pantalla, costo ) VALUES (" . $_POST['codigo_pedido'] . ", '" . $_POST['codigo'] . "', '". $_POST['catorcena_inicio']. "', '". $_POST['catorcena_fin']. "', '". $idImg."', '". $_POST['costo']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), catorcena_inicio=VALUES(catorcena_inicio), catorcena_fin=VALUES(catorcena_fin), foto_pantalla=VALUES(foto_pantalla), costo=VALUES(costo);";
+$q = "INSERT INTO ".TBL_MUPI_ORDERS." ( codigo_pedido, codigo, catorcena_inicio, catorcena_fin,  foto_pantalla, costo, descripcion ) VALUES (" . $_POST['codigo_pedido'] . ", '" . $_POST['codigo'] . "', '". $_POST['catorcena_inicio']. "', '". $_POST['catorcena_fin']. "', '". $idImg."', '". $_POST['costo']."', '". $_POST['descripcion']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), catorcena_inicio=VALUES(catorcena_inicio), catorcena_fin=VALUES(catorcena_fin), foto_pantalla=VALUES(foto_pantalla), costo=VALUES(costo), descripcion=VALUES(descripcion);";
 DEPURAR ($q);
 //print_ar($_POST);
 if ( $database->query($q) == 1 ) {
