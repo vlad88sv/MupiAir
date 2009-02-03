@@ -65,6 +65,7 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
       retornar ("¡No hay "._NOMBRE_." con ese código ($MUPI)!");
    }
    $datos .= '<h2>Datos del MUPI seleccionado</h2>';
+   $datos .= '<table>';
    $tipoPantalla = ''; //Par
    for($i=0; $i<$num_rows; $i++){
 	  $arte = mysql_result($result,$i,"arte");
@@ -77,9 +78,11 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
       }else{
 		$tipoPantalla = 'Peatonal';
       }
-	$datos .= "<h3>Imagen actual de su pantalla ".$tipoPantalla.":</h3>".CargarImagenDesdeBD($foto_real);	
-	$datos .= "<h3>Arte digital de su pantalla:</h3>".CargarImagenDesdeBD($arte);
+	
+	$datos .="<tr><td>Imagen actual de su pantalla ".$tipoPantalla.":</td><td>Arte digital de su pantalla:</td></tr>";
+	$datos .= "<tr><td>" . CargarImagenDesdeBD($foto_real,"300px","300px") . "</td><td>" . CargarImagenDesdeBD($arte,"300px","300px") . "</td></tr>";	
    }
+   $datos .= '</table>';
 retornar($datos);
 }
 
@@ -122,10 +125,13 @@ if ( $session->isAdmin() && !$usuario ) {
 		if ( $session->isAdmin() && !$usuario ) {
 			$q = "SELECT DISTINCT logotipo from emupi_usuarios where codigo IN (SELECT codigo from emupi_mupis_pedidos where codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_caras as b WHERE catorcena=$catorcena AND b.codigo_mupi='".mysql_result($result,$i,"codigo_mupi")."'));";
 			$result2 = $database->query($q);
-			$logotipo = '';
+			$num_rows2 = mysql_numrows($result2);
+			$logotipo = '<br />';
+			
 			if($num_rows > 0){
-				   for($ii=0; $ii<$num_rows; $ii++){
-					   $logotipo .= "<br />".CargarImagenDesdeBD(mysql_result($result2,$ii,"logotipo"), "200px","200px");
+				echo $num_rows2;
+				   for($ii=0; $ii<$num_rows2; $ii++){
+					   $logotipo .= CargarImagenDesdeBD(mysql_result($result2,$ii,"logotipo"), "200px","200px");
 				   }
 			}
 		} else {
