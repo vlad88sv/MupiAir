@@ -96,6 +96,8 @@ $map->setAPIKey(GOOGLE_MAP_KEY);
 //$map->setMarkerIcon('../hojita.gif','../hojita.gif',0,0,10,10);
 // proporción de la ventana que tomará el mapa.
  $map->setWidth('100%');
+// Desactivar controles de Zoom para cliente.
+if ( !$session->isAdmin() ) $map->map_controls = false;
 // Cargar puntos mupis.
 $WHERE_USER = '';
 if ( $session->isAdmin() && !$usuario ) {
@@ -124,6 +126,7 @@ if ( $session->isAdmin() && !$usuario ) {
       $codigo_evento = mysql_result($result,$i,"codigo_evento");
 		if ( $session->isAdmin() && !$usuario ) {
 			$q = "SELECT DISTINCT logotipo from emupi_usuarios where codigo IN (SELECT codigo from emupi_mupis_pedidos where codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_caras as b WHERE catorcena=$catorcena AND b.codigo_mupi='".mysql_result($result,$i,"codigo_mupi")."'));";
+			//echo $q."<br>";
 			$result2 = $database->query($q);
 			$num_rows2 = mysql_numrows($result2);
 			$logotipo = '<br />';
