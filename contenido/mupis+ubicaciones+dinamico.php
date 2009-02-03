@@ -129,7 +129,6 @@ if ( $session->isAdmin() && !$usuario ) {
 			$logotipo = '<br />';
 			
 			if($num_rows > 0){
-				echo $num_rows2;
 				   for($ii=0; $ii<$num_rows2; $ii++){
 					   $logotipo .= CargarImagenDesdeBD(mysql_result($result2,$ii,"logotipo"), "200px","200px");
 				   }

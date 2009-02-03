@@ -65,7 +65,7 @@ $OnChangePantalla = '';
 $CampoConservarPantalla = '';
 $CampoConservarPantalla2 = '';
 if ($mupi) {
-	$q = "SELECT * FROM ".TBL_MUPI." WHERE codigo_mupi='$mupi';";
+	$q = "SELECT * FROM ".TBL_MUPI." WHERE codigo_mupi='$mupi' ORDER BY codigo_mupi;";
 	$result = $database->query($q);
 	
 	switch ( mysql_numrows($result) ) {

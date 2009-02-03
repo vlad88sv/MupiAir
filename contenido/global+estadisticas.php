@@ -24,19 +24,19 @@ if ( $session->isAdmin() ) {
    echo "</table><br><hr />";
    }
    echo "<h2>Pantallas activas esta catorcena</h2>";
-	$q = "SELECT Id, codigo_pantalla_mupi, codigo_mupi, (SELECT CONCAT(b.codigo_mupi, '. ' , (SELECT ubicacion FROM ".TBL_STREETS." AS c WHERE c.codigo_calle = b.codigo_calle), ', ' , b.direccion) FROM ".TBL_MUPI." as b WHERE b.codigo_mupi=a.codigo_mupi) as codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento FROM ".TBL_MUPI_FACES." as a WHERE catorcena = '$inicioCatorcena' ORDER BY codigo_pantalla_mupi;";
+	$q = "SELECT Id, codigo_pantalla_mupi, codigo_mupi, (SELECT CONCAT(b.codigo_mupi, '. ' , (SELECT ubicacion FROM ".TBL_STREETS." AS c WHERE c.codigo_calle = b.codigo_calle), ', ' , b.direccion) FROM ".TBL_MUPI." as b WHERE b.codigo_mupi=a.codigo_mupi) as codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento FROM ".TBL_MUPI_FACES." as a WHERE catorcena = '$inicioCatorcena' ORDER BY codigo_mupi, codigo_pantalla_mupi;";
 	$result = $database->query($q);
 	$num_rows = mysql_numrows($result);
 	if ( $num_rows == 0 ) {
 	  echo "¡No hay pantallas ingresadas!<BR />";
 	} else {
 		echo '<table>';
-	echo "<tr><th>Código Pantalla</th><th>Código Eco Mupis</th><th>Código pedido</th></tr>";
+	echo "<tr><th>Código Eco Mupis</th><th>Código Pantalla</th><th>Código pedido</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_pantalla_mupi  = mysql_result($result,$i,"codigo_pantalla_mupi");
       $codigo_mupi  = mysql_result($result,$i,"codigo_mupi_traducido");
       $codigo_pedido = mysql_result($result,$i,"codigo_pedido_traducido");
-      echo "<tr><td>$codigo_pantalla_mupi</td><td>$codigo_mupi</td><td>$codigo_pedido</td></tr>";
+      echo "<tr><td>$codigo_mupi</td><td>$codigo_pantalla_mupi</td><td>$codigo_pedido</td></tr>";
    }
    echo "</table><br><hr />";
    }
