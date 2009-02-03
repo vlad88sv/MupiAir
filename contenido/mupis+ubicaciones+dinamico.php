@@ -21,7 +21,7 @@ if ( isset( $_GET['accion'] ) ) {
 		break;
 	case "calles":
 		if ( isset( $_GET['catorcena'] ) && isset ( $_GET['usuario'] ) ) {
-			$script = SCRIPT('$("#combo_calles").click(function (){$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario='.$_GET['usuario'].'&catorcena="+document.getElementsByName(\'combo_catorcenas\')[0].value+"&calle="+document.getElementsByName(\'combo_calles\')[0].value);});').'<br /><br />';
+			$script = SCRIPT('$("#combo_calles").click(function (){$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario='.$_GET['usuario'].'&catorcena="+document.getElementsByName(\'combo_catorcenas\')[0].value+"&calle="+document.getElementsByName(\'combo_calles\')[0].value);});').'<br />';
 			retornar ('Ver Calle:<br />' . $database->Combobox_CallesConPresencia("combo_calles",$_GET['usuario'],$_GET['catorcena']).$script);
 		} else {
 			retornar ( "Ud. esta utilizando incorrectamente este script de soporte. 2" );
@@ -73,13 +73,13 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
       $foto_real = mysql_result($result,$i,"foto_real");
       // si es par es vehicular
       if ( ($codigo_pantalla_mupi % 2) == 0 ) {
-		$tipoPantalla = 'Vehicular';
+		$tipoPantalla = 'vehicular';
 		   
       }else{
-		$tipoPantalla = 'Peatonal';
+		$tipoPantalla = 'peatonal';
       }
 	
-	$datos .="<tr><td>Imagen actual de su pantalla ".$tipoPantalla.":</td><td>Arte digital de su pantalla:</td></tr>";
+	$datos .="<tr><th>Imagen actual de su pantalla ".$tipoPantalla.":</td><th>Arte digital de su pantalla:</td></tr>";
 	$datos .= "<tr><td>" . CargarImagenDesdeBD($foto_real,"300px","300px") . "</td><td>" . CargarImagenDesdeBD($arte,"300px","300px") . "</td></tr>";	
    }
    $datos .= '</table>';
@@ -117,7 +117,7 @@ if ( $session->isAdmin() && !$usuario ) {
    
    for($i=0; $i<$num_rows; $i++){
       $codigo_mupi  = mysql_result($result,$i,"codigo_mupi");
-      $direccion = "<b>Dirección: </b>".mysql_result($result,$i,"direccion")."<br />";
+      $direccion = mysql_result($result,$i,"direccion");
       $foto_generica = mysql_result($result,$i,"foto_generica");
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
@@ -138,8 +138,7 @@ if ( $session->isAdmin() && !$usuario ) {
 			$logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"), "200px","200px");
 		}
       
-      $html = $direccion.$logotipo;
-      
+      $html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
       $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $codigo_mupi . "|" . $catorcena . "|" . $usuario);
    }
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
