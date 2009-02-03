@@ -34,9 +34,9 @@ function Buscar ($catorcena) {
    }
 
    $Impactos  = mysql_result($result,0,"Impactos");
-   $ImpactosCatorcena  = ($Impactos * 14);
-   $datos .= '<b>'.(int) ($Impactos) . "</b> Impactos diarios" . '<br />';
-   $datos .= '<b>'.(int) ($ImpactosCatorcena) . "</b> Impactos en esta catorcena" . '<br />';
+   $ImpactosCatorcena  = bcmul ($Impactos, "14");
+   $datos .= '<b>'. ($Impactos) . "</b> Impactos diarios" . '<br />';
+   $datos .= '<b>'. ($ImpactosCatorcena) . "</b> Impactos en esta catorcena" . '<br />';
 
    $q = "SELECT SUM(Impactos) AS impactos FROM (SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS c WHERE c.codigo_mupi=a.codigo_mupi) AS 'Calle', (SELECT impactos FROM emupi_calles WHERE codigo_calle = @calle) AS 'Impactos' FROM emupi_mupis_caras AS a WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='".$session->codigo."')) AS a;";
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba las estadísticas.');
@@ -50,9 +50,9 @@ function Buscar ($catorcena) {
    }
    
    $personasDiaro = mysql_result($result,0,"Impactos");
-   $personasCatorcena = $personasDiaro * 14;
-   $datos .= '<b>'.(int) ($personasDiaro) . "</b> personas al menos visualizan su anuncio diariamente" . '<br />';
-   $datos .= '<b>'.(int) ($personasCatorcena) . "</b> personas al menos visualizan su anuncio en esta catorcena" . '<br />';
+   $personasCatorcena = bcmul($personasDiaro, "14");
+   $datos .= '<b>'. ($personasDiaro) . "</b> personas al menos visualizan su anuncio diariamente" . '<br />';
+   $datos .= '<b>'. ($personasCatorcena) . "</b> personas al menos visualizan su anuncio en esta catorcena" . '<br />';
    
    $q = "select SUM(costo) AS cuenta from emupi_mupis_pedidos where codigo_pedido IN (select distinct codigo_pedido from emupi_mupis_caras where catorcena=$catorcena and codigo_pedido IN (SELECT codigo_pedido from emupi_mupis_pedidos where codigo='".$session->codigo."'));";
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba las estadísticas.');
@@ -66,8 +66,8 @@ function Buscar ($catorcena) {
    }
    
    $costo = mysql_result($result,0,"cuenta");
-   $datos .= 'Costo por impacto: <b>$' . ($costo/$ImpactosCatorcena) . '</b><br />';
-   $datos .= 'Número de impactos por persona: <b>' . (int) ($Impactos/$personasDiaro) . '</b><br />';
+   $datos .= 'Costo por impacto: <b>$' . bcdiv ($costo,$ImpactosCatorcena,10) . '</b><br />';
+   $datos .= 'Número de impactos por persona: <b>' . bcdiv($Impactos,$personasDiaro,0) . '</b><br />';
    
    retornar($datos);
 }
