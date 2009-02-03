@@ -300,7 +300,7 @@ class MySQLDB
     $intervalo = '';
     if ($desde && $hasta) { $intervalo = " WHERE catorcena_inicio<=$desde AND catorcena_fin>=$hasta"; }
     //if ($desde && $hasta) { $intervalo .= " AND catorcena_fin<='$hasta'"; }
-   $q = "SELECT codigo_pedido, CONCAT(codigo_pedido,'. ', (SELECT nombre FROM ".TBL_USERS." AS b WHERE b.codigo = a.codigo)) as nombre FROM ".TBL_MUPI_ORDERS . " as a$intervalo;";
+   $q = "SELECT codigo_pedido, CONCAT(codigo_pedido,'. ', (SELECT nombre FROM ".TBL_USERS." AS b WHERE b.codigo = a.codigo), ', ' , descripcion) as nombre FROM ".TBL_MUPI_ORDERS . " as a$intervalo;";
    $result = mysql_query($q, $this->connection);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
