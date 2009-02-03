@@ -216,6 +216,7 @@ function INICIAR_MENUES () {
 	<li><a href="#" rel="menu_herramientas">Herramientas</a></li>'
 	.'<li>'.  CREAR_LINK_GET("gestionar+pantallas","Gestionar pantallas", "Eliminar o modificar pantallas") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("gestionar+pedidos","Gestionar pedidos", "Eliminar o modificar pedidos") .'</li>'
+	.'<li>'.  CREAR_LINK_GET("ver+reportes", "Reportes", "Generar reportes") .'</li>'
 	.'<li><a href="./?accion=salir">Cerrar sesión administrativa</a></li>	
 	</ul>
 	</div>
