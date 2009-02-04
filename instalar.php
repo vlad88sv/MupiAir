@@ -175,8 +175,8 @@ No tiene campo para decir que MUPI afectó porque al contrario es en las tablas 
 TBL_MUPI_FACES en las que se relaciona con una entrada de esta tabla.
 */
 
-$q="codigo_evento VARCHAR(50) NOT NULL PRIMARY KEY, descripcion_evento VARCHAR(500)";
-CREAR_TBL(TBL_MUPI_EVENTS, $q);
+$q="id_evento INT NOT NULL AUTO_INCREMENT PRIMARY KEY, timestamp INT(11), categoria VARCHAR(100), afectado VARCHAR(100), descripcion_evento VARCHAR(500), foto_evento INT(11)";
+CREAR_TBL(TBL_EVENTS, $q);
 
 /*
 Esta tabla es un cache de GEOCODES. Requerido por PHPGoogleMapApi para optimizar la búsqueda de los mismos GEOCODES.

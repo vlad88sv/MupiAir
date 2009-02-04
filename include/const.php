@@ -17,7 +17,7 @@ define("TBL_COMMENTS", "emupi_comentarios");
 define("TBL_MUPI", "emupi_mupis");
 define("TBL_MUPI_ORDERS", "emupi_mupis_pedidos");
 define("TBL_MUPI_FACES", "emupi_mupis_caras");
-define("TBL_MUPI_EVENTS", "emupi_mupis_eventos");
+define("TBL_EVENTS", "emupi_mupis_eventos");
 define("TBL_GEOCODE_CACHE", "emupi_geocode_cache");
 define("TBL_STREETS", "emupi_calles");
 define("TBL_IMG","emupi_imagenes");
