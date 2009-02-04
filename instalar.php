@@ -203,7 +203,7 @@ CREAR_TBL(TBL_IMG, $q);
 /*
 Esta tabla se encarga de llevar los comentarios de los usuarios.
 */
-$q="id_comentario INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo TEXT, comentario VARCHAR(11), timestamp int(11), tipo tinyint(1)";
+$q="id_comentario INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo TEXT, comentario VARCHAR(500), timestamp int(11), tipo tinyint(1)";
 CREAR_TBL(TBL_COMMENTS, $q);
 
 echo '<h3>+Creando usuario '.$_POST['admin'].'...</h3><br />';
