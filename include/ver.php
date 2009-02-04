@@ -10,10 +10,12 @@ function retornar($texto) {
 if ( !isset($_GET['id']) ) retornar ("¡Ups!, parece que esta utilizando mal este script");
 
 global $session, $database;
+/*
 if ( !$session->logged_in  ) {
 	// Denegar la búsqueda
 	retornar ("¡Ups!, ¡parece que no podemos mostrarte nada a menos que estes registrado!");
 }
+*/
 
 	// Búscar y mostrar la imagen
 	$link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');

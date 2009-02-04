@@ -92,10 +92,8 @@ global $session, $map, $database;
 $map->setDSN('mysql://'.DB_USER.':'.DB_PASS.'@'.DB_SERVER.'/'.DB_NAME);
 //Google Map Key
 $map->setAPIKey(GOOGLE_MAP_KEY);
-//Imagen de los marcadores
-//$map->setMarkerIcon('../hojita.gif','../hojita.gif',0,0,10,10);
 // proporción de la ventana que tomará el mapa.
- $map->setWidth('100%');
+$map->setWidth('100%');
 // Desactivar controles de Zoom para cliente.
 if ( !$session->isAdmin() ) $map->map_controls = false;
 // Cargar puntos mupis.
@@ -116,6 +114,8 @@ if ( $session->isAdmin() && !$usuario ) {
    if($num_rows == 0){
       exit ("¡No hay "._NOMBRE_." ingresados!<br />");
    }
+   //Imagen de los marcadores
+if ( !$session->isAdmin() || $usuario ) $map->setMarkerIcon('http://'.$_SERVER['SERVER_ADDR'].'/mupi/include/ver.php?id='.mysql_result($result,0,"logotipo"),'',0,0,0,0);
    
    for($i=0; $i<$num_rows; $i++){
       $codigo_mupi  = mysql_result($result,$i,"codigo_mupi");

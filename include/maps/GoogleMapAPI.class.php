@@ -771,9 +771,11 @@ class GoogleMapAPI {
      */
     function createMarkerIcon($iconImage,$iconShadowImage = '',$iconAnchorX = 'x',$iconAnchorY = 'x',$infoWindowAnchorX = 'x',$infoWindowAnchorY = 'x') {
         $_icon_image_path = $iconImage;
+
         if(!($_image_info = @getimagesize($_icon_image_path))) {
             die('GoogleMapAPI:createMarkerIcon: Error reading image [1]: ' . $iconImage);   
         }
+/*
         if($iconShadowImage) {
             $_shadow_image_path = $iconShadowImage;
             if(!($_shadow_info = @getimagesize($_shadow_image_path))) {
@@ -781,6 +783,7 @@ class GoogleMapAPI {
             }
         }
         
+*/
         if($iconAnchorX === 'x') {
             $iconAnchorX = (int) ($_image_info[0] / 2);
         }
@@ -794,20 +797,25 @@ class GoogleMapAPI {
             $infoWindowAnchorY = (int) ($_image_info[1] / 2);
         }
                         
+
         $icon_info = array(
                 'image' => $iconImage,
-                'iconWidth' => $_image_info[0],
-                'iconHeight' => $_image_info[1],
+                'iconWidth' => '50', //$_image_info[0],
+                'iconHeight' => '50', // $_image_info[1],
                 'iconAnchorX' => $iconAnchorX,
                 'iconAnchorY' => $iconAnchorY,
                 'infoWindowAnchorX' => $infoWindowAnchorX,
                 'infoWindowAnchorY' => $infoWindowAnchorY
                 );
+
+/*
         if($iconShadowImage) {
             $icon_info = array_merge($icon_info, array('shadow' => $iconShadowImage,
-                                                       'shadowWidth' => $_shadow_info[0],
-                                                       'shadowHeight' => $_shadow_info[1]));
+                                                       'shadowWidth' =>  '100', $_shadow_info[0],
+                                                       'shadowHeight' => '100', $_shadow_info[1]));
         }
+*/
+
         return $icon_info;
     }
     
@@ -873,7 +881,7 @@ class GoogleMapAPI {
 
                     $_output .= "icon[$i] = new GIcon();\n";   
                     $_output .= sprintf('icon[%s].image = "%s";',$i,$info['image']) . "\n";   
-                    if($info['shadow']) {
+                    if(isset($info['shadow'])) {
                         $_output .= sprintf('icon[%s].shadow = "%s";',$i,$info['shadow']) . "\n";
                         $_output .= sprintf('icon[%s].shadowSize = new GSize(%s,%s);',$i,$info['shadowWidth'],$info['shadowHeight']) . "\n";   
                     }
