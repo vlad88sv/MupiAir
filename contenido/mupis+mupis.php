@@ -137,7 +137,7 @@ $form->setValue("direccion", $_POST['direccion']);
 $form->setValue("lon", $_POST['lon']);
 $form->setValue("lat", $_POST['lat']);
 $form->setValue("codigo_calle", $_POST['codigo_calle']);
-$q = "INSERT INTO ".TBL_MUPI." (codigo_mupi, direccion, foto_generica, lon, lat, codigo_calle) VALUES ('".$_POST['codigo_mupi'] . "', '" . $_POST['direccion'] . "'," . $idImg . ", '" . $_POST['lon'] . "', '" . $_POST['lat'] . "', '" . $_POST['codigo_calle'] . "') ON DUPLICATE KEY UPDATE codigo_mupi=VALUES(codigo_mupi), direccion=VALUES(direccion), foto_generica=VALUES(foto_generica), lon=VALUES(lon), lat=VALUES(lat), codigo_calle=VALUES(codigo_calle);";
+$q = "INSERT INTO ".TBL_MUPI." (codigo_mupi, direccion, foto_generica, lon, lat, codigo_calle) VALUES ('".$_POST['codigo_mupi'] . "', '" . $_POST['direccion'] . "','" . $idImg . "','" . $_POST['lon'] . "', '" . $_POST['lat'] . "', '" . $_POST['codigo_calle'] . "') ON DUPLICATE KEY UPDATE codigo_mupi=VALUES(codigo_mupi), direccion=VALUES(direccion), foto_generica=VALUES(foto_generica), lon=VALUES(lon), lat=VALUES(lat), codigo_calle=VALUES(codigo_calle);";
 DEPURAR ($q);	
 $result = $database->query($q);
 }
