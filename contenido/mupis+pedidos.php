@@ -22,7 +22,7 @@ function CONTENIDO_pedidos($usuario, $pedido) {
 		// Eliminamos la pantalla
 		$q = "DELETE FROM " . TBL_MUPI_ORDERS . " WHERE codigo_pedido=" . $_GET['eliminar'] . ";";
 		$result = $database->query($q);
-		if ( $result ) { echo "Pedido eliminado<br />"; }
+		if ( $result ) { echo Mensaje ("Pedido eliminado",_M_INFO); } else { echo Mensaje ("Pedido no pudo ser eliminado",_M_ERROR); }
 		
 		// Eliminamos cualquier imagen que estuviera asociada a esa pantalla
 		if ($_GET['imagen']) {
@@ -180,9 +180,9 @@ $q = "INSERT INTO ".TBL_MUPI_ORDERS." ( codigo_pedido, codigo, catorcena_inicio,
 DEPURAR ($q);
 //print_ar($_POST);
 if ( $database->query($q) == 1 ) {
-	echo "<blockquote>Exito al registrar el pedido de ".  $_POST['codigo'].'</blockquote>';
+	echo Mensaje ("Exito al registrar el pedido de ".  $_POST['codigo'], _M_INFO);
 } else {
-	echo "<blockquote>Falló el registro el pedido de " . $_POST['codigo'].'</blockquote>';
+	echo Mensaje ("Falló el registro el pedido de " . $_POST['codigo'], _M_ERROR);
 }
 }
 ?>

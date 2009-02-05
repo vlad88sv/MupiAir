@@ -15,13 +15,13 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 			// Eliminamos la pantalla
 			$q = "DELETE FROM " . TBL_MUPI_FACES . " WHERE Id='" . $_GET['eliminar'] . "';";
 			$result = $database->query($q);
-			if ( $result ) { echo "Pantalla eliminada<br />"; }
+			if ( $result ) { echo Mensaje ("Pantalla eliminada",_M_INFO); } else { echo Mensaje ("Pantalla no pudo ser eliminada",_M_ERROR); }
 			
 			// Eliminamos cualquier imagen que estuviera asociada a esa pantalla
 			if ($_GET['imagen']) {
 			$q = "DELETE FROM " . TBL_IMG . " WHERE id_imagen=" . $_GET['imagen'] . ";";
 			$result = $database->query($q);
-			if ( $result ) { echo "Imagen asociada a la pantalla eliminada<br />"; } 
+			if ( $result ) { echo Mensaje ("Imagen asociada eliminada",_M_INFO); } else { echo Mensaje ("Imagen asociada no pudo ser eliminada",_M_ERROR); }
 			}
 	}
 	
@@ -183,9 +183,9 @@ if ( isset($_POST['Id'] ) ) {
 $q = "INSERT INTO ".TBL_MUPI_FACES." (".$extra1."codigo_pantalla_mupi, codigo_mupi, codigo_pedido, foto_real, catorcena) VALUES (".$extra2."'" . $_POST['codigo_pantalla_mupi'] . "', '" . $_POST['codigo_mupi']  . "', '" . $_POST['codigo_pedido']  . "', '" . $idImg .  "', '" . $_POST['catorcena']  .  "')  ON DUPLICATE KEY UPDATE codigo_pantalla_mupi=VALUES(codigo_pantalla_mupi), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido), foto_real=VALUES(foto_real);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
-	echo "<blockquote>Exito al registrar ".  $_POST['codigo_pantalla_mupi'].'</blockquote>';
+	echo Mensaje ("Exito al registrar el pedido de ".  $_POST['codigo_pantalla_mupi'], _M_INFO);
 } else {
-	echo "<blockquote>Falló el registro de " . $_POST['codigo_pantalla_mupi'].'</blockquote>';
+	echo Mensaje ("Falló el registro el pedido de " . $_POST['codigo_pantalla_mupi'], _M_ERROR);
 }
 }
 ?>

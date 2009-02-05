@@ -15,7 +15,7 @@ function CONTENIDO_mupis($usuario="",$mupi="") {
 		// Eliminamos la pantalla
 		$q = "DELETE FROM " . TBL_MUPI . " WHERE codigo_mupi='" . $_GET['eliminar'] . "';";
 		$result = $database->query($q);
-		if ( $result ) { echo "Eco Mupis eliminado<br />"; }
+		if ( $result ) { echo Mensaje ("Eco Mupis eliminado",_M_INFO); } else { echo Mensaje ("Eco Mupis no pudo ser eliminado",_M_ERROR); }
 		}
 		
 	}
@@ -51,7 +51,7 @@ function verMUPIS(){
 		//$codigo_evento  = mysql_result($result,$i,"codigo_evento");
 		$codigo_calle  = CREAR_LINK_GET("gestionar+calles&amp;calle=".mysql_result($result,$i,"codigo_calle"), mysql_result($result,$i,"calle"), "Editar los datos de este pedido");
 		$Eliminar = CREAR_LINK_GET("gestionar+mupis&amp;eliminar=".mysql_result($result,$i,"codigo_mupi"),"Eliminar", "Eliminar los datos de este "._NOMBRE_);
-	echo "<tr><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$Longitud</td><td>$Latitud</td><td>$codigo_calle</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
+	echo "<tr><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$Longitud</td><td>$Latitud</td><td>$codigo_calle</td><td>$Eliminar</td></tr>";
 	}
 	echo "</table><br />";
 }
@@ -139,6 +139,10 @@ $form->setValue("lat", $_POST['lat']);
 $form->setValue("codigo_calle", $_POST['codigo_calle']);
 $q = "INSERT INTO ".TBL_MUPI." (codigo_mupi, direccion, foto_generica, lon, lat, codigo_calle) VALUES ('".$_POST['codigo_mupi'] . "', '" . $_POST['direccion'] . "','" . $idImg . "','" . $_POST['lon'] . "', '" . $_POST['lat'] . "', '" . $_POST['codigo_calle'] . "') ON DUPLICATE KEY UPDATE codigo_mupi=VALUES(codigo_mupi), direccion=VALUES(direccion), foto_generica=VALUES(foto_generica), lon=VALUES(lon), lat=VALUES(lat), codigo_calle=VALUES(codigo_calle);";
 DEPURAR ($q);	
-$result = $database->query($q);
+if ( $database->query($q) == 1 ) {
+	echo Mensaje ("Exito al registrar el Eco Mupi con código ".  $_POST['codigo_mupi'], _M_INFO);
+} else {
+	echo Mensaje ("Falló al registrar el Eco Mupi con código " . $_POST['codigo_mupi'], _M_ERROR);
+}
 }
 ?>
