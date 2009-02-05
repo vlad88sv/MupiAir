@@ -35,4 +35,9 @@ define("EMAIL_FROM_NAME", _NOMBRE_);
 define("EMAIL_FROM_ADDR", "administrador@mupi.com.sv");
 define("EMAIL_WELCOME", true);
 define("ALL_LOWERCASE", false);
+/*
+Constantes para mensajes
+*/
+define("_M_INFO", 0);
+define("_M_ERROR", 1);
 ?>
