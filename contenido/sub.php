@@ -130,7 +130,8 @@ function CONTENIDO_mostrar_principal() {
 		$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
 		CONTENIDO_mupis_ubicaciones($usuario);
 		break;
-		
+	
+	case "gestionar eventos":	
 	case "ver eventos":
 		CONTENIDO_mupis_eventos();
 		break;
