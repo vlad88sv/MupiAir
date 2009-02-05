@@ -53,6 +53,11 @@ function Obtener_catorcena_siguiente() {
 	return strtotime("+14 day",Obtener_catorcena_cercana());
 }
 
+function Obtener_catorcena_anterior($referencia=NULL) {
+	if ( !$referencia ) { $referencia = Obtener_catorcena_cercana(); }
+	return strtotime("-14 day", $referencia);
+}
+
 function Contar_catorcenas ($inicio=0, $fin=0 ) {
 if ($fin)
 return ceil((($fin-$inicio)/1209600));
