@@ -313,4 +313,20 @@ function CargarImagenDesdeBD ($id, $width='100%', $height='100%') {
 function GenerarTooltip ($texto) {
 	return ' onMouseOver=\'toolTip("'.addslashes($texto).'")\' onMouseOut="toolTip()" ';
 }
+
+function Mensaje ($texto, $tipo=_M_INFO){
+	switch ( $tipo ) {
+		case _M_INFO:
+		$id = "info";
+		break;
+		case _M_ERROR:
+		$id = "error";
+		break;
+		default:
+		echo 'Error: no se definió el $tipo de mensaje';
+	}
+	
+	return "<div id=\"$id\">".$texto."</div>";
+	
+}
 ?>
