@@ -11,12 +11,20 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 	}
 	
 	if ( isset($_GET['sub']) && $catorcena_inicio ) {
-		if ( ($_GET['sub'] == 'clonar') ) {
+		switch ( $_GET['sub'] ) {
+			case 'clonar':
 			$CatorcenaAnterior = Obtener_catorcena_anterior($catorcena_inicio);
 			$q = "INSERT INTO emupi_mupis_caras (codigo_pantalla_mupi, codigo_mupi , codigo_pedido , foto_real , catorcena ) SELECT codigo_pantalla_mupi, codigo_mupi, codigo_pedido , foto_real , $catorcena_inicio FROM emupi_mupis_caras WHERE catorcena=$CatorcenaAnterior;";
 			$result = $database->query($q);
 			if ( $result ) { echo Mensaje ("Clonado completo.<br />Los datos de la catorcena ".date('d/m/Y',$CatorcenaAnterior)." ahora existen para la catorcena ".date('d/m/Y',$catorcena_inicio),_M_INFO); } else { echo Mensaje ("Falló la clonación.",_M_ERROR); }
-		}
+			break;
+			
+			case 'eliminar_datos':
+			$q = "DELETE emupi_mupis_caras WHERE catorcena=$catorcena_inicio;";
+			$result = $database->query($q);
+			if ( $result ) { echo Mensaje ("Eliminado de datos completo.<br />Se eliminaron los datos de la catorcena ".date('d/m/Y',$catorcena_inicio),_M_INFO); } else { echo Mensaje ("Falló la eliminación de datos.",_M_ERROR); }
+			break;
+		}	
 	}
 	
 	if ( isset($_GET['eliminar']) && isset($_GET['imagen']) ) {
@@ -47,9 +55,11 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 	echo "Viendo pantallas "._NOMBRE_." de la catorcena " . Combobox_catorcenas("miSelect", $Catorcena) ;
 	$BotonCambiar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena=\'+document.getElementsByName(\'miSelect\')[0].value" value="Cambiar">';
 	$BotonClonarCatorcenaAnterior = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=clonar\'" value="Clonar anterior" '.GenerarTooltip('Clona los datos de los mupis de la catorcena inmediata anterior').'>';
+	$BotonEliminarDatosCatorcena = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=eliminar_datos\'" value="Eliminar Datos" '.GenerarTooltip('Elimina los datos mostrados para la catorcena actual').'>';	
 	echo $BotonCambiar;
 	echo $BotonCancelar;
 	echo $BotonClonarCatorcenaAnterior;
+	echo $BotonEliminarDatosCatorcena;
 	echo "<hr />";
 	verPantallas($usuario);
 	if ( $session->isAdmin() ) {
@@ -87,7 +97,7 @@ function verPantallas($usuario="", $pantalla=""){
       return;
    }
 echo '<table>';
-echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th>Código pedido</th><th>Foto real</th><th>Evento</th><th>Acción</th></tr>";
+echo "<tr><th>Código "._NOMBRE_."</th><th>Cara</th><th>Código pedido</th><th>Foto real</th><th>Evento</th><th>Acción</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_pantalla_mupi  = mysql_result($result,$i,"codigo_pantalla_mupi");
       $codigo_mupi = CREAR_LINK_GET("gestionar+mupis&amp;mupi=".mysql_result($result,$i,"codigo_mupi"), mysql_result($result,$i,"codigo_mupi_traducido"), "Ver y/o editar los datos de este "._NOMBRE_);
@@ -97,8 +107,8 @@ echo "<tr><th>Código Pantalla "._NOMBRE_."</th><th>Código "._NOMBRE_."</th><th
       $foto_real  = mysql_result($result,$i,"foto_real");
 	  if ( $foto_real ) { $foto_real = "<span ".GenerarTooltip(CargarImagenDesdeBD(mysql_result($result,$i,"foto_real"),'200px','200px'))." />". $foto_real."</span>"; }
       $Eliminar = CREAR_LINK_GET("gestionar+pantallas&amp;eliminar=".mysql_result($result,$i,"Id")."&amp;imagen=".mysql_result($result,$i,"foto_real")."&amp;catorcena=$Catorcena","Eliminar", "Eliminar los datos de esta pantalla");
-      $codigo_pantalla_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;id=".mysql_result($result,$i,"Id")."&amp;catorcena=$Catorcena",$codigo_pantalla_mupi, "Editar los datos de esta pantalla");
-      echo "<tr><td>$codigo_pantalla_mupi</td><td>$codigo_mupi</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
+      $codigo_pantalla_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;id=".mysql_result($result,$i,"Id")."&amp;catorcena=$Catorcena",($codigo_pantalla_mupi == 0 ? 'Vehicular' : 'Peatonal'), "Editar los datos de esta pantalla");
+      echo "<tr><td>$codigo_mupi</td><td>$codigo_pantalla_mupi</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
    }
    echo "</table><br>";
 }
@@ -141,7 +151,7 @@ if ($id) {
 }
 	$CampoCatorcena =  '<input type="hidden" name="catorcena" value="'.$Catorcena.'">';
 	$CampoId2 = '<tr><td width="25%">Identificador</td><td><b>'. $id. '</b></td></tr>';
-	$CampoPantalla = '<tr><td width="25%">Código de Pantalla '._NOMBRE_.'</td><td><input type="text" name="codigo_pantalla_mupi" style="width: 100%;" maxlength="255" value="'.$Pantalla.'"></td></tr>';
+	$CampoPantalla = '<tr><td width="25%">Código de Pantalla '._NOMBRE_.'</td><td>'.Combobox__TipoPantalla ($Pantalla).'</td></tr>';
 	$CampoCodigoMUPI = '<tr><td>Enlazar al '._NOMBRE_.' código</td><td>'. $database->Combobox_mupi("codigo_mupi", $codigo_mupi) .'</td></tr>';
 	$CampoCodigoPedido = '<tr><td>Enlazar al pedido '._NOMBRE_.' código</td><td>'. $database->Combobox_pedido("codigo_pedido", $codigo_pedido, $Catorcena, Fin_de_catorcena($Catorcena)) . '</td></tr>';
 	$CampoFotoReal = '<tr><td>Agregar Foto real </td><td><input type="file" name="foto_real" '.$OnChangePantalla.'></td></tr>';
@@ -157,8 +167,8 @@ echo '
 <table>
 '.$CampoCatorcena.'
 '.$CampoId.'
-'.$CampoPantalla.'
 '.$CampoCodigoMUPI.'
+'.$CampoPantalla.'
 '.$CampoCodigoPedido.'
 '.$CampoConservarPantalla.'
 '.$CampoConservarPantalla2.'
@@ -197,5 +207,13 @@ if ( $database->query($q) == 1 ) {
 } else {
 	echo Mensaje ("Falló el registro el pedido de " . $_POST['codigo_pantalla_mupi'], _M_ERROR);
 }
+}
+
+function Combobox__TipoPantalla($default=0){
+	$datos = '<select name="codigo_pantalla_mupi">';
+	$datos .= '<option value="0"'. ($default == 0 ? 'selected="selected"' : '') .'>Vehicular</option>';
+	$datos .= '<option value="1"'. ($default == 1 ? 'selected="selected"' : '') .'>Peatonal</option>';
+	$datos .= '</select>';
+	return $datos;
 }
 ?>
