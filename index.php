@@ -89,7 +89,7 @@ require_once("contenido/mupis+calles.php");
 		<div class="clear"></div>
 		<?php 
 		global $session; 
-		if ( $session->logged_in ) {
+		if ( $session->logged_in && $session->isAdmin() ) {
 		echo '<div id="abajo">';
 		CONTENIDO_en_linea();
 		echo '</div>';
