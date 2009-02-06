@@ -117,12 +117,13 @@ if ( $session->isAdmin() && !$usuario ) {
    if($num_rows == 0){
       exit ("¡No hay "._NOMBRE_." ingresados!<br />");
    }
-   //Imagen de los marcadores
-if ( !$session->isAdmin() || $usuario ) $map->setMarkerIcon('http://'.$_SERVER['SERVER_ADDR'].'/mupi/include/ver.php?id='.mysql_result($result,0,"logotipo"),'',0,0,0,0);
+	//Imagen de los marcadores
+	//Removido por petición. 06/02/09
+	//if ( !$session->isAdmin() || $usuario ) $map->setMarkerIcon('http://'.$_SERVER['SERVER_ADDR'].'/mupi/include/ver.php?id='.mysql_result($result,0,"logotipo"),'',0,0,0,0);
    
    for($i=0; $i<$num_rows; $i++){
       $codigo_mupi  = mysql_result($result,$i,"codigo_mupi");
-      $direccion = mysql_result($result,$i,"direccion");
+      $direccion = truncate(mysql_result($result,$i,"direccion"));
       $foto_generica = mysql_result($result,$i,"foto_generica");
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
