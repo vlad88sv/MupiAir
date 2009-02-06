@@ -1096,6 +1096,7 @@ class GoogleMapAPI {
         if($this->info_window) {
             $_output .= sprintf('if(isArray(html)) { GEvent.addListener(marker, "%s", function() { marker.openInfoWindowTabsHtml(html); }); }',$this->window_trigger) . "\n";
             $_output .= sprintf('else { GEvent.addListener(marker, "%s", function() { marker.openInfoWindowHtml(html); '.$_SCRIPT_.' }); }',$this->window_trigger) . "\n";
+			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#datos_mupis").html(""); });' . "\n";
         }
         $_output .= 'points[counter] = point;' . "\n";
         $_output .= 'markers[counter] = marker;' . "\n";
