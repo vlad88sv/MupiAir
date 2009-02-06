@@ -14,7 +14,7 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 		switch ( $_GET['sub'] ) {
 			case 'clonar':
 			$CatorcenaAnterior = Obtener_catorcena_anterior($catorcena_inicio);
-			$q = "INSERT INTO emupi_mupis_caras (codigo_pantalla_mupi, codigo_mupi , codigo_pedido , foto_real , catorcena ) SELECT codigo_pantalla_mupi, codigo_mupi, codigo_pedido , foto_real , $catorcena_inicio FROM emupi_mupis_caras WHERE catorcena=$CatorcenaAnterior;";
+			$q = "INSERT INTO emupi_mupis_caras (tipo_pantalla, codigo_mupi , codigo_pedido , foto_real , catorcena ) SELECT tipo_pantalla, codigo_mupi, codigo_pedido , foto_real , $catorcena_inicio FROM emupi_mupis_caras WHERE catorcena=$CatorcenaAnterior;";
 			$result = $database->query($q);
 			if ( $result ) { echo Mensaje ("Clonado completo.<br />Los datos de la catorcena ".date('d/m/Y',$CatorcenaAnterior)." ahora existen para la catorcena ".date('d/m/Y',$catorcena_inicio),_M_INFO); } else { echo Mensaje ("Falló la clonación.",_M_ERROR); }
 			break;
@@ -29,7 +29,7 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 	
 	if ( isset($_GET['eliminar']) && isset($_GET['imagen']) ) {
 			// Eliminamos la pantalla
-			$q = "DELETE FROM " . TBL_MUPI_FACES . " WHERE Id='" . $_GET['eliminar'] . "';";
+			$q = "DELETE FROM " . TBL_MUPI_FACES . " WHERE id_pantalla='" . $_GET['eliminar'] . "';";
 			$result = $database->query($q);
 			if ( $result ) { echo Mensaje ("Pantalla eliminada",_M_INFO); } else { echo Mensaje ("Pantalla no pudo ser eliminada",_M_ERROR); }
 			
@@ -84,7 +84,7 @@ function verPantallas($usuario="", $pantalla=""){
    if ($usuario) {
     $WHERE = " WHERE codigo='".$usuario."'";
     }
-   $q = "SELECT Id, codigo_pantalla_mupi, codigo_mupi, (SELECT CONCAT(codigo_calle, '.' , codigo_mupi, ' | ', (SELECT ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=@codigo_calle:=b.codigo_calle), ', ', direccion ) FROM emupi_mupis as c WHERE c.id_mupi=a.codigo_mupi) AS codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento, @calle as codigo_calle2 FROM ".TBL_MUPI_FACES." as a WHERE catorcena = $Catorcena ORDER BY codigo_calle2, codigo_mupi, codigo_pantalla_mupi;";
+   $q = "SELECT id_pantalla, tipo_pantalla, codigo_mupi, (SELECT CONCAT(codigo_calle, '.' , codigo_mupi, ' | ', (SELECT ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=@codigo_calle:=b.codigo_calle), ', ', direccion ) FROM emupi_mupis as c WHERE c.id_mupi=a.codigo_mupi) AS codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento, @calle as codigo_calle2 FROM ".TBL_MUPI_FACES." as a WHERE catorcena = $Catorcena ORDER BY codigo_calle2, codigo_mupi, tipo_pantalla;";
    //echo $q;
    $result = $database->query($q);
    if ( !$result ) {
@@ -99,16 +99,16 @@ function verPantallas($usuario="", $pantalla=""){
 echo '<table>';
 echo "<tr><th>Código "._NOMBRE_."</th><th>Cara</th><th>Código pedido</th><th>Foto real</th><th>Evento</th><th>Acción</th></tr>";
    for($i=0; $i<$num_rows; $i++){
-      $codigo_pantalla_mupi  = mysql_result($result,$i,"codigo_pantalla_mupi");
+      $tipo_pantalla  = mysql_result($result,$i,"tipo_pantalla");
       $codigo_mupi = CREAR_LINK_GET("gestionar+mupis&amp;mupi=".mysql_result($result,$i,"codigo_mupi"), mysql_result($result,$i,"codigo_mupi_traducido"), "Ver y/o editar los datos de este "._NOMBRE_);
       $codigo_pedido = CREAR_LINK_GET("gestionar+pedidos&amp;pedido=" . mysql_result($result,$i,"codigo_pedido"), mysql_result($result,$i,"codigo_pedido_traducido"), "Ver a quien pertenece este pedido");
       $codigo_evento = ''; //Ejecutar la búsqueda de eventos para esta pantalla
-	  $codigo_evento .= CREAR_LINK_GET("gestionar+eventos&amp;sub=adicionar&amp;tipo=PANTALLA&amp;afectado=".mysql_result($result,$i,"Id"),"Agregar","Agrega un evento");
+	  $codigo_evento .= CREAR_LINK_GET("gestionar+eventos&amp;sub=adicionar&amp;tipo=PANTALLA&amp;afectado=".mysql_result($result,$i,"id_pantalla"),"Agregar","Agrega un evento");
       $foto_real  = mysql_result($result,$i,"foto_real");
 	  if ( $foto_real ) { $foto_real = "<span ".GenerarTooltip(CargarImagenDesdeBD(mysql_result($result,$i,"foto_real"),'200px','200px'))." />". $foto_real."</span>"; }
-      $Eliminar = CREAR_LINK_GET("gestionar+pantallas&amp;eliminar=".mysql_result($result,$i,"Id")."&amp;imagen=".mysql_result($result,$i,"foto_real")."&amp;catorcena=$Catorcena","Eliminar", "Eliminar los datos de esta pantalla");
-      $codigo_pantalla_mupi  = CREAR_LINK_GET("gestionar+pantallas&amp;id=".mysql_result($result,$i,"Id")."&amp;catorcena=$Catorcena",($codigo_pantalla_mupi == 0 ? 'Vehicular' : 'Peatonal'), "Editar los datos de esta pantalla");
-      echo "<tr><td>$codigo_mupi</td><td>$codigo_pantalla_mupi</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
+      $Eliminar = CREAR_LINK_GET("gestionar+pantallas&amp;eliminar=".mysql_result($result,$i,"id_pantalla")."&amp;imagen=".mysql_result($result,$i,"foto_real")."&amp;catorcena=$Catorcena","Eliminar", "Eliminar los datos de esta pantalla");
+      $tipo_pantalla  = CREAR_LINK_GET("gestionar+pantallas&amp;id=".mysql_result($result,$i,"id_pantalla")."&amp;catorcena=$Catorcena",($tipo_pantalla == 0 ? 'Vehicular' : 'Peatonal'), "Editar los datos de esta pantalla");
+      echo "<tr><td>$codigo_mupi</td><td>$tipo_pantalla</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
    }
    echo "</table><br>";
 }
@@ -128,11 +128,11 @@ $CampoConservarPantalla = '';
 $CampoConservarPantalla2 = '';
 
 if ($id) {
-	$q = "SELECT * FROM ".TBL_MUPI_FACES." WHERE Id='$id';";
+	$q = "SELECT * FROM ".TBL_MUPI_FACES." WHERE id_pantalla='$id';";
 	$result = $database->query($q);
 	
-	$CampoId =  '<input type="hidden" name="Id" value="'.$id.'">';
-	$Pantalla = mysql_result($result,0,"codigo_pantalla_mupi") ;
+	$CampoId =  '<input type="hidden" name="id_pantalla" value="'.$id.'">';
+	$Pantalla = mysql_result($result,0,"tipo_pantalla") ;
 	$codigo_mupi =  mysql_result($result,0,"codigo_mupi") ;
 	$codigo_pedido = mysql_result($result,0,"codigo_pedido");
 	$Catorcena = mysql_result($result,0,"catorcena");
@@ -193,14 +193,14 @@ if ( !isset($_POST['ConservarPantalla']) ) {
 } else {
 	$idImg = $_POST['ConservarPantalla'];
 }
-if ( isset($_POST['Id'] ) ) {
-	$extra1 = 'Id, ';
-	$extra2 = "'".$_POST['Id']."', ";
+if ( isset($_POST['id_pantalla'] ) ) {
+	$extra1 = 'id_pantalla, ';
+	$extra2 = "'".$_POST['id_pantalla']."', ";
 } else {
 	$extra1 = '';
 	$extra2 = '';
 }
-$q = "INSERT INTO ".TBL_MUPI_FACES." (".$extra1."codigo_pantalla_mupi, codigo_mupi, codigo_pedido, foto_real, catorcena) VALUES (".$extra2."'" . $_POST['codigo_pantalla_mupi'] . "', '" . $_POST['codigo_mupi']  . "', '" . $_POST['codigo_pedido']  . "', '" . $idImg .  "', '" . $_POST['catorcena']  .  "')  ON DUPLICATE KEY UPDATE codigo_pantalla_mupi=VALUES(codigo_pantalla_mupi), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido), foto_real=VALUES(foto_real);";
+$q = "INSERT INTO ".TBL_MUPI_FACES." (".$extra1."tipo_pantalla, codigo_mupi, codigo_pedido, foto_real, catorcena) VALUES (".$extra2."'" . $_POST['tipo_pantalla'] . "', '" . $_POST['codigo_mupi']  . "', '" . $_POST['codigo_pedido']  . "', '" . $idImg .  "', '" . $_POST['catorcena']  .  "')  ON DUPLICATE KEY UPDATE tipo_pantalla=VALUES(tipo_pantalla), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido), foto_real=VALUES(foto_real);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
 	echo Mensaje ("Exito al registrar la pantalla", _M_INFO);
@@ -210,7 +210,7 @@ if ( $database->query($q) == 1 ) {
 }
 
 function Combobox__TipoPantalla($default=0){
-	$datos = '<select name="codigo_pantalla_mupi">';
+	$datos = '<select name="tipo_pantalla">';
 	$datos .= '<option value="0"'. ($default == 0 ? 'selected="selected"' : '') .'>Vehicular</option>';
 	$datos .= '<option value="1"'. ($default == 1 ? 'selected="selected"' : '') .'>Peatonal</option>';
 	$datos .= '</select>';

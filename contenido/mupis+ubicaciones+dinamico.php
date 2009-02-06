@@ -53,9 +53,9 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die('!->La base de datos seleccionada "'.$DB_base.'" no existe');
    if ( $session->isAdmin() ) {
-	$q = "select codigo_pantalla_mupi, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
+	$q = "select tipo_pantalla, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
    } else {
-	$q = "select codigo_pantalla_mupi, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos where codigo='$usuario') AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
+	$q = "select tipo_pantalla, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos where codigo='$usuario') AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
    }
    //echo $q.'<br />';
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba la disponibilidad del MUPI.');
@@ -73,10 +73,10 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
    $tipoPantalla = ''; //Par
    for($i=0; $i<$num_rows; $i++){
 	  $arte = mysql_result($result,$i,"arte");
-      $codigo_pantalla_mupi  = mysql_result($result,$i,"codigo_pantalla_mupi");
+      $tipo_pantalla  = mysql_result($result,$i,"tipo_pantalla");
       $foto_real = mysql_result($result,$i,"foto_real");
       // si es par es vehicular
-      if ( ($codigo_pantalla_mupi % 2) == 0 ) {
+      if ( ($tipo_pantalla % 2) == 0 ) {
 		$tipoPantalla = 'vehicular';
 		   
       }else{
