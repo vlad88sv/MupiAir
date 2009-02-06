@@ -322,6 +322,9 @@ function Mensaje ($texto, $tipo=_M_INFO){
 		case _M_ERROR:
 		$id = "error";
 		break;
+		case _M_NOTA:
+		$id = "nota";
+		break;
 		default:
 		echo 'Error: no se definió el $tipo de mensaje';
 	}

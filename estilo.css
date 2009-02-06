@@ -8,6 +8,8 @@ blockquote{background-color:#9CC089;border:2px solid #C1DAD6;margin:0;padding:5p
 #error:before{content:'Error: '}
 #info{background-color:#FFFF00;border:2px solid #000000;margin:0;padding:5px;max-width:100%;font-weight:bold;color:#000000;text-align:center}
 #info:before{content:"Información: "}
+#nota{background-color:#009900;border:2px solid #000000;margin:0;padding:5px;max-width:100%;font-weight:bold;color:#FFFFFF;text-align:center}
+#nota:before{content:"Nota: "}
 p{background-color:#9CC089;border:2px solid #C1DAD6;margin:0;padding:10px;width:95%}
 textarea,input[type=text],input[type=password]{background-color:#FFFFE0;color:#9CC089;font-weight:bold; width: 100%;}
 select{width:300px}

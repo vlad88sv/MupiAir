@@ -40,4 +40,5 @@ Constantes para mensajes
 */
 define("_M_INFO", 0);
 define("_M_ERROR", 1);
+define("_M_NOTA",2);
 ?>
