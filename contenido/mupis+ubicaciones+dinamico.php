@@ -82,8 +82,10 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 		$tipoPantalla = 'peatonal';
       }
 	
-	$datos .="<tr><th>Imagen actual de su pantalla ".$tipoPantalla.":</td><th>Arte digital de su pantalla:</td></tr>";
-	$datos .= "<tr><td>" . CargarImagenDesdeBD($foto_real,"300px","300px") . "</td><td>" . CargarImagenDesdeBD($arte,"300px","300px") . "</td></tr>";	
+	$datos .= "<tr><th><center>Imagen actual de su pantalla ".$tipoPantalla.":</center></th></tr>";
+	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($foto_real,"	300px","300px") . "</center></td>";
+	$datos .= "<tr><th><center>Arte digital de su pantalla:</center></th></tr>";
+	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($arte,"300px","300px") . "</center></td></tr>";	
    }
    $datos .= '</table>';
 retornar($datos);
@@ -97,8 +99,11 @@ $map->setDSN('mysql://'.DB_USER.':'.DB_PASS.'@'.DB_SERVER.'/'.DB_NAME);
 $map->setAPIKey(GOOGLE_MAP_KEY);
 // proporción de la ventana que tomará el mapa.
 $map->setWidth('100%');
-// Desactivar controles de Zoom para cliente.
-if ( !$session->isAdmin() ) $map->map_controls = false;
+// Desactivar controles de Zoom y movimiento para cliente.
+if ( !$session->isAdmin() ) {
+	$map->map_controls = false;
+	$map->disable_drag = true;
+}
 // Cargar puntos mupis.
 $WHERE_USER = '';
 if ( $session->isAdmin() && !$usuario ) {

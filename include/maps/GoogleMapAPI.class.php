@@ -157,7 +157,12 @@ class GoogleMapAPI {
      */
     var $scale_control = true;
     
-    /**
+	/*
+		HACK -> Drag
+	*/
+	var $disable_drag = false;
+	
+	/**
      * enables overview map control
      *
      * @var boolean
@@ -945,6 +950,11 @@ class GoogleMapAPI {
             $_output .= 'map.addControl(new GOverviewMapControl());' . "\n";
         }
         
+		// HACK -> DRAG
+		if($this->disable_drag) {
+			$_output .= 'map.disableDragging();'."\n";
+		}
+		
         $_output .= $this->getAddMarkersJS();
 
         $_output .= $this->getPolylineJS();
@@ -993,6 +1003,7 @@ class GoogleMapAPI {
             $_output .= '}' . "\n";
             $_output .= 'function fromhere(idx) {' . "\n";
             $_output .= 'markers[idx].openInfoWindowHtml(from_htmls[idx]);' . "\n";
+			$_output .= 'map.updateInfoWindow();' . "\n";
             $_output .= '}' . "\n";
         }
 
