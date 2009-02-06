@@ -84,7 +84,7 @@ function verPantallas($usuario="", $pantalla=""){
    if ($usuario) {
     $WHERE = " WHERE codigo='".$usuario."'";
     }
-   $q = "SELECT Id, codigo_pantalla_mupi, codigo_mupi, (SELECT CONCAT(b.codigo_mupi, '. ' , (SELECT ubicacion FROM ".TBL_STREETS." AS c WHERE c.codigo_calle = b.codigo_calle), ', ' , b.direccion) FROM ".TBL_MUPI." as b WHERE b.codigo_mupi=a.codigo_mupi) as codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento FROM ".TBL_MUPI_FACES." as a WHERE catorcena = $Catorcena ORDER BY codigo_pantalla_mupi;";
+   $q = "SELECT Id, codigo_pantalla_mupi, codigo_mupi, (SELECT CONCAT(b.codigo_mupi, '. ' , (SELECT ubicacion FROM ".TBL_STREETS." AS c WHERE c.codigo_calle = @calle := b.codigo_calle), ', ' , b.direccion) FROM ".TBL_MUPI." as b WHERE b.codigo_mupi=a.codigo_mupi) as codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento, @calle as codigo_calle2 FROM ".TBL_MUPI_FACES." as a WHERE catorcena = $Catorcena ORDER BY codigo_calle2, codigo_mupi, codigo_pantalla_mupi;";
    //echo $q;
    $result = $database->query($q);
    if ( !$result ) {
