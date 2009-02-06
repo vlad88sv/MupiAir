@@ -952,7 +952,9 @@ class GoogleMapAPI {
         if($this->sidebar) {
 		// HACK HACK
             //$_output .= sprintf('document.getElementById("%s").innerHTML = "<ul class=\"gmapSidebar\">"+ sidebar_html +"<\/ul>";', $this->sidebar_id) . "\n";
-            $_output .= sprintf('document.getElementById("%s").innerHTML = "Ver Eco Mupis:<br /><select class=\"gmapSidebar\">"+ sidebar_html +"</select>";', 'lista_mupis') . "\n";
+            $_output .= sprintf('document.getElementById("%s").innerHTML = "Ver Eco Mupis:<br /><select id=\"combobox_mupis\" class=\"gmapSidebar\">"+ sidebar_html +"</select>";', 'lista_mupis') . "\n";
+			$_output .= 'click_sidebar($("#combobox_mupis").val())'."\n";
+			$_output .= '$("#combobox_mupis").change(function (){click_sidebar($("#combobox_mupis").val());})'."\n";
         }
 
         $_output .= '}' . "\n";        
@@ -976,10 +978,7 @@ class GoogleMapAPI {
 
         if($this->sidebar) {
             $_output .= 'function click_sidebar(idx) {' . "\n";
-            // HACK //
-            $_output .= "  var titulo = document.getElementById('gmapSidebarItem_' + idx).innerHTML;\n";
-            $_output .= '  document.getElementById(\'datos_mupis\').firstChild.nodeValue = loadXMLDoc(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&amp;MUPI=\'+titulo)' . "\n";
-            // HACK //
+            //$_output .= '  alert(idx);' . "\n";
             $_output .= '  if(isArray(marker_html[idx])) { markers[idx].openInfoWindowTabsHtml(marker_html[idx]); }' . "\n";
             $_output .= '  else { markers[idx].openInfoWindowHtml(marker_html[idx]); }' . "\n";
             $_output .= '}' . "\n";
@@ -1088,7 +1087,7 @@ class GoogleMapAPI {
             $_output .= 'marker_html[counter] = html;' . "\n";
             // HACK HACK
 	    //$_output .= "sidebar_html += '<li class=\"gmapSidebarItem\" id=\"gmapSidebarItem_'+ counter +'\"><a href=\"javascript:click_sidebar(' + counter + ')\">' + title + '<\/a><\/li>';" . "\n";
-            $_output .= 'sidebar_html += \'<option class="gmapSidebarItem" id="gmapSidebarItem" value="\'+title+\'">\' + title + \'</option>\';' . "\n";
+            $_output .= 'sidebar_html += \'<option class="gmapSidebarItem" id="gmapSidebarItem" value="\'+counter+\'">\' + title + \'</option>\';' . "\n";
         }
         $_output .= 'counter++;' . "\n";
         $_output .= 'return marker;' . "\n";
