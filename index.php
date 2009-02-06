@@ -23,7 +23,7 @@ require_once ('include/fecha.php');
 /* CONTENIDO */
 /*Constructores de Menús, etc.*/
 require_once("contenido/sub.php");
-require_once("contenido/admin.php");
+require_once("contenido/usuario.php");
 require_once("contenido/ayuda+contacto.php");
 require_once("contenido/usuario+recuperar_clave.php");
 require_once("contenido/usuario+info.php");
