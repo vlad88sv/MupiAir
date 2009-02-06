@@ -326,7 +326,9 @@ class MySQLDB
    }
    
     function Combobox_mupi ($nombre="codigo_mupi", $default=NULL) {
-      $q = "SELECT codigo_mupi, CONCAT(codigo_mupi, '. ' , (SELECT ubicacion from ".TBL_STREETS." as b WHERE b.codigo_calle = a.codigo_calle), ', ' , direccion) AS nombre from ".TBL_MUPI." as a;";
+		//id_mupi, codigo_calle.codigo_mupi , calle, ubicacion.
+		$q = "SELECT id_mupi, CONCAT(codigo_calle, '.' , codigo_mupi, ' | ', (SELECT ubicacion FROM emupi_calles AS b WHERE a.codigo_calle=b.codigo_calle), ', ', direccion ) as nombre FROM emupi_mupis AS a;";
+		//echo $q;
    $result = mysql_query($q, $this->connection);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
@@ -342,10 +344,10 @@ class MySQLDB
    }
   $s='<select name="'.$nombre.'">';
   for($i=0; $i<$num_rows; $i++){
-      $codigo_mupi  = mysql_result($result,$i,"codigo_mupi");
+      $id_mupi  = mysql_result($result,$i,"id_mupi");
       $nombre = mysql_result($result,$i,"nombre");
-      if ( $codigo_mupi == $default ) { $selected = ' selected="selected"'; } else { $selected = ""; }
-      $s.='<option value="'.$codigo_mupi.'"'.$selected.'>'. $nombre .'</option>';
+      if ( $id_mupi == $default ) { $selected = ' selected="selected"'; } else { $selected = ""; }
+      $s.='<option value="'.$id_mupi.'"'.$selected.'>'. $nombre .'</option>';
    }
    $s.= '</select>';
    return $s;
@@ -408,11 +410,19 @@ class MySQLDB
    }
    
    function Combobox_CallesConPresencia($nombre, $codigo, $catorcena){
-	  global $session;
-	  $WHERE_USER = '';
-	  if ( !$session->isAdmin() || $codigo ) {$WHERE_USER = " AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='".$codigo."')";}
-   $q = "SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS b WHERE a.codigo_mupi=b.codigo_mupi) AS 'calle', (SELECT ubicacion FROM emupi_calles WHERE codigo_calle=@calle) AS ubicacion FROM emupi_mupis_caras AS a WHERE catorcena=".$_GET['catorcena']. $WHERE_USER .";";
-   //echo $q.'<br />';
+	   // Calles donde el usuario $codigo tiene caras alquiladas en la catorcena $catorcena.
+	   global $session;
+	   $WHERE_USER = '';
+	   if ( !$session->isAdmin() || $codigo ) {$WHERE_USER = " AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='".$codigo."')";}
+	   // Filtro de cadena:
+	   // 1. Filtrar todas caras que esten en la catorcena requerida
+	   // 2. De esas filtrar las que tengan pedidos de $codigo
+	   // 3. De ahi tenemos codigo_mupi, del cual sacamos codigo_calle
+	   // 4. Posteriormente la ubicacion de esa calle.
+	   // 5. Mostramos nada mas las distintas calles.
+	   // - Combobox espera calle y ubicación.
+	    $q = "SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS b WHERE a.codigo_mupi=b.id_mupi) AS 'calle', (SELECT ubicacion FROM emupi_calles WHERE codigo_calle=@calle) AS ubicacion FROM emupi_mupis_caras AS a WHERE catorcena=".$catorcena. $WHERE_USER .";";
+		//echo $q.'<br />';
    $result = mysql_query($q, $this->connection);
    $num_rows = mysql_numrows($result);
    $s='';
@@ -444,7 +454,7 @@ class MySQLDB
       }
 	return $resultado;
    }
-};
+}
 
 /* Create database connection */
 $database = new MySQLDB;

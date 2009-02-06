@@ -53,10 +53,11 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die('!->La base de datos seleccionada "'.$DB_base.'" no existe');
    if ( $session->isAdmin() ) {
-	$q = "select codigo_pantalla_mupi, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_mupi='$codigo_mupi';";
+	$q = "select codigo_pantalla_mupi, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
    } else {
-	$q = "select codigo_pantalla_mupi, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos where codigo='$usuario') AND codigo_mupi='$codigo_mupi';";
+	$q = "select codigo_pantalla_mupi, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos where codigo='$usuario') AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
    }
+   //echo $q.'<br />';
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba la disponibilidad del MUPI.');
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
@@ -65,7 +66,7 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
    }
  
  if($num_rows == 0){
-      retornar ("¡No hay "._NOMBRE_." con ese código ($MUPI)!");
+      retornar (Mensaje("¡No hay datos para ese código ($codigo_mupi)!",_M_ERROR));
    }
    $datos .= '<h2>Datos del MUPI seleccionado</h2>';
    $datos .= '<table>';
@@ -107,9 +108,9 @@ if ( !$session->isAdmin() ) {
 // Cargar puntos mupis.
 $WHERE_USER = '';
 if ( $session->isAdmin() && !$usuario ) {
-	$q = "select codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle from emupi_mupis AS a where codigo_calle=$calle and codigo_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena);";
+	$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle from emupi_mupis AS a where codigo_calle=$calle and id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena);";
 } else {
- 	$q = "select codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT logotipo from emupi_usuarios where codigo='$usuario') as logotipo from emupi_mupis where codigo_calle=$calle and codigo_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario'));";
+ 	$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT logotipo from emupi_usuarios where codigo='$usuario') as logotipo from emupi_mupis where codigo_calle=$calle and id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario'));";
 }
 //echo $q."<br>";
    $result = $database->query($q);
@@ -127,14 +128,15 @@ if ( $session->isAdmin() && !$usuario ) {
 	//if ( !$session->isAdmin() || $usuario ) $map->setMarkerIcon('http://'.$_SERVER['SERVER_ADDR'].'/mupi/include/ver.php?id='.mysql_result($result,0,"logotipo"),'',0,0,0,0);
    
    for($i=0; $i<$num_rows; $i++){
-      $codigo_mupi  = mysql_result($result,$i,"codigo_mupi");
+      $id_mupi  = mysql_result($result,$i,"id_mupi");
+      $codigo_mupi  = mysql_result($result,$i,"codigo_calle") . "." .mysql_result($result,$i,"codigo_mupi");
       $direccion = truncate(mysql_result($result,$i,"direccion"));
       $foto_generica = mysql_result($result,$i,"foto_generica");
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
       $codigo_evento = mysql_result($result,$i,"codigo_evento");
 		if ( $session->isAdmin() && !$usuario ) {
-			$q = "SELECT DISTINCT logotipo from emupi_usuarios where codigo IN (SELECT codigo from emupi_mupis_pedidos where codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_caras as b WHERE catorcena=$catorcena AND b.codigo_mupi='".mysql_result($result,$i,"codigo_mupi")."'));";
+			$q = "SELECT DISTINCT logotipo FROM emupi_usuarios where codigo IN (SELECT codigo from emupi_mupis_pedidos where codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_caras as b WHERE catorcena=$catorcena AND b.codigo_mupi=".mysql_result($result,$i,"id_mupi")."));";
 			//echo $q."<br>";
 			$result2 = $database->query($q);
 			$num_rows2 = mysql_numrows($result2);
@@ -150,7 +152,7 @@ if ( $session->isAdmin() && !$usuario ) {
 		}
       
       $html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
-      $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $codigo_mupi . "|" . $catorcena . "|" . $usuario);
+      $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $id_mupi . "|" . $catorcena . "|" . $usuario);
    }
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 $datos = '';

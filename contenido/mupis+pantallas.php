@@ -20,7 +20,7 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 			break;
 			
 			case 'eliminar_datos':
-			$q = "DELETE emupi_mupis_caras WHERE catorcena=$catorcena_inicio;";
+			$q = "DELETE FROM emupi_mupis_caras WHERE catorcena=$catorcena_inicio;";
 			$result = $database->query($q);
 			if ( $result ) { echo Mensaje ("Eliminado de datos completo.<br />Se eliminaron los datos de la catorcena ".date('d/m/Y',$catorcena_inicio),_M_INFO); } else { echo Mensaje ("Falló la eliminación de datos.",_M_ERROR); }
 			break;
@@ -84,7 +84,7 @@ function verPantallas($usuario="", $pantalla=""){
    if ($usuario) {
     $WHERE = " WHERE codigo='".$usuario."'";
     }
-   $q = "SELECT Id, codigo_pantalla_mupi, codigo_mupi, (SELECT CONCAT(b.codigo_mupi, '. ' , (SELECT ubicacion FROM ".TBL_STREETS." AS c WHERE c.codigo_calle = @calle := b.codigo_calle), ', ' , b.direccion) FROM ".TBL_MUPI." as b WHERE b.codigo_mupi=a.codigo_mupi) as codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento, @calle as codigo_calle2 FROM ".TBL_MUPI_FACES." as a WHERE catorcena = $Catorcena ORDER BY codigo_calle2, codigo_mupi, codigo_pantalla_mupi;";
+   $q = "SELECT Id, codigo_pantalla_mupi, codigo_mupi, (SELECT CONCAT(codigo_calle, '.' , codigo_mupi, ' | ', (SELECT ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=@codigo_calle:=b.codigo_calle), ', ', direccion ) FROM emupi_mupis as c WHERE c.id_mupi=a.codigo_mupi) AS codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento, @calle as codigo_calle2 FROM ".TBL_MUPI_FACES." as a WHERE catorcena = $Catorcena ORDER BY codigo_calle2, codigo_mupi, codigo_pantalla_mupi;";
    //echo $q;
    $result = $database->query($q);
    if ( !$result ) {
@@ -203,9 +203,9 @@ if ( isset($_POST['Id'] ) ) {
 $q = "INSERT INTO ".TBL_MUPI_FACES." (".$extra1."codigo_pantalla_mupi, codigo_mupi, codigo_pedido, foto_real, catorcena) VALUES (".$extra2."'" . $_POST['codigo_pantalla_mupi'] . "', '" . $_POST['codigo_mupi']  . "', '" . $_POST['codigo_pedido']  . "', '" . $idImg .  "', '" . $_POST['catorcena']  .  "')  ON DUPLICATE KEY UPDATE codigo_pantalla_mupi=VALUES(codigo_pantalla_mupi), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido), foto_real=VALUES(foto_real);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
-	echo Mensaje ("Exito al registrar el pedido de ".  $_POST['codigo_pantalla_mupi'], _M_INFO);
+	echo Mensaje ("Exito al registrar la pantalla", _M_INFO);
 } else {
-	echo Mensaje ("Falló el registro el pedido de " . $_POST['codigo_pantalla_mupi'], _M_ERROR);
+	echo Mensaje ("Falló al registrar la pantalla", _M_ERROR);
 }
 }
 
