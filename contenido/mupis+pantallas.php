@@ -1,7 +1,7 @@
 <?php
 $Catorcena = NULL;
 function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
-	global $session, $form, $Catorcena;
+	global $session, $form, $Catorcena, $database;
 	echo '<h1>Gestión de pantallas de ' . _NOMBRE_ . '</h1>';
 	if ( $session->isAdmin() ) {
 	
@@ -10,8 +10,16 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 		Pantalla_REGISTRAR();
 	}
 	
+	if ( isset($_GET['sub']) && $catorcena_inicio ) {
+		if ( ($_GET['sub'] == 'clonar') ) {
+			$CatorcenaAnterior = Obtener_catorcena_anterior($catorcena_inicio);
+			$q = "INSERT INTO emupi_mupis_caras (codigo_pantalla_mupi, codigo_mupi , codigo_pedido , foto_real , catorcena ) SELECT codigo_pantalla_mupi, codigo_mupi, codigo_pedido , foto_real , $catorcena_inicio FROM emupi_mupis_caras WHERE catorcena=$CatorcenaAnterior;";
+			$result = $database->query($q);
+			if ( $result ) { echo Mensaje ("Clonado completo.<br />Los datos de la catorcena ".date('d/m/Y',$CatorcenaAnterior)." ahora existen para la catorcena ".date('d/m/Y',$catorcena_inicio),_M_INFO); } else { echo Mensaje ("Falló la clonación.",_M_ERROR); }
+		}
+	}
+	
 	if ( isset($_GET['eliminar']) && isset($_GET['imagen']) ) {
-			global $database;
 			// Eliminamos la pantalla
 			$q = "DELETE FROM " . TBL_MUPI_FACES . " WHERE Id='" . $_GET['eliminar'] . "';";
 			$result = $database->query($q);
@@ -38,8 +46,10 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 	
 	echo "Viendo pantallas "._NOMBRE_." de la catorcena " . Combobox_catorcenas("miSelect", $Catorcena) ;
 	$BotonCambiar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena=\'+document.getElementsByName(\'miSelect\')[0].value" value="Cambiar">';
+	$BotonClonarCatorcenaAnterior = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=clonar\'" value="Clonar anterior" '.GenerarTooltip('Clona los datos de los mupis de la catorcena inmediata anterior').'>';
 	echo $BotonCambiar;
 	echo $BotonCancelar;
+	echo $BotonClonarCatorcenaAnterior;
 	echo "<hr />";
 	verPantallas($usuario);
 	if ( $session->isAdmin() ) {
