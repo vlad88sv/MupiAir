@@ -329,4 +329,14 @@ function Mensaje ($texto, $tipo=_M_INFO){
 	return "<div id=\"$id\">".$texto."</div>";
 	
 }
+
+function truncate($string, $max = 120, $replacement = '...')
+{
+    if (strlen($string) <= $max)
+    {
+        return $string;
+    }
+    $leave = $max - strlen ($replacement);
+    return substr_replace($string, $replacement, $leave);
+}
 ?>
