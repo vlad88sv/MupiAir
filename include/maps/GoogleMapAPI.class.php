@@ -213,7 +213,7 @@ class GoogleMapAPI {
      *
      * @var boolean
      */
-    var $directions = true;
+    var $directions = false;
 
     /**
      * determines if map markers bring up an info window
