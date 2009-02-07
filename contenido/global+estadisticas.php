@@ -10,21 +10,38 @@ if ( $session->isAdmin() ) {
 	$result = $database->query($q);
 	$num_rows = mysql_numrows($result);
 	if ( $num_rows == 0 ) {
-	  echo "¡No hay pantallas ingresadas!<BR />";
+	  echo Mensaje("¡No hay pantallas ingresadas!",_M_INFO);
 	} else {
 		echo '<table>';
-	echo "<tr><th>Código Eco Mupis</th><th>Código Pantalla</th><th>Código pedido</th></tr>";
+		echo "<tr><th>Código Eco Mupis</th><th>Cara</th><th>Código pedido</th></tr>";
    for($i=0; $i<$num_rows; $i++){
-      $tipo_pantalla  = mysql_result($result,$i,"tipo_pantalla");
+      $tipo_pantalla  = mysql_result($result,$i,"tipo_pantalla") == 0 ? 'Vehicular' : 'Peatonal';
       $codigo_mupi  = mysql_result($result,$i,"codigo_mupi_traducido");
       $codigo_pedido = mysql_result($result,$i,"codigo_pedido_traducido");
       echo "<tr><td>$codigo_mupi</td><td>$tipo_pantalla</td><td>$codigo_pedido</td></tr>";
    }
    echo "</table><br><hr />";
    }
+   echo "<h2>Clientes con notas administrativas</h2>";
+   	$q = "SELECT codigo, notas FROM emupi_usuarios WHERE notas!='' and userlevel!=9;";
+	$result = $database->query($q);
+	$num_rows = mysql_numrows($result);
+	if ( $num_rows == 0 ) {
+	  echo Mensaje("¡No hay clientes con notas administativas!",_M_INFO);
+	} else {
+   echo '<table>';
+		echo "<tr><th>Cliente</th><th>Nota</th></tr>";
+   for($i=0; $i<$num_rows; $i++){
+      $codigo  = mysql_result($result,$i,"codigo");
+      $notas  = mysql_result($result,$i,"notas");
+      echo "<tr><td>$codigo</td><td>$notas</td></tr>";
+   }
+   echo "</table><br><hr />";
+}
    echo "<h2>Eventos en esta catorcena</h2>";
   return;
 }
+
 echo "<h1>Estadísticas</h1>";
 //Dinamismo en selección de catorcenas.
 echo SCRIPT('
@@ -66,7 +83,7 @@ function MOSTRAR_comentarios() {
   $result = $database->query($q);
   $num_rows = mysql_numrows($result);
   if ( $num_rows == 0 ) {
-	  echo "¡No hay comentarios ingresados!<BR />";
+	  echo Mensaje("¡No hay comentarios ingresados!",_M_INFO);
    } else {
 	echo '<table>';
 	echo "<tr><th>Cliente</th><th>Comentario</th><th>Fecha</th><th>Tipo</th></tr>";

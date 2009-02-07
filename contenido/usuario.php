@@ -55,6 +55,7 @@ echo '
 Nivel:<br />
 <select name="updlevel">
 <option value="1">Cliente/Usuario
+<option value="5">Vendedor
 <option value="9">Administrador
 </select>
 </td>
