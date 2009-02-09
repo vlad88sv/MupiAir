@@ -93,7 +93,7 @@ function verPantallas($usuario="", $pantalla=""){
    }
    $num_rows = mysql_numrows($result);
    if($num_rows == 0){
-      echo "¡No hay Pantallas "._NOMBRE_." ingresadas!<BR />";
+      echo Mensaje ("¡No hay Pantallas "._NOMBRE_." ingresadas!", _M_NOTA);
       return;
    }
 echo '<table>';
@@ -151,9 +151,9 @@ if ($id) {
 }
 	$CampoCatorcena =  '<input type="hidden" name="catorcena" value="'.$Catorcena.'">';
 	$CampoId2 = '<tr><td width="25%">Identificador</td><td><b>'. $id. '</b></td></tr>';
-	$CampoPantalla = '<tr><td width="25%">Código de Pantalla '._NOMBRE_.'</td><td>'.Combobox__TipoPantalla ($Pantalla).'</td></tr>';
+	$CampoPantalla = '<tr><td width="25%">Cara del '._NOMBRE_.'</td><td>'.Combobox__TipoPantalla ($Pantalla).'</td></tr>';
 	$CampoCodigoMUPI = '<tr><td>Enlazar al '._NOMBRE_.' código</td><td>'. $database->Combobox_mupi("codigo_mupi", $codigo_mupi) .'</td></tr>';
-	$CampoCodigoPedido = '<tr><td>Enlazar al pedido '._NOMBRE_.' código</td><td>'. $database->Combobox_pedido("codigo_pedido", $codigo_pedido, $Catorcena, Fin_de_catorcena($Catorcena)) . '</td></tr>';
+	$CampoCodigoPedido = '<tr><td>Enlazar al pedido</td><td>'. $database->Combobox_pedido("codigo_pedido", $codigo_pedido, $Catorcena, Fin_de_catorcena($Catorcena)) . '</td></tr>';
 	$CampoFotoReal = '<tr><td>Agregar Foto real </td><td><input type="file" name="foto_real" '.$OnChangePantalla.'></td></tr>';
 
 /*

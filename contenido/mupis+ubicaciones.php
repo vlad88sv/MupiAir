@@ -15,17 +15,17 @@ echo '<table>';
 echo '<tr>';
 
 echo '<td valign="top">';
-echo 'Ver Catorcena:<br />' . $database->Combobox_CatorcenasConPresencia("combo_catorcenas",$usuario).'<br /><br />';
-echo '<span id="datos_calles">Seleccione una catorcena por favor<br /><br /></span>';
-echo '<span id="lista_mupis">Seleccione una calle por favor<br /><br /></span>';
+echo '<b>Ver Catorcena:</b><br />' . $database->Combobox_CatorcenasConPresencia("combo_catorcenas",$usuario).'<br /><br />';
+echo '<span id="datos_calles"><b>Seleccione una catorcena</b><br /><br /></span>';
+echo '<span id="lista_mupis"><b>Seleccione una calle</b><br /><br /></span>';
 echo '</td>';
 
 echo '<td id="grafico_mapa" width="80%">';
-echo 'Esperando información para generar mapa';
+echo '<center><b>Esperando información para generar mapa</b></center>';
 echo '</td>';
 
 echo '</tr>';
 echo '</table>';
-echo '<span id="datos_mupis">Seleccione un '._NOMBRE_.' por favor</span>';
+echo '<span id="datos_mupis"><center><b>Seleccione un '._NOMBRE_.'</b></center></span>';
 }
 ?>

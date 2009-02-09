@@ -10,7 +10,7 @@ if ( $session->isAdmin() ) {
 	$result = $database->query($q);
 	$num_rows = mysql_numrows($result);
 	if ( $num_rows == 0 ) {
-	  echo Mensaje("¡No hay pantallas ingresadas!",_M_INFO);
+	  echo Mensaje("¡No hay pantallas ingresadas!",_M_NOTA);
 	} else {
 		echo '<table>';
 		echo "<tr><th>Código Eco Mupis</th><th>Cara</th><th>Código pedido</th></tr>";
@@ -27,7 +27,7 @@ if ( $session->isAdmin() ) {
 	$result = $database->query($q);
 	$num_rows = mysql_numrows($result);
 	if ( $num_rows == 0 ) {
-	  echo Mensaje("¡No hay clientes con notas administativas!",_M_INFO);
+	  echo Mensaje("¡No hay clientes con notas administativas!",_M_NOTA);
 	} else {
    echo '<table>';
 		echo "<tr><th>Cliente</th><th>Nota</th></tr>";
@@ -66,7 +66,7 @@ echo "Número de impactos publicitarios diarios: <b>" . (int) (mysql_result($res
 // Inicio de parte dinámica.
 /*********************************************************************************************/
 echo "<br />".$database->Combobox_CatorcenasConPresencia("catorcenas_presencia",$session->codigo);
-echo '<hr><span id="datos_catorcena">Seleccione una catorcena por favor</span>';
+echo '<hr><span id="datos_catorcena"><b>Seleccione una catorcena por favor</b></span>';
 
 echo MOSTRAR_comentarios();
 
@@ -83,7 +83,7 @@ function MOSTRAR_comentarios() {
   $result = $database->query($q);
   $num_rows = mysql_numrows($result);
   if ( $num_rows == 0 ) {
-	  echo Mensaje("¡No hay comentarios ingresados!",_M_INFO);
+	  echo Mensaje("¡No hay comentarios ingresados!",_M_NOTA);
    } else {
 	echo '<table>';
 	echo "<tr><th>Cliente</th><th>Comentario</th><th>Fecha</th><th>Tipo</th></tr>";
