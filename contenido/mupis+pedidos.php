@@ -70,7 +70,7 @@ function verPedidos($usuario="", $pedido=""){
    
    $num_rows = mysql_numrows($result);
    if ( $num_rows == 0 ) {
-      echo "¡No hay Pedidos "._NOMBRE_." ingresados!<BR />";
+      echo Mensaje ("¡No hay Pedidos "._NOMBRE_." ingresados!",_M_NOTA);
       return;
    }
    

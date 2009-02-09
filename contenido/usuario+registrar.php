@@ -4,10 +4,10 @@ global $form;
 if ( isset( $_SESSION['regsuccess'] ) && isset( $_SESSION['reguname'] ) ) {
 	if( $_SESSION['regsuccess'] == true ) {
 		if( $_SESSION['regsuccess'] ){
-			echo "Cliente registrado. '<b>".$_SESSION['reguname']."</b>' ha sido agregado a la base de datos.</p>";
+			echo Mensaje ("Cliente registrado. '<b>".$_SESSION['reguname']."</b>' ha sido agregado a la base de datos.",_M_INFO);
 		}else{
 			echo "Registro fallido de cliente";
-			echo "<p>Lo sentimos pero el registro para el cliente '<b>".$_SESSION['reguname']."</b>' a fallado.</p>";
+			echo Mensaje ("Lo sentimos pero el registro para el cliente '<b>".$_SESSION['reguname']."</b>' a fallado.",_M_ERROR);
 		}
 		echo '<hr />';
 	} else {

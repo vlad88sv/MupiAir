@@ -15,7 +15,7 @@ function CONTENIDO_calles($usuario, $calle) {
 		calles_REGISTRAR();
 	}
 
-	//Nos toca elimiinar un MUPI
+	//Nos toca eliminar un MUPI
 	if ( isset($_GET['eliminar']) ) {
 	global $database;
 	// Eliminamos la pantalla
@@ -54,11 +54,11 @@ function vercalles($usuario="", $calle=""){
    
    $num_rows = mysql_numrows($result);
    if ( $num_rows == 0 ) {
-      echo "¡No hay calles "._NOMBRE_." ingresadas!<BR />";
+      echo Mensaje ("¡No hay calles "._NOMBRE_." ingresadas", _M_NOTA);
       return;
    }
    
-echo '<table>';
+echo "<table>";
 echo "<tr><th>Código calle "._NOMBRE_."</th><th>Ubicación</th><th>Impactos</th><th>Acciones</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_calle  = mysql_result($result,$i,"codigo_calle");
