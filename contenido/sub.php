@@ -208,7 +208,8 @@ function CONTENIDO_mostrar_logo_cliente() {
 
 function INICIAR_MENUES () {
 	global $session;
-	if ( $session->isAdmin() ) {
+	switch ($session->userlevel) {
+	case ADMIN_LEVEL:
 	$s =
 	'
 	<div class="chromestyle" id="chromemenu">
@@ -232,7 +233,22 @@ function INICIAR_MENUES () {
 	. CREAR_LINK_GET("gestionar+calles","Gestionar calles", "Eliminar o modificar calles")
 	. CREAR_LINK_GET("ver+eventos","Gestionar eventos", "Agregar, Eliminar o modificar eventos")
 	.'</div>';
-	} else {
+	break;
+	
+	case SALESMAN_LEVEL:
+	$s =
+	'
+	<div class="chromestyle" id="chromemenu">
+	<ul>
+	<li><a href="./">Inicio</a></li>'
+	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
+	.'<li><a href="./?accion=salir">Cerrar sesión de ventas</a></li>	
+	</ul>
+	</div>
+	';
+	break;
+	
+	CASE CLIENT_LEVEL:
 	$s =
 	'
 	<div class="chromestyle" id="chromemenu">
@@ -246,12 +262,30 @@ function INICIAR_MENUES () {
 	</ul>
 	</div>
 	';
+	break;
+	
+	case USER_LEVEL:
+	$s =
+	'
+	<div class="chromestyle" id="chromemenu">
+	<ul>
+	<li><a href="./" onclick="return false">Estadísticas</a></li>
+	<li><a href="./?accion=ver+ubicaciones">Mis Ubicaciones</a></li>
+	<li><a href="./" onclick="return false">Eventos</a></li>	
+	<li><a href="./?accion=ayuda+contacto">Comenta</a></li>	
+	<li><a href="./" onclick="return false"">Reportes</a></li>	
+	<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	</ul>
+	</div>
+	';
+	break;
 	}
 	
 	// Finalmente iniciamos el script.
 	$s .= '<script type="text/javascript">cssdropdown.startchrome("chromemenu")</script>';
 	return $s;
 }
+
 function Query2Table($result, $tableFeatures="") {
  $table = "";
  $table .= "<table $tableFeatures>\n\n";

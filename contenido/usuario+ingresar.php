@@ -5,17 +5,28 @@ function CONTENIDO_usuario_ingresar() {
 	
 	/* Ya se encuentra registrado */
 	if($session->logged_in){
-		CONTENIDO_global_estadisticas();		
 		/* Limpiamos todo lo que podamos */
 		unset($_SESSION['reguname']);
 		unset($_SESSION['regsuccess']);
+		
+		/* Lo mandamos a su respectiva página de inicio	*/
+		
+		switch ( $session->userlevel ) {
+			case ADMIN_LEVEL:
+			case CLIENT_LEVEL:
+			CONTENIDO_global_estadisticas();
+			break;
+			case SALESMAN_LEVEL:
+			case USER_LEVEL:
+			CONTENIDO_mupis_ubicaciones();
+			break;
+		}
 		return;
-	
 	}
 	echo '<h1>Iniciar sesión en el sistema de '._NOMBRE_.'</h1><hr>';
 	/* Fallo en el registro */
 	if(isset($_SESSION['regsuccess']) && $_SESSION['regsuccess'] == false){
-		echo "<h3>Error - Por favor intentelo de nuevo.</h3><hr>";
+		echo Mensaje("Datos de acceso incorrectos, por favor intente de nuevo.",_M_ERROR);
 	}
 	/* Empezar en limpio */
 	unset($_SESSION['regsuccess']);

@@ -46,7 +46,7 @@ displayUsers();
 echo '<hr /><h2>Establecer permisos a cliente/usuario</h2>';
 echo $form->error("upduser"); 
 echo '
-<form action="include/adminprocess.php" method="POST">
+<form action="contenido/adminprocess.php" method="POST">
 <table>
 <tr>
 <td>Código:
@@ -54,8 +54,8 @@ echo '
 <td>
 Nivel:<br />
 <select name="updlevel">
-<option value="1">Cliente
-<option value="3">Usuario
+<option value="1">Usuario
+<option value="3">Cliente
 <option value="5">Vendedor
 <option value="9">Administrador
 </select>

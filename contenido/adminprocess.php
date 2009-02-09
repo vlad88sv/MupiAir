@@ -1,5 +1,7 @@
 <?php
 require_once("../include/sesion.php");
+require_once("../include/database.php");
+
       /* Make sure administrator is accessing page */
       if($session->isAdmin()){
       
@@ -44,12 +46,12 @@ require_once("../include/sesion.php");
       if($form->num_errors > 0){
          $_SESSION['value_array'] = $_POST;
          $_SESSION['error_array'] = $form->getErrorArray();
-         header("Location: ../?accion=admin");
+         header("Location: ../?accion=gestionar+clientes");
       }
       /* Update user level */
       else{
          $database->updateUserField($subuser, "userlevel", (int)$_POST['updlevel']);
-         header("Location: ../?accion=admin");
+         header("Location: ../?accion=gestionar+clientes");
       }
    }
    
@@ -154,15 +156,15 @@ require_once("../include/sesion.php");
       $subuser = $_POST[$uname];
       $field = $uname;  //Use field name for username
       if(!$subuser || strlen($subuser = trim($subuser)) == 0){
-         $form->setError($field, "* Username not entered<br>");
+         $form->setError($field, "* Usuario no ingresado<br>");
       }
       else{
          /* Make sure username is in database */
          $subuser = stripslashes($subuser);
          if(strlen($subuser) < 5 || strlen($subuser) > 30 ||
             !eregi("^([0-9a-z])+$", $subuser) ||
-            (!$ban && !$database->usernameTaken($subuser))){
-            $form->setError($field, "* Username does not exist<br>");
+            (!$ban && !$database->codigoTaken($subuser))){
+            $form->setError($field, "* Usuario no existe<br>");
          }
       }
       return $subuser;

@@ -138,7 +138,7 @@ class MySQLDB
       if(strcasecmp($codigo, ADMIN_NAME) == 0){
          $ulevel = ADMIN_LEVEL;
       }else{
-         $ulevel = USER_LEVEL;
+         $ulevel = CLIENT_LEVEL;
       }
       $q = "INSERT INTO ".TBL_USERS." VALUES ('$codigo', '$clave', '$nombre', '$razon', '$email', '$telefono1', '$telefono2', '$telefono3', '$logotipo', '$notas', 0, 0, ".time().")";
       DEPURAR($q);

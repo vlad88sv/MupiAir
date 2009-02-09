@@ -122,15 +122,15 @@ class Process
       $subuser = $_POST['codigo'];
       $field = "user";  //Use field name for username
       if(!$subuser || strlen($subuser = trim($subuser)) == 0){
-         $form->setError($field, "* Username not entered<br>");
+         $form->setError($field, "* Nombre de usuario no ingresado<br>");
       }
       else{
          /* Make sure username is in database */
          $subuser = stripslashes($subuser);
          if(strlen($subuser) < 5 || strlen($subuser) > 30 ||
             !eregi("^([0-9a-z])+$", $subuser) ||
-            (!$database->usernameTaken($subuser))){
-            $form->setError($field, "* Username does not exist<br>");
+            (!$database->codigoTaken($subuser))){
+            $form->setError($field, "* El usuario no existe<br>");
          }
       }
       
