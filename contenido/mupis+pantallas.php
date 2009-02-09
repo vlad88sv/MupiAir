@@ -83,17 +83,16 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 function verPantallas($usuario="", $pantalla=""){
    global $database, $Catorcena;
    
-   $WHERE = "";
-   $num_rows = "";
-   if ($usuario) {
-    $WHERE = " WHERE codigo='".$usuario."'";
+    $wusuario = "";
+    if ($usuario) {
+    $wusuario = " AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$usuario."')";
     }
 	
 	$calle = "";
 	if ( isset($_GET['calle']) ) {
 		 $calle = "AND codigo_mupi IN (SELECT codigo_mupi FROM emupi_mupis WHERE codigo_calle='1')";
 	}
-   $q = "SELECT id_pantalla, tipo_pantalla, codigo_mupi, (SELECT CONCAT(codigo_calle, '.' , codigo_mupi, ' | ', (SELECT ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=@codigo_calle:=b.codigo_calle), ', ', direccion ) FROM emupi_mupis as c WHERE c.id_mupi=a.codigo_mupi) AS codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento, @calle as codigo_calle2 FROM ".TBL_MUPI_FACES." as a WHERE catorcena = $Catorcena $calle ORDER BY codigo_calle2, codigo_mupi, tipo_pantalla;";
+   $q = "SELECT id_pantalla, tipo_pantalla, codigo_mupi, (SELECT CONCAT(codigo_calle, '.' , codigo_mupi, ' | ', (SELECT ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=@codigo_calle:=b.codigo_calle), ', ', direccion ) FROM emupi_mupis as c WHERE c.id_mupi=a.codigo_mupi) AS codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento, @calle as codigo_calle2 FROM ".TBL_MUPI_FACES." as a WHERE catorcena = $Catorcena $calle $wusuario ORDER BY codigo_calle2, codigo_mupi, tipo_pantalla;";
    //echo $q;
    $result = $database->query($q);
    if ( !$result ) {
