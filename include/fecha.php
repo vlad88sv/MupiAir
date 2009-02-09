@@ -39,11 +39,16 @@ return $s;
 
 function Obtener_catorcena_cercana ($referencia = NULL ) {
 global $MesInicio, $DiaInicio, $AnioInicio;
+//echo "REFERENCIA: ".$referencia. date(" - h:i:s d/m/Y", $referencia)."<br />";
+$referencia = mktime(0,0,0,date('m',$referencia), date('d',$referencia), date('Y',$referencia));
+//echo "POST-REFERENCIA: ".$referencia. date(" - h:i:s d/m/Y", $referencia)."<br />";
 if ( !$referencia ) { $referencia = mktime(0,0,0,date('n'),date('d'),date('y')); }
 $inicio=mktime(0,0,0,$MesInicio,$DiaInicio,$AnioInicio);
+//echo $inicio;
 if ($referencia < $inicio ) { $referencia = $inicio;}
 do {
    $catorcena = strtotime("+13 day",$inicio);
+   //echo "INICIO: ".$inicio. "; FIN: ". $catorcena."<br />";
    if (($referencia >= $inicio) && ($referencia <= $catorcena)) {return $inicio; }
    $inicio =  strtotime("+1 day",$catorcena);
 } while ( 1 );
