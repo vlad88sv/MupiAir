@@ -39,10 +39,13 @@ return $s;
 
 function Obtener_catorcena_cercana ($referencia = NULL ) {
 global $MesInicio, $DiaInicio, $AnioInicio;
-//echo "REFERENCIA: ".$referencia. date(" - h:i:s d/m/Y", $referencia)."<br />";
-$referencia = mktime(0,0,0,date('m',$referencia), date('d',$referencia), date('Y',$referencia));
-//echo "POST-REFERENCIA: ".$referencia. date(" - h:i:s d/m/Y", $referencia)."<br />";
-if ( !$referencia ) { $referencia = mktime(0,0,0,date('n'),date('d'),date('y')); }
+if ( !$referencia ) { 
+	$referencia = mktime(0,0,0,date('n'),date('d'),date('y')); 
+} else {
+	//echo "REFERENCIA: ".$referencia. date(" - h:i:s d/m/Y", $referencia)."<br />";
+	$referencia = mktime(0,0,0,date('m',$referencia), date('d',$referencia), date('Y',$referencia));
+	//echo "POST-REFERENCIA: ".$referencia. date(" - h:i:s d/m/Y", $referencia)."<br />";
+}
 $inicio=mktime(0,0,0,$MesInicio,$DiaInicio,$AnioInicio);
 //echo $inicio;
 if ($referencia < $inicio ) { $referencia = $inicio;}
