@@ -34,7 +34,7 @@ function CONTENIDO_usuario_ingresar() {
 <form action="include/x.php" method="post">
 <table border=0>
 <tr>
-<td>Código <acronym title="Su código fiscal">(?)</acronym>:</td>
+<td width="20%">Código <acronym title="Su código fiscal">(?)</acronym>:</td>
 <td><input type="text" name="codigo" maxlength="100" size="30" value="" onMouseOver="toolTip('Código de XX dígitos con el cual fue registrado en Eco Mupis.')" onMouseOut="toolTip()" /></td>
 </tr>
 <tr>
@@ -42,7 +42,7 @@ function CONTENIDO_usuario_ingresar() {
 <td><input type="password" name="clave" maxlength="30" size="30" value="" onMouseOver="toolTip('Clave proporcionada para el acceso.')" onMouseOut="toolTip()" /></td>
 </tr>
 <tr>
-<td>¿Recordarme?:</td>
+<td>Recordarme en este equipo:</td>
 <td><input type="checkbox" name="remember" <? if($form->value("remember")){ echo "checked"; } ?> onMouseOver="toolTip('Recordar sus datos de acceso para esta maquina.<br />Se recomienda <b>no</b> utilizar en equipos compartidos.')" onMouseOut="toolTip()" /></td>
 </tr>
 </table>
