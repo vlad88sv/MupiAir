@@ -169,7 +169,6 @@ echo '
  
 function Eventos_REGISTRAR() {
 global $database,$form;
-print_r ($_POST);
 if ( !isset($_POST['ConservarFoto']) ) {
 	/*
 		Corroborar si ya tenia una imagen antes, para reutilizar la fila y a la vez
