@@ -89,6 +89,7 @@ function verPantallas($usuario="", $pantalla=""){
     $WHERE = " WHERE codigo='".$usuario."'";
     }
 	
+	$calle = "";
 	if ( isset($_GET['calle']) ) {
 		 $calle = "AND codigo_mupi IN (SELECT codigo_mupi FROM emupi_mupis WHERE codigo_calle='1')";
 	}
