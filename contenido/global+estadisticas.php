@@ -3,9 +3,9 @@ $inicioCatorcena = Obtener_catorcena_cercana();
 function CONTENIDO_global_estadisticas(){
 global $session, $database, $inicioCatorcena;
 if ( $session->isAdmin() ) {
-  echo "<h1>Estadísticas y notas administrativas</h1><hr />";
+  echo "<h1>Estadísticas y notas administrativas</h1>";
   echo MOSTRAR_comentarios();
-   echo "<h2>Pantallas activas esta catorcena</h2>";
+   echo "<hr /><h2>Pantallas activas esta catorcena</h2>";
 	$q = "SELECT id_pantalla, tipo_pantalla, codigo_mupi, (SELECT CONCAT(b.codigo_mupi, '. ' , (SELECT ubicacion FROM ".TBL_STREETS." AS c WHERE c.codigo_calle = b.codigo_calle), ', ' , b.direccion) FROM ".TBL_MUPI." as b WHERE b.codigo_mupi=a.codigo_mupi) as codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento FROM ".TBL_MUPI_FACES." as a WHERE catorcena = '$inicioCatorcena' ORDER BY codigo_mupi, tipo_pantalla;";
 	$result = $database->query($q);
 	$num_rows = mysql_numrows($result);
@@ -20,9 +20,9 @@ if ( $session->isAdmin() ) {
       $codigo_pedido = mysql_result($result,$i,"codigo_pedido_traducido");
       echo "<tr><td>$codigo_mupi</td><td>$tipo_pantalla</td><td>$codigo_pedido</td></tr>";
    }
-   echo "</table><br><hr />";
+   echo "</table><br>";
    }
-   echo "<h2>Clientes con notas administrativas</h2>";
+   echo "<hr /><h2>Clientes con notas administrativas</h2>";
    	$q = "SELECT codigo, notas FROM emupi_usuarios WHERE notas!='' and userlevel!=9;";
 	$result = $database->query($q);
 	$num_rows = mysql_numrows($result);
@@ -36,7 +36,7 @@ if ( $session->isAdmin() ) {
       $notas  = mysql_result($result,$i,"notas");
       echo "<tr><td>$codigo</td><td>$notas</td></tr>";
    }
-   echo "</table><br><hr />";
+   echo "</table><br>";
 }
    MOSTRAR_eventos();
   return;
@@ -75,7 +75,7 @@ return;
 
 function MOSTRAR_comentarios() {
 	global $session,$database,$inicioCatorcena;
-  echo "<h2>Comentarios publicados esta catorcena</h2>";
+  echo "<hr /><h2>Comentarios publicados esta catorcena</h2>";
   $finCatorcena = Fin_de_catorcena($inicioCatorcena);
   $tipo = '';
   if ( !$session->isAdmin() ) {  $tipo = 'AND tipo=1'; }
@@ -94,14 +94,14 @@ function MOSTRAR_comentarios() {
       $tipo  = mysql_result($result,$i,"tipo") == '1' ? 'Público' : 'Privado';
       echo "<tr><td>$codigo</td><td>$comentario</td><td>$timestamp</td><td>$tipo</td></tr>";
    }
-   echo "</table><br><hr />";
+   echo "</table><br>";
    }
 }
 
 function MOSTRAR_eventos() {
 	global $session,$database,$inicioCatorcena;
 	$finCatorcena = Fin_de_catorcena($inicioCatorcena);
-	echo "<h2>Eventos en esta catorcena</h2>";
+	echo "<hr /><h2>Eventos en esta catorcena</h2>";
 	$usuario = $tipo = null;
 	if ( !$session->isAdmin() ) {  $usuario=$session->codigo; $tipo = "AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario')"; }
 	$q = "select id_evento, timestamp, categoria, afectado, (SELECT CONCAT((SELECT ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=@codigo_calle:=b.codigo_calle), ', ', direccion ) FROM emupi_mupis as c WHERE c.id_mupi=(SELECT codigo_mupi FROM emupi_mupis_caras WHERE id_pantalla=afectado)) AS afectado_traducido, descripcion_evento, foto_evento from emupi_mupis_eventos WHERE categoria='PANTALLA' AND afectado IN (SELECT id_pantalla FROM emupi_mupis_caras WHERE catorcena>=$inicioCatorcena AND catorcena<=$finCatorcena $tipo);";
@@ -130,7 +130,7 @@ function MOSTRAR_eventos() {
 	  } else {
 		  echo "<tr><td>$id_evento</td><td>$timestamp</td><td>$categoria</td><td>$afectado</td><td>$descripcion_evento</td><td>$foto_evento</td></tr>";   }
 	  }
-   echo "</table><br><hr />";
+   echo "</table><br>";
    }
 }
 ?>

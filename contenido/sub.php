@@ -174,7 +174,7 @@ function CONTENIDO_mostrar_principal() {
 	case "ver":
 		$id = isset( $ACC[1] ) ? $ACC[1] : "";
 		echo '<h1>Mostrando imagen con Id. '.$id.'</h1>';
-		echo CargarImagenDesdeBD($id);
+		echo '<center>'.CargarImagenDesdeBD($id).'</center>';
 		break;
 		
 	default:
