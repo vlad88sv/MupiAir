@@ -55,15 +55,13 @@ function CONTENIDO_mostrar_principal() {
 		$accion= "ingresar";
 		}
 	}
-
+	$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
 	switch ( $accion ) {
 	case "ver cliente":
-		$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
 		CONTENIDO_usuario_info( $usuario );
 		break;
 	
 	case "editar usuario":
-		$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
 		CONTENIDO_usuario_editar( $usuario );
 		break;
 	case "rpr clave":
@@ -78,7 +76,6 @@ function CONTENIDO_mostrar_principal() {
 
 	case "gestionar pantallas":
 		if($session->isAdmin()){
-			$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
 			$pantalla= isset( $_GET['id'] ) ? $_GET['id'] : "";
 			$catorcena= isset( $_GET['catorcena'] ) ? $_GET['catorcena'] : "";
 			CONTENIDO_pantallas($usuario,$pantalla,$catorcena);
@@ -87,7 +84,6 @@ function CONTENIDO_mostrar_principal() {
 
 	case "ver pedidos":
 	case "gestionar pedidos":
-			$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
 			$pedido = isset( $_GET['pedido'] ) ? $_GET['pedido'] : "";
 			CONTENIDO_pedidos($usuario,$pedido);
 			break;
@@ -108,7 +104,6 @@ function CONTENIDO_mostrar_principal() {
 		
 	case "gestionar mupis":
 		if($session->isAdmin()){
-			$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
 			$mupi = isset( $_GET['mupi'] ) ? $_GET['mupi'] : "";
 			CONTENIDO_mupis($usuario,$mupi);
 			break;
@@ -116,7 +111,6 @@ function CONTENIDO_mostrar_principal() {
 
 	case "gestionar calles":
 		if($session->isAdmin()){
-			$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
 			$calle = isset( $_GET['calle'] ) ? $_GET['calle'] : "";
 			CONTENIDO_calles($usuario,$calle);
 			break;
@@ -127,13 +121,13 @@ function CONTENIDO_mostrar_principal() {
 		break;
 		
 	case "ver ubicaciones":
-		$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
 		CONTENIDO_mupis_ubicaciones($usuario);
 		break;
 	
 	case "gestionar eventos":	
 	case "ver eventos":
-		CONTENIDO_mupis_eventos();
+		$evento = isset( $_GET['evento'] ) ? $_GET['evento'] : "";
+		CONTENIDO_mupis_eventos($usuario, $evento);
 		break;
 		
 	case "ver estadisticas":
