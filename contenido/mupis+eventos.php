@@ -93,7 +93,7 @@ echo "<tr><th>Código Evento "._NOMBRE_."</th><th>Fecha y Hora</th><th>Categorí
 	  if ( $foto_evento ) { $foto_evento = "<span ".GenerarTooltip(CargarImagenDesdeBD(mysql_result($result,$i,"foto_evento"),'200px','200px'))." />". $foto_evento."</span>"; }
       $Eliminar = CREAR_LINK_GET("gestionar+eventos&amp;eliminar=".mysql_result($result,$i,"id_evento")."&amp;imagen=" . mysql_result($result,$i,"foto_evento") ,"Eliminar", "Eliminar los datos de este evento");
       $id_evento  = CREAR_LINK_GET("gestionar+eventos&amp;evento=".$id_evento,$id_evento, "Editar los datos de este evento");
-      echo "<tr><td>$id_evento</td><td>$timestamp</td><td>$categoria</td><td>$afectado</td><td>$descripcion_evento</td><td>$foto_evento</td><td>$Eliminar</tr>";
+      echo "<tr><td>$id_evento</td><td>$timestamp</td><td>$categoria</td><td>$afectado</td><td>$descripcion_evento</td><td>$foto_evento</td><td>$Eliminar</td></tr>";
    }
    echo "</table><br>";
 }
@@ -143,7 +143,8 @@ if ($id_evento) {
 	$CampoAfectado = '<input type="hidden" name="afectado" value="'.$afectado.'">';
 	$CampoCodigoEvento2 = '<tr><td width="25%">Código de evento</td><td><b>'. $id_evento. '</b></td></tr>';
 	$CampoTimestamp2 = '<tr><td width="25%">Hora y fecha a registrar </td><td><b>'. date('h:i:s @ d/m/Y',$timestamp). '</b></td></tr>';
-	$CampoUsuario = '<tr><td>Objeto Afectado:</td><td><b>'.ucfirst(strtolower($tipo_evento)).':'.$afectado . '</b></td></tr>';
+	$tmpstr = ($tipo_evento != "PANTALLA") ? (ucfirst(strtolower($tipo_evento)).':'.$afectado) : (CREAR_LINK_GET("gestionar+pantallas&amp;id=$afectado&amp;catorcena=".Obtener_catorcena_cercana($timestamp),$afectado,"Ir a los datos de la pantalla"));
+	$CampoUsuario = '<tr><td>Objeto Afectado:</td><td><b>'.$tmpstr.'</b></td></tr>';
 	$CampoFoto = '<tr><td>Foto del evento:</td><td><input type="file" name="foto_evento" '.$OnChangePantalla.'></td></tr>';
 	$CampoDescripcion ='<tr><td>Descripción:</td><td><input type="text" name="descripcion" maxlength="100" value="' . $descripcion. '"></td></tr>';
 echo '

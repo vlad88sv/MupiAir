@@ -38,12 +38,12 @@ if ( $session->isAdmin() ) {
    }
    echo "</table><br><hr />";
 }
-   echo "<h2>Eventos en esta catorcena</h2>";
+   MOSTRAR_eventos();
   return;
 }
 
 echo "<h1>Estadísticas</h1>";
-//Dinamismo en selección de catorcenas.
+//Dinamismo en selección de catorcenas.firef
 echo SCRIPT('
 	$("#datos_catorcena").load("contenido/global+estadisticas+dinamico.php?catorcena="+document.getElementsByName(\'catorcenas_presencia\')[0].value);
 	$("#catorcenas_presencia").change(function (){$("#datos_catorcena").load("contenido/global+estadisticas+dinamico.php?catorcena="+document.getElementsByName(\'catorcenas_presencia\')[0].value);});
@@ -69,7 +69,7 @@ echo "<br />".$database->Combobox_CatorcenasConPresencia("catorcenas_presencia",
 echo '<hr><span id="datos_catorcena"><b>Seleccione una catorcena por favor</b></span>';
 
 echo MOSTRAR_comentarios();
-
+echo MOSTRAR_eventos();
 return;
 }
 
@@ -95,6 +95,42 @@ function MOSTRAR_comentarios() {
       echo "<tr><td>$codigo</td><td>$comentario</td><td>$timestamp</td><td>$tipo</td></tr>";
    }
    echo "</table><br><hr />";
-   }	
+   }
+}
+
+function MOSTRAR_eventos() {
+	global $session,$database,$inicioCatorcena;
+	$finCatorcena = Fin_de_catorcena($inicioCatorcena);
+	echo "<h2>Eventos en esta catorcena</h2>";
+	$usuario = $tipo = null;
+	if ( !$session->isAdmin() ) {  $usuario=$session->codigo; $tipo = "AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario')"; }
+	$q = "select id_evento, timestamp, categoria, afectado, (SELECT CONCAT((SELECT ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=@codigo_calle:=b.codigo_calle), ', ', direccion ) FROM emupi_mupis as c WHERE c.id_mupi=(SELECT codigo_mupi FROM emupi_mupis_caras WHERE id_pantalla=afectado)) AS afectado_traducido, descripcion_evento, foto_evento from emupi_mupis_eventos WHERE categoria='PANTALLA' AND afectado IN (SELECT id_pantalla FROM emupi_mupis_caras WHERE catorcena>=$inicioCatorcena AND catorcena<=$finCatorcena $tipo);";
+	$result = $database->query($q);
+  $num_rows = mysql_numrows($result);
+  if ( $num_rows == 0 ) {
+	  echo Mensaje("¡No hay eventos ingresados!",_M_NOTA);
+   } else {
+	echo '<table>';
+	if ( $usuario ) {
+		echo "<tr><th>Fecha y Hora</th><th>Objeto Afectado</th><th>Descripción</th><th>Foto</th></tr>";
+	} else {
+		echo "<tr><th>Código Evento "._NOMBRE_."</th><th>Fecha y Hora</th><th>Categoría</th><th>Objeto Afectado</th><th>Descripción</th><th>Foto</th></tr>";
+	}
+   for($i=0; $i<$num_rows; $i++){
+      if ( !$usuario ) $id_evento  = mysql_result($result,$i,"id_evento");
+      $timestamp  = date('h:i:s @ d/m/Y', mysql_result($result,$i,"timestamp"));
+      if ( !$usuario ) $categoria  = mysql_result($result,$i,"categoria");
+      $afectado  = mysql_result($result,$i,"afectado_traducido");
+      $descripcion_evento  = mysql_result($result,$i,"descripcion_evento");
+      $foto_evento  = mysql_result($result,$i,"foto_evento");
+	  if ( $foto_evento ) { $foto_evento = CREAR_LINK_GET ("ver:".mysql_result($result,$i,"foto_evento"), "Ver foto", "Muestra la foto del evento"); }
+      if ( !$usuario ) $id_evento  = CREAR_LINK_GET("gestionar+eventos&amp;evento=".$id_evento,$id_evento, "Editar los datos de este evento");
+      if ( $usuario ) {
+		  echo "<tr><td>$timestamp</td><td>$afectado</td><td>$descripcion_evento</td><td>$foto_evento</td></tr>";
+	  } else {
+		  echo "<tr><td>$id_evento</td><td>$timestamp</td><td>$categoria</td><td>$afectado</td><td>$descripcion_evento</td><td>$foto_evento</td></tr>";   }
+	  }
+   echo "</table><br><hr />";
+   }
 }
 ?>
