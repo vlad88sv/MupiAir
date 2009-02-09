@@ -124,9 +124,9 @@ global $database,$form;
 $q = "INSERT INTO ".TBL_STREETS." (codigo_calle, ubicacion, impactos ) VALUES ('".$_POST['codigo_calle']."', '" . $_POST['ubicacion']. "', '" . $_POST['impactos']. "')  ON DUPLICATE KEY UPDATE ubicacion=VALUES(ubicacion), impactos=VALUES(impactos);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
-	echo "<blockquote>Exito al registrar calle de ".  $_POST['ubicacion'].'</blockquote>';
+	echo Mensaje("Exito al registrar calle de ".  $_POST['ubicacion'],_M_INFO);
 } else {
-	echo "<blockquote>Falló el registro el calle de " . $_POST['ubicacion'].'</blockquote>';
+	echo Mensaje("Falló el registro el calle de " . $_POST['ubicacion'], _M_ERROR);
 }
 }
 ?>
