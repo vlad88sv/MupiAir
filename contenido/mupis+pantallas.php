@@ -55,11 +55,15 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 	echo "Viendo pantallas "._NOMBRE_." de la catorcena " . Combobox_catorcenas("miSelect", $Catorcena) ;
 	$BotonCambiar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena=\'+document.getElementsByName(\'miSelect\')[0].value" value="Cambiar">';
 	$BotonClonarCatorcenaAnterior = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=clonar\'" value="Clonar anterior" '.GenerarTooltip('Clona los datos de los mupis de la catorcena inmediata anterior').'>';
-	$BotonEliminarDatosCatorcena = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=eliminar_datos\'" value="Eliminar Datos" '.GenerarTooltip('Elimina los datos mostrados para la catorcena actual').'>';	
+	$BotonEliminarDatosCatorcena = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=eliminar_datos\'" value="Eliminar Datos" '.GenerarTooltip('Elimina los datos mostrados para la catorcena actual').'>';
+	$BotonFiltraVistaPorCalles = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena=\'+document.getElementsByName(\'miSelect\')[0].value+\'&amp;calle=\'+document.getElementsByName(\'cmbCalles\')[0].value" value="Filtrar">';
 	echo $BotonCambiar;
 	echo $BotonCancelar;
 	echo $BotonClonarCatorcenaAnterior;
 	echo $BotonEliminarDatosCatorcena;
+	echo "<br />";
+	echo "Filtrar vista a "._NOMBRE_." que se ubiquen en la calle ". $database->Combobox_calle("cmbCalles");
+	echo $BotonFiltraVistaPorCalles;
 	echo "<hr />";
 	verPantallas($usuario);
 	if ( $session->isAdmin() ) {
@@ -84,7 +88,11 @@ function verPantallas($usuario="", $pantalla=""){
    if ($usuario) {
     $WHERE = " WHERE codigo='".$usuario."'";
     }
-   $q = "SELECT id_pantalla, tipo_pantalla, codigo_mupi, (SELECT CONCAT(codigo_calle, '.' , codigo_mupi, ' | ', (SELECT ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=@codigo_calle:=b.codigo_calle), ', ', direccion ) FROM emupi_mupis as c WHERE c.id_mupi=a.codigo_mupi) AS codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento, @calle as codigo_calle2 FROM ".TBL_MUPI_FACES." as a WHERE catorcena = $Catorcena ORDER BY codigo_calle2, codigo_mupi, tipo_pantalla;";
+	
+	if ( isset($_GET['calle']) ) {
+		 $calle = "AND codigo_mupi IN (SELECT codigo_mupi FROM emupi_mupis WHERE codigo_calle='1')";
+	}
+   $q = "SELECT id_pantalla, tipo_pantalla, codigo_mupi, (SELECT CONCAT(codigo_calle, '.' , codigo_mupi, ' | ', (SELECT ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=@codigo_calle:=b.codigo_calle), ', ', direccion ) FROM emupi_mupis as c WHERE c.id_mupi=a.codigo_mupi) AS codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento, @calle as codigo_calle2 FROM ".TBL_MUPI_FACES." as a WHERE catorcena = $Catorcena $calle ORDER BY codigo_calle2, codigo_mupi, tipo_pantalla;";
    //echo $q;
    $result = $database->query($q);
    if ( !$result ) {
