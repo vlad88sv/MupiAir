@@ -171,6 +171,11 @@ function CONTENIDO_mostrar_principal() {
 		CONTENIDO_comentarios($usuario, $id_comentario);
 		break;
 	
+	case "gestionar referencias":
+		$id_referencia = isset( $_GET['referencia'] ) ? $_GET['referencia'] : "";
+		CONTENIDO_referencias($usuario, $id_referencia);
+		break;
+		
 	case "salir":
 		$session->logout();
 		header("Location: ./");
@@ -230,7 +235,8 @@ function INICIAR_MENUES () {
 	. CREAR_LINK_GET("gestionar+clientes","Clientes", "Gestionar clientes")
 	. CREAR_LINK_GET("gestionar+mupis","Eco Mupis", "Eliminar o modificar MUPIS")
 	. CREAR_LINK_GET("gestionar+calles","Calles", "Eliminar o modificar calles")
-	. CREAR_LINK_GET("ver+eventos","Eventos", "Agregar, Eliminar o modificar eventos")
+	. CREAR_LINK_GET("gestionar+eventos","Eventos", "Agregar, Eliminar o modificar eventos")
+	. CREAR_LINK_GET("gestionar+referencias", "Referencias", "Eliminar o modificar referencias de calle")
 	. CREAR_LINK_GET("gestionar+comentarios", "Comentarios", "Eliminar o modificar comentarios")
 	.'</div>';
 	break;

@@ -206,6 +206,12 @@ Esta tabla se encarga de llevar los comentarios de los usuarios.
 $q="id_comentario INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo TEXT, comentario VARCHAR(500), timestamp int(11), tipo tinyint(1)";
 CREAR_TBL(TBL_COMMENTS, $q);
 
+/*
+Esta tabla se encarga de llevar las referencias en calle de los Eco Mupis
+*/
+$q="id_referencia INT NOT NULL AUTO_INCREMENT PRIMARY KEY, lon float default NULL, lat float default NULL, codigo_calle INT(11), imagen_referencia INT(11)";
+CREAR_TBL(TBL_REFS, $q);
+
 echo '<h3>+Creando usuario '.$_POST['admin'].'...</h3><br />';
 $q = "INSERT INTO ".TBL_USERS." VALUES ('".$_POST['admin'] . "', '" . md5($_POST['admin_clave']) . "', 'Administrador Principal', 'Administrador', '" . $_POST['email'] . "', '0','','','','Creado durante de la instalación', 9, 0," . time() . ") ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), clave=VALUES(clave), email=VALUES(email)";
 @mysql_query($q, $link)  or die('!->No se pudo insertar el usuario<br /><pre>' . mysql_error() . '</pre>');;

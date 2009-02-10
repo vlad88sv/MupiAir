@@ -40,6 +40,7 @@ require_once("contenido/mupis+pedidos.php");
 require_once("contenido/mupis+calles.php");
 require_once("contenido/mupis+eventos.php");
 require_once("contenido/admin+comentarios.php");
+require_once("contenido/mapa+referencias.php");
 ?>
 <!-- Este comentario activa "quirks mode" en Internet Explorer ;) - Vlad.-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
