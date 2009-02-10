@@ -214,23 +214,23 @@ function INICIAR_MENUES () {
 	<div class="chromestyle" id="chromemenu">
 	<ul>
 	<li><a href="./">Inicio</a></li>
-	<li><a href="#" rel="menu_herramientas">Herramientas</a></li>'
+	<li><a href="#" rel="menu_herramientas">Editar</a></li>'
+	.'<li>'.  CREAR_LINK_GET("registro","Registrar cliente", "Agregar un nuevo cliente al sistema") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("gestionar+pantallas","Gestionar pantallas", "Eliminar o modificar pantallas") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("gestionar+pedidos","Gestionar pedidos", "Eliminar o modificar pedidos") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("ver+reportes", "Reportes", "Generar reportes") .'</li>'
-	.'<li><a href="./?accion=salir">Cerrar sesión administrativa</a></li>	
+	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>	
 	</ul>
 	</div>
 	';
 	//Herramientas
 	$s .= '
 	<div id="menu_herramientas" class="dropmenudiv" style="width: 150px;">'
-	. CREAR_LINK_GET("registro","Registrar cliente", "Agregar un nuevo cliente al sistema")
-	. CREAR_LINK_GET("gestionar+clientes","Gestionar clientes", "Gestionar clientes")
-	. CREAR_LINK_GET("gestionar+mupis","Gestionar MUPIS", "Eliminar o modificar MUPIS")
-	. CREAR_LINK_GET("gestionar+calles","Gestionar calles", "Eliminar o modificar calles")
-	. CREAR_LINK_GET("ver+eventos","Gestionar eventos", "Agregar, Eliminar o modificar eventos")
+	. CREAR_LINK_GET("gestionar+clientes","Clientes", "Gestionar clientes")
+	. CREAR_LINK_GET("gestionar+mupis","Eco Mupis", "Eliminar o modificar MUPIS")
+	. CREAR_LINK_GET("gestionar+calles","Calles", "Eliminar o modificar calles")
+	. CREAR_LINK_GET("ver+eventos","Eventos", "Agregar, Eliminar o modificar eventos")
 	. CREAR_LINK_GET("gestionar+comentarios", "Comentarios", "Eliminar o modificar comentarios")
 	.'</div>';
 	break;
@@ -242,7 +242,7 @@ function INICIAR_MENUES () {
 	<ul>
 	<li><a href="./">Inicio</a></li>'
 	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
-	.'<li><a href="./?accion=salir">Cerrar sesión de ventas</a></li>	
+	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>	
 	</ul>
 	</div>
 	';
