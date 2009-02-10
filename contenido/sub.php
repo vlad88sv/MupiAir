@@ -165,6 +165,11 @@ function CONTENIDO_mostrar_principal() {
 	case "info nosotros":
 		CONTENIDO_global_info();
 		break;
+		
+	case "gestionar comentarios":
+		$id_comentario = isset( $_GET['comentario'] ) ? $_GET['comentario'] : "";
+		CONTENIDO_comentarios($usuario, $id_comentario);
+		break;
 	
 	case "salir":
 		$session->logout();
@@ -226,6 +231,7 @@ function INICIAR_MENUES () {
 	. CREAR_LINK_GET("gestionar+mupis","Gestionar MUPIS", "Eliminar o modificar MUPIS")
 	. CREAR_LINK_GET("gestionar+calles","Gestionar calles", "Eliminar o modificar calles")
 	. CREAR_LINK_GET("ver+eventos","Gestionar eventos", "Agregar, Eliminar o modificar eventos")
+	. CREAR_LINK_GET("gestionar+comentarios", "Comentarios", "Eliminar o modificar comentarios")
 	.'</div>';
 	break;
 	
