@@ -1,6 +1,6 @@
 <?php
-function DEPURAR($sTexto){
-	if (0){echo '<br />'.$sTexto.'<br />';}
+function DEPURAR($sTexto, $forzar=0){
+	if (0 || $forzar){echo '<pre>'.$sTexto.'</pre><br />';}
 }
 
 function print_ar($array, $count=0) {
