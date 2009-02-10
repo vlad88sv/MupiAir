@@ -164,12 +164,6 @@ if ($id) {
 	$CampoCodigoPedido = '<tr><td>Enlazar al pedido</td><td>'. $database->Combobox_pedido("codigo_pedido", $codigo_pedido, $Catorcena, Fin_de_catorcena($Catorcena)) . '</td></tr>';
 	$CampoFotoReal = '<tr><td>Agregar Foto real </td><td><input type="file" name="foto_real" '.$OnChangePantalla.'></td></tr>';
 
-/*
-if ($usuario) {
-	$CampoUsuario  = '<input type="hidden" name="CampoUsuario" value="'.$usuario.'">';
-}
-*/
-
 echo '
 <form action="./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'" enctype="multipart/form-data" method="POST">
 <table>
