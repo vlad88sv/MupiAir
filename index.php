@@ -31,22 +31,14 @@ require_once("contenido/usuario+ingresar.php");
 require_once("contenido/usuario+registrar.php");
 require_once("contenido/usuario+editar.php");
 require_once("contenido/global+404.php");
-require_once("contenido/global+info.php");
 require_once("contenido/global+estadisticas.php");
 require_once("contenido/admin+reportes.php");
-require_once("contenido/mupis+ubicaciones.php");
-require_once("contenido/mupis+contacto.php");
-require_once("contenido/mupis+creativo.php");
-require_once("contenido/mupis+detalle.php");
-require_once("contenido/mupis+eventos.php");
-require_once("contenido/mupis+info.php");
-require_once("contenido/mupis+precio.php");
-require_once("contenido/mupis+servicios.php");
 require_once("contenido/mupis+ubicaciones.php");
 require_once("contenido/mupis+mupis.php");
 require_once("contenido/mupis+pantallas.php");
 require_once("contenido/mupis+pedidos.php");
 require_once("contenido/mupis+calles.php");
+require_once("contenido/mupis+eventos.php");
 require_once("contenido/admin+comentarios.php");
 ?>
 <!-- Este comentario activa "quirks mode" en Internet Explorer ;) - Vlad.-->
