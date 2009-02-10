@@ -962,7 +962,7 @@ class GoogleMapAPI {
         if($this->sidebar) {
 		// HACK HACK
             //$_output .= sprintf('document.getElementById("%s").innerHTML = "<ul class=\"gmapSidebar\">"+ sidebar_html +"<\/ul>";', $this->sidebar_id) . "\n";
-            $_output .= sprintf('document.getElementById("%s").innerHTML = "Ver Eco Mupis:<br /><select id=\"combobox_mupis\" class=\"gmapSidebar\">"+ sidebar_html +"</select>";', 'lista_mupis') . "\n";
+            $_output .= sprintf('document.getElementById("%s").innerHTML = "<b>Ver Eco Mupis:</b><br /><select id=\"combobox_mupis\" class=\"gmapSidebar\">"+ sidebar_html +"</select>";', 'lista_mupis') . "\n";
 			$_output .= 'click_sidebar($("#combobox_mupis").val())'."\n";
 			$_output .= '$("#combobox_mupis").change(function (){click_sidebar($("#combobox_mupis").val());})'."\n";
         }

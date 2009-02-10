@@ -27,7 +27,7 @@ if ( isset( $_GET['accion'] ) ) {
 			$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario='.$_GET['usuario'].'&catorcena="+document.getElementsByName(\'combo_catorcenas\')[0].value+"&calle="+document.getElementsByName(\'combo_calles\')[0].value);
 			$("#combo_calles").change(function (){$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario='.$_GET['usuario'].'&catorcena="+document.getElementsByName(\'combo_catorcenas\')[0].value+"&calle="+document.getElementsByName(\'combo_calles\')[0].value);});
 			').'<br />';
-			retornar ('Ver Calle:<br />' . $database->Combobox_CallesConPresencia("combo_calles",$_GET['usuario'],$_GET['catorcena']).$script);
+			retornar ('<b>Ver Calle:</b><br />' . $database->Combobox_CallesConPresencia("combo_calles",$_GET['usuario'],$_GET['catorcena']).$script);
 		} else {
 			retornar ( "Ud. esta utilizando incorrectamente este script de soporte. 2" );
 		}
