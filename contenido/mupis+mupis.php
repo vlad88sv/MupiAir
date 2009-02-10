@@ -13,7 +13,7 @@ function CONTENIDO_mupis($usuario="",$mupi="") {
 		if ( isset($_GET['eliminar']) ) {
 		global $database;
 		// Eliminamos la pantalla
-		$q = "DELETE FROM " . TBL_MUPI . " WHERE codigo_mupi='" . $_GET['eliminar'] . "';";
+		$q = "DELETE FROM " . TBL_MUPI . " WHERE id_mupi='" . $_GET['eliminar'] . "';";
 		$result = $database->query($q);
 		if ( $result ) { echo Mensaje ("Eco Mupis eliminado",_M_INFO); } else { echo Mensaje ("Eco Mupis no pudo ser eliminado",_M_ERROR); }
 		}
@@ -41,16 +41,17 @@ function verMUPIS(){
       return;
    }
 	echo '<table border="0">';
-	echo "<tr><th>Código "._NOMBRE_."</th><th>Dirección</th><th>Foto Genérica</th><th>Longitud</th><th>Latitud</th><th>Calle</th><th>Acciones</th></tr>";
+	echo "<tr><th>ID Mupi</th><th>Código "._NOMBRE_."</th><th>Dirección</th><th>Foto Genérica</th><th>Longitud</th><th>Latitud</th><th>Calle</th><th>Acciones</th></tr>";
 	for($i=0; $i<$num_rows; $i++){
-		$codigo_mupi  = CREAR_LINK_GET("gestionar+mupis&amp;mupi=".mysql_result($result,$i,"id_mupi"), mysql_result($result,$i,"codigo_calle").".".mysql_result($result,$i,"codigo_mupi"), "Carga los datos del "._NOMBRE_. " seleccionado para editar");
+		$id = CREAR_LINK_GET("gestionar+mupis&amp;mupi=".mysql_result($result,$i,"id_mupi"), mysql_result($result,$i,"id_mupi"), "Carga los datos del "._NOMBRE_. " seleccionado para editar");
+		$codigo_mupi  = mysql_result($result,$i,"codigo_calle").".".mysql_result($result,$i,"codigo_mupi");
 		$direccion = mysql_result($result,$i,"direccion");
 		$foto_generica = mysql_result($result,$i,"foto_generica");
 		$Longitud  = mysql_result($result,$i,"lon");
 		$Latitud  = mysql_result($result,$i,"lat");
 		$codigo_calle  = CREAR_LINK_GET("gestionar+calles&amp;calle=".mysql_result($result,$i,"codigo_calle"), mysql_result($result,$i,"calle"), "Editar los datos de este pedido");
 		$Eliminar = CREAR_LINK_GET("gestionar+mupis&amp;eliminar=".mysql_result($result,$i,"codigo_mupi"),"Eliminar", "Eliminar los datos de este "._NOMBRE_);
-	echo "<tr><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$Longitud</td><td>$Latitud</td><td>$codigo_calle</td><td>$Eliminar</td></tr>";
+	echo "<tr><td>$id</td><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$Longitud</td><td>$Latitud</td><td>$codigo_calle</td><td>$Eliminar</td></tr>";
 	}
 	echo "</table><br />";
 }
@@ -121,22 +122,20 @@ echo '
 
 function MUPI_REGISTRAR() {
 global $database,$form;
-if ( !isset($_POST['ConservarPantalla']) ) {
-	/*
-		Corroborar si ya tenia una imagen antes, para reutilizar la fila y a la vez
-		que la imagen anterior no quede huerfana.
-	*/
+	//print_ar($_POST);
+	//print_ar($_FILES);
+if ( !$_FILES['foto_generica']['error'] ) {
 	$Pre_Id = isset($_POST['ConservarPantalla2']) ? $_POST['ConservarPantalla2'] : 0;
 	$idImg = CargarImagenEnBD("foto_generica","MUPIS", $Pre_Id);
 } else {
-	$idImg = $_POST['ConservarPantalla'];
+	
+	if ( isset ($_POST['ConservarPantalla']) ){
+		 $idImg = $_POST['ConservarPantalla2'];
+	 } else {
+		 $idImg = 0;
+	 }
 }
 $id_mupi= isset($_POST['id_mupi']) ? $_POST['id_mupi'] : '0';
-$form->setValue("codigo_mupi", $_POST['codigo_mupi']);
-$form->setValue("direccion", $_POST['direccion']);
-$form->setValue("lon", $_POST['lon']);
-$form->setValue("lat", $_POST['lat']);
-$form->setValue("codigo_calle", $_POST['codigo_calle']);
 $q = "INSERT INTO ".TBL_MUPI." (id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_calle) VALUES (".$id_mupi.", '".$_POST['codigo_mupi'] . "', '" . $_POST['direccion'] . "','" . $idImg . "','" . $_POST['lon'] . "', '" . $_POST['lat'] . "', '" . $_POST['codigo_calle'] . "') ON DUPLICATE KEY UPDATE codigo_mupi=VALUES(codigo_mupi), direccion=VALUES(direccion), foto_generica=VALUES(foto_generica), lon=VALUES(lon), lat=VALUES(lat), codigo_calle=VALUES(codigo_calle);";
 DEPURAR ($q);	
 if ( $database->query($q) == 1 ) {

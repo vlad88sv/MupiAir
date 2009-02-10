@@ -127,7 +127,7 @@ function Registrar_Referencia(){
 		 }
 	}
 	$q = "INSERT INTO ".TBL_REFS." (id_referencia, lon, lat, imagen_referencia, codigo_calle) VALUES('".$_POST['id_referencia']."','".$_POST['lon']."','".$_POST['lat']."','".$idImg."','".$_POST['codigo_calle']."') ON DUPLICATE KEY UPDATE lon=VALUES(lon), lat=VALUES(lat), imagen_referencia=VALUES(imagen_referencia), codigo_calle=VALUES(codigo_calle)" . ";";
-	DEPURAR ($q,1);
+	DEPURAR ($q,0);
 
 	if ( $database->query($q) == 1 ) {
 	echo Mensaje ("Exito al registrar/editar referencia ".  $_POST['id_referencia'], _M_INFO);
