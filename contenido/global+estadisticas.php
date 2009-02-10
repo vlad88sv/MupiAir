@@ -58,7 +58,7 @@ $q = "SELECT SUM(catorcena_fin - catorcena_inicio) as cuenta FROM emupi_mupis_pe
 $result = $database->query($q);
 echo "Número de catorcenas contratadas: <b>" . Contar_catorcenas(mysql_result($result,0,"cuenta"))."</b><br />";
 
-$q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.codigo_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=".Obtener_catorcena_cercana()." AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$session->codigo."')".";";
+$q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.id_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=".Obtener_catorcena_cercana()." AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$session->codigo."')".";";
 $result = $database->query($q);
 echo "Número de impactos publicitarios diarios: <b>" . (int) (mysql_result($result,0,"Impactos"))."</b><br />";
 
@@ -77,8 +77,8 @@ function MOSTRAR_comentarios() {
 	global $session,$database,$inicioCatorcena;
   echo "<hr /><h2>Comentarios publicados esta catorcena</h2>";
   $finCatorcena = Fin_de_catorcena($inicioCatorcena);
-  $tipo = '';
-  if ( !$session->isAdmin() ) {  $tipo = 'AND tipo=1'; }
+  $usuario = $tipo = null;
+  if ( !$session->isAdmin() ) { $tipo = 'AND tipo=1'; $usuario=$session->codigo; }
   $q = "SELECT (SELECT nombre FROM emupi_usuarios AS b WHERE b.codigo=a.codigo) AS codigo, comentario, timestamp, tipo FROM emupi_comentarios AS a WHERE timestamp>=$inicioCatorcena AND timestamp<=$finCatorcena $tipo ORDER BY tipo;";
   $result = $database->query($q);
   $num_rows = mysql_numrows($result);
@@ -86,13 +86,21 @@ function MOSTRAR_comentarios() {
 	  echo Mensaje("¡No hay comentarios ingresados!",_M_NOTA);
    } else {
 	echo '<table>';
-	echo "<tr><th>Cliente</th><th>Comentario</th><th>Fecha</th><th>Tipo</th></tr>";
+	if ( !$usuario ) {
+		echo "<tr><th>Cliente</th><th>Comentario</th><th>Fecha</th><th>Tipo</th></tr>";
+	} else {
+		echo "<tr><th>Cliente</th><th>Comentario</th><th>Fecha</th></tr>";
+	}
    for($i=0; $i<$num_rows; $i++){
       $codigo  = mysql_result($result,$i,"codigo");
       $comentario  = mysql_result($result,$i,"comentario");
       $timestamp = date( "h:i:s @ d/m/Y", mysql_result($result,$i,"timestamp"));
-      $tipo  = mysql_result($result,$i,"tipo") == '1' ? 'Público' : 'Privado';
-      echo "<tr><td>$codigo</td><td>$comentario</td><td>$timestamp</td><td>$tipo</td></tr>";
+      if ( !$usuario ) $tipo  = mysql_result($result,$i,"tipo") == '1' ? 'Público' : 'Privado';
+      if ( !$usuario ) {
+		  echo "<tr><td>$codigo</td><td>$comentario</td><td>$timestamp</td><td>$tipo</td></tr>";
+	  } else {
+		  echo "<tr><td>$codigo</td><td>$comentario</td><td>$timestamp</td></tr>";
+	  }
    }
    echo "</table><br>";
    }
