@@ -2,7 +2,7 @@
 DEFINE ("CORREO_ADMIN", "crystalworld70@gmail.com");
 function CONTENIDO_ayuda_contacto() {
 	global $database, $session;
-	echo '<h1>Sistema de Horarios - Contactar el administrador</h1><hr />';
+	echo '<h1>¡Comenta!</h1><hr />';
 	if ( isset($_POST['enviar']) ) {
 		$tipo = isset($_POST['alcance']) ? 1 : 0;
 		$q = "INSERT INTO ".TBL_COMMENTS." (codigo, comentario, timestamp, tipo) VALUES ('".$session->codigo."', '".$_POST['mensaje']."', ".time().",".$tipo.");";
@@ -14,10 +14,10 @@ function CONTENIDO_ayuda_contacto() {
 		"atte. $session->codigo";
 		mail(CORREO_ADMIN,$subject,$body,$from);
 		if ( $result ) {
-			echo  "<h2>Su mensaje fue enviado exitosamente</h2>";
+			echo  Mensaje("Su mensaje fue enviado exitosamente", _M_INFO);
 			return;
 		}else{
-			echo  "<h2>Su mensaje no pudo ser enviado, intente mas tarde</h2>";
+			echo  Mensaje("Su mensaje no pudo ser enviado, por favor intente mas tarde", _M_ERROR);
 			return ;
 		}
 	}
@@ -30,7 +30,7 @@ function CONTENIDO_ayuda_contacto() {
 	</tr>
 	<tr>
 	<td>
-	<input type="checkbox" name="alcance" value="publico" />
+	<input type="checkbox" name="alcance" value="publico" '.GenerarTooltip("Al marcar esta opción, todos los demás clientes podrán ver tu comentario").' />
 	Deseo hacer este comentario público.
 	</td>
 	</tr>
