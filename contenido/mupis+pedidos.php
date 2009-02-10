@@ -166,15 +166,18 @@ echo '
  
 function Pedidos_REGISTRAR() {
 global $database,$form;
-if ( !isset($_POST['ConservarPantalla']) ) {
-	/*
-		Corroborar si ya tenia una imagen antes, para reutilizar la fila y a la vez
-		que la imagen anterior no quede huerfana.
-	*/
+	//print_ar($_POST);
+	//print_ar($_FILES);
+if ( !$_FILES['foto_pantalla']['error'] ) {
 	$Pre_Id = isset($_POST['ConservarPantalla2']) ? $_POST['ConservarPantalla2'] : 0;
 	$idImg = CargarImagenEnBD("foto_pantalla","PEDIDOS", $Pre_Id);
 } else {
-	$idImg = $_POST['ConservarPantalla'];
+	
+	if ( isset ($_POST['ConservarPantalla']) ){
+		 $idImg = $_POST['ConservarPantalla2'];
+	 } else {
+		 $idImg = 0;
+	 }
 }
 $q = "INSERT INTO ".TBL_MUPI_ORDERS." ( codigo_pedido, codigo, catorcena_inicio, catorcena_fin,  foto_pantalla, costo, descripcion ) VALUES (" . $_POST['codigo_pedido'] . ", '" . $_POST['codigo'] . "', '". $_POST['catorcena_inicio']. "', '". $_POST['catorcena_fin']. "', '". $idImg."', '". $_POST['costo']."', '". $_POST['descripcion']."')  ON DUPLICATE KEY UPDATE codigo=VALUES(codigo), catorcena_inicio=VALUES(catorcena_inicio), catorcena_fin=VALUES(catorcena_fin), foto_pantalla=VALUES(foto_pantalla), costo=VALUES(costo), descripcion=VALUES(descripcion);";
 DEPURAR ($q);

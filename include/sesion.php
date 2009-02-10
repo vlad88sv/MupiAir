@@ -349,17 +349,16 @@ class Session
       if($form->num_errors > 0){
          return false;  //Errors with form
       }
-	  
-	if ( !isset($_POST['ConservarLogotipo']) ) {
-		/*
-			Corroborar si ya tenia una imagen antes, para reutilizar la fila y a la vez
-			que la imagen anterior no quede huerfana.
-		*/
-		$Pre_Id = isset($_POST['ConservarLogotipo2']) ? $_POST['ConservarLogotipo2'] : 0;
-		$idImg = CargarImagenEnBD("logotipo","PEDIDOS", $Pre_Id);
-	} else {
-		$idImg = $_POST['ConservarLogotipo'];
-	}  
+		if ( !$_FILES['logotipo']['error'] ) {
+			$Pre_Id = isset($_POST['ConservarLogotipo2']) ? $_POST['ConservarLogotipo2'] : 0;
+			$idImg = CargarImagenEnBD("logotipo","LOGOTIPOS", $Pre_Id);
+		} else {
+			if ( isset ($_POST['ConservarLogotipo']) ){
+			 $idImg = $_POST['ConservarLogotipo2'];
+			} else {
+			 $idImg = 0;
+			}
+		}
 	$database->updateUserField($codigo,"clave",md5($subnewpass));
 	$database->updateUserField($codigo,"nombre",$nombre);
 	$database->updateUserField($codigo,"razon",$razon);

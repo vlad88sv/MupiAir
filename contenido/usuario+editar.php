@@ -2,13 +2,13 @@
 function CONTENIDO_usuario_editar($usuario) {
 global $database, $session;
 if(!$session->isAdmin()){
-   echo "<h1>Acceso denegado</h1>";
+   echo Mensaje("Acceso denegado",_M_ERROR);
    return;
 } else {
 if ( !$usuario ) { $usuario = $session->codigo; }
 //Verificamos que el usuario que quiere editar exista...
 if(!$database->codigoTaken($usuario)) {
-   echo "<h1>El usuario '$usuario' no existe</h1>";
+   echo Mensaje("El usuario '$usuario' no existe",_M_INFO);
    return;
 }
 }
@@ -16,8 +16,8 @@ if(!$database->codigoTaken($usuario)) {
 if(isset($_SESSION['useredit'])){
    unset($_SESSION['useredit']);
    
-   echo "<h2>¡Cuenta de cliente editada exitosamente!</h2><hr />";
-   echo "<h3>La cuenta de ".$_SESSION['user_edic'] ." ha sido exitosamente actualizada.</h3>";
+   echo Mensaje("¡Cuenta de cliente editada exitosamente!<br />La cuenta de ".$_SESSION['user_edic'] ." ha sido exitosamente actualizada.",_M_INFO);
+   CONTENIDO_usuario_info($_SESSION['user_edic']);
    return;
 }
 $_SESSION['user_edic'] = $usuario;
@@ -27,7 +27,7 @@ $req_user_info = $database->getUserInfo($_SESSION['user_edic']);
 <form action="include/x.php" enctype="multipart/form-data" method="POST">
 <table  border="0" cellspacing="0">
 <tr>
-<td>Nueva clave:</td>
+<td width="20%">Nueva clave:</td>
 <td><input type="password" name="newpass" maxlength="30" style="width: 98%;" value=""></td>
 </tr>
 
@@ -68,7 +68,7 @@ $req_user_info = $database->getUserInfo($_SESSION['user_edic']);
 
 <?php
 $OnChangePantalla = '';
-if ( $req_user_info['telefono3'] ) {
+if ( $req_user_info['logotipo'] ) {
 echo '
 <tr>
 <td>Conservar logotipo con Id. '.$req_user_info['logotipo'].':</td>
