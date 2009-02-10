@@ -13,8 +13,10 @@ if ( isset( $_GET['accion'] ) ) {
 		if ( isset( $_GET['MUPI'] ) ) {
 		
 			$parte = explode ('|',$_GET['MUPI'] ); 
-			//retornar ("Mupi: " . $parte[0]. ", Catorcena: ". $parte[1]. ", Usuario:".$parte[2]);
-			retornar ( Buscar ($parte[0], $parte[1], $parte[2] ) );
+			if ( count($parte) == 3 ) {
+				//retornar ("Mupi: " . $parte[0]. ", Catorcena: ". $parte[1]. ", Usuario:".$parte[2]);
+				retornar ( Buscar ($parte[0], $parte[1], $parte[2] ) );
+			}
 		} else {
 			retornar ( "Ud. esta utilizando incorrectamente este script de soporte. 1" );
 		}
@@ -114,7 +116,6 @@ if ( $session->isAdmin() && !$usuario ) {
 }
    //DEPURAR($q,1);
    $result = $database->query($q);
-   /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
    if(!$result || ($num_rows < 0)){
       exit ( "Error mostrando la información<br />");
@@ -153,7 +154,24 @@ if ( $session->isAdmin() && !$usuario ) {
       
       $html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
       $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $id_mupi . "|" . $catorcena . "|" . $usuario);
+	  $map->addMarkerIcon('http://'.$_SERVER['SERVER_NAME'].'/mupi/hojita.gif','',10,10,10,10);
    }
+   
+   // Mostrar referencias. 10/02/09
+   $q = "SELECT * FROM emupi_referencias WHERE codigo_calle='$calle'".";";
+   $result = $database->query($q);
+   $num_rows = mysql_numrows($result);
+   
+   for($i=0; $i<$num_rows; $i++){
+      $lon  = mysql_result($result,$i,"lon");
+      $lat  = mysql_result($result,$i,"lat");
+	  $logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"imagen_referencia"), "200px","200px");
+	  $map->addMarkerByCoords($lon, $lat, "Referencia" , "Este es un punto de referencia<br />".$logotipo, '', '');
+	  $map->addMarkerIcon('http://'.$_SERVER['SERVER_NAME'].'/mupi/include/ver.php?id='.mysql_result($result,0,"imagen_referencia"),'',0,0,50,50);
+	  
+   }
+   
+   
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 $datos = '';
 $datos .= $map->getMapJS();

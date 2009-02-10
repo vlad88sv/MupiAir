@@ -780,7 +780,7 @@ class GoogleMapAPI {
         if(!($_image_info = @getimagesize($_icon_image_path))) {
             die('GoogleMapAPI:createMarkerIcon: Error reading image [1]: ' . $iconImage);   
         }
-/*
+
         if($iconShadowImage) {
             $_shadow_image_path = $iconShadowImage;
             if(!($_shadow_info = @getimagesize($_shadow_image_path))) {
@@ -788,7 +788,7 @@ class GoogleMapAPI {
             }
         }
         
-*/
+
         if($iconAnchorX === 'x') {
             $iconAnchorX = (int) ($_image_info[0] / 2);
         }
@@ -805,8 +805,8 @@ class GoogleMapAPI {
 
         $icon_info = array(
                 'image' => $iconImage,
-                'iconWidth' => '50', //$_image_info[0],
-                'iconHeight' => '50', // $_image_info[1],
+                'iconWidth' => $_image_info[0],
+                'iconHeight' =>  $_image_info[1],
                 'iconAnchorX' => $iconAnchorX,
                 'iconAnchorY' => $iconAnchorY,
                 'infoWindowAnchorX' => $infoWindowAnchorX,
