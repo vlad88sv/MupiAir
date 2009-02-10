@@ -170,15 +170,18 @@ echo '
  
 function Eventos_REGISTRAR() {
 global $database,$form;
-if ( !isset($_POST['ConservarFoto']) ) {
-	/*
-		Corroborar si ya tenia una imagen antes, para reutilizar la fila y a la vez
-		que la imagen anterior no quede huerfana.
-	*/
+	//print_ar($_POST);
+	//print_ar($_FILES);
+if ( !$_FILES['foto_evento']['error'] ) {
 	$Pre_Id = isset($_POST['ConservarFoto2']) ? $_POST['ConservarFoto2'] : 0;
 	$idImg = CargarImagenEnBD("foto_evento","EVENTOS", $Pre_Id);
 } else {
-	$idImg = $_POST['ConservarFoto'];
+	
+	if ( isset ($_POST['ConservarFoto']) ){
+		 $idImg = $_POST['ConservarFoto2'];
+	 } else {
+		 $idImg = 0;
+	 }
 }
 $q = "INSERT INTO ".TBL_EVENTS." ( id_evento, timestamp, categoria, afectado, descripcion_evento, foto_evento ) VALUES (" . $_POST['id_evento'] . ", '" . $_POST['timestamp'] . "', '". $_POST['tipo_evento']. "', '". $_POST['afectado']. "', '". $_POST['descripcion']. "', '". $idImg."')  ON DUPLICATE KEY UPDATE id_evento=VALUES(id_evento), timestamp=VALUES(timestamp), categoria=VALUES(categoria), afectado=VALUES(afectado), descripcion_evento=VALUES(descripcion_evento), foto_evento=VALUES(foto_evento);";
 DEPURAR ($q);
