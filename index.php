@@ -51,7 +51,7 @@ require_once("contenido/mapa+referencias.php");
 	<meta http-equiv="Content-Script-type" content="text/javascript" />
 	<meta http-equiv="Content-Language" content="es" />
 	<link rel="stylesheet" type="text/css" href="estilo.css" />
-	<link rel="stylesheet" type="text/css" href="include/chrometheme/chromestyle3.css" />
+	<link rel="stylesheet" type="text/css" href="include/chrometheme/chromestyle.css" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="start" href="/" />
 	<title><? echo _NOMBRE_; ?> - Servicio publicitario</title>
@@ -68,8 +68,18 @@ require_once("contenido/mapa+referencias.php");
 	</script>
 	</head>
 <body>
-	<?php CONTENIDO_mostrar_logo(); ?>
-	<img class="fija" src="hoja.gif" />
+<div style="z-index:-1;position:fixed; _position:absolute; top:0; _top:expression(eval(document.body.scrollTop));"><img style="width:100%; height:100%" src="fondo.gif" /></div>
+	<table style="border:0">
+		 <tr>
+			 <td style="border:0">
+			 	<?php CONTENIDO_mostrar_logo(); ?>
+			 </td>
+			 <td width="100px" style="border:0">
+			 	<?php echo IMAGEN ("ECO.gif","Eco Mupis", "200px", "200px"); ?>
+			 </td>
+		 </tr>
+	 </table>
+	<br />
 	<?
 	global $session;
 	if ( $session->logged_in ) {

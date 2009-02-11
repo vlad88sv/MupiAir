@@ -191,13 +191,13 @@ function CONTENIDO_mostrar_principal() {
 		CONTENIDO_global_404();
 	}
 }
-function IMAGEN ($ruta, $alt="") {
-return '<img src="'. $ruta . '" alt="'. $alt .'" />';
+function IMAGEN ( $ruta, $alt="", $width="", $height="" ) {
+return '<img src="'. $ruta . '" style="max-width:'.$width.'; max-height:'.$height.'" alt="'. $alt .'" />';
 }
 
 function CONTENIDO_mostrar_logo() {
 	//echo '<center>' . IMAGEN("./logo.gif") . '</center>';
-	echo IMAGEN("./logo.gif");
+	echo IMAGEN("./logo.gif", "Logotipo Eco Mupis", "40%", "40%");
 }
 
 function CONTENIDO_mostrar_logo_cliente() {
