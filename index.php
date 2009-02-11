@@ -66,9 +66,28 @@ require_once("contenido/mapa+referencias.php");
 	* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
 	***********************************************/
 	</script>
-	</head>
+	<style type="text/css">
+	/* pushes the page to the full capacity of the viewing area */
+	html {height:100%;}
+	body {height:100%; margin:0; padding:0;}
+	/* prepares the background image to full capacity of the viewing area */
+	#bg {position:fixed; top:0; left:0; width:100%; height:100%;}
+	/* places the content ontop of the background image */
+	#content {position:relative; z-index:1;}
+	</style>
+	<!--[if IE 6]>
+	<style type="text/css">
+	/* some css fixes for IE browsers */
+	html {overflow-y:hidden;}
+	body {overflow-y:auto;}
+	#bg {position:absolute; z-index:-1;}
+	#content {position:static;}
+	</style>
+	<![endif]-->
+</head>
 <body>
-<div style="z-index:-1;position:fixed; _position:absolute; top:0; _top:expression(eval(document.body.scrollTop));"><img style="width:100%; height:100%" src="fondo.gif" /></div>
+<div id="bg"><img src="fondo.jpg" width="100%" alt=""></div>
+<div id="content">
 	<table style="border:0">
 		 <tr>
 			 <td style="border:0">
@@ -102,5 +121,6 @@ require_once("contenido/mapa+referencias.php");
 		<div class="clear"></div>
 	</div>
 	</div>	
+	</div>
 	</body>
 </html>

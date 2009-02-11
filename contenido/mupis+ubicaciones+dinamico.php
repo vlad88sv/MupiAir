@@ -154,7 +154,7 @@ if ( $session->isAdmin() && !$usuario ) {
       
       $html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
       $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $id_mupi . "|" . $catorcena . "|" . $usuario);
-	  $map->addMarkerIcon('http://'.$_SERVER['SERVER_NAME'].'/mupi/hojita.gif','',10,10,10,10);
+	  $map->addMarkerIcon('http://'.$_SERVER['SERVER_NAME'].'/mupi/punto.gif','',10,10,10,10);
    }
    
    // Mostrar referencias. 10/02/09
