@@ -143,7 +143,7 @@ asignarle el evento al MUPI.
 Si el evento llegará a afectar a una sola de las pantallas, entonces deberá relacionar dicho
 evento con la pantalla afectada y no con el MUPI. Ver detalles en tabla TBL_MUPI_FACES.
 */
-$q="id_mupi INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo_mupi VARCHAR(100) NOT NULL, direccion VARCHAR(255), foto_generica VARCHAR(255), lon float default NULL, lat float default NULL, codigo_evento VARCHAR(50), codigo_calle VARCHAR(255)";
+$q="id_mupi INT NOT NULL AUTO_INCREMENT PRIMARY KEY, codigo_mupi VARCHAR(100) NOT NULL, direccion VARCHAR(255), foto_generica VARCHAR(255), lon DOUBLE DEFAULT NULL, lat DOUBLE DEFAULT NULL, codigo_evento VARCHAR(50), codigo_calle VARCHAR(255)";
 CREAR_TBL(TBL_MUPI, $q);
 
 /*
