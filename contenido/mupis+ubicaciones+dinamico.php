@@ -146,7 +146,7 @@ if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL
 			
 			if($num_rows > 0){
 				   for($ii=0; $ii<$num_rows2; $ii++){
-					   $logotipo .= CargarImagenDesdeBD(mysql_result($result2,$ii,"logotipo"), "200px","200px");
+					   $logotipo .= '<img style="width:200px;height:200px;" src="include/ver.php?id='.mysql_result($result2,$ii,"logotipo").'" />';
 				   }
 			}
 		} else {

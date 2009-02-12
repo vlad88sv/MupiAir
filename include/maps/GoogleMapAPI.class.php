@@ -991,9 +991,7 @@ class GoogleMapAPI {
             //$_output .= '  alert(idx);' . "\n";
             $_output .= '  if(isArray(marker_html[idx])) { markers[idx].openInfoWindowTabsHtml(marker_html[idx]); }' . "\n";
             $_output .= '  else { markers[idx].openInfoWindowHtml(marker_html[idx]); }' . "\n";
-			//$_output .= '  map.updateInfoWindow();' . "\n";
-			$_output .= '  GEvent.trigger(markers[idx],"'.$this->window_trigger.'");' . "\n";
-			//$_output .= '  map.updateInfoWindow();' . "\n";
+			$_output .= '  GEvent.trigger(markers[idx],"'.$this->window_trigger.'");' . "\n";			
             $_output .= '}' . "\n";
         }
 /*
@@ -1001,17 +999,6 @@ class GoogleMapAPI {
         $_output .= 'map.centerAtLatLng(points[idx]);' . "\n";
         $_output .= 'markers[idx].openInfoWindowHtml(html);' . "\n";
         $_output .= '}' . "\n";
-*/
-/*
-        if($this->directions) {
-            $_output .= 'function tohere(idx) {' . "\n";
-            $_output .= 'markers[idx].openInfoWindowHtml(to_htmls[idx]);' . "\n";
-            $_output .= '}' . "\n";
-            $_output .= 'function fromhere(idx) {' . "\n";
-            $_output .= 'markers[idx].openInfoWindowHtml(from_htmls[idx]);' . "\n";
-            $_output .= '}' . "\n";
-			
-        }
 */
         $_output .= '//]]>' . "\n";
         $_output .= '</script>' . "\n";

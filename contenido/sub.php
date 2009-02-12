@@ -347,7 +347,7 @@ return NULL;
 }
 
 function CargarImagenDesdeBD ($id, $width='100%', $height='100%') {
-	return '<img style="max-width:'.$width.';max-height:'.$height.';" src="include/ver.php?id='.$id.'" />';
+	return '<img style="max-width:'.$width.';max-height:'.$height.';width:auto !important; width:'.$height.'height:auto !important; height:'.$height.'" src="include/ver.php?id='.$id.'" />';
 }
 
 function GenerarTooltip ($texto) {
