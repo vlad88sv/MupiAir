@@ -73,7 +73,7 @@ require_once("contenido/mapa+referencias.php");
 	/* prepares the background image to full capacity of the viewing area */
 	#bg {position:fixed; top:0; left:0; width:100%; height:100%;}
 	/* places the content ontop of the background image */
-	#content {position:relative; z-index:1;}
+	#container {position:relative; z-index:1;}
 	</style>
 	<!--[if IE 6]>
 	<style type="text/css">
@@ -81,7 +81,7 @@ require_once("contenido/mapa+referencias.php");
 	html {overflow-y:hidden;}
 	body {overflow-y:auto;}
 	#bg {position:absolute; z-index:-1;}
-	#content {position:static;}
+	#container {position:static;}
 	</style>
 	<![endif]-->
 </head>

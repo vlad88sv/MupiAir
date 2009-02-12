@@ -991,6 +991,7 @@ class GoogleMapAPI {
             //$_output .= '  alert(idx);' . "\n";
             $_output .= '  if(isArray(marker_html[idx])) { markers[idx].openInfoWindowTabsHtml(marker_html[idx]); }' . "\n";
             $_output .= '  else { markers[idx].openInfoWindowHtml(marker_html[idx]); }' . "\n";
+			$_output .= '  map.updateInfoWindow();' . "\n";
 			$_output .= '  GEvent.trigger(markers[idx],"'.$this->window_trigger.'");' . "\n";
 			$_output .= '  map.updateInfoWindow();' . "\n";
             $_output .= '}' . "\n";
