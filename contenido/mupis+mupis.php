@@ -14,6 +14,7 @@ function CONTENIDO_mupis($usuario="",$mupi="",$calle=NULL) {
 		global $database;
 		// Eliminamos la pantalla
 		$q = "DELETE FROM " . TBL_MUPI . " WHERE id_mupi='" . $_GET['eliminar'] . "';";
+		DEPURAR ($q,1);
 		$result = $database->query($q);
 		if ( $result ) { echo Mensaje ("Eco Mupis eliminado",_M_INFO); } else { echo Mensaje ("Eco Mupis no pudo ser eliminado",_M_ERROR); }
 		}
@@ -54,7 +55,7 @@ function verMUPIS($calle=NULL){
 		$Longitud  = mysql_result($result,$i,"lon");
 		$Latitud  = mysql_result($result,$i,"lat");
 		$codigo_calle  = CREAR_LINK_GET("gestionar+calles&amp;calle=".mysql_result($result,$i,"codigo_calle"), mysql_result($result,$i,"calle"), "Editar los datos de este pedido");
-		$Eliminar = CREAR_LINK_GET("gestionar+mupis&amp;eliminar=".mysql_result($result,$i,"codigo_mupi"),"Eliminar", "Eliminar los datos de este "._NOMBRE_);
+		$Eliminar = CREAR_LINK_GET("gestionar+mupis&amp;eliminar=".mysql_result($result,$i,"id_mupi"),"Eliminar", "Eliminar los datos de este "._NOMBRE_);
 	echo "<tr><td>$id</td><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$Longitud</td><td>$Latitud</td><td>$codigo_calle</td><td>$Eliminar</td></tr>";
 	}
 	echo "</table><br />";
