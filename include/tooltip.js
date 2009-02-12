@@ -56,7 +56,7 @@ function TOOLTIP() {
 // Configuration
 //----------------------------------------------------------------------------------------------------
   this.width = 400;                     // width (pixels)
-  this.bgColor = "#9CC089";             // background color
+  this.bgColor = "#C0C0C0";             // background color
   this.textFont = "Arial";      // text font family
   this.textSize = 14;                   // text font size (pixels)
   this.textColor = "#000000";           // text color
