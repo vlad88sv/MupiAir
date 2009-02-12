@@ -1,6 +1,6 @@
 <?php
 function CONTENIDO_referencias($usuario,$id_referencia) {
-	
+	echo '<h1>Gestor de Referencias</h1>';
 	if ( isset($_POST['registrar_referencia']) ) {
 		Registrar_Referencia();
 	}

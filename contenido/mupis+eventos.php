@@ -2,7 +2,7 @@
 $timestamp = time();
 function CONTENIDO_mupis_eventos($usuario,$id_evento='',$tipo_evento='',$afectado='') {
 	global $session, $form, $database, $timestamp;
-	echo '<h1>Eventos ' . _NOMBRE_ . '</h1>';
+	echo '<h1>Visor de Eventos</h1>';
 		if ( isset($_GET['sub']) ) {
 		switch ( $_GET['sub'] ) {
 			case 'adicionar':
@@ -21,7 +21,6 @@ function CONTENIDO_mupis_eventos($usuario,$id_evento='',$tipo_evento='',$afectad
 		}
 	}
 
-	echo '<hr /><h2>Sus Eventos </h2>';
 		//Nos toca registrar un Evento
 	if ( isset($_POST['registrar_eventos']) ) {
 		Eventos_REGISTRAR();

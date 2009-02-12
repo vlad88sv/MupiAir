@@ -1,6 +1,6 @@
 <?php
 function CONTENIDO_comentarios($usuario,$id_comentario) {
-	
+	echo '<h1>Visor de Comentarios</h1>';
 	if ( isset($_POST['registrar_comentario']) ) {
 		Registrar_Comentario();
 	}
