@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_STRICT | E_ALL);
+ob_start("ob_gzhandler"); 
 date_default_timezone_set ('America/El_Salvador');
 require_once('const.php');
 require_once('sesion.php');
