@@ -52,7 +52,7 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 
 	echo '<hr /><h2>Pantallas '._NOMBRE_." en la catorcena de ".date("d/m/Y",$Catorcena)."</h2>";
 	
-	echo "Viendo pantallas "._NOMBRE_." de la catorcena " . Combobox_catorcenas("miSelect", $Catorcena) ;
+	echo "<b>Viendo pantallas "._NOMBRE_." de la catorcena</b> " . Combobox_catorcenas("miSelect", $Catorcena) ;
 	$BotonCambiar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena=\'+document.getElementsByName(\'miSelect\')[0].value" value="Cambiar">';
 	$BotonClonarCatorcenaAnterior = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=clonar\'" value="Clonar anterior" '.GenerarTooltip('Clona los datos de los mupis de la catorcena inmediata anterior').'>';
 	$BotonEliminarDatosCatorcena = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=eliminar_datos\'" value="Eliminar Datos" '.GenerarTooltip('Elimina los datos mostrados para la catorcena actual').'>';
@@ -62,7 +62,7 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 	echo $BotonClonarCatorcenaAnterior;
 	echo $BotonEliminarDatosCatorcena;
 	echo "<br />";
-	echo "Filtrar vista a "._NOMBRE_." que se ubiquen en la calle ". $database->Combobox_calle("cmbCalles");
+	echo "<b>Filtrar vista a "._NOMBRE_." que se ubiquen en la calle</b> ". $database->Combobox_calle("cmbCalles");
 	echo $BotonFiltraVistaPorCalles;
 	echo "<hr />";
 	verPantallas($usuario);

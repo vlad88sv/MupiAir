@@ -14,13 +14,13 @@ SCRIPT('
 echo '<table>';
 echo '<tr>';
 
-echo '<td valign="top" style="border:2px dotted #FFFFFF">';
+echo '<td valign="top" style="border:2px dotted #000000">';
 echo '<b>Ver Catorcena:</b><br />' . $database->Combobox_CatorcenasConPresencia("combo_catorcenas",$usuario).'<br /><br />';
 echo '<span id="datos_calles"><b>Seleccione una catorcena</b><br /><br /></span>';
 echo '<span id="lista_mupis"><b>Seleccione una calle</b><br /><br /></span>';
 echo '</td>';
 
-echo '<td id="grafico_mapa" width="80%" style="border:2px dotted #FFFFFF">';
+echo '<td id="grafico_mapa" width="80%" style="border:2px dotted #000000">';
 echo '<center><b>Esperando información para generar mapa</b></center>';
 echo '</td>';
 
