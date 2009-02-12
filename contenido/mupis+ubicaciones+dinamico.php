@@ -54,7 +54,7 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
    $datos ="";
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die('!->La base de datos seleccionada "'.$DB_base.'" no existe');
-   if ( $session->isAdmin() ) {
+   if ( $session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) {
 	$q = "select tipo_pantalla, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
    } else {
 	$q = "select tipo_pantalla, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos where codigo='$usuario') AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
@@ -103,13 +103,13 @@ $map->setAPIKey(GOOGLE_MAP_KEY);
 // proporción de la ventana que tomará el mapa.
 $map->setWidth('100%');
 // Desactivar controles de Zoom y movimiento para cliente.
-if ( !$session->isAdmin() ) {
+if ( !$session->isAdmin() && $session->userlevel != SALESMAN_LEVEL ) {
 	$map->map_controls = false;
 	$map->disable_drag = true;
 }
 // Cargar puntos mupis.
 $WHERE_USER = '';
-if ( $session->isAdmin() && !$usuario ) {
+if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL ) {
 	$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle from emupi_mupis AS a where codigo_calle='$calle' and id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena);";
 } else {
  	$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT logotipo from emupi_usuarios where codigo='$usuario') as logotipo from emupi_mupis where codigo_calle='$calle' and id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario'));";
@@ -136,7 +136,7 @@ if ( $session->isAdmin() && !$usuario ) {
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
       $codigo_evento = mysql_result($result,$i,"codigo_evento");
-		if ( $session->isAdmin() && !$usuario ) {
+		if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL ) {
 			$q = "SELECT DISTINCT logotipo FROM emupi_usuarios where codigo IN (SELECT codigo from emupi_mupis_pedidos where codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_caras as b WHERE catorcena=$catorcena AND b.codigo_mupi=".mysql_result($result,$i,"id_mupi")."));";
 			//echo $q."<br>";
 			$result2 = $database->query($q);
@@ -154,7 +154,8 @@ if ( $session->isAdmin() && !$usuario ) {
       
       $html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
       $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $id_mupi . "|" . $catorcena . "|" . $usuario);
-	  $map->addMarkerIcon('http://'.$_SERVER['SERVER_NAME'].'/mupi/punto.gif','',10,10,10,10);
+
+	  $map->addMarkerIcon(public_base_directory().'/punto.gif','',10,10,10,10);
    }
    
    // Mostrar referencias. 10/02/09
@@ -167,7 +168,7 @@ if ( $session->isAdmin() && !$usuario ) {
       $lat  = mysql_result($result,$i,"lat");
 	  $logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"imagen_referencia"), "200px","200px");
 	  $map->addMarkerByCoords($lon, $lat, "Referencia" , "Este es un punto de referencia<br />".$logotipo, '', '');
-	  $map->addMarkerIcon('http://'.$_SERVER['SERVER_NAME'].'/mupi/include/ver.php?id='.mysql_result($result,0,"imagen_referencia"),'',0,0,50,50);
+	  $map->addMarkerIcon(public_base_directory(). '/include/ver.php?id='.mysql_result($result,$i,"imagen_referencia"),'',0,0,50,50);
 	  
    }
    
@@ -180,4 +181,18 @@ $datos .= $map->getSidebar();
 $datos .= SCRIPT('onLoad();');
 return $datos;
 }
+
+function public_base_directory()
+{
+	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
+	$url .= $_SERVER['HTTP_HOST'];
+    //get public directory structure eg "/top/second/third"
+    $public_directory = dirname($_SERVER['PHP_SELF']);
+    //place each directory into array
+    $directory_array = explode('/', $public_directory);
+    //get highest or top level in array of directory strings
+    $public_base = max($directory_array);
+   
+    return $url."/".$public_base;
+} 
 ?>
