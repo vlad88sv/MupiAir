@@ -31,7 +31,8 @@ if ( !$session->logged_in  ) {
 	if($num_rows == 0){
 	  retornar ("¡No hay un recurso con ese Id.!");
 	}
-	
+	ob_start();
 	header("Content-Type: " . mysql_result($result,0,"mime"));
 	echo mysql_result($result,0,"data");
+	ob_end_flush();
 ?>
