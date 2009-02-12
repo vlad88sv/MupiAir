@@ -34,6 +34,9 @@ function Buscar ($catorcena) {
 
    $Impactos  = mysql_result($result,0,"Impactos");
    $ImpactosCatorcena  = bcmul ($Impactos, "14");
+   if (!$Impactos) {
+	   retornar (Mensaje("¡ups!... parece que no existe referencia número de impactos para sus calles",_M_ERROR)); 
+   }
    $datos .= '<b>'. ($Impactos) . "</b> Impactos diarios" . '<br />';
    $datos .= '<b>'. ($ImpactosCatorcena) . "</b> Impactos en esta catorcena" . '<br />';
 
