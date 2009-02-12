@@ -1,5 +1,5 @@
 <?php
-function CONTENIDO_mupis($usuario="",$mupi="") {
+function CONTENIDO_mupis($usuario="",$mupi="",$calle=NULL) {
 	global $session;
 	echo '<h1>Gestión de ' . _NOMBRE_ . '</h1>';
 	if ( $session->isAdmin() ) {
@@ -20,15 +20,16 @@ function CONTENIDO_mupis($usuario="",$mupi="") {
 		
 	}
 	echo '<hr /><h2>'._NOMBRE_." disponibles</h2>";
-	verMUPIS();
+	verMUPIS($calle);
 	if ( $session->isAdmin() ) {
 	verMUPISregistro($usuario,$mupi);
 	}
 }
-function verMUPIS(){
+function verMUPIS($calle=NULL){
    global $database;
-   //$q = "SELECT codigo_mupi 'Código "._NOMBRE_."', direccion 'Dirección', foto_generica 'Foto Genérica', lon 'Longitud', lat 'Latitud', codigo_evento 'Evento' FROM ".TBL_MUPI.";";
-   $q = "SELECT id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT ubicacion FROM ".TBL_STREETS." AS b WHERE a.codigo_calle=b.codigo_calle) AS 'calle' FROM ".TBL_MUPI." as a;";
+   if ( $calle ) { $wCalle = "WHERE codigo_calle='$calle'"; $conservar_GET_calle="&amp;calle=$calle"; } else { $conservar_GET_calle = $wCalle = NULL; }
+   $q = "SELECT id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT ubicacion FROM ".TBL_STREETS." AS b WHERE a.codigo_calle=b.codigo_calle) AS 'calle' FROM ".TBL_MUPI." as a $wCalle;";
+   DEPURAR($q,0);
    $result = $database->query($q);
    /* Error occurred, return given name by default */
    $num_rows = @mysql_numrows($result);
@@ -40,10 +41,13 @@ function verMUPIS(){
       echo Mensaje ("¡No hay "._NOMBRE_." ingresados!<br/>", _M_NOTA);
       return;
    }
+    $BotonFiltraVistaPorCalles = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+mupis&amp;calle=\'+document.getElementsByName(\'cmbCalles\')[0].value" value="Filtrar">';
+    echo "<b>Filtrar vista a "._NOMBRE_." que se ubiquen en la calle</b> ". $database->Combobox_calle("cmbCalles");
+	echo $BotonFiltraVistaPorCalles;
 	echo '<table border="0">';
 	echo "<tr><th>ID Mupi</th><th>Código "._NOMBRE_."</th><th>Dirección</th><th>Foto Genérica</th><th>Longitud</th><th>Latitud</th><th>Calle</th><th>Acciones</th></tr>";
 	for($i=0; $i<$num_rows; $i++){
-		$id = CREAR_LINK_GET("gestionar+mupis&amp;mupi=".mysql_result($result,$i,"id_mupi"), mysql_result($result,$i,"id_mupi"), "Carga los datos del "._NOMBRE_. " seleccionado para editar");
+		$id = CREAR_LINK_GET("gestionar+mupis".$conservar_GET_calle."&amp;mupi=".mysql_result($result,$i,"id_mupi"), mysql_result($result,$i,"id_mupi"), "Carga los datos del "._NOMBRE_. " seleccionado para editar");
 		$codigo_mupi  = mysql_result($result,$i,"codigo_calle").".".mysql_result($result,$i,"codigo_mupi");
 		$direccion = mysql_result($result,$i,"direccion");
 		$foto_generica = mysql_result($result,$i,"foto_generica");

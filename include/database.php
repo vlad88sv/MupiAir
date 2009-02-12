@@ -353,8 +353,9 @@ class MySQLDB
    return $s;
    }
    
-    function Combobox_calle ($nombre="codigo_calle", $default=NULL) {
-      $q = "SELECT codigo_calle, CONCAT(codigo_calle,'. ',ubicacion) as nombre FROM ".TBL_STREETS;
+    function Combobox_calle ($nombre="codigo_calle", $default=NULL, $calle=NULL) {
+		if ( $calle ) { $wCalle = " AND codigo_calle='$calle'";  } else { $wCalle = ""; }
+      $q = "SELECT codigo_calle, CONCAT(codigo_calle,'. ',ubicacion) as nombre FROM ".TBL_STREETS.$wCalle;
    $result = mysql_query($q, $this->connection);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
@@ -382,7 +383,7 @@ class MySQLDB
   function Combobox_CatorcenasConPresencia ($nombre="catorcena_presencia", $codigo=NULL, $OnChange=NULL) {
 	  global $session;
 	  $WHERE_USER = '';
-	  if ( !$session->isAdmin() || $codigo ) {$WHERE_USER = "WHERE codigo='".$codigo."'";}
+	  if ( !($session->isAdmin() || ($session->userlevel == SALESMAN_LEVEL)) || $codigo ) {$WHERE_USER = "WHERE codigo='".$codigo."'";}
    $q = "SELECT DISTINCT catorcena FROM ".TBL_MUPI_FACES." WHERE catorcena <=".Obtener_catorcena_siguiente()." AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." $WHERE_USER)  ORDER BY catorcena;";
    $result = mysql_query($q, $this->connection);
    //echo $q.'<br />';
