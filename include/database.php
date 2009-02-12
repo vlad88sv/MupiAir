@@ -133,14 +133,14 @@ class MySQLDB
     */
    function addNewUser( $codigo, $clave, $nombre, $razon, $email, $telefono1, $telefono2, $telefono3, $logotipo, $notas ){
       $time = time();
-      DEPURAR ("Nuevo usuario");
+      DEPURAR ("Nuevo usuario:");
       /* If admin sign up, give admin user level */
       if(strcasecmp($codigo, ADMIN_NAME) == 0){
          $ulevel = ADMIN_LEVEL;
       }else{
          $ulevel = CLIENT_LEVEL;
       }
-      $q = "INSERT INTO ".TBL_USERS." VALUES ('$codigo', '$clave', '$nombre', '$razon', '$email', '$telefono1', '$telefono2', '$telefono3', '$logotipo', '$notas', 0, 0, ".time().")";
+      $q = "INSERT INTO ".TBL_USERS." VALUES ('$codigo', '$clave', '$nombre', '$razon', '$email', '$telefono1', '$telefono2', '$telefono3', '$logotipo', '$notas', $ulevel, 0, ".time().")";
       DEPURAR($q);
       return mysql_query($q, $this->connection);
    }
