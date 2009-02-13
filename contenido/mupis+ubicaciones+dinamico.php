@@ -10,6 +10,21 @@ require_once('../include/maps/GoogleMapAPI.class.php');
 $map = new GoogleMapAPI;
 if ( isset( $_GET['accion'] ) ) {
 	switch ( $_GET['accion'] ) {
+	
+	case "drag":
+		if ( isset( $_GET['id'] ) && isset( $_GET['lat'] ) && isset( $_GET['lng'] )) {
+		
+			$parte = explode ('|',$_GET['id'] ); 
+			if ( count($parte) == 3 ) {
+				//retornar ("Mupi: " . $parte[0]. ", Catorcena: ". $parte[1]. ", Usuario:".$parte[2]);
+				retornar ( actualizarCoords ($parte[0], $_GET['lat'], $_GET['lng']));
+			}
+		} else {
+			retornar ( "Ud. esta utilizando incorrectamente este script de soporte. [DRAG]" );
+		}
+	
+	break;
+	
 	case "mupi":
 		if ( isset( $_GET['MUPI'] ) ) {
 		
@@ -195,5 +210,11 @@ function public_base_directory()
     $public_base = max($directory_array);
    
     return $url."/".$public_base;
+}
+
+function actualizarCoords ($id, $lat, $lng) {
+	global $database;
+	$q = "UPDATE ".TBL_MUPI." SET lat='$lat', lon='$lng' WHERE id_mupi='$id';";
+	$result = $database->query($q);
 } 
 ?>

@@ -783,8 +783,9 @@ class GoogleMapAPI {
 			$_output .= '}' . "\n";
 			}
 			if (!$this->disable_drag) {
-			$_output .= 'GEvent.addListener(marker, "dragstart", function() { map.closeInfoWindow(); var pointo = marker.getPoint(); });' . "\n";
-			$_output .= 'GEvent.addListener(marker, "dragend", function() { var point = marker.getPoint(); alert( id + \' \' + fix6ToString( point.lat() ) + \',\' + fix6ToString( point.lng() ) ); });' . "\n";
+			$_output .= 'GEvent.addListener(marker, "dragstart", function() { map.closeInfoWindow();});' . "\n";
+			//$_output .= 'GEvent.addListener(marker, "dragend", function() { var point = marker.getPoint(); alert( id + \' \' + fix6ToString( point.lat() ) + \',\' + fix6ToString( point.lng() ) ); $("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=drag&id=\'+id+\'&lat=\'+fix6ToString( point.lat() )+\'&lng=\'+fix6ToString( point.lng() )); });' . "\n";
+			$_output .= 'GEvent.addListener(marker, "dragend", function() { var point = marker.getPoint(); $("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=drag&id=\'+id+\'&lat=\'+fix6ToString( point.lat() )+\'&lng=\'+fix6ToString( point.lng() )); });' . "\n";
 			}
         $_output .= 'points[counter] = point;' . "\n";
         $_output .= 'markers[counter] = marker;' . "\n";
