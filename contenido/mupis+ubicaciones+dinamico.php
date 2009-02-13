@@ -103,13 +103,14 @@ $map->setDSN('mysql://'.DB_USER.':'.DB_PASS.'@'.DB_SERVER.'/'.DB_NAME);
 $map->setAPIKey(GOOGLE_MAP_KEY);
 // proporción de la ventana que tomará el mapa.
 $map->setWidth('100%');
+$map->referencias = false;
 // Desactivar controles de Zoom y movimiento para cliente.
 if ( !$session->isAdmin() && $session->userlevel != SALESMAN_LEVEL ) {
 	$map->map_controls = false;
 	$map->disable_drag = true;
 }
 // Cargar puntos mupis.
-$WHERE_USER = '';
+$WHERE_USER = "";
 if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL ) {
 	$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle from emupi_mupis AS a where codigo_calle='$calle' and id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena);";
 } else {
@@ -142,11 +143,11 @@ if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL
 			//echo $q."<br>";
 			$result2 = $database->query($q);
 			$num_rows2 = mysql_numrows($result2);
-			$logotipo = '<br />';
+			$logotipo = "<br />";
 			
 			if($num_rows > 0){
 				   for($ii=0; $ii<$num_rows2; $ii++){
-					   $logotipo .= '<img style="width:200px;height:200px;" src="include/ver.php?id='.mysql_result($result2,$ii,"logotipo").'" />';
+					   $logotipo .= '<img style="max-width:200px;max-height:200px;" src="include/ver.php?id='.mysql_result($result2,$ii,"logotipo").'" />';
 				   }
 			}
 		} else {
@@ -162,12 +163,12 @@ if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL
    $q = "SELECT * FROM emupi_referencias WHERE codigo_calle='$calle'".";";
    $result = $database->query($q);
    $num_rows = mysql_numrows($result);
-   
+   $map->referencias = true;
    for($i=0; $i<$num_rows; $i++){
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
 	  $logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"imagen_referencia"), "200px","200px");
-	  $map->addMarkerByCoords($lon, $lat, "Referencia" , "Este es un punto de referencia<br />".$logotipo, '', '');
+	  $map->addMarkerByCoords($lon, $lat, "Referencia" , "Este es un punto de referencia<br />".$logotipo, '', 'REF');
 	  $map->addMarkerIcon(public_base_directory(). '/include/ver.php?id='.mysql_result($result,$i,"imagen_referencia"),'',0,0,50,50);
 	  
    }

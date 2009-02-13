@@ -34,294 +34,43 @@ error_reporting(E_STRICT | E_ALL);
 
 class GoogleMapAPI {
 
-    /**
-     * PEAR::DB DSN for geocode caching. example:
-     * $dsn = 'mysql://user:pass@localhost/dbname';
-     *
-     * @var string
-     */
     var $dsn = null;
-    
-    /**
-     * YOUR GooglMap API KEY for your site.
-     * (http://maps.google.com/apis/maps/signup.html)
-     *
-     * @var string
-     */
     var $api_key = '';
-
-    /**
-     * current map id, set when you instantiate
-     * the GoogleMapAPI object.
-     *
-     * @var string
-     */
     var $map_id = null;
-
-    /**
-     * sidebar <div> used along with this map.
-     *
-     * @var string
-     */
     var $sidebar_id = NULL;    
-    
-    /**
-     * GoogleMapAPI uses the Yahoo geocode lookup API.
-     * This is the application ID for YOUR application.
-     * This is set upon instantiating the GoogleMapAPI object.
-     * (http://developer.yahoo.net/faq/index.html#appid)
-     *
-     * @var string
-     */
     var $app_id = null;
-
-    /**
-     * use onLoad() to load the map javascript.
-     * if enabled, be sure to include on your webpage:
-     * <html onload="onLoad()">
-     *
-     * @var string
-     */
     var $onload = true;
-    
-    /**
-     * map center latitude (horizontal)
-     * calculated automatically as markers
-     * are added to the map.
-     *
-     * @var float
-     */
     var $center_lat = null;
-
-    /**
-     * map center longitude (vertical)
-     * calculated automatically as markers
-     * are added to the map.
-     *
-     * @var float
-     */
     var $center_lon = null;
-    
-    /**
-     * enables map controls (zoom/move/center)
-     *
-     * @var boolean
-     */
-    var $map_controls = true;
-
-    /**
-     * determines the map control type
-     * small -> show move/center controls
-     * large -> show move/center/zoom controls
-     *
-     * @var string
-     */
+	var $map_controls = true;
     var $control_size = 'large';
-    
-    /**
-     * enables map type controls (map/satellite/hybrid)
-     *
-     * @var boolean
-     */
-    var $type_controls = true;
-
-    /**
-     * default map type (G_NORMAL_MAP/G_SATELLITE_MAP/G_HYBRID_MAP)
-     *
-     * @var boolean
-     */
+    var $type_controls = false;
     var $map_type = 'G_NORMAL_MAP';
-    
-    /**
-     * enables scale map control
-     *
-     * @var boolean
-     */
-    var $scale_control = true;
-    
-	/*
-		HACK -> Drag
-	*/
+    var $scale_control = false;
 	var $disable_drag = false;
-	
-	/**
-     * enables overview map control
-     *
-     * @var boolean
-     */
+	var $referencias = false;
     var $overview_control = false;    
-     
-    /**
-     * determines the default zoom level
-     *
-     * @var integer
-     */
     var $zoom = 16;
-
-    /**
-     * determines the map width
-     *
-     * @var integer
-     */
     var $width = '500px';
-    
-    /**
-     * determines the map height
-     *
-     * @var integer
-     */
     var $height = '500px';
-
-    /**
-     * message that pops up when the browser is incompatible with Google Maps.
-     * set to empty string to disable.
-     *
-     * @var integer
-     */
-    var $browser_alert = 'Sorry, the Google Maps API is not compatible with this browser.';
-    
-    /**
-     * message that appears when javascript is disabled.
-     * set to empty string to disable.
-     *
-     * @var string
-     */
-    var $js_alert = '<b>Javascript must be enabled in order to use Google Maps.</b>';
-
-    /**
-     * determines if sidebar is enabled
-     *
-     * @var boolean
-     */
     var $sidebar = true;    
-
-    /**
-     * determines if to/from directions are included inside info window
-     *
-     * @var boolean
-     */
-    var $directions = false;
-
-    /**
-     * determines if map markers bring up an info window
-     *
-     * @var boolean
-     */
-    var $info_window = true;    
-    
-    /**
-     * determines if info window appears with a click or mouseover
-     *
-     * @var string click/mouseover
-     */
+    var $info_window = true;
     var $window_trigger = 'click';    
-
-    /**
-     * what server geocode lookups come from
-     *
-     * available: YAHOO  Yahoo! API. US geocode lookups only.
-     *            GOOGLE Google Maps. This can do international lookups,
-     *                   but not an official API service so no guarantees.
-     *            Note: GOOGLE is the default lookup service, please read
-     *                  the Yahoo! terms of service before using their API.
-     *
-     * @var string service name
-     */
     var $lookup_service = 'GOOGLE';
 	var $lookup_server = array('GOOGLE' => 'maps.google.com', 'YAHOO' => 'api.local.yahoo.com');               
-    
-    /**
-     * version number
-     *
-     * @var string
-     */
     var $_version = '2.5';
-
-    /**
-     * list of added markers
-     *
-     * @var array
-     */
     var $_markers = array();
-    
-    /**
-     * maximum longitude of all markers
-     * 
-     * @var float
-     */
     var $_max_lon = -1000000;
-    
-    /**
-     * minimum longitude of all markers
-     *
-     * @var float
-     */
     var $_min_lon = 1000000;
-    
-    /**
-     * max latitude
-     *
-     * @var float
-     */
     var $_max_lat = -1000000;
-    
-    /**
-     * min latitude
-     *
-     * @var float
-     */
     var $_min_lat = 1000000;
-    
-    /**
-     * determines if we should zoom to minimum level (above this->zoom value) that will encompass all markers
-     *
-     * @var boolean
-     */
     var $zoom_encompass = true;
-
-    /**
-     * factor by which to fudge the boundaries so that when we zoom encompass, the markers aren't too close to the edge
-     *
-     * @var float
-     */
     var $bounds_fudge = 0.01;
-
-    /**
-     * use the first suggestion by a google lookup if exact match not found
-     *
-     * @var float
-     */
     var $use_suggest = false;
-
-    
-    /**
-     * list of added polylines
-     *
-     * @var array
-     */
     var $_polylines = array();    
-    
-    /**
-     * icon info array
-     *
-     * @var array
-     */
     var $_icons = array();
-
-    /**
-     * database cache table name
-     *
-     * @var string
-     */
     var $_db_cache_table = 'GEOCODES';
-        
-        
-    /**
-     * class constructor
-     *
-     * @param string $map_id the id for this map
-     * @param string $app_id YOUR Yahoo App ID
-     */
+
     function GoogleMapAPI($map_id = 'map', $app_id = 'MyMapApp') {
         $this->map_id = $map_id;
         $this->sidebar_id = 'sidebar_' . $map_id;
@@ -501,24 +250,6 @@ class GoogleMapAPI {
     function disableDirections() {
         $this->directions = false;
     }    
-        
-    /**
-     * set browser alert message for incompatible browsers
-     *
-     * @params $message string
-     */
-    function setBrowserAlert($message) {
-        $this->browser_alert = $message;
-    }
-
-    /**
-     * set <noscript> message when javascript is disabled
-     *
-     * @params $message string
-     */
-    function setJSAlert($message) {
-        $this->js_alert = $message;
-    }
 
     /**
      * enable map marker info windows
@@ -852,11 +583,6 @@ class GoogleMapAPI {
             $_output .= 'var marker_html = [];' . "\n";
         }
 
-        if($this->directions) {        
-            $_output .= 'var to_htmls = [];' . "\n";
-            $_output .= 'var from_htmls = [];' . "\n";
-        }        
-
         if(!empty($this->_icons)) {
             $_output .= 'var icon = [];' . "\n";
             for($i = 0, $j = count($this->_icons); $i<$j; $i++) {
@@ -885,10 +611,6 @@ class GoogleMapAPI {
                      
         if($this->onload) {
            $_output .= 'function onLoad() {' . "\n";   
-        }
-                
-        if(!empty($this->browser_alert)) {
-            $_output .= 'if (GBrowserIsCompatible()) {' . "\n";
         }
 
         $_output .= sprintf('var mapObj = document.getElementById("%s");',$this->map_id) . "\n";
@@ -951,12 +673,6 @@ class GoogleMapAPI {
 
         $_output .= '}' . "\n";        
        
-        if(!empty($this->browser_alert)) {
-            $_output .= '} else {' . "\n";
-			$_output .= 'alert("' . str_replace('"','\"',$this->browser_alert) . '");' . "\n";
-            $_output .= '}' . "\n";
-        }                        
-
         if($this->onload) {
            $_output .= '}' . "\n";
         }
@@ -1050,31 +766,31 @@ class GoogleMapAPI {
      // IMPORTANTE!, acá tiene que ir el hack mayor!.
     function getCreateMarkerJS() {
         $_SCRIPT_ = '$("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI=\'+id);';
-        $_output = 'function createMarker(point, title, html, n, tooltip, id) {' . "\n";
+        $_output = '';
+        $_output .= 'function fix6ToString(n) { return n.toFixed(6).toString();} ';
+		$_output .= 'function createMarker(point, title, html, n, tooltip, id) {' . "\n";
         $_output .= 'if(n >= '. sizeof($this->_icons) .') { n = '. (sizeof($this->_icons) - 1) ."; }\n";
         if(!empty($this->_icons)) {
             $_output .= 'var marker = new GMarker(point,{\'icon\': icon[n], \'title\': tooltip, \'draggable\': true, \'bouncy\': false});' . "\n";
         } else {
             $_output .= 'var marker = new GMarker(point,{\'title\': tooltip});' . "\n";
         }
-        if($this->directions) {
-            $_output .= 'var tabFlag = isArray(html);' . "\n";
-            $_output .= 'if(!tabFlag) { html = [{"contentElem": html}]; }' . "\n";
-            $_output .= 'if(!tabFlag) { html = html[0].contentElem; }';
-        }
         
         if($this->info_window) {
-            $_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{\'maxTitle\': \'Información adicional\', \'maxContent\': html}) });' . "\n";
+			$_output .= 'if (id != \'REF\') {' . "\n";
+			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{\'maxTitle\': \'Información adicional\', \'maxContent\': html}) });' . "\n";
 			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#datos_mupis").html(""); });' . "\n";
-			$_output .= 'GEvent.addListener(marker, "dragstart", function() { map.closeInfoWindow(); });' . "\n";
-        }
+			$_output .= '}' . "\n";
+			}
+			$_output .= 'GEvent.addListener(marker, "dragstart", function() { map.closeInfoWindow(); var pointo = marker.getPoint(); });' . "\n";
+			$_output .= 'GEvent.addListener(marker, "dragend", function() { var point = marker.getPoint(); alert( id + \' \' + fix6ToString( point.lat() ) + \',\' + fix6ToString( point.lng() ) ); });' . "\n";
         $_output .= 'points[counter] = point;' . "\n";
         $_output .= 'markers[counter] = marker;' . "\n";
-        if($this->sidebar) {        
+        if($this->sidebar) {
+			$_output .= 'if (id != \'REF\') {' . "\n";
             $_output .= 'marker_html[counter] = html;' . "\n";
-            // HACK HACK
-	    //$_output .= "sidebar_html += '<li class=\"gmapSidebarItem\" id=\"gmapSidebarItem_'+ counter +'\"><a href=\"javascript:click_sidebar(' + counter + ')\">' + title + '<\/a><\/li>';" . "\n";
             $_output .= 'sidebar_html += \'<option class="gmapSidebarItem" id="gmapSidebarItem" value="\'+counter+\'">\' + title + \'</option>\';' . "\n";
+			$_output .= '}' . "\n";
         }
         $_output .= 'counter++;' . "\n";
         $_output .= 'return marker;' . "\n";

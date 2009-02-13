@@ -28,6 +28,7 @@ function CONTENIDO_mupis($usuario="",$mupi="",$calle=NULL) {
 }
 function verMUPIS($calle=NULL){
    global $database;
+   ob_start();
    if ( $calle ) { $wCalle = "WHERE codigo_calle='$calle'"; $conservar_GET_calle="&amp;calle=$calle"; } else { $conservar_GET_calle = $wCalle = NULL; }
    $q = "SELECT id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT ubicacion FROM ".TBL_STREETS." AS b WHERE a.codigo_calle=b.codigo_calle) AS 'calle' FROM ".TBL_MUPI." as a $wCalle;";
    DEPURAR($q,0);
@@ -46,7 +47,7 @@ function verMUPIS($calle=NULL){
     echo "<b>Filtrar vista a "._NOMBRE_." que se ubiquen en la calle</b> ". $database->Combobox_calle("cmbCalles");
 	echo $BotonFiltraVistaPorCalles;
 	echo '<table border="0">';
-	echo "<tr><th>ID Mupi</th><th>Código "._NOMBRE_."</th><th>Dirección</th><th>Foto Genérica</th><th>Longitud</th><th>Latitud</th><th>Calle</th><th>Acciones</th></tr>";
+	echo "<tr><th width=\"5%\">ID Mupi</th><th width=\"10%\">Código Mupi</th><th width=\"30%\">Dirección</th><th width=\"5%\">Foto</th><th width=\"5%\">Longitud</th><th width=\"5%\">Latitud</th><th width=\"%30\">Calle</th><th width=\"10%\">Acciones</th></tr>";
 	for($i=0; $i<$num_rows; $i++){
 		$id = CREAR_LINK_GET("gestionar+mupis".$conservar_GET_calle."&amp;mupi=".mysql_result($result,$i,"id_mupi"), mysql_result($result,$i,"id_mupi"), "Carga los datos del "._NOMBRE_. " seleccionado para editar");
 		$codigo_mupi  = mysql_result($result,$i,"codigo_calle").".".mysql_result($result,$i,"codigo_mupi");
@@ -56,9 +57,11 @@ function verMUPIS($calle=NULL){
 		$Latitud  = mysql_result($result,$i,"lat");
 		$codigo_calle  = CREAR_LINK_GET("gestionar+calles&amp;calle=".mysql_result($result,$i,"codigo_calle"), mysql_result($result,$i,"calle"), "Editar los datos de este pedido");
 		$Eliminar = CREAR_LINK_GET("gestionar+mupis&amp;eliminar=".mysql_result($result,$i,"id_mupi"),"Eliminar", "Eliminar los datos de este "._NOMBRE_);
-	echo "<tr><td>$id</td><td>$codigo_mupi</td><td>$direccion</td><td>$foto_generica</td><td>$Longitud</td><td>$Latitud</td><td>$codigo_calle</td><td>$Eliminar</td></tr>";
+	echo "<tr><td  width=\"5%\">$id</td><td  width=\"10%\">$codigo_mupi</td><td width=\"30%\">$direccion</td><td width=\"5%\">$foto_generica</td><td width=\"5%\">$Longitud</td><td width=\"5%\">$Latitud</td><td  width=\"30%\">$codigo_calle</td><td  width=\"10%\">$Eliminar</td></tr>";
 	}
 	echo "</table><br />";
+	ob_flush();
+	flush();
 }
 
 function verMUPISregistro($usuario="",$mupi="") {

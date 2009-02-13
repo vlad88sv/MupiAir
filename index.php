@@ -77,7 +77,7 @@ require_once("contenido/mapa+referencias.php");
 	<![endif]-->
 </head>
 <body>
-<div id="bg"><img src="fondo.jpg" width="100%" alt=""></div>
+<div id="bg"><img src="fondo.jpg" width="100%" height="100%" alt=""></div>
 <div id="container">
 	<table style="border:0">
 		 <tr>
