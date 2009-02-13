@@ -67,12 +67,7 @@ require_once("contenido/mapa+referencias.php");
 	***********************************************/
 	</script>
 	<style type="text/css">
-	/* pushes the page to the full capacity of the viewing area */
 	html {height:100%;}
-	body {height:100%; margin:0; padding:0;}
-	/* prepares the background image to full capacity of the viewing area */
-	#bg {position:fixed; top:0; left:0; width:100%; height:100%;}
-	/* places the content ontop of the background image */
 	#container {position:relative; z-index:1;}
 	</style>
 	<!--[if IE 6]>

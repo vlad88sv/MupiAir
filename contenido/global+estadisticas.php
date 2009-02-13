@@ -2,6 +2,7 @@
 $inicioCatorcena = Obtener_catorcena_cercana();
 function CONTENIDO_global_estadisticas(){
 global $session, $database, $inicioCatorcena;
+ob_start();
 if ( $session->isAdmin() ) {
   echo "<h1>Estadísticas y notas administrativas</h1>";
   echo MOSTRAR_comentarios();
@@ -70,6 +71,7 @@ echo '<hr><span id="datos_catorcena"><b>Seleccione una catorcena por favor</b></
 
 echo MOSTRAR_comentarios();
 echo MOSTRAR_eventos();
+ob_flush();
 return;
 }
 

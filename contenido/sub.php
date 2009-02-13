@@ -11,9 +11,9 @@ function CREAR_LINK_GET($sAccion, $sTexto, $sTitulo) {
 
 function CONTENIDO_en_linea(){
 	global $session, $database;
-	echo '<h1>'. ($database->num_active_users + $database->num_active_guests) . ' usuario(s) en línea </h1>';
-	echo 'Clientes: ' . $database->num_active_users . "<br />";
-	echo 'Visitantes: ' . $database->num_active_guests  . "<br />" . '<hr />';
+	echo ($database->num_active_users + $database->num_active_guests) . ' usuario(s) en línea: ';
+	echo $database->num_active_users . ' Cliente(s) y ';
+	echo $database->num_active_guests . ' Visitante(s)';
 	echo "<ul>";
 	$q = "SELECT codigo FROM " . TBL_ACTIVE_USERS . " ORDER BY timestamp DESC,codigo";
 	//echo $q;
@@ -26,7 +26,7 @@ function CONTENIDO_en_linea(){
 				echo CREAR_LINK_GET("ver+cliente:$uname","<li>" . $uname . "</li>" , "Ver la información de este cliente");
 	   }
 	}
-	echo'</ul>';
+	echo "</ul>";
 }
 
 function CONTENIDO_mostrar_principal() {

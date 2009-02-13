@@ -1071,7 +1071,7 @@ class GoogleMapAPI {
         $_output = 'function createMarker(point, title, html, n, tooltip, id) {' . "\n";
         $_output .= 'if(n >= '. sizeof($this->_icons) .') { n = '. (sizeof($this->_icons) - 1) ."; }\n";
         if(!empty($this->_icons)) {
-            $_output .= 'var marker = new GMarker(point,{\'icon\': icon[n], \'title\': tooltip, \'draggable\': true});' . "\n";
+            $_output .= 'var marker = new GMarker(point,{\'icon\': icon[n], \'title\': tooltip, \'draggable\': true, \'bouncy\': false});' . "\n";
         } else {
             $_output .= 'var marker = new GMarker(point,{\'title\': tooltip});' . "\n";
         }
