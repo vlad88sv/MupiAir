@@ -1071,7 +1071,7 @@ class GoogleMapAPI {
         $_output = 'function createMarker(point, title, html, n, tooltip, id) {' . "\n";
         $_output .= 'if(n >= '. sizeof($this->_icons) .') { n = '. (sizeof($this->_icons) - 1) ."; }\n";
         if(!empty($this->_icons)) {
-            $_output .= 'var marker = new GMarker(point,{\'icon\': icon[n], \'title\': tooltip});' . "\n";
+            $_output .= 'var marker = new GMarker(point,{\'icon\': icon[n], \'title\': tooltip, \'draggable\': true});' . "\n";
         } else {
             $_output .= 'var marker = new GMarker(point,{\'title\': tooltip});' . "\n";
         }
@@ -1082,9 +1082,9 @@ class GoogleMapAPI {
         }
         
         if($this->info_window) {
-            $_output .= sprintf('if(isArray(html)) { GEvent.addListener(marker, "%s", function() { marker.openInfoWindowTabsHtml(html); }); }',$this->window_trigger) . "\n";
-            $_output .= sprintf('else { GEvent.addListener(marker, "%s", function() { marker.openInfoWindowHtml(html); '.$_SCRIPT_.' }); }',$this->window_trigger) . "\n";
+            $_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{\'maxTitle\': \'Información adicional\', \'maxContent\': html}) });' . "\n";
 			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#datos_mupis").html(""); });' . "\n";
+			$_output .= 'GEvent.addListener(marker, "dragstart", function() { map.closeInfoWindow(); });' . "\n";
         }
         $_output .= 'points[counter] = point;' . "\n";
         $_output .= 'markers[counter] = marker;' . "\n";
