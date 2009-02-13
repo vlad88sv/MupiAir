@@ -44,7 +44,7 @@ require_once("contenido/mapa+referencias.php");
 ?>
 <!-- Este comentario activa "quirks mode" en Internet Explorer ;) - Vlad.-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xml:lang="es" lang="es">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="Content-Style-type" content="text/css" />
@@ -66,10 +66,6 @@ require_once("contenido/mapa+referencias.php");
 	* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
 	***********************************************/
 	</script>
-	<style type="text/css">
-	html {height:100%;}
-	#container {position:relative; z-index:1;}
-	</style>
 	<!--[if IE 6]>
 	<style type="text/css">
 	/* some css fixes for IE browsers */

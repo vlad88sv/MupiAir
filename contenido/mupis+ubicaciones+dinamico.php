@@ -155,7 +155,7 @@ if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL
       
       $html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
       $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $id_mupi . "|" . $catorcena . "|" . $usuario);
-	  $map->addMarkerIcon(public_base_directory().'/punto.gif','',20,32,0,0);
+	  $map->addMarkerIcon(public_base_directory().'/punto.gif','',12,12,0,0);
    }
    
    // Mostrar referencias. 10/02/09

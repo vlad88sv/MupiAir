@@ -32,24 +32,6 @@ error_reporting(E_STRICT | E_ALL);
 
 /* $Id: GoogleMapAPI.class.php,v 1.63 2007/08/03 16:29:40 mohrt Exp $ */
 
-/*
-
-For best results with GoogleMaps, use XHTML compliant web pages with this header:
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
-
-For database caching, you will want to use this schema:
-
-CREATE TABLE GEOCODES (
-  address varchar(255) NOT NULL default '',
-  lon float default NULL,
-  lat float default NULL,
-  PRIMARY KEY  (address)
-);
-
-*/
-
 class GoogleMapAPI {
 
     /**
