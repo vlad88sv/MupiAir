@@ -782,8 +782,10 @@ class GoogleMapAPI {
 			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#datos_mupis").html(""); });' . "\n";
 			$_output .= '}' . "\n";
 			}
+			if (!$this->disable_drag) {
 			$_output .= 'GEvent.addListener(marker, "dragstart", function() { map.closeInfoWindow(); var pointo = marker.getPoint(); });' . "\n";
 			$_output .= 'GEvent.addListener(marker, "dragend", function() { var point = marker.getPoint(); alert( id + \' \' + fix6ToString( point.lat() ) + \',\' + fix6ToString( point.lng() ) ); });' . "\n";
+			}
         $_output .= 'points[counter] = point;' . "\n";
         $_output .= 'markers[counter] = marker;' . "\n";
         if($this->sidebar) {
