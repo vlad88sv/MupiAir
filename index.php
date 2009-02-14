@@ -85,7 +85,7 @@ require_once("contenido/mapa+referencias.php");
 			 	<?php CONTENIDO_mostrar_logo(); ?>
 			 </td>
 			 <td width="100px" style="border:0">
-			 	<?php echo IMAGEN ("ECO.gif","Eco Mupis", "200px", "200px"); ?>
+			 	<?php echo IMAGEN ("ECO.gif","Eco Mupis", "200px", "150px"); ?>
 			 </td>
 		 </tr>
 	 </table>

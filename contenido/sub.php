@@ -198,7 +198,7 @@ return '<img src="'. $ruta . '" style="max-width:'.$width.'; max-height:'.$heigh
 
 function CONTENIDO_mostrar_logo() {
 	//echo '<center>' . IMAGEN("./logo.gif") . '</center>';
-	echo IMAGEN("./logo.gif", "Logotipo Eco Mupis", "40%", "40%");
+	echo IMAGEN("./logo.gif", "Logotipo Eco Mupis", "450px", "100px");
 }
 
 function CONTENIDO_mostrar_logo_cliente() {
