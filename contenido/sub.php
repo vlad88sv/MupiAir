@@ -78,7 +78,8 @@ function CONTENIDO_mostrar_principal() {
 		if($session->isAdmin()){
 			$pantalla= isset( $_GET['id'] ) ? $_GET['id'] : "";
 			$catorcena= isset( $_GET['catorcena'] ) ? $_GET['catorcena'] : "";
-			CONTENIDO_pantallas($usuario,$pantalla,$catorcena);
+			$calle= isset( $_GET['calle'] ) ? $_GET['calle'] : "";
+			CONTENIDO_pantallas($usuario,$pantalla,$catorcena,$calle);
 			break;
 		}
 

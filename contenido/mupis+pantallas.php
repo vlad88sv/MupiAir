@@ -1,6 +1,6 @@
 <?php
 $Catorcena = NULL;
-function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
+function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio, $calle) {
 	global $session, $form, $Catorcena, $database;
 	echo '<h1>Gestión de pantallas de ' . _NOMBRE_ . '</h1>';
 	if ( $session->isAdmin() ) {
@@ -65,7 +65,7 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 	echo "<b>Filtrar vista a "._NOMBRE_." que se ubiquen en la calle</b> ". $database->Combobox_calle("cmbCalles");
 	echo $BotonFiltraVistaPorCalles;
 	echo "<hr />";
-	verPantallas($usuario);
+	verPantallas($usuario,$calle);
 	if ( $session->isAdmin() ) {
 	$paraUsuario = "";
 	if ($usuario) {
@@ -80,17 +80,16 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio) {
 	verPantallasregistro($usuario, $pantalla);
 	}
 }
-function verPantallas($usuario="", $pantalla=""){
+function verPantallas($usuario="", $calle=""){
    global $database, $Catorcena;
    
     $wusuario = "";
     if ($usuario) {
-    $wusuario = " AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$usuario."')";
+    $wusuario = "AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$usuario."')";
     }
 	
-	$calle = "";
-	if ( isset($_GET['calle']) ) {
-		 $calle = "AND codigo_mupi IN (SELECT codigo_mupi FROM emupi_mupis WHERE codigo_calle='1')";
+	if ( $calle ) {
+		 $calle = "AND a.codigo_mupi IN (SELECT h.id_mupi FROM emupi_mupis as h WHERE h.codigo_calle='$calle')";
 	}
    $q = "SELECT id_pantalla, tipo_pantalla, codigo_mupi, (SELECT CONCAT(codigo_calle, '.' , codigo_mupi, ' | ', (SELECT ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=@codigo_calle:=b.codigo_calle), ', ', direccion ) FROM emupi_mupis as c WHERE c.id_mupi=a.codigo_mupi) AS codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento, @calle as codigo_calle2 FROM ".TBL_MUPI_FACES." as a WHERE catorcena = $Catorcena $calle $wusuario ORDER BY codigo_calle2, codigo_mupi, tipo_pantalla;";
    //echo $q;
