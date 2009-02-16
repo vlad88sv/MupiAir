@@ -69,7 +69,7 @@ function TOOLTIP() {
   this.height = 0;
   this.obj = null;
   this.active = false;
-
+  this.allowMove = true;
 //----------------------------------------------------------------------------------------------------
 // Methods
 //----------------------------------------------------------------------------------------------------
@@ -198,7 +198,7 @@ function getMouseXY(e) {
   }
   if(mouseX < 0) mouseX = 0;
   if(mouseY < 0) mouseY = 0;
-  if(tooltip && tooltip.active) tooltip.move();
+  if(tooltip && tooltip.active && tooltip.allowMove) tooltip.move();
 }
 
 function toolTip(text, width, opacity) {
@@ -208,6 +208,18 @@ function toolTip(text, width, opacity) {
     if(width) tooltip.width = width;
     if(opacity) tooltip.opacity = opacity;
     tooltip.create();
+  }
+  else if(tooltip) tooltip.hide();
+}
+
+function menu(text, width, opacity) {
+  if(text) {
+    tooltip = new TOOLTIP();
+    tooltip.text = text;
+    if(width) tooltip.width = width;
+    if(opacity) tooltip.opacity = opacity;
+    tooltip.create();
+	tooltip.allowMove = false;
   }
   else if(tooltip) tooltip.hide();
 }
