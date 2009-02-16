@@ -209,7 +209,7 @@ CREAR_TBL(TBL_COMMENTS, $q);
 /*
 Esta tabla se encarga de llevar las referencias en calle de los Eco Mupis
 */
-$q="id_referencia INT NOT NULL AUTO_INCREMENT PRIMARY KEY, lon float default NULL, lat float default NULL, codigo_calle INT(11), imagen_referencia INT(11)";
+$q="id_referencia INT NOT NULL AUTO_INCREMENT PRIMARY KEY, lon DOUBLE NULL, lat DOUBLE default NULL, codigo_calle INT(11), imagen_referencia INT(11)";
 CREAR_TBL(TBL_REFS, $q);
 
 echo '<h3>+Creando usuario '.$_POST['admin'].'...</h3><br />';
