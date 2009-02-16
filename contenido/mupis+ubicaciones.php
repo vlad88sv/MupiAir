@@ -1,7 +1,8 @@
 <?php
 function CONTENIDO_mupis_ubicaciones($usuario=''){
 global $session, $database,$map;
-if ( !$session->isAdmin() ) { $usuario = $session->codigo; }
+$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+if ( !in_array($session->userlevel,$NivelesPermitidos) ) { $usuario = $session->codigo; }
 //Importante!!! Esto tiene que suceder antes de cualquier cuestión AJAX porque Google esta usando document.write en algún momento!.
 echo sprintf('<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s" type="text/javascript" charset="utf-8"></script>', GOOGLE_MAP_KEY);
 echo "<h1>Ubicaciones de MUPIS contratados</h1><hr />";

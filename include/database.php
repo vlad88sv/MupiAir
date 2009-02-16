@@ -383,7 +383,8 @@ class MySQLDB
   function Combobox_CatorcenasConPresencia ($nombre="catorcena_presencia", $codigo=NULL, $OnChange=NULL) {
 	  global $session;
 	  $WHERE_USER = '';
-	  if ( !($session->isAdmin() || ($session->userlevel == SALESMAN_LEVEL)) || $codigo ) {$WHERE_USER = "WHERE codigo='".$codigo."'";}
+	  $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+	  if ( !in_array($session->userlevel,$NivelesPermitidos) || $codigo ) {$WHERE_USER = "WHERE codigo='".$codigo."'";}
    $q = "SELECT DISTINCT catorcena FROM ".TBL_MUPI_FACES." WHERE catorcena <=".Obtener_catorcena_siguiente()." AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." $WHERE_USER)  ORDER BY catorcena;";
    $result = mysql_query($q, $this->connection);
    //echo $q.'<br />';
@@ -414,7 +415,8 @@ class MySQLDB
 	   // Calles donde el usuario $codigo tiene caras alquiladas en la catorcena $catorcena.
 	   global $session;
 	   $WHERE_USER = '';
-	   if ( !$session->isAdmin() || $codigo ) {$WHERE_USER = " AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='".$codigo."')";}
+	   $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+	   if ( !in_array($session->userlevel,$NivelesPermitidos) || $codigo ) {$WHERE_USER = " AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='".$codigo."')";}
 	   // Filtro de cadena:
 	   // 1. Filtrar todas caras que esten en la catorcena requerida
 	   // 2. De esas filtrar las que tengan pedidos de $codigo
