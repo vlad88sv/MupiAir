@@ -574,7 +574,8 @@ class GoogleMapAPI {
         $_output .= " * Copyright 2005-2006 New Digital Group\n";
         $_output .= " * http://www.phpinsider.com/php/code/GoogleMapAPI/\n";
         $_output .= " *************************************************/\n";
-
+        
+		$_output .= 'function fix6ToString(n) { return n.toFixed(6).toString();} ';
         $_output .= 'var points = [];' . "\n";
         $_output .= 'var markers = [];' . "\n";
         $_output .= 'var counter = 0;' . "\n";
@@ -662,8 +663,8 @@ class GoogleMapAPI {
 		// HACK -> New Mupi
 			$_output .= 'function mapSingleRightClick(point, src, overlay)
 							{
-							var point = map.fromContainerPixelToLatLng(point)
-							menu(\'<a onclick="menu()">Cerrar este menú</a><hr /><b>Latidud: </b>\'+fix6ToString( point.lat() )+\'<br /> <b>Longitud: </b>\'+fix6ToString( point.lng() )+\'<hr /><a>Crear Mupi</a><br /><a>Crear Referencia</a>\');
+							var point = map.fromContainerPixelToLatLng(point);
+							menu(\'<a onclick="menu()">Cerrar este menú</a><hr /><b>Latidud: </b>\'+fix6ToString( point.lat() )+\'<br /> <b>Longitud: </b>\'+fix6ToString( point.lng() )+\'<hr /><a target="_blank" href="./?accion=gestionar+mupis&crear=1&lat=\'+fix6ToString( point.lat() )+\'&lng=\'+fix6ToString( point.lng() )+\'&calle=\'+$("#combo_calles").val()+\'">Crear Mupi</a><br /><a target="_blank" href="./?accion=gestionar+referencias&crear=1&lat=\'+fix6ToString( point.lat() )+\'&lng=\'+fix6ToString( point.lng() )+\'&calle=\'+$("#combo_calles").val()+\'">Crear Referencia</a>\');
 							}';
 
 			$_output .= 'GEvent.addListener(map, "singlerightclick", mapSingleRightClick);' . "\n";
@@ -776,7 +777,6 @@ class GoogleMapAPI {
     function getCreateMarkerJS() {
         $_SCRIPT_ = '$("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI=\'+id);';
         $_output = '';
-        $_output .= 'function fix6ToString(n) { return n.toFixed(6).toString();} ';
 		$_output .= 'function createMarker(point, title, html, n, tooltip, id) {' . "\n";
         $_output .= 'if(n >= '. sizeof($this->_icons) .') { n = '. (sizeof($this->_icons) - 1) ."; }\n";
         if(!empty($this->_icons)) {

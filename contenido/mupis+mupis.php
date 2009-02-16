@@ -73,6 +73,12 @@ $OnChangePantalla = '';
 $CampoIdMupi = '';
 $CampoConservarPantalla = '';
 $CampoConservarPantalla2 = '';
+//Nos toca crear un MUPI - 16/02/09 - Facilidad para combinar con mapas.
+if ( isset($_GET['crear']) && isset($_GET['lat']) && isset($_GET['lng']) && isset($_GET['calle'])) {
+	$form->setValue("lon", $_GET['lng']);
+	$form->setValue("lat", $_GET['lat']);
+	$form->setValue("codigo_calle", $_GET['calle']);
+}
 if ($mupi) {
 	$q = "SELECT * FROM ".TBL_MUPI." WHERE id_mupi='$mupi';";
 	$result = $database->query($q);

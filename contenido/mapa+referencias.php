@@ -47,6 +47,13 @@ function Ver_Formulario_Registro_Referencia($id_referencia) {
 	// Iniciar las variables
 	$Campo_Referencia_id_referencia = $Campo_Referencia_imagen_referencia = $OnChangePantalla = $lon = $lat = $imagen_referencia = $codigo_calle = NULL;
 	
+	//Nos toca crear un MUPI - 16/02/09 - Facilidad para combinar con mapas.
+if ( isset($_GET['crear']) && isset($_GET['lat']) && isset($_GET['lng']) && isset($_GET['calle'])) {
+	$lon = $_GET['lng'];
+	$lat = $_GET['lat'];
+	$codigo_calle = $_GET['calle'];
+}
+
 	// Si nos pasaron un ID de Referencia, entonces procesarlo para edición.
 	if ( $id_referencia ) {
 
