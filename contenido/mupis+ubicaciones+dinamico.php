@@ -174,7 +174,7 @@ if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL
 		} else {
 			$logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"), "100px");
 		}
-      
+      $logotipo = '<div style="width:400px; height:200px">'.$logotipo.'</div>';
       $html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
       $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $id_mupi . "|" . $catorcena . "|" . $usuario);
 	  $map->addMarkerIcon(public_base_directory().'/punto.gif','',12,12,0,0);
