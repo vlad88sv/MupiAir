@@ -15,7 +15,7 @@ else{
 
 /* Display requested user information */
 $req_user_info = $database->getUserInfo($req_user);
-echo '<center>'.CargarImagenDesdeBD($req_user_info['logotipo'], '200px', '200px').'</center>';
+echo '<center>'.CargarImagenDesdeBD($req_user_info['logotipo'], '200px').'</center>';
 echo '<table>';
 echo '<tr><td><b>Código fiscal:</b></td><td  style="width: 70%;" >'.$req_user_info['codigo']."</td></tr>";
 echo "<tr><td><b>Nombre de cliente:</b></td><td>".$req_user_info['nombre']."</td></tr>";

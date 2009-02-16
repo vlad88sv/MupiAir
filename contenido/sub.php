@@ -207,7 +207,7 @@ function CONTENIDO_mostrar_logo_cliente() {
 	if ( !$session->isAdmin() && $session->logged_in ) {
 		$q = "SELECT logotipo FROM ". TBL_USERS . " WHERE codigo='".$session->codigo."';";
 		$result = $database->query($q);		
-		echo '<center>' . CargarImagenDesdeBD(mysql_result($result,0,"logotipo"),'200px','200px') . '</center><hr />';
+		echo '<center>' . CargarImagenDesdeBD(mysql_result($result,0,"logotipo"),'50px') . '</center><hr />';
 		//echo IMAGEN("./logo_generico.gif");
 	}
 }
@@ -347,8 +347,8 @@ if ( !$_FILES[$NombreCampo]['error'] ) {
 return NULL;
 }
 
-function CargarImagenDesdeBD ($id, $width='100%', $height='100%') {
-	return '<img style="max-width:'.$width.';max-height:'.$height.';width:auto !important; width:'.$height.'height:auto !important; height:'.$height.'" src="include/ver.php?id='.$id.'" />';
+function CargarImagenDesdeBD ($id, $height='100%') {
+	return '<img style="height:'.$height.';" src="include/ver.php?id='.$id.'" />';
 }
 
 function GenerarTooltip ($texto) {

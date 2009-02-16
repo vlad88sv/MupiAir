@@ -108,9 +108,9 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
       }
 	
 	$datos .= "<tr><th><center>Imagen actual de su pantalla ".$tipoPantalla.":</center></th></tr>";
-	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($foto_real,"	300px","300px") . "</center></td>";
+	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($foto_real,"300px") . "</center></td>";
 	$datos .= "<tr><th><center>Arte digital de su pantalla:</center></th></tr>";
-	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($arte,"300px","300px") . "</center></td></tr>";	
+	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($arte,"300px") . "</center></td></tr>";	
    }
    $datos .= '</table>';
 retornar($datos);
@@ -172,7 +172,7 @@ if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL
 				   }
 			}
 		} else {
-			$logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"), "200px","200px");
+			$logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"), "200px");
 		}
       
       $html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
@@ -188,7 +188,7 @@ if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL
    for($i=0; $i<$num_rows; $i++){
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
-	  $logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"imagen_referencia"), "200px","200px");
+	  $logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"imagen_referencia"), "200px");
 	  $map->addMarkerByCoords($lon, $lat, "Referencia" , "Este es un punto de referencia<br />".$logotipo, '', "REF|$catorcena|".mysql_result($result,$i,"id_referencia"));
 	  $map->addMarkerIcon(public_base_directory(). '/include/ver.php?id='.mysql_result($result,$i,"imagen_referencia"),'',0,0,50,50);
 	  

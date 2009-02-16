@@ -83,7 +83,7 @@ echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Interva
       $catorcena_fin  = AnularFechaNula(mysql_result($result,$i,"catorcena_fin"));
       $NumeroDeCatorcenas = Contar_catorcenas(mysql_result($result,$i,"catorcena_inicio"), mysql_result($result,$i,"catorcena_fin"));
       $foto_pantalla  = mysql_result($result,$i,"foto_pantalla");
-	  if ( $foto_pantalla ) { $foto_pantalla = "<span ".GenerarTooltip(CargarImagenDesdeBD(mysql_result($result,$i,"foto_pantalla"),'200px','200px'))." />". $foto_pantalla."</span>"; }
+	  if ( $foto_pantalla ) { $foto_pantalla = "<span ".GenerarTooltip(CargarImagenDesdeBD(mysql_result($result,$i,"foto_pantalla"),'200px'))." />". $foto_pantalla."</span>"; }
       $costo = "$". (int)(mysql_result($result,$i,"costo"));
 	  $descripcion = (mysql_result($result,$i,"descripcion"));
       $Eliminar = CREAR_LINK_GET("gestionar+pedidos&amp;eliminar=".mysql_result($result,$i,"codigo_pedido")."&amp;imagen=" . mysql_result($result,$i,"foto_pantalla") ,"Eliminar", "Eliminar los datos de este pedido");

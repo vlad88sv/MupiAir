@@ -89,7 +89,7 @@ echo "<tr><th>Código Evento "._NOMBRE_."</th><th>Fecha y Hora</th><th>Categorí
       $afectado  = mysql_result($result,$i,"afectado");
       $descripcion_evento  = mysql_result($result,$i,"descripcion_evento");
       $foto_evento  = mysql_result($result,$i,"foto_evento");
-	  if ( $foto_evento ) { $foto_evento = "<span ".GenerarTooltip(CargarImagenDesdeBD(mysql_result($result,$i,"foto_evento"),'200px','200px'))." />". $foto_evento."</span>"; }
+	  if ( $foto_evento ) { $foto_evento = "<span ".GenerarTooltip(CargarImagenDesdeBD(mysql_result($result,$i,"foto_evento"),'200px'))." />". $foto_evento."</span>"; }
       $Eliminar = CREAR_LINK_GET("gestionar+eventos&amp;eliminar=".mysql_result($result,$i,"id_evento")."&amp;imagen=" . mysql_result($result,$i,"foto_evento") ,"Eliminar", "Eliminar los datos de este evento");
       $id_evento  = CREAR_LINK_GET("gestionar+eventos&amp;evento=".$id_evento,$id_evento, "Editar los datos de este evento");
       echo "<tr><td>$id_evento</td><td>$timestamp</td><td>$categoria</td><td>$afectado</td><td>$descripcion_evento</td><td>$foto_evento</td><td>$Eliminar</td></tr>";
