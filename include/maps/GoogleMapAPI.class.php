@@ -658,6 +658,15 @@ class GoogleMapAPI {
 		if($this->disable_drag) {
 			$_output .= 'map.disableDragging();'."\n";
 		}
+
+		// HACK -> New Mupi
+			$_output .= 'function mapSingleRightClick(point, src, overlay)
+							{
+							var point = map.fromContainerPixelToLatLng(point)
+							menu(\'<a onclick="menu()">Cerrar este menú</a><hr /><b>Latidud: </b>\'+fix6ToString( point.lat() )+\'<br /> <b>Longitud: </b>\'+fix6ToString( point.lng() )+\'<hr /><a>Crear Mupi</a><br /><a>Crear Referencia</a>\');
+							}';
+
+			$_output .= 'GEvent.addListener(map, "singlerightclick", mapSingleRightClick);' . "\n";
 		
         $_output .= $this->getAddMarkersJS();
 
