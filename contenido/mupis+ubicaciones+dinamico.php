@@ -168,11 +168,11 @@ if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL
 			
 			if($num_rows > 0){
 				   for($ii=0; $ii<$num_rows2; $ii++){
-					   $logotipo .= '<img style="max-width:200px;max-height:200px;" src="include/ver.php?id='.mysql_result($result2,$ii,"logotipo").'" />';
+					   $logotipo .= CargarImagenDesdeBD(mysql_result($result2,$ii,"logotipo"), "100px");
 				   }
 			}
 		} else {
-			$logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"), "200px");
+			$logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"), "100px");
 		}
       
       $html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";

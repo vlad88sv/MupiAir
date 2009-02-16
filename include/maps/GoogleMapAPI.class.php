@@ -786,7 +786,7 @@ class GoogleMapAPI {
         }
         
         if($this->info_window) {
-			$_output .= 'if (id != \'REF\') {' . "\n";
+			$_output .= 'if (id.indexOf(\'REF\') == -1) {' . "\n";
 			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{\'maxTitle\': \'Información adicional\', \'maxContent\': html}) });' . "\n";
 			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#datos_mupis").html(""); });' . "\n";
 			$_output .= '}' . "\n";
@@ -799,7 +799,7 @@ class GoogleMapAPI {
         $_output .= 'points[counter] = point;' . "\n";
         $_output .= 'markers[counter] = marker;' . "\n";
         if($this->sidebar) {
-			$_output .= 'if (id.indexOf(\'REF\')) {' . "\n";
+			$_output .= 'if (id.indexOf(\'REF\') == -1) {' . "\n";
             $_output .= 'marker_html[counter] = html;' . "\n";
             $_output .= 'sidebar_html += \'<option class="gmapSidebarItem" id="gmapSidebarItem" value="\'+counter+\'">\' + title + \'</option>\';' . "\n";
 			$_output .= '}' . "\n";
