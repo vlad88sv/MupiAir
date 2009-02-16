@@ -1,4 +1,6 @@
 <?
+$_RAIZ = public_base_directory();
+
 /*-----------------------DEFINICIONES-------------------*/
 define("_NOMBRE_", "Eco Mupis");
 define("_ACC_", "accion");
@@ -44,4 +46,22 @@ Constantes para mensajes
 define("_M_INFO", 0);
 define("_M_ERROR", 1);
 define("_M_NOTA",2);
+
+/*
+Función necesaria para encontrar nuestra raíz
+*/
+
+function public_base_directory()
+{
+	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
+	$url .= $_SERVER['HTTP_HOST'];
+    //get public directory structure eg "/top/second/third"
+    $public_directory = dirname($_SERVER['PHP_SELF']);
+    //place each directory into array
+    $directory_array = explode('/', $public_directory);
+    //get highest or top level in array of directory strings
+    $public_base = max($directory_array);
+   
+    return $url."/".$public_base;
+}
 ?>

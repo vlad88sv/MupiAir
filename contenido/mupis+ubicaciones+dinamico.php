@@ -204,20 +204,6 @@ $datos .= SCRIPT('onLoad();');
 return $datos;
 }
 
-function public_base_directory()
-{
-	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
-	$url .= $_SERVER['HTTP_HOST'];
-    //get public directory structure eg "/top/second/third"
-    $public_directory = dirname($_SERVER['PHP_SELF']);
-    //place each directory into array
-    $directory_array = explode('/', $public_directory);
-    //get highest or top level in array of directory strings
-    $public_base = max($directory_array);
-   
-    return $url."/".$public_base;
-}
-
 function actualizarCoords ($id, $lat, $lng) {
 	global $database;
 	$q = "UPDATE ".TBL_MUPI." SET lat='$lat', lon='$lng' WHERE id_mupi='$id';";
