@@ -16,8 +16,14 @@ if ( isset( $_GET['accion'] ) ) {
 		
 			$parte = explode ('|',$_GET['id'] ); 
 			if ( count($parte) == 3 ) {
+				
+				if ( $parte[0] == "REF" ) {
+				//retornar ("Referencia?: " . "REF". ", Catorcena: ". $parte[1]. ", id_referencia:".$parte[2]);
+				retornar ( actualizarReferencia ($parte[2], $_GET['lat'], $_GET['lng']));
+				} else {
 				//retornar ("Mupi: " . $parte[0]. ", Catorcena: ". $parte[1]. ", Usuario:".$parte[2]);
 				retornar ( actualizarCoords ($parte[0], $_GET['lat'], $_GET['lng']));
+				}
 			}
 		} else {
 			retornar ( "Ud. esta utilizando incorrectamente este script de soporte. [DRAG]" );
@@ -183,7 +189,7 @@ if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
 	  $logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"imagen_referencia"), "200px","200px");
-	  $map->addMarkerByCoords($lon, $lat, "Referencia" , "Este es un punto de referencia<br />".$logotipo, '', 'REF');
+	  $map->addMarkerByCoords($lon, $lat, "Referencia" , "Este es un punto de referencia<br />".$logotipo, '', "REF|$catorcena|".mysql_result($result,$i,"id_referencia"));
 	  $map->addMarkerIcon(public_base_directory(). '/include/ver.php?id='.mysql_result($result,$i,"imagen_referencia"),'',0,0,50,50);
 	  
    }
@@ -215,6 +221,12 @@ function public_base_directory()
 function actualizarCoords ($id, $lat, $lng) {
 	global $database;
 	$q = "UPDATE ".TBL_MUPI." SET lat='$lat', lon='$lng' WHERE id_mupi='$id';";
+	$result = $database->query($q);
+} 
+
+function actualizarReferencia ($id, $lat, $lng) {
+	global $database;
+	$q = "UPDATE ".TBL_REFS." SET lat='$lat', lon='$lng' WHERE id_referencia='$id';";
 	$result = $database->query($q);
 } 
 ?>
