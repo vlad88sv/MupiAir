@@ -61,7 +61,7 @@ function TOOLTIP() {
   this.textSize = 14;                   // text font size (pixels)
   this.textColor = "#000000";           // text color
   this.border = "1px dashed #000000";   // border (CSS spec: size style color, e.g. "1px solid #D00000")
-  this.opacity = 80;                    // opacity (0 - 100); not supported by all browsers
+  this.opacity = 90;                    // opacity (0 - 100); not supported by all browsers
   this.cursorDistance = 5;              // distance from mouse cursor (pixels)
 
   // don't change
