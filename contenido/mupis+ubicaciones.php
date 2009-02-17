@@ -18,7 +18,8 @@ echo '<tr>';
 echo '<td valign="top">';
 echo '<b>Ver Catorcena:</b><br />' . $database->Combobox_CatorcenasConPresencia("combo_catorcenas",$usuario).'<br /><br />';
 echo '<span id="datos_calles"><b>Seleccione una catorcena</b><br /><br /></span>';
-echo '<span id="lista_mupis"><b>Seleccione una calle</b><br /><br /></span>';
+//echo '<span id="lista_mupis"><b>Seleccione una calle</b><br /><br /></span>';
+echo '<span id="lista_mupis"></span>'; //Deshabilitado - 17/02/09 - petición de Alejandro.
 echo '</td>';
 
 echo '<td id="grafico_mapa" width="80%">';

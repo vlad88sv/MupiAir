@@ -53,7 +53,7 @@ class GoogleMapAPI {
     var $zoom = 16;
     var $width = '500px';
     var $height = '500px';
-    var $sidebar = true;    
+    var $sidebar = false;    
     var $info_window = true;
     var $window_trigger = 'click';    
     var $lookup_service = 'GOOGLE';
@@ -787,7 +787,7 @@ class GoogleMapAPI {
         
         if($this->info_window) {
 			$_output .= 'if (id.indexOf(\'REF\') == -1) {' . "\n";
-			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{\'maxTitle\': \'Información adicional\', \'maxContent\': html}) });' . "\n";
+			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{\'maxTitle\': \'Edición de pedidos\', \'maxContent\': html}) });' . "\n";
 			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#datos_mupis").html(""); });' . "\n";
 			$_output .= '}' . "\n";
 			}
