@@ -1,5 +1,7 @@
+BODY{background-color: #FFFFFF;color: #000000;background-image: url('fondo.jpg');font-family: "bitstream vera sans", "verdana", "arial", "helvetica", sans-serif;margin: 0;font-size: 10pt;}
 #bg {position:fixed; top:0; left:0; width:100%; height:100%;z-index:-1}
 html {height:100%;}
+#cargando{z-index: 10;%;};
 #container{margin:0;position:relative; padding-left:2px;padding-right:2px;padding-top:0;left:0;right:0;top:0;z-index:1}
 #content{background:none;color:#000000;font-weight:normal;border-top:2px solid #000000;border-bottom:2px solid #000000;margin-bottom:4px;min-height:300px; height:auto !important; height:300px;padding:5px;}
 #abajo{background:none; color:#000000;font-weight:bold;margin-bottom:4px;padding:5px;}
