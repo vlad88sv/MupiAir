@@ -45,11 +45,13 @@ if ( isset( $_GET['accion'] ) ) {
 		break;
 	case "calles":
 		if ( isset( $_GET['catorcena'] ) && isset ( $_GET['usuario'] ) ) {
+/*
 			$script = SCRIPT('
-			$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario='.$_GET['usuario'].'&catorcena="+document.getElementsByName(\'combo_catorcenas\')[0].value+"&calle="+document.getElementsByName(\'combo_calles\')[0].value);
-			$("#combo_calles").change(function (){$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario='.$_GET['usuario'].'&catorcena="+document.getElementsByName(\'combo_catorcenas\')[0].value+"&calle="+document.getElementsByName(\'combo_calles\')[0].value);});
-			').'<br />';
-			retornar ('<b>Ver Calle:</b><br />' . $database->Combobox_CallesConPresencia("combo_calles",$_GET['usuario'],$_GET['catorcena']).$script);
+			// $("#combo_calles").change(funcion_combo_calles());
+			');
+*/
+			$Boton_combo_calles = '<input type="button" OnClick="funcion_combo_calles()" value="Ver">';;
+			retornar ('<b>Ver Calle:</b><br />' . $database->Combobox_CallesConPresencia("combo_calles",$_GET['usuario'],$_GET['catorcena']).$Boton_combo_calles);
 		} else {
 			retornar ( "Ud. esta utilizando incorrectamente este script de soporte. 2" );
 		}
