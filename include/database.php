@@ -411,7 +411,7 @@
           } else {
               $wCalle = "";
           }
-          $q = "SELECT codigo_calle, CONCAT(codigo_calle,'. ',ubicacion) as nombre FROM " . TBL_STREETS . $wCalle;
+          $q = "SELECT codigo_calle, CONCAT(ubicacion, ' [', codigo_calle , ']') as nombre FROM " . TBL_STREETS . $wCalle . " ORDER BY ubicacion;";
           $result = mysql_query($q, $this->connection);
           /* Error occurred, return given name by default */
           $num_rows = mysql_numrows($result);
