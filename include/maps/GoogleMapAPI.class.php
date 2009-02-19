@@ -644,7 +644,10 @@ class GoogleMapAPI {
               $_output .= 'map.addControl(new GLargeMapControl());' . "\n";
           else
               $_output .= 'map.addControl(new GSmallMapControl());' . "\n";
-        }
+        } else {
+			$_output .= 'map.disableDoubleClickZoom()' . "\n";
+		}
+
         if($this->type_controls) {
             $_output .= 'map.addControl(new GMapTypeControl());' . "\n";
         }
@@ -663,6 +666,7 @@ class GoogleMapAPI {
 		}
 
 		// HACK -> New Mupi
+		if($this->map_controls) {
 			$_output .= 'function mapSingleRightClick(point, src, overlay)
 							{
 							var point = map.fromContainerPixelToLatLng(point);
@@ -670,6 +674,7 @@ class GoogleMapAPI {
 							}';
 
 			$_output .= 'GEvent.addListener(map, "singlerightclick", mapSingleRightClick);' . "\n";
+		}
 		
         $_output .= $this->getAddMarkersJS();
 
@@ -793,7 +798,11 @@ class GoogleMapAPI {
 			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{\'maxTitle\': \'Edición de pedidos\', \'maxContent\': html_pedidos}) });' . "\n";
 			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#datos_mupis").html(""); });' . "\n";
 			$_output .= '}' . "\n";
-			}
+		} else {
+			$_output .= 'if (id.indexOf(\'REF\') == -1) {' . "\n";
+			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; });' . "\n";
+			$_output .= '}' . "\n";
+		}
 			if (!$this->disable_drag) {
 			$_output .= 'GEvent.addListener(marker, "dragstart", function() { map.closeInfoWindow();});' . "\n";
 			//$_output .= 'GEvent.addListener(marker, "dragend", function() { var point = marker.getPoint(); alert( id + \' \' + fix6ToString( point.lat() ) + \',\' + fix6ToString( point.lng() ) ); $("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=drag&id=\'+id+\'&lat=\'+fix6ToString( point.lat() )+\'&lng=\'+fix6ToString( point.lng() )); });' . "\n";

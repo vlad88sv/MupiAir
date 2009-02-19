@@ -50,7 +50,7 @@ class Process
       global $session, $form;
       /* Login attempt */
       DEPURAR ("Intengo de LOGIN");
-      $retval = $session->login($_POST['codigo'], $_POST['clave'], isset($_POST['remember']));
+      $retval = $session->login(mysql_real_escape_string($_POST['codigo']), mysql_real_escape_string($_POST['clave']), isset($_POST['remember']));
       
       /* Login successful */
       if($retval){

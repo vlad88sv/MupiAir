@@ -5,6 +5,7 @@
       $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
       if (!in_array($session->userlevel, $NivelesPermitidos)) {
           $usuario = $session->codigo;
+		  unset($_GET['verpormupis']);
       }
       //Importante!!! Esto tiene que suceder antes de cualquier cuestión AJAX porque Google esta usando document.write en algún momento!.
       echo sprintf('<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s" type="text/javascript" charset="utf-8"></script>', GOOGLE_MAP_KEY);
@@ -16,12 +17,13 @@
 				$("#datos_calles").load("contenido/mupis+ubicaciones+dinamico.php?accion=calles&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val());
 				}
 				function funcion_combo_calles() {
+				$("#datos_mupis").empty();
 				$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val()+"&calle="+$(\'#combo_calles\').val());
 				}
 				</script>
 			    ';
 	  }
-      
+      $BotonVerPorMupis = NULL;
       echo "<h1>Ubicaciones de MUPIS contratados</h1><hr />";
       
       echo '<table>';
