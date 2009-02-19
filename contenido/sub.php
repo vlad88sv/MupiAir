@@ -287,8 +287,22 @@ function INICIAR_MENUES () {
 	</div>
 	';
 	break;
-	}
 	
+	default:
+	$s =
+	'
+	<div class="chromestyle" id="chromemenu">
+	<ul>
+	<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	</ul>
+	</div>
+	<p>
+	Woops!, parece que Ud. esta inscrito en el sistema, pero su nivel de acceso es <b>'.$session->userlevel.'</b>.<br />
+	Sin embargo no se alarme, el sistema solo a impedido su acceso para evitar riesgos de seguridad, todos los datos que haya tenido en su cuenta permenacerán intactos.<br />
+	Por favor contacte con el administrador e indiquele que revise el <b>nivel de acceso</b> de su cuenta. Gracias.
+	</p>
+	';
+	}
 	// Finalmente iniciamos el script.
 	$s .= '<script type="text/javascript">cssdropdown.startchrome("chromemenu")</script>';
 	return $s;
@@ -382,5 +396,12 @@ function truncate($string, $max = 120, $replacement = '...')
     }
     $leave = $max - strlen ($replacement);
     return substr_replace($string, $replacement, $leave);
+}
+
+function EnNulidad($string, $reemplazo){
+	if (!$string) {
+		return $reemplazo;
+	}
+	return $string;
 }
 ?>
