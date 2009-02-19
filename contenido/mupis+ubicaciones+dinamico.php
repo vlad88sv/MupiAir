@@ -126,6 +126,7 @@ retornar($datos);
 
 function Mostrar_Mapa($catorcena, $calle, $usuario){
 global $session, $map, $database;
+$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
 // setup database for geocode caching
 $map->setDSN('mysql://'.DB_USER.':'.DB_PASS.'@'.DB_SERVER.'/'.DB_NAME);
 //Google Map Key
@@ -137,6 +138,7 @@ $map->referencias = false;
 if ( !$session->isAdmin() && $session->userlevel != SALESMAN_LEVEL ) {
 	$map->map_controls = false;
 	$map->disable_drag = true;
+	$map->disableInfoWindow();
 }
 // Cargar puntos mupis.
 $WHERE_USER = "";
@@ -178,17 +180,73 @@ $WHERE_USER = "";
 			$num_rows2 = mysql_numrows($result2);
 			$logotipo = "<br />";
 			
-			if($num_rows > 0){
+			if($num_rows2 > 0){
 				   for($ii=0; $ii<$num_rows2; $ii++){
-					   $logotipo .= CargarImagenDesdeBD(mysql_result($result2,$ii,"logotipo"), "100px");
+					   $logotipo .= CargarImagenDesdeBD(mysql_result($result2,$ii,"logotipo"), "50px");
 				   }
 			}
 		} else {
-			$logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"), "100px");
+			$logotipo = ''; //"<br />".CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"), "50px");
 		}
-      $logotipo = '<div style="width:400px; height:200px">'.$logotipo.'</div>';
+      $logotipo = '<div style="width:400px; height:150px">'.$logotipo.'</div>';
       $html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
-      $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $id_mupi . "|" . $catorcena . "|" . $usuario);
+	  
+      if (in_array($session->userlevel, $NivelesPermitidos)) {
+
+			$q = "SELECT id_pantalla, codigo_pedido, (SELECT descripcion FROM ".TBL_MUPI_ORDERS." AS b WHERE b.codigo_pedido=a.codigo_pedido) AS descripcion FROM emupi_mupis_caras AS a WHERE codigo_mupi='$id_mupi' and catorcena='$catorcena'".";";
+			//echo $q."<br>";
+			$result2 = $database->query($q);
+			$num_rows2 = mysql_numrows($result2);
+			$logotipo = "<br />";
+			$Valor_Peatonal = $Valor_Vehicular = $Pantalla_Vehicular = $Pantalla_Peatonal = NULL;
+			$Valor_Vehicular_Desc = $Valor_Peatonal_Desc = 'Ninguno';
+			if($num_rows2 > 0){
+				   for($ii=0; $ii<$num_rows2; $ii++){
+					   if ( (mysql_result($result2,$ii,"id_pantalla") % 2) == 0 ) {
+						    $Pantalla_Vehicular = mysql_result($result2,$ii,"id_pantalla");
+							$Valor_Vehicular = mysql_result($result2,$ii,"codigo_pedido");
+							$Valor_Vehicular_Desc = mysql_result($result2,$ii,"descripcion");
+						} else {
+							$Pantalla_Peatonal = mysql_result($result2,$ii,"id_pantalla");
+							$Valor_Peatonal = mysql_result($result2,$ii,"codigo_pedido");
+							$Valor_Peatonal_Desc = mysql_result($result2,$ii,"descripcion");
+					   }
+				   }
+			}
+
+          $Boton_pedido_peatonal = '<input type="button" OnClick="$(\'#pedido_peatonal\').load(\'contenido/mupis+ubicaciones+dinamico.php?cambiar_pantalla='.$Pantalla_Peatonal.'&pedido=\'+$(\'#Combobox_pedidos_peatonal\').val())" value="Establecer">';
+          $Boton_pedido_vehicular = '<input type="button" OnClick="$(\'#pedido_vehicular\').load(\'contenido/mupis+ubicaciones+dinamico.php?cambiar_pantalla='.$Pantalla_Vehicular.'&pedido=\'+$(\'#Combobox_pedidos_vehicular\').val())" value="Establecer">';
+		  $Contenido_maximizado =
+		  "<b>Catorcena a editar:</b> " . AnularFechaNula($catorcena). " - " . AnularFechaNula( Fin_de_catorcena($catorcena) ).
+		  "<br /><b>Mupi a Editar:</b> $codigo_mupi -> Id. $id_mupi" .
+		  "<hr />".
+		  "<table>".
+			   "<tr>".
+				   "<th>Cara peatonal</th><th>Cara vehicular</th>".
+			   "</tr>".
+			   "<tr>".
+				   "<td width='50%'>".
+				   "<b>ID. Pantalla:</b> ".EnNulidad($Pantalla_Peatonal,"Ninguna")."<br />".
+				   "<b>Código de pedido Actual:</b> $Valor_Vehicular | $Valor_Vehicular_Desc<br />".
+				   addslashes($database->Combobox_pedido("Combobox_pedidos_peatonal", $Valor_Vehicular)).
+				   addslashes($Boton_pedido_peatonal).
+				   "<hr /><div id='pedido_peatonal'>Sin cambios</div>".
+				   "</td>".
+				   "<td width='50%'>".
+				   "<b>ID. Pantalla:</b> ". EnNulidad($Pantalla_Vehicular,"Ninguna")."<br />".
+				   "<b>Código de pedido Actual:</b> $Valor_Peatonal | $Valor_Peatonal_Desc<br />".
+				   addslashes($database->Combobox_pedido("Combobox_pedidos_vehicular", $Valor_Peatonal)).
+				   addslashes($Boton_pedido_vehicular).
+				   "<hr /><div id='pedido_vehicular'>Sin cambios</div>".
+				   "</td>".
+			   "</tr>".
+		   "</table>"
+		  ;
+		  $Contenido_maximizado = $Contenido_maximizado;
+      } else {
+		  $Contenido_maximizado = "";
+	  }
+      $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $id_mupi . "|" . $catorcena . "|" . $usuario, $Contenido_maximizado);
 	  $map->addMarkerIcon(public_base_directory().'/punto.gif','',12,12,0,0);
    }
    
@@ -201,7 +259,7 @@ $WHERE_USER = "";
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
 	  $logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"imagen_referencia"), "200px");
-	  $map->addMarkerByCoords($lon, $lat, "Referencia" , "Este es un punto de referencia<br />".$logotipo, '', "REF|$catorcena|".mysql_result($result,$i,"id_referencia"));
+	  $map->addMarkerByCoords($lon, $lat, "Referencia" , "Este es un punto de referencia<br />".$logotipo, '', "REF|$catorcena|".mysql_result($result,$i,"id_referencia"),"");
 	  $map->addMarkerIcon(public_base_directory(). '/include/ver.php?id='.mysql_result($result,$i,"imagen_referencia"),'',0,0,50,50);
 	  
    }
@@ -226,5 +284,5 @@ function actualizarReferencia ($id, $lat, $lng) {
 	global $database;
 	$q = "UPDATE ".TBL_REFS." SET lat='$lat', lon='$lng' WHERE id_referencia='$id';";
 	$result = $database->query($q);
-} 
+}
 ?>

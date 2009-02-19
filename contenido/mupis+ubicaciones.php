@@ -19,7 +19,7 @@
 				$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val()+"&calle="+$(\'#combo_calles\').val());
 				}
 				</script>
-			  ';
+			    ';
 	  }
       
       echo "<h1>Ubicaciones de MUPIS contratados</h1><hr />";
@@ -40,10 +40,9 @@
               $BotonVerPorMupis = '<input type="button" OnClick="window.location=\'./?' . _ACC_ . '=ver+ubicaciones&verpormupis=1\'" value="Ver por Mupis">';
           }
       } else {
-		  $Boton_combo_catorcenas = '<input type="button" OnClick="funcion_combo_catorcenas()" value="Establecer">';
           $Boton_combo_calles = '<input type="button" OnClick="funcion_combo_ver_mupi_calles()" value="Ver">';
+		  echo '<b>Trabajar Catorcena:</b><br />' . Combobox_catorcenas("combo_catorcenas", Obtener_catorcena_cercana()) . '<br />';
           echo '<b>Ver Calle:</b><br />' . $database->Combobox_calle("combo_calles") . $Boton_combo_calles . '<br /><br />';
-		  echo '<b>Trabajar Catorcena:</b><br />' . Combobox_catorcenas("combo_catorcenas", Obtener_catorcena_cercana()) . $Boton_combo_catorcenas . '<br /><br />';
           
           if (in_array($session->userlevel, $NivelesPermitidos)) {
               $BotonVerPorMupis = '<input type="button" OnClick="window.location=\'./?' . _ACC_ . '=ver+ubicaciones\'" value="Ver por Pantallas">';

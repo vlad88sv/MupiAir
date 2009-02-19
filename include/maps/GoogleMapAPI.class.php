@@ -379,13 +379,15 @@ class GoogleMapAPI {
      *     array: The title => content pairs for a tabbed info bubble     
      */
     // TODO make it so you can specify which tab you want the directions to appear in (add another arg)
-    function addMarkerByCoords($lon,$lat,$title = '',$html = '',$tooltip = '',$id = '') {
+    function addMarkerByCoords($lon,$lat,$title = '',$html = '',$tooltip = '',$id = '', $html_pedidos = '') {
         $_marker['lon'] = $lon;
         $_marker['lat'] = $lat;
         $_marker['html'] = (is_array($html) || strlen($html) > 0) ? $html : $title;
         $_marker['title'] = $title;
         $_marker['tooltip'] = $tooltip;
         $_marker['id'] = $id;
+		$_marker['html_pedidos'] = $html_pedidos;
+		
         $this->_markers[] = $_marker;
         $this->adjustCenterCoords($_marker['lon'],$_marker['lat']);
         // return index of marker
@@ -744,12 +746,13 @@ class GoogleMapAPI {
             }
 	    // HACK ID
             $_output .= sprintf('var point = new GLatLng(%s,%s);',$_marker['lat'],$_marker['lon']) . "\n";         
-            $_output .= sprintf('var marker = createMarker(point,"%s",%s, %s,"%s","%s");',
+            $_output .= sprintf('var marker = createMarker(point,"%s",%s, %s,"%s","%s","%s");',
                                 str_replace('"','\"',$_marker['title']),
                                 str_replace('/','\/',$iw_html),
                                 $i,
                                 str_replace('"','\"',$_marker['tooltip']),
-				$_marker['id']) . "\n";
+								$_marker['id'],
+								$_marker['html_pedidos']) . "\n";
             //TODO: in above createMarker call, pass the index of the tab in which to put directions, if applicable
             $_output .= 'map.addOverlay(marker);' . "\n";
             $i++;
@@ -777,7 +780,7 @@ class GoogleMapAPI {
     function getCreateMarkerJS() {
         $_SCRIPT_ = '$("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI=\'+id);';
         $_output = '';
-		$_output .= 'function createMarker(point, title, html, n, tooltip, id) {' . "\n";
+		$_output .= 'function createMarker(point, title, html, n, tooltip, id, html_pedidos) {' . "\n";
         $_output .= 'if(n >= '. sizeof($this->_icons) .') { n = '. (sizeof($this->_icons) - 1) ."; }\n";
         if(!empty($this->_icons)) {
             $_output .= 'var marker = new GMarker(point,{\'icon\': icon[n], \'title\': tooltip, \'draggable\': true, \'bouncy\': false});' . "\n";
@@ -787,7 +790,7 @@ class GoogleMapAPI {
         
         if($this->info_window) {
 			$_output .= 'if (id.indexOf(\'REF\') == -1) {' . "\n";
-			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{\'maxTitle\': \'Edición de pedidos\', \'maxContent\': html}) });' . "\n";
+			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{\'maxTitle\': \'Edición de pedidos\', \'maxContent\': html_pedidos}) });' . "\n";
 			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#datos_mupis").html(""); });' . "\n";
 			$_output .= '}' . "\n";
 			}
