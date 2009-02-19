@@ -356,7 +356,7 @@
               $s .= "¡No hay pedidos ingresados!";
               return $s;
           }
-          $s = '<select name="' . $nombre . '">';
+          $s = '<select name="' . $nombre . '" id="' . $nombre . '">';
           for ($i = 0; $i < $num_rows; $i++) {
               $codigo_pedido = mysql_result($result, $i, "codigo_pedido");
               $nombre = mysql_result($result, $i, "nombre");
@@ -411,7 +411,7 @@
           } else {
               $wCalle = "";
           }
-          $q = "SELECT codigo_calle, CONCAT(ubicacion, ' [', codigo_calle , ']') as nombre FROM " . TBL_STREETS . $wCalle . " ORDER BY ubicacion;";
+          $q = "SELECT codigo_calle, CONCAT(ubicacion, ' [Cod. ', codigo_calle , ']') as nombre FROM " . TBL_STREETS . $wCalle . " ORDER BY ubicacion;";
           $result = mysql_query($q, $this->connection);
           /* Error occurred, return given name by default */
           $num_rows = mysql_numrows($result);
