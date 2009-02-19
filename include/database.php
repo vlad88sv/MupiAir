@@ -425,7 +425,7 @@
               $s .= "¡No hay calles " . _NOMBRE_ . " ingresadas!";
               return $s;
           }
-          $s = '<select name="' . $nombre . '">';
+          $s = '<select name="' . $nombre . '" id="' . $nombre . '">';
           for ($i = 0; $i < $num_rows; $i++) {
               $codigo_calle = mysql_result($result, $i, "codigo_calle");
               $nombre = mysql_result($result, $i, "nombre");
