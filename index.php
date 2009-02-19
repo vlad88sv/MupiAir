@@ -180,5 +180,5 @@ require_once("contenido/mapa+referencias.php");
 window.setTimeout(function() {
  $("#cargando").html("")
  grayOut(false)
-}, 1000);
+}, 100);
 </script>
