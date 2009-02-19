@@ -13,7 +13,7 @@ blockquote{background-color:#9CC089;border:2px solid #C1DAD6;margin:0;padding:5p
 #info:before{content:"Información: "}
 #nota{background-color:#EEEEEE;border:2px solid #000000;margin:0;padding:5px;max-width:100%;font-weight:bold;color:#000000	;text-align:center}
 #nota:before{content:"Nota: "}
-p{background-color:#C1C1C1;color:#000000;margin:0;width:100%}
+p{background-color:#F0F0F0;color:#000000;margin:0;width:80%;padding:5px;margin:10px;margin-left:auto;margin-right:auto}
 textarea,input[type=text],input[type=password]{background-color:#EEEEEE;color:#AAAAFF;font-weight:bold; width: 100%;}
 select{width:300px}
 pre{border-left:2px solid #cce;margin-left:3px;overflow:auto;padding:.5em}
