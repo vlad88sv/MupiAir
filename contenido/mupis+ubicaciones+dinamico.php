@@ -214,8 +214,14 @@ $WHERE_USER = "";
 				   }
 			}
 
+
+/*
           $Boton_pedido_peatonal = '<input type="button" OnClick="$(\'#pedido_peatonal\').load(\'contenido/mupis+ubicaciones+dinamico.php?cambiar_pantalla='.$Pantalla_Peatonal.'&pedido=\'+$(\'#Combobox_pedidos_peatonal\').val())" value="Establecer">';
           $Boton_pedido_vehicular = '<input type="button" OnClick="$(\'#pedido_vehicular\').load(\'contenido/mupis+ubicaciones+dinamico.php?cambiar_pantalla='.$Pantalla_Vehicular.'&pedido=\'+$(\'#Combobox_pedidos_vehicular\').val())" value="Establecer">';
+*/
+          $Boton_pedido_peatonal = '<input type="button" OnClick="$(this).submit()" value="Establecer">';
+          $Boton_pedido_vehicular = '<input type="button" OnClick="$(this).submit()" value="Establecer">';
+
 		  $Contenido_maximizado =
 		  "<b>Catorcena a editar:</b> " . AnularFechaNula($catorcena). " - " . AnularFechaNula( Fin_de_catorcena($catorcena) ).
 		  "<br /><b>Mupi a Editar:</b> $codigo_mupi -> Id. $id_mupi" .
@@ -225,29 +231,29 @@ $WHERE_USER = "";
 				   "<th>Cara peatonal</th><th>Cara vehicular</th>".
 			   "</tr>".
 			   "<tr>".
-				   "<td width='50%'>". // VEHICULAR
-				   "<b>ID. Pantalla:</b> ".EnNulidad($Pantalla_Peatonal,"Ninguna")."<br />".
+				   "<td width='50%' valign='top'>". // VEHICULAR
+				   "<b>ID. Pantalla:</b> ".EnNulidad($Pantalla_Vehicular,"Ninguna")."<br />".
 				   "<b>Código de pedido Actual:</b> $Valor_Vehicular | $Valor_Vehicular_Desc<br />".
-				   "<form action='./?"._ACC_."=gestionar+mupis' enctype='multipart/form-data' method='POST' id='form_vehicular'>".
+				   "<form action='contenido/mupis+ubicaciones+dinamico.php' enctype='multipart/form-data' method='POST' id='form_vehicular'>".
 				   addslashes($database->Combobox_pedido("Combobox_pedidos_peatonal", $Valor_Vehicular)).
 				   "<br />Foto <input type='file' name='foto_peatonal' id='foto_peatonal'>".
-				   addslashes($Boton_pedido_peatonal).
-				   "</form>".
-				   "<hr /><div id='pedido_peatonal'>Sin cambios</div>".
-				   "</td>".
-				   "<td width='50%'>". // PEATONAL
-				   "<b>ID. Pantalla:</b> ". EnNulidad($Pantalla_Vehicular,"Ninguna")."<br />".
-				   "<b>Código de pedido Actual:</b> $Valor_Peatonal | $Valor_Peatonal_Desc<br />".
-				   "<form action='./?"._ACC_."=gestionar+mupis' enctype='multipart/form-data' method='POST' id='form_peatonal'>".
-				   addslashes($database->Combobox_pedido("Combobox_pedidos_vehicular", $Valor_Peatonal)).
-				   "<br />Foto <input type='file' name='foto_vehicular' id='foto_peatonal'>".
 				   addslashes($Boton_pedido_vehicular).
+				   "</form>".
 				   "<hr /><div id='pedido_vehicular'>Sin cambios</div>".
 				   "</td>".
+				   "<td width='50%' valign='top'>". // PEATONAL
+				   "<b>ID. Pantalla:</b> ". EnNulidad($Pantalla_Peatonal,"Ninguna")."<br />".
+				   "<b>Código de pedido Actual:</b> $Valor_Peatonal | $Valor_Peatonal_Desc<br />".
+				   "<form action='contenido/mupis+ubicaciones+dinamico.php' enctype='multipart/form-data' method='POST' id='form_peatonal'>".
+				   addslashes($database->Combobox_pedido("Combobox_pedidos_vehicular", $Valor_Peatonal)).
+				   "<br />Foto <input type='file' name='foto_vehicular' id='foto_peatonal'>".
+				   addslashes($Boton_pedido_peatonal).
+				   "<hr /><div id='pedido_peatonal'>Sin cambios</div>".
+				   "</td>".
 			   "</tr>".
-		   "</table>"
+		  "</table>"
 		  ;
-		  $Contenido_maximizado = $Contenido_maximizado;
+		
       } else {
 		  $Contenido_maximizado = "";
 	  }

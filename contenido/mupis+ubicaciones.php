@@ -9,6 +9,7 @@
       }
       //Importante!!! Esto tiene que suceder antes de cualquier cuestión AJAX porque Google esta usando document.write en algún momento!.
       echo sprintf('<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s" type="text/javascript" charset="utf-8"></script>', GOOGLE_MAP_KEY);
+      echo '<script src="include/jquery.form.js" charset="utf-8"></script>';
       // AJAX ;)
       if (!isset($_GET['verpormupis'])) {
           echo "\n".
