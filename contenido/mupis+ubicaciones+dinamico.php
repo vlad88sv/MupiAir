@@ -225,17 +225,22 @@ $WHERE_USER = "";
 				   "<th>Cara peatonal</th><th>Cara vehicular</th>".
 			   "</tr>".
 			   "<tr>".
-				   "<td width='50%'>".
+				   "<td width='50%'>". // VEHICULAR
 				   "<b>ID. Pantalla:</b> ".EnNulidad($Pantalla_Peatonal,"Ninguna")."<br />".
 				   "<b>Código de pedido Actual:</b> $Valor_Vehicular | $Valor_Vehicular_Desc<br />".
+				   "<form action='./?"._ACC_."=gestionar+mupis' enctype='multipart/form-data' method='POST' id='form_vehicular'>".
 				   addslashes($database->Combobox_pedido("Combobox_pedidos_peatonal", $Valor_Vehicular)).
+				   "<br />Foto <input type='file' name='foto_peatonal' id='foto_peatonal'>".
 				   addslashes($Boton_pedido_peatonal).
+				   "</form>".
 				   "<hr /><div id='pedido_peatonal'>Sin cambios</div>".
 				   "</td>".
-				   "<td width='50%'>".
+				   "<td width='50%'>". // PEATONAL
 				   "<b>ID. Pantalla:</b> ". EnNulidad($Pantalla_Vehicular,"Ninguna")."<br />".
 				   "<b>Código de pedido Actual:</b> $Valor_Peatonal | $Valor_Peatonal_Desc<br />".
+				   "<form action='./?"._ACC_."=gestionar+mupis' enctype='multipart/form-data' method='POST' id='form_peatonal'>".
 				   addslashes($database->Combobox_pedido("Combobox_pedidos_vehicular", $Valor_Peatonal)).
+				   "<br />Foto <input type='file' name='foto_vehicular' id='foto_peatonal'>".
 				   addslashes($Boton_pedido_vehicular).
 				   "<hr /><div id='pedido_vehicular'>Sin cambios</div>".
 				   "</td>".
