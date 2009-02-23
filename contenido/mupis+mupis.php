@@ -14,7 +14,7 @@ function CONTENIDO_mupis($usuario="",$mupi="",$calle=NULL) {
 		global $database;
 		// Eliminamos la pantalla
 		$q = "DELETE FROM " . TBL_MUPI . " WHERE id_mupi='" . $_GET['eliminar'] . "';";
-		DEPURAR ($q,1);
+		DEPURAR ($q,0);
 		$result = $database->query($q);
 		if ( $result ) { echo Mensaje ("Eco Mupis eliminado",_M_INFO); } else { echo Mensaje ("Eco Mupis no pudo ser eliminado",_M_ERROR); }
 		}
@@ -46,6 +46,7 @@ function verMUPIS($calle=NULL){
     $BotonFiltraVistaPorCalles = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+mupis&amp;calle=\'+document.getElementsByName(\'cmbCalles\')[0].value" value="Filtrar">';
     echo "<b>Filtrar vista a "._NOMBRE_." que se ubiquen en la calle</b> ". $database->Combobox_calle("cmbCalles");
 	echo $BotonFiltraVistaPorCalles;
+	
 	echo '<table border="0">';
 	echo "<tr><th width=\"5%\">ID Mupi</th><th width=\"10%\">Código Mupi</th><th width=\"30%\">Dirección</th><th width=\"5%\">Foto</th><th width=\"5%\">Longitud</th><th width=\"5%\">Latitud</th><th width=\"%30\">Calle</th><th width=\"10%\">Acciones</th></tr>";
 	for($i=0; $i<$num_rows; $i++){
@@ -56,7 +57,7 @@ function verMUPIS($calle=NULL){
 		$Longitud  = mysql_result($result,$i,"lon");
 		$Latitud  = mysql_result($result,$i,"lat");
 		$codigo_calle  = CREAR_LINK_GET("gestionar+calles&amp;calle=".mysql_result($result,$i,"codigo_calle"), mysql_result($result,$i,"calle"), "Editar los datos de este pedido");
-		$Eliminar = CREAR_LINK_GET("gestionar+mupis&amp;eliminar=".mysql_result($result,$i,"id_mupi"),"Eliminar", "Eliminar los datos de este "._NOMBRE_);
+		$Eliminar = CREAR_LINK_GET("gestionar+mupis$conservar_GET_calle&amp;eliminar=".mysql_result($result,$i,"id_mupi"),"Eliminar", "Eliminar los datos de este "._NOMBRE_);
 	echo "<tr><td  width=\"5%\">$id</td><td  width=\"10%\">$codigo_mupi</td><td width=\"30%\">$direccion</td><td width=\"5%\">$foto_generica</td><td width=\"5%\">$Longitud</td><td width=\"5%\">$Latitud</td><td  width=\"30%\">$codigo_calle</td><td  width=\"10%\">$Eliminar</td></tr>";
 	}
 	echo "</table><br />";
