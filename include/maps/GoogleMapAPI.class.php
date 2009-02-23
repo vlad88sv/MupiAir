@@ -51,7 +51,7 @@ class GoogleMapAPI {
 	var $disable_drag = false;
 	var $referencias = false;
     var $overview_control = false;    
-    var $zoom = 16;
+    var $zoom = 17;
     var $width = '500px';
     var $height = '500px';
     var $sidebar = false;    
@@ -65,7 +65,7 @@ class GoogleMapAPI {
     var $_min_lon = 1000000;
     var $_max_lat = -1000000;
     var $_min_lat = 1000000;
-    var $zoom_encompass = true;
+    var $zoom_encompass = false;
     var $bounds_fudge = 0.01;
     var $use_suggest = false;
     var $_polylines = array();    
@@ -795,11 +795,17 @@ class GoogleMapAPI {
             $_output .= 'var marker = new GMarker(point,{\'title\': tooltip});' . "\n";
         }
         
+		// Admin -> Open Info Window + click + Mover + Marcardores
+		// Usuario -> Click
         if($this->info_window) {
 			$_output .= 'if (id.indexOf(\'REF\') == -1) {' . "\n";
 			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{\'maxTitle\': \'Edición de pedidos\', \'maxContent\': html_pedidos}) });' . "\n";
 			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#datos_mupis").html(""); });' . "\n";
 			$_output .= '} else {' . "\n";
+			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; });' . "\n";
+			$_output .= '}' . "\n";
+		} else {
+			$_output .= 'if (id.indexOf(\'REF\') == -1) {' . "\n";
 			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; });' . "\n";
 			$_output .= '}' . "\n";
 		}
