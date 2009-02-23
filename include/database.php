@@ -513,7 +513,7 @@
 		  //Agregamos los grupos
 		  $s .= '<optgroup label="Grupos">';
 		  for ($i = 0; $i < $num_rows2; $i++) {
-              $s .= '<option value="G:' . mysql_result($result2, $i, "grupo_calle") . '">' . mysql_result($result2, $i, "grupo_calle") . '</option>';
+              $s .= '<option value="G:' . urlencode(mysql_result($result2, $i, "grupo_calle")) . '">' . mysql_result($result2, $i, "grupo_calle") . '</option>';
           }
 		  //Agregamos las secciones de calle
 		  $s .= '<optgroup label="Secciones">';

@@ -148,16 +148,23 @@ if ( !$session->isAdmin() && $session->userlevel != SALESMAN_LEVEL ) {
 }
 // Cargar puntos mupis.
 $WHERE_USER = "";
+if ( strpos($calle, "G:") !== false ) {
+	$Explotado = @end(explode(":",$calle));
+	$grupo_calle = "codigo_calle IN (SELECT codigo_calle FROM ".TBL_STREETS." WHERE grupo_calle='".$Explotado."')";
+} else {
+	$grupo_calle = "codigo_calle='$calle'";
+}
 	if ( isset($_GET['sin_presencia']) ) {
-		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle from emupi_mupis AS a where codigo_calle='$calle';";
+		
+		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle from emupi_mupis AS a where $grupo_calle;";
 	} else {
 	if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL ) {
-		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle from emupi_mupis AS a where codigo_calle='$calle' and id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena);";
+		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle from emupi_mupis AS a where $grupo_calle and id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena);";
 	} else {
-		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT logotipo from emupi_usuarios where codigo='$usuario') as logotipo from emupi_mupis where codigo_calle='$calle' and id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario'));";
+		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT logotipo from emupi_usuarios where codigo='$usuario') as logotipo from emupi_mupis where $grupo_calle and id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario'));";
 	}
 	}
-   //DEPURAR($q,1);
+   DEPURAR($q,1);
    $result = $database->query($q);
    $num_rows = mysql_numrows($result);
    if(!$result || ($num_rows < 0)){
@@ -257,7 +264,7 @@ $WHERE_USER = "";
    }
    
    // Mostrar referencias. 10/02/09
-   $q = "SELECT * FROM emupi_referencias WHERE codigo_calle='$calle'".";";
+   $q = "SELECT * FROM emupi_referencias WHERE $grupo_calle".";";
    $result = $database->query($q);
    $num_rows = mysql_numrows($result);
    $map->referencias = true;
