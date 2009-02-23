@@ -413,7 +413,6 @@
           }
           $q = "SELECT codigo_calle, CONCAT(ubicacion, ' [Cod. ', codigo_calle , ']') as nombre FROM " . TBL_STREETS . $wCalle . " ORDER BY ubicacion;";
           $result = mysql_query($q, $this->connection);
-          /* Error occurred, return given name by default */
           $num_rows = mysql_numrows($result);
           $s = '';
           if (!$result || ($num_rows < 0)) {
@@ -451,7 +450,6 @@
           $q = "SELECT DISTINCT catorcena FROM " . TBL_MUPI_FACES . " WHERE catorcena <=" . Obtener_catorcena_siguiente() . " AND codigo_pedido IN (SELECT codigo_pedido FROM " . TBL_MUPI_ORDERS . " $WHERE_USER)  ORDER BY catorcena;";
           $result = mysql_query($q, $this->connection);
           //echo $q.'<br />';
-          /* Error occurred, return given name by default */
           $num_rows = mysql_numrows($result);
           $s = '';
           if (!$result || ($num_rows < 0)) {
@@ -464,7 +462,7 @@
           }
           $catorcena_actual = Obtener_catorcena_cercana();
           $s = '<select id="' . $nombre . '" name="' . $nombre . '" onkeyup="' . $OnChange . '" onclick="' . $OnChange . '">';
-          for ($i = 0; $i < $num_rows; $i++) {
+		  for ($i = 0; $i < $num_rows; $i++) {
               $catorcena_inicio = mysql_result($result, $i, "catorcena");
               $catorcena_fin = Fin_de_catorcena($catorcena_inicio);
               if ($catorcena_inicio == $catorcena_actual) {
@@ -495,9 +493,13 @@
           // 5. Mostramos nada mas las distintas calles.
           // - Combobox espera calle y ubicación.
           $q = "SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS b WHERE a.codigo_mupi=b.id_mupi) AS 'calle', (SELECT ubicacion FROM emupi_calles WHERE codigo_calle=@calle) AS ubicacion FROM emupi_mupis_caras AS a WHERE catorcena=" . $catorcena . $WHERE_USER . " ORDER BY ubicacion;";
-          //echo $q.'<br />';
+          
+		  //echo $q.'<br />';
           $result = mysql_query($q, $this->connection);
+  		  $q2 = "select distinct grupo_calle from emupi_calles where grupo_calle is not NULL;";
+		  $result2 = mysql_query($q2, $this->connection);
           $num_rows = mysql_numrows($result);
+		  $num_rows2 = mysql_numrows($result2);
           $s = '';
           if (!$result || ($num_rows < 0)) {
               $s .= "Error mostrando la información";
@@ -508,6 +510,13 @@
               return $s;
           }
           $s = '<select id="' . $nombre . '" name="' . $nombre . '">';
+		  //Agregamos los grupos
+		  $s .= '<optgroup label="Grupos">';
+		  for ($i = 0; $i < $num_rows2; $i++) {
+              $s .= '<option value="G:' . mysql_result($result2, $i, "grupo_calle") . '">' . mysql_result($result2, $i, "grupo_calle") . '</option>';
+          }
+		  //Agregamos las secciones de calle
+		  $s .= '<optgroup label="Secciones">';
           for ($i = 0; $i < $num_rows; $i++) {
               $s .= '<option value="' . mysql_result($result, $i, "calle") . '">' . mysql_result($result, $i, "ubicacion") . '</option>';
           }

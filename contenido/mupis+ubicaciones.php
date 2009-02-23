@@ -15,10 +15,12 @@
           echo "\n".
 				'<script>
 				function funcion_combo_catorcenas(){
+				$("#grafico_mapa").html("<center><b>Por favor escoja Calle de la lista a su Izq. y presione Ver</b></center>");
 				$("#datos_calles").load("contenido/mupis+ubicaciones+dinamico.php?accion=calles&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val());
 				}
 				function funcion_combo_calles() {
 				$("#datos_mupis").empty();
+				$("#grafico_mapa").html("<center><b>Generando mapa, por favor espere...</b></center>");
 				$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val()+"&calle="+$(\'#combo_calles\').val());
 				}
 				</script>
@@ -62,7 +64,7 @@
       echo '</td>';
       
       echo '<td id="grafico_mapa" width="80%">';
-      echo '<center><b>Esperando información para generar mapa</b></center>';
+      echo '<center><b>Escoja Catorcena de la lista a su Izq. y presione Ver.</b></center>';
       echo '</td>';
       
       echo '</tr>';

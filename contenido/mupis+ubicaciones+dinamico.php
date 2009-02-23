@@ -111,15 +111,20 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
       // si es par es vehicular
       if ( ($tipo_pantalla % 2) == 0 ) {
 		$tipoPantalla = 'vehicular';
-		   
       }else{
 		$tipoPantalla = 'peatonal';
       }
-	
+	if ( time() > $catorcena ) {
 	$datos .= "<tr><th><center>Imagen actual de su pantalla ".$tipoPantalla.":</center></th></tr>";
 	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($foto_real,"300px") . "</center></td>";
 	$datos .= "<tr><th><center>Arte digital de su pantalla:</center></th></tr>";
 	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($arte,"300px") . "</center></td></tr>";	
+	} else {
+	$datos .= "<tr><th><center>Imagen actual de su pantalla ".$tipoPantalla.":</center></th></tr>";
+	$datos .= "<tr><td><center>Viendo catorcena futura, La foto mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . CargarImagenDesdeBD($foto_real,"300px") . "</center></td>";
+	$datos .= "<tr><th><center>Arte digital de su pantalla:</center></th></tr>";
+	$datos .= "<tr><td><center>Viendo catorcena futura, Arte no disponible</center></td></tr>";	
+	}
    }
    $datos .= '</table>';
 retornar($datos);

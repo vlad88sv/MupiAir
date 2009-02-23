@@ -59,14 +59,15 @@ function vercalles($usuario="", $calle=""){
    }
    
 echo "<table>";
-echo "<tr><th>Código calle "._NOMBRE_."</th><th>Ubicación</th><th>Impactos</th><th>Acciones</th></tr>";
+echo "<tr><th>Código calle "._NOMBRE_."</th><th>Ubicación</th><th>Grupo</th><th>Impactos</th><th>Acciones</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_calle  = mysql_result($result,$i,"codigo_calle");
       $ubicacion =  mysql_result($result,$i,"ubicacion");
+      $grupo_calle =  mysql_result($result,$i,"grupo_calle");
       $impactos =  mysql_result($result,$i,"impactos");
       $Eliminar = CREAR_LINK_GET("gestionar+calles&amp;eliminar=".mysql_result($result,$i,"codigo_calle"),"Eliminar", "Eliminar los datos de esta calle");
       $codigo_calle  = CREAR_LINK_GET("gestionar+calles&amp;calle=".$codigo_calle,$codigo_calle, "Editar los datos de esta calle");
-      echo "<tr><td>$codigo_calle</td><td>$ubicacion</td><td>$impactos</td><td>$Eliminar</tr>";
+      echo "<tr><td>$codigo_calle</td><td>$ubicacion</td><td>$grupo_calle</td><td>$impactos</td><td>$Eliminar</tr>";
    }
    echo "</table><br>";
 }
@@ -77,6 +78,7 @@ $CampoCodigocalle = '';
 $BotonCancelar = '';
 $codigo_calle = '';
 $ubicacion = '';
+$grupo_calle = '';
 
 if ($calle) {
 	$q = "SELECT * FROM ".TBL_STREETS." WHERE codigo_calle='$calle';";
@@ -90,6 +92,7 @@ if ($calle) {
 	
 	$CampoCodigocalle = '<input type="hidden" name="codigo_calle" value="'.$codigo_calle.'">';
 	$ubicacion = mysql_result($result,0,"ubicacion");
+	$grupo_calle = mysql_result($result,0,"grupo_calle");
 	$impactos = mysql_result($result,0,"impactos");
 	$NombreBotonAccion = "Editar";
 	$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+calles\'" value="Cancelar">';
@@ -102,6 +105,7 @@ if ($calle) {
 }
 	$CampoCodigocalle2 = '<tr><td width="25%">Código de calle</td><td><b>'. $codigo_calle. '</b></td></tr>';
 	$CampoUbicacion = '<tr><td>Ubicación:</td><td><input type="text" name="ubicacion" maxlength="255" value="' . $ubicacion . '"></td></tr>';
+	$CampoGrupoCalle = '<tr><td>Pertenece al grupo:</td><td><input type="text" name="grupo_calle" maxlength="255" value="' . $grupo_calle . '"></td></tr>';
 	$CampoImpactos = '<tr><td>Número de impactos:</td><td><input type="text" name="impactos" maxlength="255" value="' . $impactos . '"></td></tr>';
 
 echo '
@@ -111,6 +115,7 @@ echo '
 '.$CampoCodigocalle2.'
 '.$CampoUbicacion.'
 '.$CampoImpactos.'
+'.$CampoGrupoCalle.'
 </table>
 <input type="submit" value="'.$NombreBotonAccion.'">
 '.$BotonCancelar.'
@@ -121,7 +126,7 @@ echo '
 function calles_REGISTRAR() {
 global $database,$form;
 
-$q = "INSERT INTO ".TBL_STREETS." (codigo_calle, ubicacion, impactos ) VALUES ('".$_POST['codigo_calle']."', '" . $_POST['ubicacion']. "', '" . $_POST['impactos']. "')  ON DUPLICATE KEY UPDATE ubicacion=VALUES(ubicacion), impactos=VALUES(impactos);";
+$q = "INSERT INTO ".TBL_STREETS." (codigo_calle, ubicacion, grupo_calle, impactos ) VALUES ('".$_POST['codigo_calle']."', '" . $_POST['ubicacion']. "', '"  . $_POST['grupo_calle']. "', '". $_POST['impactos']. "')  ON DUPLICATE KEY UPDATE ubicacion=VALUES(ubicacion), grupo_calle=VALUES(grupo_calle), impactos=VALUES(impactos);";
 DEPURAR ($q);
 if ( $database->query($q) == 1 ) {
 	echo Mensaje("Exito al registrar calle de ".  $_POST['ubicacion'], _M_INFO);
@@ -130,4 +135,3 @@ if ( $database->query($q) == 1 ) {
 }
 }
 ?>
-
