@@ -1,8 +1,7 @@
 .chromestyle{
 width: 100%;
-margin: 10px;
 font-weight: bold;
-font-size: 16px;
+font-size: 18px;
 }
 
 .chromestyle:after{ /*Add margin between menu and rest of content in Firefox*/
@@ -14,34 +13,30 @@ visibility: hidden;
 }
 
 .chromestyle ul{
-border: 0;
 width: 100%;
-height: 30px;
+height: 40px;
 background: url(chromebg.gif) center center repeat-x; /*THEME CHANGE HERE*/
-padding: 4px 0;
-margin: 0px;
 text-align: center; /*set value to "left", "center", or "right"*/
 }
 
 .chromestyle ul li{
-vertical-align: middle;
 display: inline;
+margin: 0px;
 }
 
 .chromestyle ul li a{
 color: #FFFFFF;
-padding: 4px 10px;
-margin: 0;
+padding: 20px 0px;
 height: 50px;
 text-decoration: none;
-/*
-border-right: 1px solid #DADADA;
-*/
+border-right: 10px solid #FFFFFF;
 }
-
-.chromestyle ul li a:hover, .chromestyle ul li a.selected{ /*script dynamically adds a class of "selected" to the current active menu item*/
-color: #FFEEFF;
-height: 50px;
+.chromestyle ul li a:hover{
+color: #F0F0F0;
+}
+.chromestyle ul li:hover, .chromestyle ul li a.selected{ /*script dynamically adds a class of "selected" to the current active menu item*/
+margin: 0;
+height: 30px;
 background: url(chromebg-over.gif) center center repeat-x; /*THEME CHANGE HERE*/
 }
 
@@ -60,7 +55,6 @@ width: 200px;
 visibility: hidden;
 filter: progid:DXImageTransform.Microsoft.Shadow(color=#CACACA,direction=135,strength=4); /*Add Shadow in IE. Remove if desired*/
 }
-
 
 .dropmenudiv a{
 width: auto;
