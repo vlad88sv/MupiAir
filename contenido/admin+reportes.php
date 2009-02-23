@@ -8,7 +8,7 @@ function byteConvert($bytes)
 }
 function Directorios($base, $tema) {
 	$dir=dir($base);
-	$s = "<h4>$tema</h4><blockquote cite=\"$tema\"><ol>";
+	$s = "<h3>$tema</h3><blockquote cite=\"$tema\"><ol>";
 	while($filename=$dir->read()) {
 		if ( $filename != "." && $filename != ".." && $filename != "index.php" ) { $s = $s."<li>".CREAR_LINK("$base$filename", $filename, "Abrir $filename").' [<b>'.byteConvert(filesize($base.$filename)).'</b>]</li><br />'; }
 	}
@@ -22,7 +22,7 @@ $HTML_HEAD = '
 	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Reporte de Instructores</title>
+		<title>Reporte de Eco Mupis - CEPASA de C.V.</title>
 	</head>
 	<body>
 	';
@@ -30,7 +30,7 @@ $HTML_FOOT = '</body></html>';
 
 function ADMIN_reportes() {
 	global $HTML_HEAD, $HTML_FOOT, $database;;
-	echo "<h2>Generador de Reportes</h2>";
+	echo "<h1>Generador de Reportes</h1>";
 	/***************************************************************************************************************************/
 	/*							USER      													        	*/
 	/***************************************************************************************************************************/
@@ -195,10 +195,24 @@ function ADMIN_reportes() {
 		echo "</pre>";
 		echo '<blockquote>Por favor realice clic derecho sobre el enlace de descarga y posteriormente utilice la opción "Guardar como" de su navegador</blockquote>';
 	}
-	echo "<hr /><h3>Por favor seleccione el/los tipo(s) de reporte(s) a generar</h3>";
-	echo "<h4>Reporte de horarios</h4>";
 	?>
 	<form action="./?accion=reportes" method="post">
+	<?
+	echo "<hr /><h2>Por favor seleccione el/los tipo(s) de reporte(s) a generar</h2>";
+	echo "<h3>Reporte de clientes</h3>";
+	?>
+	<td><input type="checkbox" name="reporte_clientes_0" value="1" checked="cheked">Listado breve de clientes</td><br />
+	<?
+	echo "<h3>Reporte de Eco Mupis</h3>";
+	?>
+	<td><input type="checkbox" name="reporte_eco_0" value="1" checked="cheked">Listado de Eco Mupis</td><br />
+	<td><input type="checkbox" name="reporte_eco_0" value="1" checked="cheked">Listado de Eco Mupis Activos</td><br />
+	<td><input type="checkbox" name="reporte_eco_1" value="1" checked="cheked">Listado de Pedidos</td><br />
+	<td><input type="checkbox" name="reporte_eco_2" value="1" checked="cheked">Listado de Eventos</td><br />
+	<td><input type="checkbox" name="reporte_eco_2" value="1" checked="cheked">Listado de Calles</td><br />
+	<td><input type="checkbox" name="reporte_eco_2" value="1" checked="cheked">Listado de Referencias</td><br />
+	<td><input type="checkbox" name="reporte_eco_2" value="1" checked="cheked">Listado de Comentarios</td><br />
+	
 	<? echo "<hr /><h3>Por favor seleccione el/los tipo(s) de formato de salida a generar</h3>"; ?>
 	<table>
 	<tr>
@@ -210,11 +224,9 @@ function ADMIN_reportes() {
 	<input type="submit" name="bgenerar" value="Generar" />
 	</form>
 	<?
-	echo "<hr /><h3>Se han encontrado los siguientes reportes anteriormente generados</h3>";
-	echo Directorios("reportes/+H/+HTML/", "Horarios - HTML");
-	echo Directorios("reportes/+H/+PDF/", "Horarios - PDF");
-	echo Directorios("reportes/+I/+HTML/", "Instructores - HTML");
-	echo Directorios("reportes/+I/+PDF/", "Instructores - PDF");
+	echo "<hr /><h2>Se han encontrado los siguientes reportes anteriormente generados</h2>";
+	echo Directorios("reportes/+HTML/", "HTML");
+	echo Directorios("reportes/+PDF/", "PDF");
 
 	return;
 }
