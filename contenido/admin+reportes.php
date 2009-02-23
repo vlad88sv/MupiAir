@@ -29,8 +29,8 @@ $HTML_HEAD = '
 $HTML_FOOT = '</body></html>';
 
 function ADMIN_reportes() {
-	global $HTML_HEAD, $HTML_FOOT, $database;;
-	echo "<h1>Generador de Reportes</h1>";
+	global $HTML_HEAD, $HTML_FOOT, $database, $session;
+	echo "<h1>Reportes</h1>";
 	/***************************************************************************************************************************/
 	/*							USER      													        	*/
 	/***************************************************************************************************************************/
@@ -195,39 +195,39 @@ function ADMIN_reportes() {
 		echo "</pre>";
 		echo '<blockquote>Por favor realice clic derecho sobre el enlace de descarga y posteriormente utilice la opción "Guardar como" de su navegador</blockquote>';
 	}
-	?>
-	<form action="./?accion=reportes" method="post">
-	<?
-	echo "<hr /><h2>Por favor seleccione el/los tipo(s) de reporte(s) a generar</h2>";
-	echo "<h3>Reporte de clientes</h3>";
-	?>
-	<td><input type="checkbox" name="reporte_clientes_0" value="1" checked="cheked">Listado breve de clientes</td><br />
-	<?
-	echo "<h3>Reporte de Eco Mupis</h3>";
-	?>
-	<td><input type="checkbox" name="reporte_eco_0" value="1" checked="cheked">Listado de Eco Mupis</td><br />
-	<td><input type="checkbox" name="reporte_eco_0" value="1" checked="cheked">Listado de Eco Mupis Activos</td><br />
-	<td><input type="checkbox" name="reporte_eco_1" value="1" checked="cheked">Listado de Pedidos</td><br />
-	<td><input type="checkbox" name="reporte_eco_2" value="1" checked="cheked">Listado de Eventos</td><br />
-	<td><input type="checkbox" name="reporte_eco_2" value="1" checked="cheked">Listado de Calles</td><br />
-	<td><input type="checkbox" name="reporte_eco_2" value="1" checked="cheked">Listado de Referencias</td><br />
-	<td><input type="checkbox" name="reporte_eco_2" value="1" checked="cheked">Listado de Comentarios</td><br />
-	
-	<? echo "<hr /><h3>Por favor seleccione el/los tipo(s) de formato de salida a generar</h3>"; ?>
-	<table>
-	<tr>
-	<td><input type="checkbox" name="tipo_reporte0" value="1" checked="cheked">PDF</td>
-	<td><input type="checkbox" name="tipo_reporte1" value="1" checked="cheked">HTML</td>
-	</tr>
-	</table>
-	<input type="hidden" name="generar" value="1">
-	<input type="submit" name="bgenerar" value="Generar" />
-	</form>
-	<?
-	echo "<hr /><h2>Se han encontrado los siguientes reportes anteriormente generados</h2>";
-	echo Directorios("reportes/+HTML/", "HTML");
-	echo Directorios("reportes/+PDF/", "PDF");
-
-	return;
+	if ( $session->isAdmin() ) {
+		echo '<form action="./?accion=reportes" method="post">';
+		echo "<hr /><h2>Por favor seleccione el/los tipo(s) de reporte(s) a generar</h2>";
+		echo "<h3>Reporte de clientes</h3>";
+		echo '<td><input type="checkbox" name="reporte_clientes_0" value="1" checked="cheked">Listado breve de clientes</td><br />';
+		echo "<h3>Reporte de Eco Mupis</h3>";
+		echo '
+		<td><input type="checkbox" name="reporte_eco_0" value="1" checked="cheked">Listado de Eco Mupis</td><br />
+		<td><input type="checkbox" name="reporte_eco_0" value="1" checked="cheked">Listado de Eco Mupis Activos</td><br />
+		<td><input type="checkbox" name="reporte_eco_1" value="1" checked="cheked">Listado de Pedidos</td><br />
+		<td><input type="checkbox" name="reporte_eco_2" value="1" checked="cheked">Listado de Eventos</td><br />
+		<td><input type="checkbox" name="reporte_eco_2" value="1" checked="cheked">Listado de Calles</td><br />
+		<td><input type="checkbox" name="reporte_eco_2" value="1" checked="cheked">Listado de Referencias</td><br />
+		<td><input type="checkbox" name="reporte_eco_2" value="1" checked="cheked">Listado de Comentarios</td><br />
+		';
+		echo "<hr /><h3>Por favor seleccione el/los tipo(s) de formato de salida a generar</h3>";
+		echo '
+		<table>
+		<tr>
+		<td><input type="checkbox" name="tipo_reporte0" value="1" checked="cheked">PDF</td>
+		<td><input type="checkbox" name="tipo_reporte1" value="1" checked="cheked">HTML</td>
+		</tr>
+		</table>
+		<input type="hidden" name="generar" value="1">
+		<input type="submit" name="bgenerar" value="Generar" />
+		</form>
+		';
+		echo "<hr /><h2>Se han encontrado los siguientes reportes anteriormente generados</h2>";
+		echo Directorios("reportes/+HTML/", "HTML");
+		echo Directorios("reportes/+PDF/", "PDF");
+		return;
+	} else {
+		
+	}
 }
 ?>
