@@ -51,7 +51,7 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio, $calle) {
 	}
 
 	echo '<hr /><h2>Pantallas '._NOMBRE_." en la catorcena de ".date("d/m/Y",$Catorcena)."</h2>";
-	
+	if ( !isset($_GET['actualizar']) && !isset($_GET['crear']) )  {
 	echo "<b>Viendo pantallas "._NOMBRE_." de la catorcena</b> " . Combobox_catorcenas("miSelect", $Catorcena) ;
 	$BotonCambiar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena=\'+document.getElementsByName(\'miSelect\')[0].value" value="Cambiar">';
 	$BotonClonarCatorcenaAnterior = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=clonar\'" value="Clonar anterior" '.GenerarTooltip('Clona los datos de los mupis de la catorcena inmediata anterior').'>';
@@ -66,6 +66,7 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio, $calle) {
 	echo $BotonFiltraVistaPorCalles;
 	echo "<hr />";
 	verPantallas($usuario,$calle);
+	}
 	if ( $session->isAdmin() ) {
 	$paraUsuario = "";
 	if ($usuario) {
@@ -121,18 +122,7 @@ echo "<tr><th>Código "._NOMBRE_."</th><th>Cara</th><th>Código pedido</th><th>F
 }
 function verPantallasregistro($usuario="", $id="") {
 global $database, $Catorcena;
-$BotonCancelar = '';
-$CampoCodigoMUPI = '';
-$Pantalla = '';
-$codigo_mupi ='';
-$codigo_pedido = '';
-$foto_real = '';
-$CampoId = '';
-$CampoCatorcena = '';
-$foto_pantalla = '';
-$OnChangePantalla = '';
-$CampoConservarPantalla = '';
-$CampoConservarPantalla2 = '';
+$CampoActualizar = $CampoPantalla = $BotonCancelar = $CampoCodigoMUPI = $Pantalla = $codigo_mupi = $codigo_pedido = $foto_real = $CampoId = $CampoCatorcena = $foto_pantalla = $OnChangePantalla = $CampoConservarPantalla = $CampoConservarPantalla2 = '';
 
 if ($id) {
 	$q = "SELECT * FROM ".TBL_MUPI_FACES." WHERE id_pantalla='$id';";
@@ -158,14 +148,21 @@ if ($id) {
 }
 	$CampoCatorcena =  '<input type="hidden" name="catorcena" value="'.$Catorcena.'">';
 	$CampoId2 = '<tr><td width="25%">Identificador</td><td><b>'. $id. '</b></td></tr>';
-	$CampoPantalla = '<tr><td width="25%">Cara del '._NOMBRE_.'</td><td>'.Combobox__TipoPantalla ($Pantalla).'</td></tr>';
-	$CampoCodigoMUPI = '<tr><td>Enlazar al '._NOMBRE_.' código</td><td>'. $database->Combobox_mupi("codigo_mupi", $codigo_mupi) .'</td></tr>';
+	if ( !isset($_GET['crear']) 	 ) {
+		if (  isset($_GET['actualizar']) ) $CampoActualizar = 	'<input type="hidden" name="actualizar" value="1">';
+		if ( !isset($_GET['actualizar']) ) $CampoPantalla 	= 	'<tr><td width="25%">Cara del '._NOMBRE_.'</td><td>'.Combobox__TipoPantalla ($Pantalla).'</td></tr>';
+		if ( !isset($_GET['actualizar']) ) $CampoCodigoMUPI = 	'<tr><td>Enlazar al '._NOMBRE_.' código</td><td>'. $database->Combobox_mupi("codigo_mupi", $codigo_mupi) .'</td></tr>';
+	} else {
+		$CampoPantalla 		= '<input type="hidden" name="tipo_pantalla" value="'.$_GET['tipo'].'">';
+		$CampoCodigoMUPI 	= '<input type="hidden" name="codigo_mupi" value="'.$_GET['id_mupi'].'">';
+	}
 	$CampoCodigoPedido = '<tr><td>Enlazar al pedido</td><td>'. $database->Combobox_pedido("codigo_pedido", $codigo_pedido, $Catorcena, Fin_de_catorcena($Catorcena)) . '</td></tr>';
 	$CampoFotoReal = '<tr><td>Agregar Foto real </td><td><input type="file" name="foto_real" '.$OnChangePantalla.'></td></tr>';
 
 echo '
 <form action="./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'" enctype="multipart/form-data" method="POST">
 <table>
+'.$CampoActualizar.'
 '.$CampoCatorcena.'
 '.$CampoId.'
 '.$CampoCodigoMUPI.'
@@ -204,8 +201,12 @@ if ( isset($_POST['id_pantalla'] ) ) {
 	$extra1 = '';
 	$extra2 = '';
 }
-$q = "INSERT INTO ".TBL_MUPI_FACES." (".$extra1."tipo_pantalla, codigo_mupi, codigo_pedido, foto_real, catorcena) VALUES (".$extra2."'" . $_POST['tipo_pantalla'] . "', '" . $_POST['codigo_mupi']  . "', '" . $_POST['codigo_pedido']  . "', '" . $idImg .  "', '" . $_POST['catorcena']  .  "')  ON DUPLICATE KEY UPDATE tipo_pantalla=VALUES(tipo_pantalla), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido), foto_real=VALUES(foto_real);";
-DEPURAR ($q);
+if ( !isset($_POST['actualizar']) ) {
+	$q = "INSERT INTO ".TBL_MUPI_FACES." (".$extra1."tipo_pantalla, codigo_mupi, codigo_pedido, foto_real, catorcena) VALUES (".$extra2."'" . $_POST['tipo_pantalla'] . "', '" . $_POST['codigo_mupi']  . "', '" . $_POST['codigo_pedido']  . "', '" . $idImg .  "', '" . $_POST['catorcena']  .  "')  ON DUPLICATE KEY UPDATE tipo_pantalla=VALUES(tipo_pantalla), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido), foto_real=VALUES(foto_real);";
+} else {
+	$q = "UPDATE ".TBL_MUPI_FACES." SET codigo_pedido='". $_POST['codigo_pedido'] . "',foto_real='$idImg' WHERE id_pantalla='".$_POST['id_pantalla']."';";
+}
+DEPURAR ($q,0);
 if ( $database->query($q) == 1 ) {
 	echo Mensaje ("Exito al registrar la pantalla", _M_INFO);
 } else {
