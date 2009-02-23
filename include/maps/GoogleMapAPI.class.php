@@ -47,6 +47,7 @@ class GoogleMapAPI {
     var $type_controls = false;
     var $map_type = 'G_NORMAL_MAP';
     var $scale_control = false;
+	var $disable_map_drag = false;
 	var $disable_drag = false;
 	var $referencias = false;
     var $overview_control = false;    
@@ -661,7 +662,7 @@ class GoogleMapAPI {
         }
         
 		// HACK -> DRAG
-		if($this->disable_drag) {
+		if($this->disable_map_drag) {
 			$_output .= 'map.disableDragging();'."\n";
 		}
 
@@ -788,7 +789,8 @@ class GoogleMapAPI {
 		$_output .= 'function createMarker(point, title, html, n, tooltip, id, html_pedidos) {' . "\n";
         $_output .= 'if(n >= '. sizeof($this->_icons) .') { n = '. (sizeof($this->_icons) - 1) ."; }\n";
         if(!empty($this->_icons)) {
-            $_output .= 'var marker = new GMarker(point,{\'icon\': icon[n], \'title\': tooltip, \'draggable\': true, \'bouncy\': false});' . "\n";
+			$tmpBool = $this->disable_drag ? 'false' : 'true';
+            $_output .= 'var marker = new GMarker(point,{\'icon\': icon[n], \'title\': tooltip, \'draggable\': '.$tmpBool.', \'bouncy\': false});' . "\n";
         } else {
             $_output .= 'var marker = new GMarker(point,{\'title\': tooltip});' . "\n";
         }
@@ -797,9 +799,7 @@ class GoogleMapAPI {
 			$_output .= 'if (id.indexOf(\'REF\') == -1) {' . "\n";
 			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{\'maxTitle\': \'Edición de pedidos\', \'maxContent\': html_pedidos}) });' . "\n";
 			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#datos_mupis").html(""); });' . "\n";
-			$_output .= '}' . "\n";
-		} else {
-			$_output .= 'if (id.indexOf(\'REF\') == -1) {' . "\n";
+			$_output .= '} else {' . "\n";
 			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; });' . "\n";
 			$_output .= '}' . "\n";
 		}

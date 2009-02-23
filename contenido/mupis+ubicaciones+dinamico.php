@@ -36,6 +36,7 @@ if ( isset( $_GET['accion'] ) ) {
 		if ( isset( $_GET['MUPI'] ) ) {
 		
 			$parte = explode ('|',$_GET['MUPI'] ); 
+			if ( $parte[0] == "REF" ) { retornar("Se ha seleccionado la referencia " .CREAR_LINK_GET("gestionar+referencias&referencia=". $parte[2], $parte[2], "Abre el dialogo de gestión para la referencia seleccionada")); } 
 			if ( count($parte) == 3 ) {
 				//retornar ("Mupi: " . $parte[0]. ", Catorcena: ". $parte[1]. ", Usuario:".$parte[2]);
 				retornar ( Buscar ($parte[0], $parte[1], $parte[2] ) );
@@ -85,10 +86,11 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
    $datos ="";
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die('!->La base de datos seleccionada "'.$DB_base.'" no existe');
-   if ( $session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) {
+   if ( time() > $catorcena ) { $tCatorcena=$catorcena; } else { $tCatorcena=Obtener_catorcena_anterior($catorcena); }
+   if ( ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) && !$usuario) {
 	$q = "select tipo_pantalla, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
    } else {
-	$q = "select tipo_pantalla, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos where codigo='$usuario') AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
+	$q = "select tipo_pantalla, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$tCatorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos where codigo='$usuario') AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
    }
    //echo $q.'<br />';
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba la disponibilidad del MUPI.');
@@ -114,7 +116,7 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
       }else{
 		$tipoPantalla = 'peatonal';
       }
-	if ( time() > $catorcena ) {
+	if ( time() > $catorcena || ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) ) {
 	$datos .= "<tr><th><center>Imagen actual de su pantalla ".$tipoPantalla.":</center></th></tr>";
 	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($foto_real,"300px") . "</center></td>";
 	$datos .= "<tr><th><center>Arte digital de su pantalla:</center></th></tr>";
@@ -143,6 +145,7 @@ $map->referencias = false;
 // Desactivar controles de Zoom y movimiento para cliente.
 if ( !$session->isAdmin() && $session->userlevel != SALESMAN_LEVEL ) {
 	$map->map_controls = false;
+	$map->disable_map_drag = true;
 	$map->disable_drag = true;
 	$map->disableInfoWindow();
 }
@@ -151,6 +154,7 @@ $WHERE_USER = "";
 if ( strpos($calle, "G:") !== false ) {
 	$Explotado = @end(explode(":",$calle));
 	$grupo_calle = "codigo_calle IN (SELECT codigo_calle FROM ".TBL_STREETS." WHERE grupo_calle='".$Explotado."')";
+	$map->disable_map_drag = false;
 } else {
 	$grupo_calle = "codigo_calle='$calle'";
 }
@@ -164,7 +168,7 @@ if ( strpos($calle, "G:") !== false ) {
 		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT logotipo from emupi_usuarios where codigo='$usuario') as logotipo from emupi_mupis where $grupo_calle and id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario'));";
 	}
 	}
-   DEPURAR($q,1);
+   DEPURAR($q,0);
    $result = $database->query($q);
    $num_rows = mysql_numrows($result);
    if(!$result || ($num_rows < 0)){

@@ -15,6 +15,7 @@
           echo "\n".
 				'<script>
 				function funcion_combo_catorcenas(){
+				$("#datos_mupis").empty();
 				$("#grafico_mapa").html("<center><b>Por favor escoja Calle de la lista a su Izq. y presione Ver</b></center>");
 				$("#datos_calles").load("contenido/mupis+ubicaciones+dinamico.php?accion=calles&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val());
 				}
@@ -31,7 +32,7 @@
       
       echo '<table>';
       echo '<tr>';
-      echo '<td valign="top">';
+      echo '<td valign="top" width="15%">';
       
       if (!isset($_GET['verpormupis'])) {
           $Boton_combo_catorcenas = '<input type="button" OnClick="funcion_combo_catorcenas()" value="Ver">';
@@ -63,7 +64,7 @@
       echo "<br /><hr />" . $BotonVerPorMupis;
       echo '</td>';
       
-      echo '<td id="grafico_mapa" width="80%">';
+      echo '<td id="grafico_mapa">';
       echo '<center><b>Escoja Catorcena de la lista a su Izq. y presione Ver.</b></center>';
       echo '</td>';
       
