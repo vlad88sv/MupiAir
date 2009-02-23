@@ -40,33 +40,64 @@ function CONTENIDO_mostrar_principal() {
 	} else {
 		$accion = "ingresar";
 	}
-	/* Verificamos si es permitido  ver el sitio sin estar registrado, si no forzamor a ir al registro*/
-	if ( !$session->logged_in ) {
-		switch ( $accion ) {
-		case "ayuda contacto": break;
-		case "rpr clave": break;
-		case "info que": break;
-		case "info precios": break;
-		case "info servicios": break;
-		case "info creativo": break;
-		case "info detalles": break;
-		case "info contacto": break;
-		default: 
-		$accion= "ingresar";
+	/* Verificamos si es permitido navegar al recurso pedido sin ser admin*/
+	// Admin salta esta prueba claro :D
+	if ( !$session->isAdmin() ) {
+		//Restricciones para usuarios que no se han loggeado
+		if ( !$session->logged_in ) {
+			switch ( $accion ) {
+				case "ayuda contacto": break;
+				case "rpr clave": break;
+				default: 
+				$accion= "ingresar";
+			}
 		}
 	}
 	$usuario = isset( $ACC[1] ) ? $ACC[1] : "";
 	switch ( $accion ) {
-	case "ver cliente":
-		CONTENIDO_usuario_info( $usuario );
+	case "ingresar":
+		CONTENIDO_usuario_ingresar();
 		break;
 	
-	case "editar usuario":
-		CONTENIDO_usuario_editar( $usuario );
+	case "ayuda contacto":
+		CONTENIDO_ayuda_contacto() ;
 		break;
+	
 	case "rpr clave":
 		CONTENIDO_recuperar_clave();
 		break;
+
+	case "ver reportes":
+		ADMIN_reportes();
+		break;
+		
+	case "ver ubicaciones":
+		CONTENIDO_mupis_ubicaciones($usuario);
+		break;
+
+	case "ver estadisticas":
+		CONTENIDO_global_estadisticas();
+		break;
+	
+	case "salir":
+		$session->logout();
+		header("Location: ./");
+		break;
+
+
+/******************** Hasta aqui puede llegar un NO administrador ***************************/
+
+	case "ver cliente":
+		if($session->isAdmin()){
+			CONTENIDO_usuario_info( $usuario );
+			break;
+		}
+	
+	case "editar usuario":
+		if($session->isAdmin()){
+			CONTENIDO_usuario_editar( $usuario );
+			break;
+		}
 		
 	case "gestionar clientes":
 		if($session->isAdmin()){
@@ -85,23 +116,17 @@ function CONTENIDO_mostrar_principal() {
 
 	case "ver pedidos":
 	case "gestionar pedidos":
+		if($session->isAdmin()){
 			$pedido = isset( $_GET['pedido'] ) ? $_GET['pedido'] : "";
 			CONTENIDO_pedidos($usuario,$pedido);
 			break;
+		}
 
 	case "registro":
 		if($session->isAdmin()){
 			CONTENIDO_usuario_registrar();
 			break;
 		}
-
-	case "ingresar":
-		CONTENIDO_usuario_ingresar();
-		break;
-
-	case "ayuda contacto":
-		CONTENIDO_ayuda_contacto() ;
-		break;
 		
 	case "gestionar mupis":
 		if($session->isAdmin()){
@@ -117,77 +142,36 @@ function CONTENIDO_mostrar_principal() {
 			CONTENIDO_calles($usuario,$calle);
 			break;
 		}
-
-	case "ver reportes":
-		ADMIN_reportes();
-		break;
-		
-	case "ver ubicaciones":
-		CONTENIDO_mupis_ubicaciones($usuario);
-		break;
 	
 	case "gestionar eventos":	
 	case "ver eventos":
-		$evento = isset( $_GET['evento'] ) ? $_GET['evento'] : "";
-		CONTENIDO_mupis_eventos($usuario, $evento);
-		break;
-		
-	case "ver estadisticas":
-		CONTENIDO_global_estadisticas();
-		break;
-		
-	case "info contacto":
-		CONTENIDO_mupis_contacto();
-		break;
-		
-	case "info creativo":
-		CONTENIDO_mupis_creativo();
-		break;
-
-	case "info que":
-		CONTENIDO_mupis_info();
-		break;
-
-	case "info precios":
-		CONTENIDO_mupis_precios();
-		break;
-		
-	case "info servicios":
-		CONTENIDO_mupis_servicios();
-		break;
-		
-	case "info creativo":
-		CONTENIDO_mupis_creativo();
-		break;
-		
-	case "info detalles":
-		CONTENIDO_mupis_detalle();
-		break;
-		
-	case "info nosotros":
-		CONTENIDO_global_info();
-		break;
-		
+		if($session->isAdmin()){
+			$evento = isset( $_GET['evento'] ) ? $_GET['evento'] : "";
+			CONTENIDO_mupis_eventos($usuario, $evento);
+			break;
+		}
+				
 	case "gestionar comentarios":
-		$id_comentario = isset( $_GET['comentario'] ) ? $_GET['comentario'] : "";
-		CONTENIDO_comentarios($usuario, $id_comentario);
-		break;
+		if($session->isAdmin()){
+			$id_comentario = isset( $_GET['comentario'] ) ? $_GET['comentario'] : "";
+			CONTENIDO_comentarios($usuario, $id_comentario);
+			break;
+		}
 	
 	case "gestionar referencias":
-		$id_referencia = isset( $_GET['referencia'] ) ? $_GET['referencia'] : "";
-		CONTENIDO_referencias($usuario, $id_referencia);
-		break;
-		
-	case "salir":
-		$session->logout();
-		header("Location: ./");
-		break;
-	
+		if($session->isAdmin()){
+			$id_referencia = isset( $_GET['referencia'] ) ? $_GET['referencia'] : "";
+			CONTENIDO_referencias($usuario, $id_referencia);
+			break;
+		}
+			
 	case "ver":
-		$id = isset( $ACC[1] ) ? $ACC[1] : "";
-		echo '<h1>Mostrando imagen con Id. '.$id.'</h1>';
-		echo '<center>'.CargarImagenDesdeBD($id).'</center>';
-		break;
+		if($session->isAdmin()){
+			$id = isset( $ACC[1] ) ? $ACC[1] : "";
+			echo '<h1>Mostrando imagen con Id. '.$id.'</h1>';
+			echo '<center>'.CargarImagenDesdeBD($id).'</center>';
+			break;
+		}
 		
 	default:
 		CONTENIDO_global_404();
