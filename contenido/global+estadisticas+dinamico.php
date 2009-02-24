@@ -20,9 +20,9 @@ function Buscar ($catorcena) {
    global $session;
    $datos ="";
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
-   mysql_select_db(DB_NAME, $link) or die('!->La base de datos seleccionada "'.$DB_base.'" no existe');
+   mysql_select_db(DB_NAME, $link) or die(Mensaje('!->La base de datos seleccionada "'.$DB_base.'" no existe',_M_ERROR));
    $q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.id_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$session->codigo."')".";";
-   $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba las estadísticas.');
+   $result = @mysql_query($q, $link) or retornar (Mensaje('Ocurrió un error mientras se obtenian las estadísticas.',_M_ERROR));
    $num_rows = mysql_numrows($result);
    
    if(!$result || ($num_rows < 0)){
@@ -45,7 +45,7 @@ function Buscar ($catorcena) {
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba las estadísticas.');
    
    if(!$result || ($num_rows < 0)){
-      retornar("Error mostrando la información");
+      retornar("Error mostrando la información",_M_ERROR));
    }
  
    if($num_rows == 0){

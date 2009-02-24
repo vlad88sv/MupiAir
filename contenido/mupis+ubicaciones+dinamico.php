@@ -142,13 +142,17 @@ $map->setAPIKey(GOOGLE_MAP_KEY);
 // proporción de la ventana que tomará el mapa.
 $map->setWidth('100%');
 $map->referencias = false;
-// Desactivar controles de Zoom y movimiento para cliente.
-if ( !$session->isAdmin() && $session->userlevel != SALESMAN_LEVEL ) {
+// Desactivar los controles que solo Admin puede tener.
+if ( !$session->isAdmin() ) {
 	$map->map_controls = false;
 	$map->disable_map_drag = true;
 	$map->disable_drag = true;
+}
+// Desactivar los controles que solo Admin y Vendedor pueden tener.
+if ( !$session->isAdmin() && !$session->userlevel == SALESMAN_LEVEL ) {
 	$map->disableInfoWindow();
 }
+
 // Cargar puntos mupis.
 $WHERE_USER = "";
 if ( strpos($calle, "G:") !== false ) {
@@ -208,7 +212,7 @@ if ( strpos($calle, "G:") !== false ) {
       $logotipo = '<div style="width:400px; height:150px">'.$logotipo.'</div>';
       $html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
 	  
-      if (in_array($session->userlevel, $NivelesPermitidos)) {
+      if ($session->userlevel == ADMIN_LEVEL) {
 
 			$q = "SELECT id_pantalla, tipo_pantalla, codigo_pedido, (SELECT descripcion FROM ".TBL_MUPI_ORDERS." AS b WHERE b.codigo_pedido=a.codigo_pedido) AS descripcion FROM emupi_mupis_caras AS a WHERE codigo_mupi='$id_mupi' and catorcena='$catorcena'".";";
 			//echo $q."<br>";
@@ -262,6 +266,7 @@ if ( strpos($calle, "G:") !== false ) {
 		
       } else {
 		  $Contenido_maximizado = "";
+		  $map->Mostrar_Contenido_Maximizado = false;
 	  }
       $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $id_mupi . "|" . $catorcena . "|" . $usuario, $Contenido_maximizado);
 	  $map->addMarkerIcon(public_base_directory().'/punto.gif','',12,12,0,0);

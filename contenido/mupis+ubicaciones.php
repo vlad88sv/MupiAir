@@ -17,7 +17,7 @@
 				function funcion_combo_catorcenas(){
 				$("#datos_mupis").empty();
 				$("#indicaciones").empty();
-				$("#Mensajes").html("<center><b>Por favor escoja Calle de la lista a su Izq. y presione Ver</b></center>");
+				$("#Mensajes").html("Por favor escoja Calle de la lista a su Izq. y presione Ver");
 				$("#datos_calles").load("contenido/mupis+ubicaciones+dinamico.php?accion=calles&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val());
 				}
 				function funcion_combo_calles() {
@@ -53,7 +53,7 @@
 		  echo '<b>Trabajar Catorcena:</b><br />' . Combobox_catorcenas("combo_catorcenas", Obtener_catorcena_cercana()) . '<br />';
           echo '<b>Ver Calle:</b><br />' . $database->Combobox_calle("combo_calles") . $Boton_combo_calles . '<br /><br />';
           
-          if (in_array($session->userlevel, $NivelesPermitidos)) {
+          if ($session->userlevel == ADMIN_LEVEL) {
               $BotonVerPorMupis = '<input type="button" OnClick="window.location=\'./?' . _ACC_ . '=ver+ubicaciones\'" value="Ver por Pantallas">';
           }
 		  echo "\n".
@@ -64,12 +64,13 @@
 		  </script>
 		  ';
       }
+	  echo '<span id="indicaciones"></span>';
       echo "<br /><hr />" . $BotonVerPorMupis;
       echo '</td>';
       
       echo '<td>';
 	  
-      echo '<div id="Mensajes"><center><b>Escoja Catorcena de la lista a su Izq. y presione Ver.</b></center></div>';
+      echo '<div id="Mensajes" style="text-align:center;font-weight:bold">Escoja Catorcena de la lista a su Izq. y presione Ver.</div>';
 	  echo '<div id="map" style="width: 100%; height: 500px"></div>';
 	  echo '<div id="sidebar_map"></div>';
 	  echo '<div id="grafico_mapa"></div>';
@@ -80,8 +81,11 @@
       echo '</tr>';
       echo '</table>';
 	  echo '<hr />';
-	  echo '<a href="#ubicaciones" id="imagenes">Clic aquí para centrar el mapa</a> <span id="indicaciones"></span>';
+	  echo '<a href="#ubicaciones" id="imagenes">Clic aquí para centrar el mapa</a>';
 	  echo '<hr />';
-      echo '<span id="datos_mupis"><center><b>Seleccione un ' . _NOMBRE_ . '</b></center></span>';
+      echo '<span id="datos_mupis">Seleccione un ' . _NOMBRE_ . '</span>';
+	  echo '<hr />';
+	  echo '<a href="#ubicaciones" id="imagenes">Clic aquí para centrar el mapa</a>';
+	  echo '<hr />';
   }
 ?>

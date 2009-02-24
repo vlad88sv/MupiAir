@@ -49,6 +49,7 @@ class GoogleMapAPI {
     var $scale_control = false;
 	var $disable_map_drag = false;
 	var $disable_drag = false;
+	var $Mostrar_Contenido_Maximizado = true;
 	var $referencias = false;
     var $overview_control = false;    
     var $zoom = 17;
@@ -784,7 +785,7 @@ class GoogleMapAPI {
      */
      // IMPORTANTE!, acá tiene que ir el hack mayor!.
     function getCreateMarkerJS() {
-        $_SCRIPT_ = '$("#Mensajes").html("Cargando Fotofrafías del Eco Mupi seleccionado...");$("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI=\'+id,{},function(){$("#Mensajes").empty();});$("#indicaciones").html("<a href=\'#imagenes\'> | Clic aquí para ver las imagenes del Mupi Seleccionado</a>")';
+        $_SCRIPT_ = '$("#Mensajes").html("Cargando Fotofrafías del Eco Mupi seleccionado...");$("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI=\'+id,{},function(){$("#Mensajes").empty();});$("#indicaciones").html("<a href=\'#imagenes\'><hr />Clic aquí para ver las imagenes del Mupi Seleccionado</a>")';
         $_output = '';
 		$_output .= 'function createMarker(point, title, html, n, tooltip, id, html_pedidos) {' . "\n";
         $_output .= 'if(n >= '. sizeof($this->_icons) .') { n = '. (sizeof($this->_icons) - 1) ."; }\n";
@@ -799,7 +800,12 @@ class GoogleMapAPI {
 		// Usuario -> Click
         if($this->info_window) {
 			$_output .= 'if (id.indexOf(\'REF\') == -1) {' . "\n";
-			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{\'maxTitle\': \'Edición de pedidos\', \'maxContent\': html_pedidos}) });' . "\n";
+			if ($this->Mostrar_Contenido_Maximizado) {
+				$Contenido_maximizado = "'maxTitle': 'Edición de pedidos', 'maxContent': html_pedidos";
+			} else {
+				$Contenido_maximizado = "";
+			}
+			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{'.$Contenido_maximizado.'}) });' . "\n";
 			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#datos_mupis").html(""); });' . "\n";
 			$_output .= '} else {' . "\n";
 			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; });' . "\n";
