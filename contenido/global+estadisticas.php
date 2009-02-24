@@ -78,10 +78,11 @@ return;
 function MOSTRAR_comentarios() {
 	global $session,$database,$inicioCatorcena;
   echo "<hr /><h2>Comentarios publicados esta catorcena</h2>";
-  $finCatorcena = Fin_de_catorcena($inicioCatorcena);
+  $finCatorcena = Obtener_Fecha_Tope(Fin_de_catorcena($inicioCatorcena));
   $usuario = $tipo = null;
   if ( !$session->isAdmin() ) { $tipo = 'AND tipo=1'; $usuario=$session->codigo; }
   $q = "SELECT (SELECT nombre FROM emupi_usuarios AS b WHERE b.codigo=a.codigo) AS codigo, comentario, timestamp, tipo FROM emupi_comentarios AS a WHERE timestamp>=$inicioCatorcena AND timestamp<=$finCatorcena $tipo ORDER BY tipo;";
+  DEPURAR ($q,0);
   $result = $database->query($q);
   $num_rows = mysql_numrows($result);
   if ( $num_rows == 0 ) {
@@ -110,7 +111,7 @@ function MOSTRAR_comentarios() {
 
 function MOSTRAR_eventos() {
 	global $session,$database,$inicioCatorcena;
-	$finCatorcena = Fin_de_catorcena($inicioCatorcena);
+	$finCatorcena = Obtener_Fecha_Tope(Fin_de_catorcena($inicioCatorcena));
 	echo "<hr /><h2>Eventos en esta catorcena</h2>";
 	$usuario = $tipo = null;
 	if ( !$session->isAdmin() ) {  $usuario=$session->codigo; $tipo = "AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario')"; }
