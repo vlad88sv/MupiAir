@@ -23,6 +23,7 @@
 				function funcion_combo_calles() {
 				$("#datos_mupis").empty();
 				$("#indicaciones").empty();
+				window.location="#ubicaciones";
 				$("#Mensajes").html("<center><b>Generando mapa, por favor espere...</b></center>");
 				$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val()+"&calle="+$(\'#combo_calles\').val(),{},function(){$("#Mensajes").empty();});
 				}
