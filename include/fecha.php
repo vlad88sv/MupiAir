@@ -76,4 +76,14 @@ function Fin_de_catorcena ($referencia = NULL) {
 if (!$referencia) {return NULL;}
 return strtotime("+13 day",$referencia);
 }
+
+function Obtener_Fecha_Base ( $referencia = NULL) {
+	if (!$referencia) {return NULL;}
+	$return = mktime(0,0,0,date('m',$referencia), date('d',$referencia), date('Y',$referencia));
+}
+
+function Obtener_Fecha_Tope ( $referencia = NULL) {
+	if (!$referencia) {return NULL;}
+	return mktime(23,59,59,date('m',$referencia), date('d',$referencia), date('Y',$referencia));
+}
 ?>
