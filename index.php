@@ -77,8 +77,8 @@ require_once("contenido/mapa+referencias.php");
   // Because options is JSON opacity/zindex/bgcolor are all optional and can appear
   // in any order.  Pass only the properties you need to set.
   var options = options || {}; 
-  var zindex = options.zindex || 50;
-  var opacity = options.opacity || 70;
+  var zindex = options.zindex || 10;
+  var opacity = options.opacity || 50;
   var opaque = (opacity / 100);
   var bgcolor = options.bgcolor || '#000000';
   var dark=document.getElementById('darkenScreenObject');
@@ -136,8 +136,6 @@ require_once("contenido/mapa+referencias.php");
 <body>
 <div id="cargando"><img src="loader.gif"> Por favor espere...<hr /></div>
 <script>grayOut(true)</script>
-<?php flush(); ?>
-<?php ob_start(); ?>
 <div id="container">
 	<table style="border:0">
 		 <tr>

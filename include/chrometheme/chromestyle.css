@@ -1,7 +1,7 @@
 .chromestyle{
 width: 100%;
 font-weight: bold;
-font-size: 18px;
+font-size: 16px;
 }
 
 .chromestyle:after{ /*Add margin between menu and rest of content in Firefox*/
@@ -21,22 +21,24 @@ text-align: center; /*set value to "left", "center", or "right"*/
 
 .chromestyle ul li{
 display: inline;
-margin: 0px;
+padding: 40px 0px;
+line-height: 40px;
+text-align: center;
 }
 
 .chromestyle ul li a{
 color: #FFFFFF;
 padding: 20px 0px;
-height: 50px;
+height: 40px;
 text-decoration: none;
 border-right: 10px solid #FFFFFF;
 }
 .chromestyle ul li a:hover{
-color: #F0F0F0;
+color: #FFCCCC;
 }
-.chromestyle ul li:hover, .chromestyle ul li a.selected{ /*script dynamically adds a class of "selected" to the current active menu item*/
+.chromestyle ul li:hover{
 margin: 0;
-height: 30px;
+height: 40px;
 background: url(chromebg-over.gif) center center repeat-x; /*THEME CHANGE HERE*/
 }
 
@@ -53,7 +55,9 @@ z-index:100;
 background-color: white;
 width: 200px;
 visibility: hidden;
-filter: progid:DXImageTransform.Microsoft.Shadow(color=#CACACA,direction=135,strength=4); /*Add Shadow in IE. Remove if desired*/
+/*
+filter: progid:DXImageTransform.Microsoft.Shadow(color=#CACACA,direction=135,strength=4);
+*/
 }
 
 .dropmenudiv a{
