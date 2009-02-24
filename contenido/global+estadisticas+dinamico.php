@@ -13,9 +13,6 @@ if ( isset( $_GET['catorcena'] ) ) {
 }
 
 function retornar($texto) {
-/*
-	exit ('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' . $texto . '<br />');
-*/
 	exit ('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' . $texto . '<br />');
 }
 
