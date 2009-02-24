@@ -207,7 +207,7 @@ function INICIAR_MENUES () {
 	<li><a href="./">Inicio</a></li>
 	<li><a href="#" rel="menu_herramientas">Editar</a></li>'
 	.'<li>'.  CREAR_LINK_GET("registro","Registrar cliente", "Agregar un nuevo cliente al sistema") .'</li>'
-	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
+	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones#ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("gestionar+pantallas","Gestionar pantallas", "Eliminar o modificar pantallas") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("gestionar+pedidos","Gestionar pedidos", "Eliminar o modificar pedidos") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("ver+reportes", "Reportes", "Generar reportes") .'</li>'
@@ -233,7 +233,7 @@ function INICIAR_MENUES () {
 	<div class="chromestyle" id="chromemenu">
 	<ul>
 	<li><a href="./">Inicio</a></li>'
-	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
+	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones#ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
 	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>	
 	</ul>
 	</div>
@@ -246,7 +246,7 @@ function INICIAR_MENUES () {
 	<div class="chromestyle" id="chromemenu">
 	<ul>
 	<li><a href="./">Estadísticas</a></li>
-	<li><a href="./?accion=ver+ubicaciones">Mis Ubicaciones</a></li>
+	<li><a href="./?accion=ver+ubicaciones#ubicaciones">Mis Ubicaciones</a></li>
 	<li><a href="./?accion=ver+eventos" >Eventos</a></li>	
 	<li><a href="./?accion=ayuda+contacto">Comenta</a></li>	
 	<li><a href="./?accion=ver+reportes">Reportes</a></li>	
@@ -262,7 +262,7 @@ function INICIAR_MENUES () {
 	<div class="chromestyle" id="chromemenu">
 	<ul>
 	<li><a href="./" onclick="return false">Estadísticas</a></li>
-	<li><a href="./?accion=ver+ubicaciones">Mis Ubicaciones</a></li>
+	<li><a href="./?accion=ver+ubicaciones#ubicaciones">Mis Ubicaciones</a></li>
 	<li><a href="./" onclick="return false">Eventos</a></li>	
 	<li><a href="./?accion=ayuda+contacto">Comenta</a></li>	
 	<li><a href="./" onclick="return false"">Reportes</a></li>	

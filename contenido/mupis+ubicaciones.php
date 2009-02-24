@@ -16,19 +16,21 @@
 				'<script>
 				function funcion_combo_catorcenas(){
 				$("#datos_mupis").empty();
-				$("#grafico_mapa").html("<center><b>Por favor escoja Calle de la lista a su Izq. y presione Ver</b></center>");
+				$("#indicaciones").empty();
+				$("#Mensajes").html("<center><b>Por favor escoja Calle de la lista a su Izq. y presione Ver</b></center>");
 				$("#datos_calles").load("contenido/mupis+ubicaciones+dinamico.php?accion=calles&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val());
 				}
 				function funcion_combo_calles() {
 				$("#datos_mupis").empty();
-				$("#grafico_mapa").html("<center><b>Generando mapa, por favor espere...</b></center>");
-				$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val()+"&calle="+$(\'#combo_calles\').val());
+				$("#indicaciones").empty();
+				$("#Mensajes").html("<center><b>Generando mapa, por favor espere...</b></center>");
+				$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val()+"&calle="+$(\'#combo_calles\').val(),{},function(){$("#Mensajes").empty();});
 				}
 				</script>
 			    ';
 	  }
       $BotonVerPorMupis = NULL;
-      echo "<h1>Ubicaciones de MUPIS contratados</h1><hr />";
+      echo '<h1 id="ubicaciones">Ubicaciones de MUPIS contratados</h1><hr />';
       
       echo '<table>';
       echo '<tr>';
@@ -64,12 +66,21 @@
       echo "<br /><hr />" . $BotonVerPorMupis;
       echo '</td>';
       
-      echo '<td id="grafico_mapa">';
-      echo '<center><b>Escoja Catorcena de la lista a su Izq. y presione Ver.</b></center>';
+      echo '<td>';
+	  
+      echo '<div id="Mensajes"><center><b>Escoja Catorcena de la lista a su Izq. y presione Ver.</b></center></div>';
+	  echo '<div id="map" style="width: 100%; height: 500px"></div>';
+	  echo '<div id="sidebar_map"></div>';
+	  echo '<div id="grafico_mapa"></div>';
+	  
       echo '</td>';
+
       
       echo '</tr>';
       echo '</table>';
+	  echo '<hr />';
+	  echo '<a href="#ubicaciones" id="imagenes">Clic aquí para centrar el mapa</a> <span id="indicaciones"></span>';
+	  echo '<hr />';
       echo '<span id="datos_mupis"><center><b>Seleccione un ' . _NOMBRE_ . '</b></center></span>';
   }
 ?>
