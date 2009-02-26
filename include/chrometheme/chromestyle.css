@@ -1,39 +1,31 @@
 .chromestyle{
 width: 100%;
+line-height: 40px;
 font-weight: bold;
-font-size: 16px;
-margin-left:auto;
-margin-right:auto;
-}
-
-.chromestyle:after{ /*Add margin between menu and rest of content in Firefox*/
-content: "."; 
-display: block; 
-height: 0; 
-clear: both; 
-visibility: hidden;
+font-size: 20px;
+margin-left:0;
+background: url(chromebg.gif) center center repeat-x;
+opacity:.8;
 }
 
 .chromestyle ul{
-width: 100%;
 height: 40px;
-background: url(chromebg.gif) center center repeat-x; /*THEME CHANGE HERE*/
-text-align: center; /*set value to "left", "center", or "right"*/
+width: 97%;
+text-align: right;
 }
 
 .chromestyle ul li{
-display: inline;
-padding: 40px 0px;
+height: 40px;
 line-height: 40px;
+padding: 10px 0px;
+display: inline;
 text-align: center;
+vertical-align:center;
+border-right: 10px solid #FFFFFF;
 }
 
 .chromestyle ul li a{
 color: #FFFFFF;
-padding: 20px 0px;
-height: 40px;
-text-decoration: none;
-border-right: 10px solid #FFFFFF;
 padding-right: 5px;
 padding-left: 5px;
 }
@@ -41,8 +33,6 @@ padding-left: 5px;
 color: #FFCCCC;
 }
 .chromestyle ul li:hover{
-margin: 0;
-height: 40px;
 background: url(chromebg-over.gif) center center repeat-x; /*THEME CHANGE HERE*/
 }
 
@@ -59,9 +49,6 @@ z-index:100;
 background-color: white;
 width: 200px;
 visibility: hidden;
-/*
-filter: progid:DXImageTransform.Microsoft.Shadow(color=#CACACA,direction=135,strength=4);
-*/
 }
 
 .dropmenudiv a{
@@ -79,6 +66,6 @@ color: black;
 width: 100%;
 }
 
-.dropmenudiv a:hover{ /*THEME CHANGE HERE*/
+.dropmenudiv a:hover{
 background-color: #F0F0F0;
 }

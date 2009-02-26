@@ -181,11 +181,6 @@ function IMAGEN ( $ruta, $alt="", $width="", $height="" ) {
 return '<img src="'. $ruta . '" style="max-width:'.$width.'; max-height:'.$height.'" alt="'. $alt .'" />';
 }
 
-function CONTENIDO_mostrar_logo() {
-	//echo '<center>' . IMAGEN("./logo.gif") . '</center>';
-	echo IMAGEN("./logo.gif", "Logotipo Eco Mupis", "450px", "100px");
-}
-
 function CONTENIDO_mostrar_logo_cliente() {
 	global $session, $database;
 	if ( !$session->isAdmin() && $session->logged_in ) {
@@ -212,6 +207,10 @@ function INICIAR_MENUES () {
 	.'<li>'.  CREAR_LINK_GET("gestionar+pedidos","Gestionar pedidos", "Eliminar o modificar pedidos") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("ver+reportes", "Reportes", "Generar reportes") .'</li>'
 	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+	<li>&nbsp;&nbsp;&nbsp;</li>
+	<li>&nbsp;&nbsp;</li>
+	<li>&nbsp;</li>
 	</ul>
 	</div>
 	';
@@ -235,6 +234,10 @@ function INICIAR_MENUES () {
 	<li><a href="./">Inicio</a></li>'
 	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
 	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+	<li>&nbsp;&nbsp;&nbsp;</li>
+	<li>&nbsp;&nbsp;</li>
+	<li>&nbsp;</li>
 	</ul>
 	</div>
 	';
@@ -251,6 +254,10 @@ function INICIAR_MENUES () {
 	<li><a href="./?accion=ayuda+contacto">Comenta</a></li>	
 	<li><a href="./?accion=ver+reportes">Reportes</a></li>	
 	<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+	<li>&nbsp;&nbsp;&nbsp;</li>
+	<li>&nbsp;&nbsp;</li>
+	<li>&nbsp;</li>
 	</ul>
 	</div>
 	';
@@ -267,6 +274,10 @@ function INICIAR_MENUES () {
 	<li><a href="./?accion=ayuda+contacto">Comenta</a></li>	
 	<li><a href="./" onclick="return false"">Reportes</a></li>	
 	<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+	<li>&nbsp;&nbsp;&nbsp;</li>
+	<li>&nbsp;&nbsp;</li>
+	<li>&nbsp;</li>
 	</ul>
 	</div>
 	';
