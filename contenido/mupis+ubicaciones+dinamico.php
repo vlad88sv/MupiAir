@@ -155,6 +155,10 @@ if ( !$session->isAdmin() && !$session->userlevel == SALESMAN_LEVEL ) {
 
 // Cargar puntos mupis.
 $WHERE_USER = "";
+if ( $calle == "::T::") {
+	$grupo_calle = "";
+	$map->disable_map_drag = false;
+} else {
 if ( strpos($calle, "G:") !== false ) {
 	$Explotado = @end(explode(":",$calle));
 	$grupo_calle = "codigo_calle IN (SELECT codigo_calle FROM ".TBL_STREETS." WHERE grupo_calle='".$Explotado."')";
@@ -162,14 +166,22 @@ if ( strpos($calle, "G:") !== false ) {
 } else {
 	$grupo_calle = "codigo_calle='$calle'";
 }
+}
+
 	if ( isset($_GET['sin_presencia']) ) {
-		
-		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle from emupi_mupis AS a where $grupo_calle;";
+		// Ver por Mupis
+		if ($grupo_calle) $t_grupo_calle = " where $grupo_calle";
+		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle FROM emupi_mupis AS a$t_grupo_calle;";
 	} else {
+		// Por Presencia 
 	if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL ) {
-		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle from emupi_mupis AS a where $grupo_calle and id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena);";
+		// Siendo Admin o Vendedor
+		if ($grupo_calle) $t_grupo_calle = " and $grupo_calle";
+		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle FROM emupi_mupis AS a WHERE id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena)$t_grupo_calle;";
 	} else {
-		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT logotipo from emupi_usuarios where codigo='$usuario') as logotipo from emupi_mupis where $grupo_calle and id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario'));";
+		// Siendo cualquier otro nivel
+		if ($grupo_calle) $t_grupo_calle = "$grupo_calle and ";
+		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT logotipo from emupi_usuarios where codigo='$usuario') as logotipo from emupi_mupis where $t_grupo_calle id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario'));";
 	}
 	}
    DEPURAR($q,0);
@@ -273,7 +285,9 @@ if ( strpos($calle, "G:") !== false ) {
    }
    
    // Mostrar referencias. 10/02/09
-   $q = "SELECT * FROM emupi_referencias WHERE $grupo_calle".";";
+   if ($grupo_calle) $t_grupo_calle = " where $grupo_calle";
+   $q = "SELECT * FROM emupi_referencias".$t_grupo_calle.";";
+   DEPURAR($q,0);
    $result = $database->query($q);
    $num_rows = mysql_numrows($result);
    $map->referencias = true;

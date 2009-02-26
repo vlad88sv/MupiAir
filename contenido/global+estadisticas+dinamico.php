@@ -45,7 +45,7 @@ function Buscar ($catorcena) {
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba las estadísticas.');
    
    if(!$result || ($num_rows < 0)){
-      retornar("Error mostrando la información",_M_ERROR));
+      retornar("Error mostrando la información",_M_ERROR);
    }
  
    if($num_rows == 0){

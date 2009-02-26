@@ -510,8 +510,12 @@
               return $s;
           }
           $s = '<select id="' . $nombre . '" name="' . $nombre . '">';
+
 		  //Agregamos los grupos
 		  $s .= '<optgroup label="Grupos">';
+              
+		  //Agregamos el grupo "Todas" -- todas las calles.
+		  $s .= '<option value="::T::">Todas</option>';
 		  for ($i = 0; $i < $num_rows2; $i++) {
               $s .= '<option value="G:' . urlencode(mysql_result($result2, $i, "grupo_calle")) . '">' . mysql_result($result2, $i, "grupo_calle") . '</option>';
           }
