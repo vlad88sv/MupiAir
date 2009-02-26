@@ -149,10 +149,9 @@ if ( !$session->isAdmin() ) {
 	$map->disable_drag = true;
 }
 // Desactivar los controles que solo Admin y Vendedor pueden tener.
-if ( !$session->isAdmin() && !$session->userlevel == SALESMAN_LEVEL ) {
+if ( !in_array($session->userlevel,array(ADMIN_LEVEL, SALESMAN_LEVEL)) ) {
 	$map->disableInfoWindow();
 }
-
 // Cargar puntos mupis.
 $WHERE_USER = "";
 if ( $calle == "::T::") {
