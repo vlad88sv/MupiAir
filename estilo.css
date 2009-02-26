@@ -8,6 +8,10 @@ p
 	{background-color:#F0F0F0;color:#000000;margin:0;width:80%;padding:5px;margin:10px;margin-left:auto;margin-right:auto}
 textarea,input[type=text],input[type=password]
 	{background-color:#EEEEEE;color:#AAAAFF;font-weight:bold; width: 100%;}
+textarea.hasFocus,input[type=text].hasFocus,input[type=password].hasFocus 
+	{ color: #000; font-weight: bold; }
+textarea.hasFocus,input[type=text].isChanged,input[type=password].isChanged
+	{ color: #00c; font-weight: bold; }
 select
 	{width:300px}
 pre
@@ -25,11 +29,13 @@ h4
 hr
 	{display:block}
 table
-	{margin-bottom:4px;margin-top:4px;width:100%}
+	{margin-bottom:4px;margin-top:4px;width:95%;border-collapse:collapse;margin-left: auto;margin-right: auto;}
 table th
 	{font-weight:bold;color:#000000; text-align:left;border-bottom:2px solid #000000; border-collapse:collapse;border-spacing:0}
 table td
-	{text-align:left;border-top:1px dotted #000000; border-right:1px dotted #000000}
+	{text-align:left;border-top:1px dotted #000000; border-bottom:1px dotted #000000; border-right:1px dotted #000000;border-left:1px dotted #000000}
+table td.limpio
+	{text-align:left;border:0}
 a
 	{color:#0F00CC;font-weight:700;text-decoration:none}
 a:hover
@@ -40,14 +46,14 @@ a img
 #main {
 	height: auto;
 }
-#cargando
-	{z-index:20;color:#FF0000;text-align: center;font-size:20pt;line-height:60px}
 #container
-	{margin:0;position:relative; padding-left:2px;padding-right:2px;padding-top:0;left:0;right:0;top:0;z-index:1}
+	{position:relative; padding-left:2px;padding-right:2px;padding-top:0;left:0;right:0;top:0;z-index:0;margin-left: auto;margin-right: auto;}
 #content
 	{background:none;color:#000000;font-weight:normal;border-top:2px solid #000000;border-bottom:2px solid #000000;margin-bottom:4px;min-height:300px; height:auto !important; height:300px;padding:5px;}
 #abajo
 	{background:none; color:#000000;font-weight:bold;margin-bottom:4px;padding:5px;}
+#clear
+	{ clear: both; content: "."; display: block; height: 0; visibility: hidden; }
 
 /*///////////////////// MENSAJES \\\\\\\\\\\\\\\\\\\\\\\\\\*/
 

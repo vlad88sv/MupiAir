@@ -1,0 +1,41 @@
+/* -------------------------------------------------- *
+ * Scrollbars created by Scrollodex plugin
+ * -------------------------------------------------- *
+ * Author: Aaron Kuzemchak
+ * URL: http://aaronkuzemchak.com/
+ * Copyright: 2008 Aaron Kuzemchak
+** -------------------------------------------------- */
+
+div.scrollBar {
+	background: url(background.png) center center repeat-y;
+	border: 1px solid #eeede5;
+	float: left;
+	margin: 0 0 0 5px;
+	width: 16px;
+}
+div.scrollBar div.scrollPrev a {
+	background: url(up.png) center center no-repeat;
+	display: block;
+	height: 17px;
+	width: 16px;
+}
+div.scrollBar div.scrollNext a {
+	background: url(down.png) center center no-repeat;
+	display: block;
+	height: 17px;
+	width: 16px;
+}
+div.scrollBar div.scrollArea {
+	height: 100px;
+	position: relative;
+	width: 16px;
+}
+div.scrollBar div.scrollArea a {
+	cursor: move;
+}
+div.scrollBar div.scrollArea div.scrollHandle {
+	background: url(handle.png) center center no-repeat;
+	height: 18px;
+	position: absolute;
+	width: 16px;
+}

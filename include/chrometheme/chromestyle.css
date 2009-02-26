@@ -2,6 +2,8 @@
 width: 100%;
 font-weight: bold;
 font-size: 16px;
+margin-left:auto;
+margin-right:auto;
 }
 
 .chromestyle:after{ /*Add margin between menu and rest of content in Firefox*/
@@ -32,6 +34,8 @@ padding: 20px 0px;
 height: 40px;
 text-decoration: none;
 border-right: 10px solid #FFFFFF;
+padding-right: 5px;
+padding-left: 5px;
 }
 .chromestyle ul li a:hover{
 color: #FFCCCC;

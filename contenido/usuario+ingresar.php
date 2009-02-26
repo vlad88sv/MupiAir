@@ -30,26 +30,40 @@ function CONTENIDO_usuario_ingresar() {
 	}
 	/* Empezar en limpio */
 	unset($_SESSION['regsuccess']);
+	echo SCRIPT('
+	$("input[name=\'codigo\']").toggleVal({
+    populateFrom: "custom",
+    text: "código de acceso que le fue proporcionado por Eco Mupis",
+	focusClass: "hasFocus",
+    changedClass: "isChanged"
+	});
+	$("input[name=\'clave\']").toggleVal({
+    populateFrom: "custom",
+    text: "",
+	focusClass: "hasFocus",
+    changedClass: "isChanged"
+	});
+');
 ?>
 <form action="include/x.php" method="post">
-<table border=0>
+<table>
 <tr>
-<td width="20%">Código <acronym title="Su código fiscal">(?)</acronym>:</td>
-<td><input type="text" name="codigo" maxlength="100" size="30" value="" onMouseOver="toolTip('Código de XX dígitos con el cual fue registrado en Eco Mupis.')" onMouseOut="toolTip()" /></td>
+<td class="limpio" width="10%" >Código:</td>
+<td class="limpio"><input type="text" name="codigo" maxlength="100" size="30" value="" /></td>
 </tr>
 <tr>
-<td>Clave <acronym title="Su clave (contraseña) secreta asociada con su código fiscal">(?)</acronym>:</td>
-<td><input type="password" name="clave" maxlength="30" size="30" value="" onMouseOver="toolTip('Clave proporcionada para el acceso.')" onMouseOut="toolTip()" /></td>
+<td class="limpio">Clave:</td>
+<td class="limpio"><input type="password" id="clave" name="clave" maxlength="30" size="30" value="" /></td>
 </tr>
 <tr>
-<td>Recordarme en este equipo:</td>
-<td><input type="checkbox" name="remember" <? if($form->value("remember")){ echo "checked"; } ?> onMouseOver="toolTip('Recordar sus datos de acceso para esta maquina.<br />Se recomienda <b>no</b> utilizar en equipos compartidos.')" onMouseOut="toolTip()" /></td>
+<td class="limpio">¿Recordarme?:</td>
+<td class="limpio"><input type="checkbox" name="remember" <? if($form->value("remember")){ echo "checked"; } ?> onMouseOver="toolTip('Recordar sus datos de acceso para esta maquina.<br />Se recomienda <b>no</b> utilizar en equipos compartidos.')" onMouseOut="toolTip()" /></td>
 </tr>
+<tr><td class="limpio"></td><td class="limpio"><br /><input type="submit" name="ingresar" value="Clic aquí para ingresar al sistema Eco Mupis" /></td></tr>
 </table>
 <input type="hidden" name="sublogin" value="1">
-<input type="submit" name="ingresar" value="Ingresar" />
 </form>
-<br /><? echo "Si ha olvidado su clave por favor haga clic en el enlace: " . CREAR_LINK_GET("rpr+clave", "Recuperar clave", "Clic en este enlace para intentar recuperar su clave"); ?></a>
+<hr /><? echo "Si ha olvidado su clave por favor haga clic en el enlace: " . CREAR_LINK_GET("rpr+clave", "Recuperar clave", "Clic en este enlace para intentar recuperar su clave"); ?></a>
 </ul>
 <?
 }

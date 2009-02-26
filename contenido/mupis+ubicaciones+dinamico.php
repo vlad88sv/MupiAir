@@ -52,7 +52,7 @@ if ( isset( $_GET['accion'] ) ) {
 			// $("#combo_calles").change(funcion_combo_calles());
 			');
 */
-			$Boton_combo_calles = '<input type="button" OnClick="funcion_combo_calles()" value="Ver">';;
+			$Boton_combo_calles = '<input type="button" OnClick="funcion_combo_calles()" value="Mostrar Mapa">';;
 			retornar ('<b>Ver Calle:</b><br />' . $database->Combobox_CallesConPresencia("combo_calles",$_GET['usuario'],$_GET['catorcena']).$Boton_combo_calles);
 		} else {
 			retornar ( "Ud. esta utilizando incorrectamente este script de soporte. 2" );
@@ -156,6 +156,7 @@ if ( !in_array($session->userlevel,array(ADMIN_LEVEL, SALESMAN_LEVEL)) ) {
 $WHERE_USER = "";
 if ( $calle == "::T::") {
 	$grupo_calle = "";
+	$t_grupo_calle = "";
 	$map->disable_map_drag = false;
 } else {
 if ( strpos($calle, "G:") !== false ) {

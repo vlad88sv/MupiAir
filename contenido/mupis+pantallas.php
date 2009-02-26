@@ -104,8 +104,9 @@ function verPantallas($usuario="", $calle=""){
       echo Mensaje ("¡No hay Pantallas "._NOMBRE_." ingresadas!", _M_NOTA);
       return;
    }
-echo '<table>';
-echo "<tr><th>Código "._NOMBRE_."</th><th>Cara</th><th>Código pedido</th><th>Foto real</th><th>Evento</th><th>Acción</th></tr>";
+echo '<div id="tabla_pantallas"><table>';
+echo "<thead><tr><th>Código "._NOMBRE_."</th><th>Cara</th><th>Código pedido</th><th>Foto real</th><th>Evento</th><th>Acción</th></tr></thead>";
+echo "<tbody>";
    for($i=0; $i<$num_rows; $i++){
       $tipo_pantalla  = mysql_result($result,$i,"tipo_pantalla");
       $codigo_mupi = CREAR_LINK_GET("gestionar+mupis&amp;mupi=".mysql_result($result,$i,"codigo_mupi"), mysql_result($result,$i,"codigo_mupi_traducido"), "Ver y/o editar los datos de este "._NOMBRE_);
@@ -118,8 +119,11 @@ echo "<tr><th>Código "._NOMBRE_."</th><th>Cara</th><th>Código pedido</th><th>F
       $tipo_pantalla  = CREAR_LINK_GET("gestionar+pantallas&amp;id=".mysql_result($result,$i,"id_pantalla")."&amp;catorcena=$Catorcena",($tipo_pantalla == 0 ? 'Vehicular' : 'Peatonal'), "Editar los datos de esta pantalla");
       echo "<tr><td>$codigo_mupi</td><td>$tipo_pantalla</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
    }
-   echo "</table><br>";
+   echo "</tbody>";
+   echo "</table></div></div><br>";
+   //echo '<script>$("#tabla_pantallas table").scrollodex();</script>';
 }
+
 function verPantallasregistro($usuario="", $id="") {
 global $database, $Catorcena;
 $CampoActualizar = $CampoPantalla = $BotonCancelar = $CampoCodigoMUPI = $Pantalla = $codigo_mupi = $codigo_pedido = $foto_real = $CampoId = $CampoCatorcena = $foto_pantalla = $OnChangePantalla = $CampoConservarPantalla = $CampoConservarPantalla2 = '';
