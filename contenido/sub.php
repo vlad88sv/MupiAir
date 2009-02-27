@@ -183,8 +183,7 @@ function CONTENIDO_mostrar_logo_cliente() {
 	if ( !$session->isAdmin() && $session->logged_in ) {
 		$q = "SELECT logotipo FROM ". TBL_USERS . " WHERE codigo='".$session->codigo."';";
 		$result = $database->query($q);		
-		echo '<center>' . CargarImagenDesdeBD(mysql_result($result,0,"logotipo"),'50px') . '</center><hr />';
-		//echo IMAGEN("./logo_generico.gif");
+		echo '<center>' . '<img src="include/ver.php?id='.mysql_result($result,0,"logotipo").'" />'. '</center><hr />';
 	}
 }
 

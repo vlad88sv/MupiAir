@@ -359,7 +359,7 @@ class Session
 			 $idImg = 0;
 			}
 		}
-	$database->updateUserField($codigo,"clave",md5($subnewpass));
+	if ($subnewpass) $database->updateUserField($codigo,"clave",md5($subnewpass));
 	$database->updateUserField($codigo,"nombre",$nombre);
 	$database->updateUserField($codigo,"razon",$razon);
 	$database->updateUserField($codigo,"email",$email);
