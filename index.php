@@ -93,7 +93,6 @@ require_once("contenido/mapa+referencias.php");
 		{ message: '<img src="loader-white.gif" />Cargando, espere por favor...', css: { border: 'none', padding: '15px', backgroundColor: '#000', '-webkit-border-radius': '10px', '-moz-border-radius': '10px', opacity: '.5', color: '#fff', 'font-size': '15pt' }
         });
 	</script>
-<div id="container" style="margin-top:5px">
 	<div style="height:80px;">
 			<div style="float:left">
 				<span id="alImg1" style="width:327px;height:75px;">
@@ -106,6 +105,7 @@ require_once("contenido/mapa+referencias.php");
 				</span>
 			 </div>
 	 </div>
+	<div style="clear:both; margin:0"></div>
 	<?
 	global $session;
 	if ( $session->logged_in ) {
@@ -127,7 +127,6 @@ require_once("contenido/mapa+referencias.php");
 		?>
 		<div class="clear"></div>
 	</div>
-	</div>	
 	</div>
 	</body>
 </html>

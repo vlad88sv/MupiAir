@@ -66,7 +66,7 @@ a img
 #info:before
 	{content:"Información: "}
 #nota
-	{background-color:#EEEEEE;border:2px solid #000000;margin:0;padding:5px;max-width:100%;font-weight:bold;color:#000000	;text-align:center}
+	{background-color:#CCCCFF;border:2px solid #000000;margin:0;padding:5px;max-width:100%;font-weight:bold;color:#000000	;text-align:center}
 #nota:before
 	{content:"Nota: "}
 #espera

@@ -1,27 +1,26 @@
 .chromestyle{
 width: 100%;
-line-height: 40px;
+line-height: 70px;
 font-weight: bold;
 font-size: 20px;
-margin-left:0;
-background: url(chromebg.gif) center center repeat-x;
+margin:0;
 }
 
 .chromestyle ul{
-height: 40px;
-width: 97%;
-text-align: right;
+height: 70x;
+width: 100%;
+text-align: center;
+background: url(chromebg.gif) center center repeat-x;
+opacity:0.9
 }
 
 .chromestyle ul li{
-height: 40px;
-line-height: 40px;
-padding: 10px 0px;
+height: 70px;
+line-height: 70px;
 display: inline;
 text-align: center;
 vertical-align:center;
-border-right: 10px solid #FFFFFF;
-opacity:0.9;
+margin-right: 4px;
 }
 
 .chromestyle ul li a{
@@ -30,10 +29,7 @@ padding-right: 5px;
 padding-left: 5px;
 }
 .chromestyle ul li a:hover{
-color: #FFCCCC;
-}
-.chromestyle ul li:hover{
-background: url(chromebg-over.gif) center center repeat-x; /*THEME CHANGE HERE*/
+color: #CCCCFF;
 }
 
 /* ######### Style for Drop Down Menu ######### */
