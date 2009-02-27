@@ -5,7 +5,7 @@ font-weight: bold;
 font-size: 20px;
 margin-left:0;
 background: url(chromebg.gif) center center repeat-x;
-opacity:.8;
+opacity:1.0;
 }
 
 .chromestyle ul{

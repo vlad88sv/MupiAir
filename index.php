@@ -77,6 +77,7 @@ require_once("contenido/mapa+referencias.php");
 </head>
 <body>
 	<script>
+		// Esto por alguna razón es lento en FF3.0/LNX - Shiretoko/LNX no tiene problemas, ni Opera/LNX.
 		$.blockUI.defaults.applyPlatformOpacityRules = false;
         $.blockUI(
 		{ message: '<img src="loader-white.gif" />Cargando, espere por favor...', css: { border: 'none', padding: '15px', backgroundColor: '#000', '-webkit-border-radius': '10px', '-moz-border-radius': '10px', opacity: '.5', color: '#fff', 'font-size': '15pt' }
