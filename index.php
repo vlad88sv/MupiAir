@@ -71,21 +71,16 @@ require_once("contenido/mapa+referencias.php");
 	* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
 	***********************************************/
 	</script>
-	<script>$().ajaxStart(function(){$.blockUI( { message: '<h1><img src="loader.gif" /> Su petición esta siendo procesada...</h1>' } );}).ajaxStop($.unblockUI);</script>
+	<script>
+	$().ajaxStart(function(){$.blockUI( { message: '<h1><img src="loader.gif" /> Su petición esta siendo procesada...</h1>' } );}).ajaxStop($.unblockUI);
+	</script>
 </head>
 <body>
 	<script>
-        $.blockUI({ message: '<img src="loader-white.gif" />Cargando, espere por favor...',
-	css: { 
-            border: 'none', 
-            padding: '15px', 
-            backgroundColor: '#000', 
-            '-webkit-border-radius': '10px', 
-            '-moz-border-radius': '10px', 
-            opacity: '.5', 
-            color: '#fff',
-			'font-size': '15pt'
-        } });
+		$.blockUI.defaults.applyPlatformOpacityRules = false;
+        $.blockUI(
+		{ message: '<img src="loader-white.gif" />Cargando, espere por favor...', css: { border: 'none', padding: '15px', backgroundColor: '#000', '-webkit-border-radius': '10px', '-moz-border-radius': '10px', opacity: '.5', color: '#fff', 'font-size': '15pt' }
+        });
 	</script>
 <div id="container">
 	<div style="height:70px;">
@@ -121,5 +116,11 @@ require_once("contenido/mapa+referencias.php");
 	</div>
 	</body>
 </html>
-<?php ob_flush(); flush(); ?>
-<script>setTimeout($.unblockUI, 2000);</script>
+<?php
+ob_flush();
+flush();
+?>
+<script>
+setTimeout($.unblockUI, 1000);
+
+</script>

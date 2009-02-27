@@ -197,7 +197,7 @@ function INICIAR_MENUES () {
 	case ADMIN_LEVEL:
 	$s =
 	'
-	<div class="chromestyle" id="chromemenu">
+	<div class="chromestyle" id="chromemenu" style="font-size:17px">
 	<ul>
 	<li><a href="./">Inicio</a></li>
 	<li><a href="#" rel="menu_herramientas">Editar</a></li>'

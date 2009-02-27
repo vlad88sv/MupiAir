@@ -69,3 +69,5 @@ a img
 	{background-color:#EEEEEE;border:2px solid #000000;margin:0;padding:5px;max-width:100%;font-weight:bold;color:#000000	;text-align:center}
 #nota:before
 	{content:"Nota: "}
+#espera
+	{border: 'none'; padding: '15px'; backgroundColor: '#000'; '-webkit-border-radius': '10px'; '-moz-border-radius': '10px'; opacity: '.5'; color: '#fff'; 'font-size': '15pt'}
