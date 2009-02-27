@@ -52,7 +52,6 @@ require_once("contenido/mapa+referencias.php");
 	<meta http-equiv="Content-Language" content="es" />
 	<link rel="stylesheet" type="text/css" href="estilo.css" />
 	<link rel="stylesheet" type="text/css" href="include/chrometheme/chromestyle.css" />
-	<link rel="stylesheet" type="text/css" href="include/scrollbars/scrollbar.css" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="start" href="/" />
 	<title><? echo _NOMBRE_; ?> - Servicio publicitario</title>
@@ -61,8 +60,6 @@ require_once("contenido/mapa+referencias.php");
 	<script src="include/jquery-1.3.1.min.js" type="text/javascript"></script>
 	<script src="include/jquery.blockUI.js" type="text/javascript"></script>
 	<script src="include/jquery.toggleval.js" type="text/javascript"></script>
-	<!--><script src="include/jquery.slider.js" type="text/javascript"></script><!-->
-	<!--><script src="include/jquery.scrollodex.js" type="text/javascript"></script><!-->
 	<script type="text/javascript" src="include/tooltip.js"></script>
 	<script type="text/javascript" src="include/chromejs/chrome.js">
 	/***********************************************

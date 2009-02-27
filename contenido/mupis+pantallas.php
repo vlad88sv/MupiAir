@@ -84,6 +84,15 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio, $calle) {
 function verPantallas($usuario="", $calle=""){
    global $database, $Catorcena;
    
+	echo '
+	<script type="text/javascript">
+	$(document).ready(function() {
+	$("#toggler").click(function() {
+	$("#tabla_pantallas").toggle();
+	});
+	});
+	</script>
+	';
     $wusuario = "";
     if ($usuario) {
     $wusuario = "AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$usuario."')";
@@ -104,7 +113,9 @@ function verPantallas($usuario="", $calle=""){
       echo Mensaje ("¡No hay Pantallas "._NOMBRE_." ingresadas!", _M_NOTA);
       return;
    }
-echo '<div id="tabla_pantallas"><table>';
+
+echo '<a id="toggler">Mostrar/Ocultar lista de Pantallas</a>';
+echo '<div id="tabla_pantallas" style="display:none"><table>';
 echo "<thead><tr><th>Código "._NOMBRE_."</th><th>Cara</th><th>Código pedido</th><th>Foto real</th><th>Evento</th><th>Acción</th></tr></thead>";
 echo "<tbody>";
    for($i=0; $i<$num_rows; $i++){
@@ -121,7 +132,6 @@ echo "<tbody>";
    }
    echo "</tbody>";
    echo "</table></div><br>";
-   //echo '<script>$("#tabla_pantallas table").scrollodex();</script>';
 }
 
 function verPantallasregistro($usuario="", $id="") {
