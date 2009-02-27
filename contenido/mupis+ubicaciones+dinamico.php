@@ -103,8 +103,8 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
  if($num_rows == 0){
       retornar (Mensaje("¡No hay datos para ese código ($codigo_mupi)!",_M_ERROR));
    }
-   $datos .= '<h2>Datos del MUPI seleccionado</h2>';
-   $datos .= '<table>';
+   echo '<script>$("#botones_arte").html("");</script>';
+   //$datos .= '<h2>Datos del MUPI seleccionado</h2>';
    $tipoPantalla = ''; //Par
    for($i=0; $i<$num_rows; $i++){
 	  $arte = mysql_result($result,$i,"arte");
@@ -116,19 +116,21 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
       }else{
 		$tipoPantalla = 'peatonal';
       }
+	$datos .= "<div id='div_".$tipoPantalla."' style='display:none'>";
 	if ( time() > $catorcena || ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) ) {
-	$datos .= "<tr><th><center>Imagen actual de su campaña ".$tipoPantalla.":</center></th></tr>";
-	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($foto_real,"300px") . "</center></td>";
-	$datos .= "<tr><th><center>Arte digital de su campaña:</center></th></tr>";
-	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($arte,"300px") . "</center></td></tr>";	
+	$datos .= "<center>Imagen actual de su campaña ".$tipoPantalla.":</center>";
+	$datos .= "<center>" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
+	$datos .= "<center>Arte digital de su campaña:</center>";
+	$datos .= "<center>" . '<img src="include/ver.php?id='.$arte.'" />' . "</center>";	
 	} else {
-	$datos .= "<tr><th><center>Imagen actual de su campaña ".$tipoPantalla.":</center></th></tr>";
-	$datos .= "<tr><td><center>Viendo catorcena futura, La fotografía mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . CargarImagenDesdeBD($foto_real,"300px") . "</center></td>";
-	$datos .= "<tr><th><center>Arte digital de su campaña:</center></th></tr>";
-	$datos .= "<tr><td><center>Viendo catorcena campaña, Arte no disponible</center></td></tr>";	
+	$datos .= "<center>Imagen actual de su campaña ".$tipoPantalla.":</center>";
+	$datos .= "<center>Viendo catorcena futura, La fotografía mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
+	$datos .= "<center>Arte digital de su campaña:</center>";
+	$datos .= "<center>Viendo catorcena campaña, Arte no disponible</center>";
 	}
+	$datos .= "</div>";
+	$datos .= '<script>$("#botones_arte").append("<a onclick=\'LINK_'.$tipoPantalla.'()\'>Ver imagenes de cara '.$tipoPantalla.'</a><br />");</script>';
    }
-   $datos .= '</table>';
 retornar($datos);
 }
 

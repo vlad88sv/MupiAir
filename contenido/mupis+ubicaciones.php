@@ -28,6 +28,35 @@
 				</script>
 			    ';
 	  }
+	  // Mostrar las imagenes en el BlockUI.
+
+    echo "\n".
+				'<script>
+				function LINK_vehicular(){
+					$.blockUI({
+					message: $(\'div#div_vehicular(\'),  
+					css: {  
+						top:  ($(window).height() - 500) /2 + \'px\', 
+						left: ($(window).width() - 500) /2 + \'px\', 
+						width: \'600px\' 
+					}  
+					}); 
+					setTimeout($.unblockUI, 5000);
+				}
+				function LINK_peatonal() {
+					$.blockUI({
+					message: $(\'div#div_peatonal(\'),  
+					css: {  
+						top:  ($(window).height() - 500) /2 + \'px\', 
+						left: ($(window).width() - 500) /2 + \'px\', 
+						width: \'600px\' 
+					}  
+					}); 
+					setTimeout($.unblockUI, 5000);
+				}
+				</script>
+			    ';
+				
       $BotonVerPorMupis = NULL;
       echo '<h1 id="ubicaciones">Ubicaciones de MUPIS contratados</h1><hr />';
       
@@ -44,7 +73,7 @@
           echo '<span id="lista_mupis"></span>';
           
           if (in_array($session->userlevel, $NivelesPermitidos)) {
-              $BotonVerPorMupis = '<input type="button" OnClick="window.location=\'./?' . _ACC_ . '=ver+ubicaciones&verpormupis=1\'" value="Ver por Mupis">';
+              $BotonVerPorMupis = "<br /><hr />" . '<input type="button" OnClick="window.location=\'./?' . _ACC_ . '=ver+ubicaciones&verpormupis=1\'" value="Ver por Mupis">';
           }
       } else {
           $Boton_combo_calles = '<input type="button" OnClick="funcion_combo_ver_mupi_calles()" value="Ver">';
@@ -52,7 +81,7 @@
           echo '<b>Ver Calle:</b><br />' . $database->Combobox_calle("combo_calles") . $Boton_combo_calles . '<br /><br />';
           
           if ($session->userlevel == ADMIN_LEVEL) {
-              $BotonVerPorMupis = '<input type="button" OnClick="window.location=\'./?' . _ACC_ . '=ver+ubicaciones\'" value="Ver por Pantallas">';
+              $BotonVerPorMupis = "<br /><hr />" . '<input type="button" OnClick="window.location=\'./?' . _ACC_ . '=ver+ubicaciones\'" value="Ver por Pantallas">';
           }
 		  echo "\n".
 		  '<script>
@@ -63,7 +92,9 @@
 		  ';
       }
 	  echo '<span id="indicaciones"></span>';
-      echo "<br /><hr />" . $BotonVerPorMupis;
+      echo $BotonVerPorMupis;
+	  echo "<br /><hr /><div id='botones_arte'></div>";
+	  
       echo '</td>';
       
       echo '<td>';
@@ -84,16 +115,9 @@
 	  echo '<div id="grafico_mapa"></div>';
 	  
       echo '</td>';
-
       
       echo '</tr>';
       echo '</table>';
-	  echo '<hr />';
-	  echo '<a href="#ubicaciones" id="imagenes">Clic aquí para centrar el mapa</a>';
-	  echo '<hr />';
-      echo '<span id="datos_mupis">Seleccione un ' . _NOMBRE_ . '</span>';
-	  echo '<hr />';
-	  echo '<a href="#ubicaciones" id="imagenes">Clic aquí para centrar el mapa</a>';
-	  echo '<hr />';
+      echo '<span id="datos_mupis"><div id="div_peatonal"></div><div id="div_vehicular"></div>Seleccione un ' . _NOMBRE_ . '</span>';
   }
 ?>
