@@ -74,22 +74,36 @@ require_once("contenido/mapa+referencias.php");
 	<script>
 	$().ajaxStart(function(){$.blockUI( { message: '<h1><img src="loader.gif" /> Su petición esta siendo procesada...</h1>' } );}).ajaxStop($.unblockUI);
 	</script>
+	<!--[if gte IE 5.5]>
+	<![if lt IE 7]>
+	<style type="text/css">
+	#alImg1 img, #alImg2 img { filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0); }
+	#alImg1, #alImg2 { display: inline-block; }
+	#alImg1 { filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='logo.png'); }
+	#alImg2 { filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='ECO.png'); }
+	</style>
+	<![endif]>
+	<![endif]-->
 </head>
 <body>
 	<script>
 		// Esto por alguna razón es lento en FF3.0/LNX - Shiretoko/LNX no tiene problemas, ni Opera/LNX.
-		$.blockUI.defaults.applyPlatformOpacityRules = false;
+		$.blockUI.defaults.applyPlatformOpacityRules = true;
         $.blockUI(
 		{ message: '<img src="loader-white.gif" />Cargando, espere por favor...', css: { border: 'none', padding: '15px', backgroundColor: '#000', '-webkit-border-radius': '10px', '-moz-border-radius': '10px', opacity: '.5', color: '#fff', 'font-size': '15pt' }
         });
 	</script>
-<div id="container">
-	<div style="height:70px;">
+<div id="container" style="margin-top:5px">
+	<div style="height:80px;">
 			<div style="float:left">
-			 	<img src="logo.gif" />
+				<span id="alImg1" style="width:327px;height:75px;">
+			 	<img src="logo.png" width="327" height="75" alt="CEPASA de C.V."/>
+				</span>
 			 </div>
 			 <div style="float:right">
-			 	<img src="ECO.gif" />
+				<span id="alImg2" style="width:78px;height:75px;">
+			 	<img src="ECO.png" width="78" height="75" alt="Eco Mupis" />
+				</span>
 			 </div>
 	 </div>
 	<?
