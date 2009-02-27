@@ -90,7 +90,7 @@ require_once("contenido/mapa+referencias.php");
 		{ message: '<img src="loader-white.gif" />Cargando, espere por favor...', css: { border: 'none', padding: '15px', backgroundColor: '#000', '-webkit-border-radius': '10px', '-moz-border-radius': '10px', opacity: '.5', color: '#fff', 'font-size': '15pt' }
         });
 	</script>
-	<div style="height:80px;">
+	<div style="height:80px; margin-top:5px; margin-left:10px; margin-right:10px">
 			<div style="float:left">
 				<span id="alImg1" style="width:327px;height:75px;">
 			 	<img src="logo.png" width="327" height="75" alt="CEPASA de C.V."/>
@@ -102,13 +102,14 @@ require_once("contenido/mapa+referencias.php");
 				</span>
 			 </div>
 	 </div>
-	<div style="clear:both; margin:0"></div>
+	<div style="clear:both; margin:0">
 	<?
 	global $session;
 	if ( $session->logged_in ) {
 	echo INICIAR_MENUES();
 	}
 	?>
+	</div>
 	<div id="container">
 		<div id="content">
 			<?php CONTENIDO_mostrar_principal(); ?>

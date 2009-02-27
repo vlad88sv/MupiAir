@@ -29,6 +29,15 @@ function CONTENIDO_mupis($usuario="",$mupi="",$calle=NULL) {
 function verMUPIS($calle=NULL){
    global $database;
    ob_start();
+   	echo '
+	<script type="text/javascript">
+	$(document).ready(function() {
+	$("#toggler").click(function() {
+	$("#tabla_mupis").toggle();
+	});
+	});
+	</script>
+	';
    if ( $calle ) { $wCalle = "WHERE codigo_calle='$calle'"; $conservar_GET_calle="&amp;calle=$calle"; } else { $conservar_GET_calle = $wCalle = NULL; }
    $q = "SELECT id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT ubicacion FROM ".TBL_STREETS." AS b WHERE a.codigo_calle=b.codigo_calle) AS 'calle' FROM ".TBL_MUPI." as a $wCalle;";
    DEPURAR($q,0);
@@ -43,10 +52,11 @@ function verMUPIS($calle=NULL){
       echo Mensaje ("¡No hay "._NOMBRE_." ingresados!<br/>", _M_NOTA);
       return;
    }
-    $BotonFiltraVistaPorCalles = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+mupis&amp;calle=\'+document.getElementsByName(\'cmbCalles\')[0].value" value="Filtrar">';
+    $BotonFiltraVistaPorCalles = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+mupis&amp;calle=\'+document.getElementsByName(\'cmbCalles\')[0].value" value="Filtrar"><hr />';
     echo "<b>Filtrar vista a "._NOMBRE_." que se ubiquen en la calle</b> ". $database->Combobox_calle("cmbCalles");
 	echo $BotonFiltraVistaPorCalles;
-	
+	echo '<a id="toggler">Mostrar/Ocultar lista de Eco Mupis</a>';
+	echo '<div id="tabla_mupis" style="display:none"><table>';
 	echo '<table border="0">';
 	echo "<tr><th width=\"5%\">ID Mupi</th><th width=\"10%\">Código Mupi</th><th width=\"30%\">Dirección</th><th width=\"5%\">Foto</th><th width=\"5%\">Longitud</th><th width=\"5%\">Latitud</th><th width=\"%30\">Calle</th><th width=\"10%\">Acciones</th></tr>";
 	for($i=0; $i<$num_rows; $i++){
@@ -60,7 +70,7 @@ function verMUPIS($calle=NULL){
 		$Eliminar = CREAR_LINK_GET("gestionar+mupis$conservar_GET_calle&amp;eliminar=".mysql_result($result,$i,"id_mupi"),"Eliminar", "Eliminar los datos de este "._NOMBRE_);
 	echo "<tr><td  width=\"5%\">$id</td><td  width=\"10%\">$codigo_mupi</td><td width=\"30%\">$direccion</td><td width=\"5%\">$foto_generica</td><td width=\"5%\">$Longitud</td><td width=\"5%\">$Latitud</td><td  width=\"30%\">$codigo_calle</td><td  width=\"10%\">$Eliminar</td></tr>";
 	}
-	echo "</table><br />";
+	echo "</table></div><br />";
 	ob_flush();
 	flush();
 }
