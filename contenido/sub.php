@@ -59,6 +59,11 @@ function CONTENIDO_mostrar_principal() {
 		CONTENIDO_usuario_ingresar();
 		break;
 	
+	case "salir":
+		$session->logout();
+		header("Location: ./");
+		break;
+	
 	case "ayuda contacto":
 		CONTENIDO_ayuda_contacto() ;
 		break;
@@ -79,11 +84,11 @@ function CONTENIDO_mostrar_principal() {
 		CONTENIDO_global_estadisticas();
 		break;
 	
-	case "salir":
-		$session->logout();
-		header("Location: ./");
-		break;
-
+	case "gestionar eventos":	
+	case "ver eventos":
+			$evento = isset( $_GET['evento'] ) ? $_GET['evento'] : "";
+			CONTENIDO_mupis_eventos($usuario, $evento);
+			break;
 
 /******************** Hasta aqui puede llegar un NO administrador ***************************/
 
@@ -140,14 +145,6 @@ function CONTENIDO_mostrar_principal() {
 		if($session->isAdmin()){
 			$calle = isset( $_GET['calle'] ) ? $_GET['calle'] : "";
 			CONTENIDO_calles($usuario,$calle);
-			break;
-		}
-	
-	case "gestionar eventos":	
-	case "ver eventos":
-		if($session->isAdmin()){
-			$evento = isset( $_GET['evento'] ) ? $_GET['evento'] : "";
-			CONTENIDO_mupis_eventos($usuario, $evento);
 			break;
 		}
 				
