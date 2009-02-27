@@ -5,7 +5,6 @@ font-weight: bold;
 font-size: 20px;
 margin-left:0;
 background: url(chromebg.gif) center center repeat-x;
-opacity:1.0;
 }
 
 .chromestyle ul{
@@ -22,6 +21,7 @@ display: inline;
 text-align: center;
 vertical-align:center;
 border-right: 10px solid #FFFFFF;
+opacity:0.9;
 }
 
 .chromestyle ul li a{

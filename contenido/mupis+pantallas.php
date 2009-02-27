@@ -120,7 +120,7 @@ echo "<tbody>";
       echo "<tr><td>$codigo_mupi</td><td>$tipo_pantalla</td><td>$codigo_pedido</td><td>$foto_real</td><td>$codigo_evento</td><td>$Eliminar</td></tr>";
    }
    echo "</tbody>";
-   echo "</table></div></div><br>";
+   echo "</table></div><br>";
    //echo '<script>$("#tabla_pantallas table").scrollodex();</script>';
 }
 
