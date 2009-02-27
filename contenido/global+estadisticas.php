@@ -2,11 +2,22 @@
 $inicioCatorcena = Obtener_catorcena_cercana();
 function CONTENIDO_global_estadisticas(){
 global $session, $database, $inicioCatorcena;
+   	echo '
+	<script type="text/javascript">
+	$(document).ready(function() {
+	$("#toggler_pantallas_activas").click(function() {
+	$("#tabla_pantallas_activas").toggle();
+	});
+	});
+	</script>
+	';
 ob_start();
 if ( $session->isAdmin() ) {
   echo "<h1>Estadísticas y notas administrativas</h1>";
   echo MOSTRAR_comentarios();
    echo "<hr /><h2>Pantallas activas esta catorcena</h2>";
+   	echo '<a id="toggler_pantallas_activas">Mostrar/Ocultar lista de pantallas activas</a>';
+	echo '<div id="tabla_pantallas_activas" style="display:none"><table>';
 	$q = "SELECT id_pantalla, tipo_pantalla, codigo_mupi, (SELECT CONCAT(b.codigo_mupi, '. ' , (SELECT ubicacion FROM ".TBL_STREETS." AS c WHERE c.codigo_calle = b.codigo_calle), ', ' , b.direccion) FROM ".TBL_MUPI." as b WHERE b.id_mupi=a.codigo_mupi) as codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento FROM ".TBL_MUPI_FACES." as a WHERE catorcena = '$inicioCatorcena' ORDER BY codigo_mupi, tipo_pantalla;";
 	$result = $database->query($q);
 	$num_rows = mysql_numrows($result);
@@ -21,7 +32,7 @@ if ( $session->isAdmin() ) {
       $codigo_pedido = mysql_result($result,$i,"codigo_pedido_traducido");
       echo "<tr><td>$codigo_mupi</td><td>$tipo_pantalla</td><td>$codigo_pedido</td></tr>";
    }
-   echo "</table><br>";
+   echo "</table></div><br>";
    }
    echo "<hr /><h2>Clientes con notas administrativas</h2>";
    	$q = "SELECT codigo, notas FROM emupi_usuarios WHERE notas!='' and userlevel!=9;";
