@@ -117,15 +117,15 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 		$tipoPantalla = 'peatonal';
       }
 	if ( time() > $catorcena || ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) ) {
-	$datos .= "<tr><th><center>Imagen actual de su pantalla ".$tipoPantalla.":</center></th></tr>";
+	$datos .= "<tr><th><center>Imagen actual de su campaña ".$tipoPantalla.":</center></th></tr>";
 	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($foto_real,"300px") . "</center></td>";
-	$datos .= "<tr><th><center>Arte digital de su pantalla:</center></th></tr>";
+	$datos .= "<tr><th><center>Arte digital de su campaña:</center></th></tr>";
 	$datos .= "<tr><td><center>" . CargarImagenDesdeBD($arte,"300px") . "</center></td></tr>";	
 	} else {
-	$datos .= "<tr><th><center>Imagen actual de su pantalla ".$tipoPantalla.":</center></th></tr>";
-	$datos .= "<tr><td><center>Viendo catorcena futura, La foto mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . CargarImagenDesdeBD($foto_real,"300px") . "</center></td>";
-	$datos .= "<tr><th><center>Arte digital de su pantalla:</center></th></tr>";
-	$datos .= "<tr><td><center>Viendo catorcena futura, Arte no disponible</center></td></tr>";	
+	$datos .= "<tr><th><center>Imagen actual de su campaña ".$tipoPantalla.":</center></th></tr>";
+	$datos .= "<tr><td><center>Viendo catorcena futura, La fotografía mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . CargarImagenDesdeBD($foto_real,"300px") . "</center></td>";
+	$datos .= "<tr><th><center>Arte digital de su campaña:</center></th></tr>";
+	$datos .= "<tr><td><center>Viendo catorcena campaña, Arte no disponible</center></td></tr>";	
 	}
    }
    $datos .= '</table>';
