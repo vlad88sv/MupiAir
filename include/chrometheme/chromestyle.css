@@ -1,9 +1,19 @@
 .chromestyle{
 width: 100%;
-line-height: 70px;
-font-weight: bold;
-font: normal small-caps 120%/120% fantasy;
 margin:0;
+line-height: 70px;
+font-family: cursive;
+font-style: normal;
+font-variant: small-caps;
+font-weight: bolder;
+font-size: medium;
+line-height: 100%;
+word-spacing: normal;
+letter-spacing: normal;
+text-decoration: none;
+text-transform: none;
+text-align: left;
+text-indent: 0ex;
 }
 
 .chromestyle ul{
@@ -50,9 +60,9 @@ visibility: hidden;
 .dropmenudiv a{
 width: auto;
 display: block;
-text-indent: 3px;
+text-indent: 1ex;
 border-bottom: 1px solid #BBB; /*THEME CHANGE HERE*/
-padding: 2px 0;
+padding: 0em 0;
 text-decoration: none;
 font-weight: bold;
 color: black;
