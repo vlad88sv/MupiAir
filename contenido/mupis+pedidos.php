@@ -60,7 +60,7 @@ function verPedidos($usuario="", $pedido=""){
    $num_rows = "";
    if ($usuario) { $WHERE = " WHERE codigo='".$usuario."'"; }
    
-   $q = "SELECT codigo_pedido, codigo, (SELECT nombre from ". TBL_USERS . " AS b WHERE a.codigo = b.codigo) as nombre, catorcena_inicio, catorcena_fin, foto_pantalla, costo , descripcion FROM ".TBL_MUPI_ORDERS." AS a$WHERE;";
+   $q = "SELECT codigo_pedido, codigo, (SELECT nombre from ". TBL_USERS . " AS b WHERE a.codigo = b.codigo) as nombre, catorcena_inicio, catorcena_fin, foto_pantalla, costo , descripcion FROM ".TBL_MUPI_ORDERS." AS a$WHERE ORDER BY codigo_pedido;";
    $result = $database->query($q);
    
    if ( !$result ) {
@@ -75,7 +75,7 @@ function verPedidos($usuario="", $pedido=""){
    }
    
 echo '<table>';
-echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Intervalo de alquiler</th><th>Número de catorcenas</th><th>Foto Pantalla</th><th>Costo</th><th>Descripción</th><th>Acciones</th></tr>";
+echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Intervalo de alquiler</th><th>Número de catorcenas</th><th>Arte Pantalla</th><th>Costo</th><th>Descripción</th><th>Acciones</th></tr>";
    for($i=0; $i<$num_rows; $i++){
       $codigo_pedido  = mysql_result($result,$i,"codigo_pedido");
       $codigo =  CREAR_LINK_GET("gestionar+pedidos:".mysql_result($result,$i,"codigo"), mysql_result($result,$i,"nombre"), "Ver los pedidos de este cliente");

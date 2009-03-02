@@ -372,7 +372,7 @@ function Mensaje ($texto, $tipo=_M_INFO){
 		$id = "nota";
 		break;
 		default:
-		echo 'Error: no se definió el $tipo de mensaje';
+		return 'Error: no se definió el $tipo de mensaje';
 	}
 	
 	return "<div id=\"$id\">".$texto."</div>";

@@ -32,27 +32,22 @@
 
     echo "\n".
 				'<script>
-				function LINK_vehicular(){
+				function BLOCK_IMAGEN(IMAGE_DIV){
 					$.blockUI({
-					message: $(\'div#div_vehicular(\'),  
+					message: $(IMAGE_DIV),  
 					css: {  
-						top:  ($(window).height() - 500) /2 + \'px\', 
-						left: ($(window).width() - 500) /2 + \'px\', 
+						top:  ($(window).height() - 600) /2 + \'px\', 
+						left: ($(window).width() - 600) /2 + \'px\', 
 						width: \'600px\' 
 					}  
 					}); 
 					setTimeout($.unblockUI, 5000);
 				}
+				function LINK_vehicular(){
+					BLOCK_IMAGEN(\'div#div_vehicular\');
+				}
 				function LINK_peatonal() {
-					$.blockUI({
-					message: $(\'div#div_peatonal(\'),  
-					css: {  
-						top:  ($(window).height() - 500) /2 + \'px\', 
-						left: ($(window).width() - 500) /2 + \'px\', 
-						width: \'600px\' 
-					}  
-					}); 
-					setTimeout($.unblockUI, 5000);
+					BLOCK_IMAGEN(\'div#div_peatonal\');
 				}
 				</script>
 			    ';

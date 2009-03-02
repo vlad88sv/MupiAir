@@ -57,8 +57,11 @@ if ( $session->isAdmin() ) {
 echo "<h1>Estadísticas</h1>";
 //Dinamismo en selección de catorcenas.firef
 echo SCRIPT('
-	$("#datos_catorcena").load("contenido/global+estadisticas+dinamico.php?catorcena="+document.getElementsByName(\'catorcenas_presencia\')[0].value);
-	$("#catorcenas_presencia").change(function (){$("#datos_catorcena").load("contenido/global+estadisticas+dinamico.php?catorcena="+document.getElementsByName(\'catorcenas_presencia\')[0].value);});
+	function ObtenerEstad(){
+		$("#datos_catorcena").load("contenido/global+estadisticas+dinamico.php?catorcena="+$(\'#catorcenas_presencia\').val());
+	}
+	$("#catorcenas_presencia").change(function (){ObtenerEstad();});
+	ObtenerEstad();
 ');
 echo "Catorcena actual: <b>" . date("d/m/Y", Obtener_catorcena_cercana()) . ' a ' . date("d/m/Y", Fin_de_catorcena(Obtener_catorcena_cercana())) . "</b><br />";
 

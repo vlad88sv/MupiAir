@@ -22,28 +22,30 @@ function Buscar ($catorcena) {
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die(Mensaje('!->La base de datos seleccionada "'.$DB_base.'" no existe',_M_ERROR));
    $q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.id_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$session->codigo."')".";";
+   DEPURAR ($q,0);
    $result = @mysql_query($q, $link) or retornar (Mensaje('Ocurrió un error mientras se obtenian las estadísticas.',_M_ERROR));
    $num_rows = mysql_numrows($result);
-   
+
    if(!$result || ($num_rows < 0)){
-      retornar("Error mostrando la información");
+      retornar(Mensaje("Error mostrando la información",_M_ERROR));
+   }
+   if($num_rows == 0){
+      retornar (Mensaje("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!",_M_ERROR));
    }
  
-   if($num_rows == 0){
-      retornar ("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!");
-   }
-
    $Impactos  = mysql_result($result,0,"Impactos");
-   $ImpactosCatorcena  = bcmul ($Impactos, "14");
    if (!$Impactos) {
 	   retornar (Mensaje("¡ups!... parece que no existe referencia número de impactos para sus calles",_M_ERROR)); 
    }
+ 
+   $ImpactosCatorcena  = bcmul ($Impactos, "14");
+ 
+   
    $datos .= '<b>'. ($Impactos) . "</b> Impactos diarios" . '<br />';
    $datos .= '<b>'. ($ImpactosCatorcena) . "</b> Impactos en esta catorcena" . '<br />';
 
    $q = "SELECT SUM(Impactos) AS impactos FROM (SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS c WHERE c.id_mupi=a.codigo_mupi) AS 'Calle', (SELECT impactos FROM emupi_calles WHERE codigo_calle = @calle) AS 'Impactos' FROM emupi_mupis_caras AS a WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='".$session->codigo."')) AS a;";
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba las estadísticas.');
-   
    if(!$result || ($num_rows < 0)){
       retornar("Error mostrando la información",_M_ERROR);
    }
