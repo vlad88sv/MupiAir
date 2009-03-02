@@ -33,7 +33,7 @@ function CONTENIDO_usuario_ingresar() {
 	echo SCRIPT('
 	$("input[name=\'codigo\']").toggleVal({
     populateFrom: "custom",
-    text: "código de acceso que le fue proporcionado por Eco Mupis",
+    text: "",
 	focusClass: "hasFocus",
     changedClass: "isChanged"
 	});
