@@ -16,14 +16,13 @@
 				'<script>
 				function funcion_combo_catorcenas(){
 				$("#datos_mupis").empty();
-				$("#indicaciones").empty();
 				$("#datos_calles").load("contenido/mupis+ubicaciones+dinamico.php?accion=calles&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val());
 				}
 				function funcion_combo_calles() {
 				$("#datos_mupis").empty();
-				$("#indicaciones").empty();
+				$("#Mensajes").empty();
 				window.location="#ubicaciones";
-				$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val()+"&calle="+$(\'#combo_calles\').val(),{},function(){$("#Mensajes").empty();});
+				$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val()+"&calle="+$(\'#combo_calles\').val());
 				}
 				</script>
 			    ';
@@ -86,7 +85,6 @@
 		  </script>
 		  ';
       }
-	  echo '<span id="indicaciones"></span>';
       echo $BotonVerPorMupis;
 	  echo "<br /><hr /><div id='botones_arte'></div>";
 	  
