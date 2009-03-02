@@ -146,7 +146,7 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 	$.blockUI({
 			message: $(\'div#div_'.$tipoPantalla.'\'),  
 			css: {  
-				top:  ($(window).height() - 600) /2 + \'px\', 
+				top:  ($(window).height() - 500) /2 + \'px\', 
 				left: ($(window).width() - 600) /2 + \'px\', 
 				width: \'600px\' 
 			}  
