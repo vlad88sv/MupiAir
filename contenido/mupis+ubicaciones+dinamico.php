@@ -102,10 +102,9 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
  if($num_rows == 0){
       retornar (Mensaje("¡No hay datos para ese código ($codigo_mupi)!",_M_ERROR));
    }
-   echo '<script>$("#botones_arte").html("");</script>';
-   //$datos .= '<h2>Datos del MUPI seleccionado</h2>';
-   $tipoPantalla = '';
-   $datos = $PosponerBlockUI = '';
+   
+   $tipoPantalla = $datos = $PosponerBlockUI = '';
+   $datos .= SCRIPT('$("#botones_arte").html("");');
    for($i=0; $i<$num_rows; $i++){
 	   $datosDiv = "";
 	  $arte = mysql_result($result,$i,"arte");
@@ -140,7 +139,7 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 		$datosDiv .= "<center><strong>Arte digital de su campaña:</strong></center>";
 		$datosDiv .= "<center>Viendo catorcena campaña, Arte no disponible</center>";
 	}
-	$PoponerBlockUI .= "LINK_".$tipoPantalla."();";
+	$PosponerBlockUI .= "LINK_".$tipoPantalla."();";
 	}
 	$datos .= SCRIPT('$("#div_'.$tipoPantalla.'").html("'.addslashes($datosDiv).'");');
    }
