@@ -52,6 +52,7 @@
 			    ';
 				
       $BotonVerPorMupis = NULL;
+	  echo '<div id="div_peatonal" style="display:none"></div><div id="div_vehicular" style="display:none"></div>';
       echo '<h1 id="ubicaciones">Ubicaciones de MUPIS contratados</h1><hr />';
       
       echo '<table>';
@@ -111,6 +112,6 @@
       
       echo '</tr>';
       echo '</table>';
-      echo '<span id="datos_mupis"><div id="div_peatonal"></div><div id="div_vehicular"></div>Seleccione un ' . _NOMBRE_ . '</span>';
+      echo '<span id="datos_mupis">Seleccione un ' . _NOMBRE_ . '</span>';
   }
 ?>

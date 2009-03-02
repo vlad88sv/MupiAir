@@ -83,7 +83,6 @@ function retornar($texto) {
 function Buscar ($codigo_mupi, $catorcena, $usuario) {
    global $session;
    /* La logica aqui es que si el usuario que solicitó la búsqueda es administrador, entonces se le muestran todos los MUPIS, si no solo se le muestran los suyos */
-   $datos ="";
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die('!->La base de datos seleccionada "'.$DB_base.'" no existe');
    if ( time() > $catorcena ) { $tCatorcena=$catorcena; } else { $tCatorcena=Obtener_catorcena_anterior($catorcena); }
@@ -105,8 +104,10 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
    }
    echo '<script>$("#botones_arte").html("");</script>';
    //$datos .= '<h2>Datos del MUPI seleccionado</h2>';
-   $tipoPantalla = ''; //Par
+   $tipoPantalla = '';
+   $datos = $PosponerBlockUI = '';
    for($i=0; $i<$num_rows; $i++){
+	   $datosDiv = "";
 	  $arte = mysql_result($result,$i,"arte");
       $tipo_pantalla  = mysql_result($result,$i,"tipo_pantalla");
       $foto_real = mysql_result($result,$i,"foto_real");
@@ -116,20 +117,35 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
       }else{
 		$tipoPantalla = 'peatonal';
       }
-	$datos .= "<div id='div_".$tipoPantalla."' style='display:none'>";
-	if ( time() > $catorcena || ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) ) {
-	$datos .= "<center>Imagen actual de su campaña ".$tipoPantalla.":</center>";
-	$datos .= "<center>" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
-	$datos .= "<center>Arte digital de su campaña:</center>";
-	$datos .= "<center>" . '<img src="include/ver.php?id='.$arte.'" />' . "</center>";	
+	  
+	if ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) {
+	// Si es administrador o Vendedor.
+		$datosDiv .= "<center><strong>Imagen actual de su campaña ".$tipoPantalla.":</strong></center>";
+		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
+		$datosDiv .= "<center><strong>Arte digital de su campaña:</center>";
+		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$arte.'" />' . "</strong></center>";
+		$datos .= '<script>$("#botones_arte").append("<a onclick=\'LINK_'.$tipoPantalla.'()\'>Ver imagenes de cara '.$tipoPantalla.'</a><br />");</script>';
+    } else {
+	// Si es cliente o usuario.
+	if ( time() > $catorcena ) {
+		//Si la catorcena NO es futura.
+		$datosDiv .= "<center><strong>Imagen actual de su campaña ".$tipoPantalla.":</strong></center>";
+		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
+		$datosDiv .= "<center><strong>Arte digital de su campaña:</center>";
+		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$arte.'" />' . "</strong></center>";	
 	} else {
-	$datos .= "<center>Imagen actual de su campaña ".$tipoPantalla.":</center>";
-	$datos .= "<center>Viendo catorcena futura, La fotografía mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
-	$datos .= "<center>Arte digital de su campaña:</center>";
-	$datos .= "<center>Viendo catorcena campaña, Arte no disponible</center>";
+		//Si la catorcena NO es futura.
+		$datosDiv .= "<center><strong>Imagen actual de su campaña ".$tipoPantalla.":</strong></center>";
+		$datosDiv .= "<center>Viendo catorcena futura, La fotografía mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
+		$datosDiv .= "<center><strong>Arte digital de su campaña:</strong></center>";
+		$datosDiv .= "<center>Viendo catorcena campaña, Arte no disponible</center>";
 	}
-	$datos .= "</div>";
-	$datos .= '<script>$("#botones_arte").append("<a onclick=\'LINK_'.$tipoPantalla.'()\'>Ver imagenes de cara '.$tipoPantalla.'</a><br />");</script>';
+	$PoponerBlockUI .= "LINK_".$tipoPantalla."();";
+	}
+	$datos .= SCRIPT('$("#div_'.$tipoPantalla.'").html("'.addslashes($datosDiv).'");');
+   }
+   if ($PosponerBlockUI) {
+	   $datos .= SCRIPT($PosponerBlockUI);
    }
 retornar($datos);
 }
