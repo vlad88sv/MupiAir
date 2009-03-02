@@ -785,7 +785,7 @@ class GoogleMapAPI {
      */
      // IMPORTANTE!, acá tiene que ir el hack mayor!.
     function getCreateMarkerJS() {
-        $_SCRIPT_ = '$("#Mensajes").html("Cargando Fotofrafías del Eco Mupi seleccionado...");$("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI=\'+id,{},function(){$("#Mensajes").empty();});';
+        $_SCRIPT_ = '$("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI=\'+id,{},function(){$("#Mensajes").empty();});';
         $_output = '';
 		$_output .= 'function createMarker(point, title, html, n, tooltip, id, html_pedidos) {' . "\n";
         $_output .= 'if(n >= '. sizeof($this->_icons) .') { n = '. (sizeof($this->_icons) - 1) ."; }\n";

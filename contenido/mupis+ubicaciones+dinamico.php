@@ -126,6 +126,7 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 		$datos .= '<script>$("#botones_arte").append("<a onclick=\'LINK_'.$tipoPantalla.'()\'>Ver imagenes de cara '.$tipoPantalla.'</a><br />");</script>';
     } else {
 	// Si es cliente o usuario.
+		$datosDiv .= '<a onclick=\'$.unblockUI()\'>Cerrar</a><hr />';
 	if ( time() > $catorcena ) {
 		//Si la catorcena NO es futura.
 		$datosDiv .= "<center><strong>Imagen actual de su campaña ".$tipoPantalla.":</strong></center>";
@@ -139,10 +140,25 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 		$datosDiv .= "<center><strong>Arte digital de su campaña:</strong></center>";
 		$datosDiv .= "<center>Viendo catorcena campaña, Arte no disponible</center>";
 	}
-	$PosponerBlockUI .= "LINK_".$tipoPantalla."();";
+	if (!$PosponerBlockUI)
+	$PosponerBlockUI .= '
+	function PBUI () {
+	$.blockUI({
+			message: $(\'div#div_'.$tipoPantalla.'\'),  
+			css: {  
+				top:  ($(window).height() - 600) /2 + \'px\', 
+				left: ($(window).width() - 600) /2 + \'px\', 
+				width: \'600px\' 
+			}  
+			});
+	}
+	setTimeout(PBUI, 500);
+	';
 	}
 	$datos .= SCRIPT('$("#div_'.$tipoPantalla.'").html("'.addslashes($datosDiv).'");');
    }
+   // Esto tiene que ser disparado un poco despues de que se dispare el evento Stop de Ajax
+   // para evitar que cierre automaticamente la cajita de la imagen.
    if ($PosponerBlockUI) {
 	   $datos .= SCRIPT($PosponerBlockUI);
    }
