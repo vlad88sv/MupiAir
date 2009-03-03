@@ -1,7 +1,7 @@
 html
 	{height:100%;}
 body
-	{background-color: #FFFFFF;color: #000000;background-image: url('fondo.jpg');font-family: "bitstream vera sans", "verdana", "arial", "helvetica", sans-serif;margin: 0;font-size: 10pt;min-height: 100%;width: 100%;height: 100%;}
+	{background-color: #FFFFFF;color: #000000;background-image: url('fondo.jpg');font-family: "bitstream vera sans", "verdana", "arial", "helvetica", sans-serif;margin: 0;font-size: 100%;min-height: 100%;width: 100%;height: 100%;}
 blockquote
 	{background-color:#9CC089;border:2px solid #C1DAD6;margin:0;padding:5px;quotes:"\201C""\201D";max-width:100%;font-weight:bold;color:#FFFFFF}
 p
