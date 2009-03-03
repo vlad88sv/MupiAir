@@ -186,7 +186,8 @@ return '<img src="'. $ruta . '" style="max-width:'.$width.'; max-height:'.$heigh
 
 function CONTENIDO_mostrar_logo_cliente() {
 	global $session, $database;
-	if ( !$session->isAdmin() && $session->logged_in ) {
+	$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+	if ( !in_array($session->userlevel, $NivelesPermitidos) && $session->logged_in ) {
 		$q = "SELECT logotipo FROM ". TBL_USERS . " WHERE codigo='".$session->codigo."';";
 		$result = $database->query($q);		
 		echo '<center>' . '<img src="include/ver.php?id='.mysql_result($result,0,"logotipo").'" />'. '</center><hr />';
