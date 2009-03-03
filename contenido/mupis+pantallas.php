@@ -54,16 +54,18 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio, $calle) {
 	if ( !isset($_GET['actualizar']) && !isset($_GET['crear']) )  {
 	echo "<b>Viendo pantallas "._NOMBRE_." de la catorcena</b> " . Combobox_catorcenas("miSelect", $Catorcena) ;
 	$BotonCambiar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena=\'+document.getElementsByName(\'miSelect\')[0].value" value="Cambiar">';
-	$BotonClonarCatorcenaAnterior = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=clonar\'" value="Clonar anterior" '.GenerarTooltip('Clona los datos de los mupis de la catorcena inmediata anterior').'>';
-	$BotonEliminarDatosCatorcena = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=eliminar_datos\'" value="Eliminar Datos" '.GenerarTooltip('Elimina los datos mostrados para la catorcena actual').'>';
+	$BotonClonarCatorcenaAnterior = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=clonar\'" value="Clonar datos de catorcena anterior" '.GenerarTooltip('Clona los datos de los mupis de la catorcena inmediata anterior').'>';
+	$BotonEliminarDatosCatorcena = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=eliminar_datos\'" value="Eliminar todos los datos de esta catorcena" '.GenerarTooltip('Elimina los datos mostrados para la catorcena actual').'>';
 	$BotonFiltraVistaPorCalles = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena=\'+document.getElementsByName(\'miSelect\')[0].value+\'&amp;calle=\'+document.getElementsByName(\'cmbCalles\')[0].value" value="Filtrar">';
 	echo $BotonCambiar;
 	echo $BotonCancelar;
+	echo "<br />";
+	echo "<b>Filtrar vista a "._NOMBRE_." que se ubiquen en la calle</b> ". $database->Combobox_calle("cmbCalles") . $BotonFiltraVistaPorCalles;
+	echo "<br /><br />";
+	echo "<b>Utilidades:</b>";
+	echo "<br />";
 	echo $BotonClonarCatorcenaAnterior;
 	echo $BotonEliminarDatosCatorcena;
-	echo "<br />";
-	echo "<b>Filtrar vista a "._NOMBRE_." que se ubiquen en la calle</b> ". $database->Combobox_calle("cmbCalles");
-	echo $BotonFiltraVistaPorCalles;
 	echo "<hr />";
 	verPantallas($usuario,$calle);
 	}
