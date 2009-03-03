@@ -2,7 +2,7 @@
   function CONTENIDO_mupis_ubicaciones($usuario = '')
   {
       global $session, $database, $map;
-      $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+      $NivelesPermitidos = array(ADMIN_LEVEL);
       if (!in_array($session->userlevel, $NivelesPermitidos)) {
           $usuario = $session->codigo;
 		  unset($_GET['verpormupis']);
@@ -75,7 +75,7 @@
 		  echo '<b>Trabajar Catorcena:</b><br />' . Combobox_catorcenas("combo_catorcenas", Obtener_catorcena_cercana()) . '<br />';
           echo '<b>Ver Calle:</b><br />' . $database->Combobox_calle("combo_calles") . $Boton_combo_calles . '<br /><br />';
           
-          if ($session->userlevel == ADMIN_LEVEL) {
+          if (in_array($session->userlevel, $NivelesPermitidos)) {
               $BotonVerPorMupis = "<br /><hr />" . '<input type="button" OnClick="window.location=\'./?' . _ACC_ . '=ver+ubicaciones\'" value="Ver por Pantallas">';
           }
 		  echo "\n".
@@ -100,7 +100,7 @@
 	  <ol>
 	  <li>Escoja la catorcena de la cual desea ver sus Eco Mupis y presione el botón "Mostrar calles".</li>
 	  <li>Aparecerá una selección de calles en las cuales Ud. tiene Eco Mupis con su publicidad, escoja la calle de la cual desee ver el mapa y presione "Mostrar Mapa".</li>
-	  <li>Deberá aparecer un Mapa con los Eco Mupis (representados como pequeños cuadros rojos) que contenien las fotos de su publicidad.<br />Al realizar "clic" sobre dichos cuadros rojos, podrá observar las imagenes respectivas si Ud. desplaza la página hacia abajo.</li>
+	  <li>Deberá aparecer un Mapa con los Eco Mupis (representados como pequeños cuadros rojos) que contienen las fotos de su publicidad.<br />Al realizar "clic" sobre dichos cuadros rojos, podrá observar las imagenes respectivas si Ud. desplaza la página hacia abajo.</li>
 	  <li>Repita los pasos 1 a 3 tanto como Ud. guste.</li>
 	  </ol>
 	  </div>';
