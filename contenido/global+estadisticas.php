@@ -58,8 +58,11 @@ if (in_array($session->userlevel, $NivelesPermitidos) && !$usuario) {
 $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
 if (!in_array($session->userlevel, $NivelesPermitidos)) {
 	$usuario = $session->codigo;
+	$estadisticasPara = "";
+} else {
+	$estadisticasPara = " para $usuario";
 }
-echo "<h1>Estadísticas</h1>";
+echo "<h1>Estadísticas$estadisticasPara</h1>";
 //Dinamismo en selección de catorcenas.firef
 echo SCRIPT('
 	function ObtenerEstad(){
@@ -88,8 +91,10 @@ echo "Número de impactos publicitarios diarios: <b>" . (int) (mysql_result($res
 echo "<br />".$database->Combobox_CatorcenasConPresencia("catorcenas_presencia",$usuario);
 echo '<hr><span id="datos_catorcena"><b>Seleccione una catorcena por favor</b></span>';
 
-echo MOSTRAR_comentarios();
-echo MOSTRAR_eventos();
+if (!$usuario) {
+	echo MOSTRAR_comentarios();
+	echo MOSTRAR_eventos();
+}
 ob_flush();
 return;
 }

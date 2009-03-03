@@ -39,7 +39,7 @@ function Buscar ($usuario, $catorcena) {
  
    $Impactos  = mysql_result($result,0,"Impactos");
    if (!$Impactos) {
-	   retornar (Mensaje("¡ups!... parece que no existe referencia número de impactos para sus calles",_M_ERROR)); 
+	   retornar (Mensaje("¡ups!... parece que no existe referencia de número de impactos para sus calles",_M_ERROR)); 
    }
  
    $ImpactosCatorcena  = bcmul ($Impactos, "14");
