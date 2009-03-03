@@ -104,8 +104,10 @@ function CONTENIDO_mostrar_principal() {
 			break;
 		}
 		
+	case "ver clientes":
 	case "gestionar clientes":
-		if($session->isAdmin()){
+		$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+		if (in_array($session->userlevel, $NivelesPermitidos)) {
 			CONTENIDO_admin();
 			break;
 		}
@@ -237,6 +239,7 @@ function INICIAR_MENUES () {
 	<ul>
 	<li><a href="./">Inicio</a></li>'
 	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
+	.'<li>'.  CREAR_LINK_GET("ver+clientes","Clientes", "Ver lista de clientes") .'</li>'
 	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>	
 	<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
 	<li>&nbsp;&nbsp;&nbsp;</li>

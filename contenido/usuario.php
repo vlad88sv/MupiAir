@@ -1,7 +1,12 @@
 <?
 function displayUsers(){
-   global $database;
-   $q = "SELECT * FROM ".TBL_USERS." ORDER BY userlevel DESC;";
+   global $database,$session;
+   if ( !$session->isAdmin() ) {
+	   $where_userlevel = " WHERE userlevel <= 3 ";
+   } else {
+	   $where_userlevel = "";
+   }
+   $q = "SELECT * FROM ".TBL_USERS."$where_userlevel ORDER BY userlevel DESC;";
    $result = $database->query($q);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
@@ -15,20 +20,29 @@ function displayUsers(){
       return;
    }
    echo '<table border="0">';
-   echo "<tr><th>Código</th><th>Nombre</th><th>Nivel</th><th>Email</th><th>Última actividad</th><th>Acciones</th></tr>";
+	if ( $session->isAdmin() ) {
+	   echo "<tr><th>Código</th><th>Nombre</th><th>Nivel</th><th>Email</th><th>Última actividad</th><th>Acciones</th></tr>";
+	} else {
+		echo "<tr><th>Código</th><th>Nombre</th><th>Acciones</th></tr>";
+	}
    for($i=0; $i<$num_rows; $i++){
+	  $acciones='';
       $uname  = mysql_result($result,$i,"codigo");
       $nombre = mysql_result($result,$i,"nombre");
-      $ulevel = mysql_result($result,$i,"userlevel");
-      $email  = mysql_result($result,$i,"email");
-      $time   = date("d-m-y\nh:ia", mysql_result($result,$i,"timestamp"));
-      $verPedidos = CREAR_LINK_GET("gestionar+pedidos:$uname", "Pedidos", "Le mostrara los pedidos realizados por este cliente y le dará la opción de agregar más.");
-      $verPantallas = CREAR_LINK_GET("gestionar+pantallas:$uname", "Pantallas", "Le mostrara las pantallas en las cuales se encuentran colocados los pedidos.");
-      $verUbicaciones = CREAR_LINK_GET("ver+ubicaciones:$uname", "Ubicaciones", "Le mostrara las ubicaciones de los MUPIS de este cliente.");
-      $verEstadisticas = CREAR_LINK_GET("ver+estadisticas:$uname", "Estadísticas", "Le mostrara las estadísticas de este cliente.");
-	  $reporte = CREAR_LINK_GET("ver+reportes:$uname", "Reporte", "Le generará un reporte sobre este cliente.");
-      $uname = CREAR_LINK_GET("ver+cliente:".$uname, $uname, "Ver datos de este cliente");
-      echo "<tr><td>$uname</td><td>$nombre</td><td>$ulevel</td><td>$email</td><td>$time</td><td>$verPantallas<br />$verPedidos<br />$verUbicaciones<br />$verEstadisticas<hr />$reporte</td></tr>";
+      if ($session->isAdmin()) $ulevel = mysql_result($result,$i,"userlevel");
+      if ($session->isAdmin()) $email  = mysql_result($result,$i,"email");
+      if ($session->isAdmin()) $time   = date("d-m-y\nh:ia", mysql_result($result,$i,"timestamp"));
+      if ($session->isAdmin()) $acciones .= CREAR_LINK_GET("gestionar+pedidos:$uname", "Pedidos", "Le mostrara los pedidos realizados por este cliente y le dará la opción de agregar más.")."<br />";
+      if ($session->isAdmin()) $acciones .= CREAR_LINK_GET("gestionar+pantallas:$uname", "Pantallas", "Le mostrara las pantallas en las cuales se encuentran colocados los pedidos.")."<br />";
+      $acciones .= CREAR_LINK_GET("ver+ubicaciones:$uname", "Ubicaciones", "Le mostrara las ubicaciones de los MUPIS de este cliente.")."<br />";
+      $acciones .= CREAR_LINK_GET("ver+estadisticas:$uname", "Estadísticas", "Le mostrara las estadísticas de este cliente.")."<br />";
+	  if ($session->isAdmin()) $acciones .= "<hr />".CREAR_LINK_GET("ver+reportes:$uname", "Reporte", "Le generará un reporte sobre este cliente.");
+      if ($session->isAdmin()) $uname = CREAR_LINK_GET("ver+cliente:".$uname, $uname, "Ver datos de este cliente");
+      if ( $session->isAdmin() ) {
+		echo "<tr><td>$uname</td><td>$nombre</td><td>$ulevel</td><td>$email</td><td>$time</td><td>$acciones</td></tr>";
+	  } else {
+		echo "<tr><td>$uname</td><td>$nombre</td><td>$acciones</td></tr>";
+	  }
    }
    echo "</table><br />";
 }
@@ -43,6 +57,7 @@ if($form->num_errors > 0){
 echo '<h2>Cientes registrados en el sistema</h2>';
 displayUsers();
 
+if ( $session->isAdmin() ) {
 echo '<hr /><h2>Establecer permisos a cliente/usuario</h2>';
 echo $form->error("upduser"); 
 echo '
@@ -78,5 +93,6 @@ echo '
 </table>
 <input type="submit" value="Quitar Cliente/Usuario">
 </form>';
+}
 }
 ?>
