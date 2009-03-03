@@ -2,11 +2,16 @@
   function CONTENIDO_mupis_ubicaciones($usuario = '')
   {
       global $session, $database, $map;
-      $NivelesPermitidos = array(ADMIN_LEVEL);
+	  //Cosas que solo Admin y Vendedor pueden tener acceso
+      $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
       if (!in_array($session->userlevel, $NivelesPermitidos)) {
-          $usuario = $session->codigo;
-		  unset($_GET['verpormupis']);
+		  $usuario = $session->codigo;
       }
+	  //Rebajamos el nivel de acceso a solo admin, para evitar que vean el botón verpormupis.
+	  $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+	  if (!in_array($session->userlevel, $NivelesPermitidos)) {
+		unset($_GET['verpormupis']);
+	  }
       //Importante!!! Esto tiene que suceder antes de cualquier cuestión AJAX porque Google esta usando document.write en algún momento!.
       echo sprintf('<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s" type="text/javascript" charset="utf-8"></script>', GOOGLE_MAP_KEY);
       echo '<script src="include/jquery.form.js" charset="utf-8"></script>';
@@ -17,6 +22,7 @@
 				function funcion_combo_catorcenas(){
 				$("#datos_mupis").empty();
 				$("#datos_calles").load("contenido/mupis+ubicaciones+dinamico.php?accion=calles&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val());
+				$("li#MM_paso_1").css("text-decoration", "line-through");
 				}
 				function funcion_combo_calles() {
 				$("#datos_mupis").empty();
@@ -98,7 +104,7 @@
 	  <h2>Instrucciones de uso.</h2>
 	  Para utilizar su sistema de ubicación Eco Mupis debe seguir los siguientes pasos:<br />
 	  <ol>
-	  <li>Escoja la catorcena de la cual desea ver sus Eco Mupis y presione el botón "Mostrar calles".</li>
+	  <li id="MM_paso_1">Escoja la catorcena de la cual desea ver sus Eco Mupis y presione el botón "Mostrar calles".</li>
 	  <li>Aparecerá una selección de calles en las cuales Ud. tiene Eco Mupis con su publicidad, escoja la calle de la cual desee ver el mapa y presione "Mostrar Mapa".</li>
 	  <li>Deberá aparecer un Mapa con los Eco Mupis (representados como pequeños cuadros rojos) que contienen las fotos de su publicidad.<br />Al realizar "clic" sobre dichos cuadros rojos, podrá observar las imagenes respectivas si Ud. desplaza la página hacia abajo.</li>
 	  <li>Repita los pasos 1 a 3 tanto como Ud. guste.</li>
