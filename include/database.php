@@ -496,7 +496,8 @@
           
 		  //echo $q.'<br />';
           $result = mysql_query($q, $this->connection);
-  		  $q2 = "select distinct grupo_calle from emupi_calles where grupo_calle is not NULL;";
+  		  $q2 = "select distinct grupo_calle from emupi_calles where grupo_calle IS NOT NULL AND grupo_calle != '';";
+		  DEPURAR ($q2,0);
 		  $result2 = mysql_query($q2, $this->connection);
           $num_rows = mysql_numrows($result);
 		  $num_rows2 = mysql_numrows($result2);
