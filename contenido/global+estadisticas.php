@@ -1,6 +1,6 @@
 <?php
 $inicioCatorcena = Obtener_catorcena_cercana();
-function CONTENIDO_global_estadisticas(){
+function CONTENIDO_global_estadisticas($usuario){
 global $session, $database, $inicioCatorcena;
    	echo '
 	<script type="text/javascript">
@@ -12,7 +12,8 @@ global $session, $database, $inicioCatorcena;
 	</script>
 	';
 ob_start();
-if ( $session->isAdmin() ) {
+$NivelesPermitidos = array(ADMIN_LEVEL);
+if (in_array($session->userlevel, $NivelesPermitidos) && !$usuario) {
   echo "<h1>Estadísticas y notas administrativas</h1>";
   echo MOSTRAR_comentarios();
    echo "<hr /><h2>Pantallas activas esta catorcena</h2>";
@@ -54,33 +55,37 @@ if ( $session->isAdmin() ) {
   return;
 }
 
+$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+if (!in_array($session->userlevel, $NivelesPermitidos)) {
+	$usuario = $session->codigo;
+}
 echo "<h1>Estadísticas</h1>";
 //Dinamismo en selección de catorcenas.firef
 echo SCRIPT('
 	function ObtenerEstad(){
-		$("#datos_catorcena").load("contenido/global+estadisticas+dinamico.php?catorcena="+$(\'#catorcenas_presencia\').val());
+		$("#datos_catorcena").load("contenido/global+estadisticas+dinamico.php?usuario='.$usuario.'&catorcena="+$(\'#catorcenas_presencia\').val());
 	}
 	$("#catorcenas_presencia").change(function (){ObtenerEstad();});
 	ObtenerEstad();
 ');
 echo "Catorcena actual: <b>" . date("d/m/Y", Obtener_catorcena_cercana()) . ' a ' . date("d/m/Y", Fin_de_catorcena(Obtener_catorcena_cercana())) . "</b><br />";
 
-$q = "SELECT COUNT(*) as cuenta FROM ". TBL_MUPI_FACES ." WHERE catorcena=".Obtener_catorcena_cercana()." AND codigo_pedido IN (SELECT codigo_pedido from ".TBL_MUPI_ORDERS." WHERE codigo = '".$session->codigo."');";
+$q = "SELECT COUNT(*) as cuenta FROM ". TBL_MUPI_FACES ." WHERE catorcena=".Obtener_catorcena_cercana()." AND codigo_pedido IN (SELECT codigo_pedido from ".TBL_MUPI_ORDERS." WHERE codigo = '".$usuario."');";
 $result = $database->query($q);
 echo "Número de caras publicitarias contratadas en catorcena actual: <b>" . mysql_result($result,0,"cuenta")."</b><br />";
 
-$q = "SELECT SUM(catorcena_fin - catorcena_inicio) as cuenta FROM emupi_mupis_pedidos WHERE codigo='".$session->codigo."';";
+$q = "SELECT SUM(catorcena_fin - catorcena_inicio) as cuenta FROM emupi_mupis_pedidos WHERE codigo='".$usuario."';";
 $result = $database->query($q);
 echo "Número de catorcenas contratadas: <b>" . Contar_catorcenas(mysql_result($result,0,"cuenta"))."</b><br />";
 
-$q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.id_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=".Obtener_catorcena_cercana()." AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$session->codigo."')".";";
+$q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.id_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=".Obtener_catorcena_cercana()." AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$usuario."')".";";
 $result = $database->query($q);
 echo "Número de impactos publicitarios diarios: <b>" . (int) (mysql_result($result,0,"Impactos"))."</b><br />";
 
 /*********************************************************************************************/
 // Inicio de parte dinámica.
 /*********************************************************************************************/
-echo "<br />".$database->Combobox_CatorcenasConPresencia("catorcenas_presencia",$session->codigo);
+echo "<br />".$database->Combobox_CatorcenasConPresencia("catorcenas_presencia",$usuario);
 echo '<hr><span id="datos_catorcena"><b>Seleccione una catorcena por favor</b></span>';
 
 echo MOSTRAR_comentarios();

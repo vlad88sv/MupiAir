@@ -14,7 +14,7 @@ function CONTENIDO_usuario_ingresar() {
 		switch ( $session->userlevel ) {
 			case ADMIN_LEVEL:
 			case CLIENT_LEVEL:
-			CONTENIDO_global_estadisticas();
+			CONTENIDO_global_estadisticas("");
 			break;
 			case SALESMAN_LEVEL:
 			case USER_LEVEL:

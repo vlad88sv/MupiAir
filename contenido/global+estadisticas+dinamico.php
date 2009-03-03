@@ -7,7 +7,7 @@ require_once('../include/sesion.php');
 require_once('sub.php');
 
 if ( isset( $_GET['catorcena'] ) ) {
-	retornar ( Buscar (strip_tags($_GET['catorcena'])) );
+	retornar ( Buscar (strip_tags($_GET['usuario']), strip_tags($_GET['catorcena'])) );
 } else {
 	retornar ( "Ud. esta utilizando incorrectamente este script de soporte." );
 }
@@ -16,12 +16,16 @@ function retornar($texto) {
 	exit ('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' . $texto . '<br />');
 }
 
-function Buscar ($catorcena) {
+function Buscar ($usuario, $catorcena) {
    global $session;
+   $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+	if (!in_array($session->userlevel, $NivelesPermitidos)) {
+	$usuario = $session->codigo;
+	}
    $datos ="";
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die(Mensaje('!->La base de datos seleccionada "'.$DB_base.'" no existe',_M_ERROR));
-   $q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.id_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$session->codigo."')".";";
+   $q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.id_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$usuario."')".";";
    DEPURAR ($q,0);
    $result = @mysql_query($q, $link) or retornar (Mensaje('Ocurrió un error mientras se obtenian las estadísticas.',_M_ERROR));
    $num_rows = mysql_numrows($result);

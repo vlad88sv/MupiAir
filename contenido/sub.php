@@ -81,7 +81,7 @@ function CONTENIDO_mostrar_principal() {
 		break;
 
 	case "ver estadisticas":
-		CONTENIDO_global_estadisticas();
+		CONTENIDO_global_estadisticas($usuario);
 		break;
 	
 	case "gestionar eventos":	
