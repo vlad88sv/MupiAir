@@ -8,7 +8,7 @@
 		  $usuario = $session->codigo;
       }
 	  //Rebajamos el nivel de acceso a solo admin, para evitar que vean el botón verpormupis.
-	  $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+	  $NivelesPermitidos = array(ADMIN_LEVEL);
 	  if (!in_array($session->userlevel, $NivelesPermitidos)) {
 		unset($_GET['verpormupis']);
 	  }
