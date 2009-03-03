@@ -170,6 +170,12 @@ function CONTENIDO_mostrar_principal() {
 			break;
 		}
 		
+	case "cargar pantallas":
+		if($session->isAdmin()){
+			CONTENIDO_cargar_pantallas();
+			break;
+		}	
+	
 	default:
 		CONTENIDO_global_404();
 	}
@@ -193,10 +199,10 @@ function INICIAR_MENUES () {
 	case ADMIN_LEVEL:
 	$s =
 	'
-	<div class="chromestyle" id="chromemenu" style="font-size:17px">
+	<div class="chromestyle" id="chromemenu" style="font-size:.8em">
 	<ul>
 	<li><a href="./">Inicio</a></li>
-	<li><a href="#" rel="menu_herramientas">Editar</a></li>'
+	<li><a href="#" rel="menu_herramientas">Acciones</a></li>'
 	.'<li>'.  CREAR_LINK_GET("registro","Registrar cliente", "Agregar un nuevo cliente al sistema") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("gestionar+pantallas","Gestionar pantallas", "Eliminar o modificar pantallas") .'</li>'
@@ -213,12 +219,13 @@ function INICIAR_MENUES () {
 	//Herramientas
 	$s .= '
 	<div id="menu_herramientas" class="dropmenudiv" style="width: 150px;">'
-	. CREAR_LINK_GET("gestionar+clientes","Clientes", "Gestionar clientes")
-	. CREAR_LINK_GET("gestionar+mupis","Eco Mupis", "Eliminar o modificar MUPIS")
-	. CREAR_LINK_GET("gestionar+calles","Calles", "Eliminar o modificar calles")
-	. CREAR_LINK_GET("gestionar+eventos","Eventos", "Agregar, Eliminar o modificar eventos")
-	. CREAR_LINK_GET("gestionar+referencias", "Referencias", "Eliminar o modificar referencias de calle")
-	. CREAR_LINK_GET("gestionar+comentarios", "Comentarios", "Eliminar o modificar comentarios")
+	. CREAR_LINK_GET("cargar+pantallas", "Cargar Pantallas", "Cargar fotos enumeradas de pantallas")
+	. CREAR_LINK_GET("gestionar+clientes","Editar Clientes", "Gestionar clientes")
+	. CREAR_LINK_GET("gestionar+mupis","Editar Ubicaciones", "Eliminar o modificar MUPIS")
+	. CREAR_LINK_GET("gestionar+calles","Editar Calles", "Eliminar o modificar calles")
+	. CREAR_LINK_GET("gestionar+eventos","Editar Eventos", "Agregar, Eliminar o modificar eventos")
+	. CREAR_LINK_GET("gestionar+referencias", "Editar Referencias", "Eliminar o modificar referencias de calle")
+	. CREAR_LINK_GET("gestionar+comentarios", "Editar Comentarios", "Eliminar o modificar comentarios")
 	.'</div>';
 	break;
 	
