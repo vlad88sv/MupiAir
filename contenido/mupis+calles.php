@@ -32,7 +32,7 @@ function CONTENIDO_calles($usuario, $calle) {
 		$edicionOregistro = 'Registrar calle';
 	}
 	
-	echo '<hr /><h2>'.$edicionOregistro.'</h2>';
+	echo '<hr /><h2 id="edicion_calle">'.$edicionOregistro.'</h2>';
 	
 	vercallesregistro($usuario, $calle);
 }
@@ -96,6 +96,7 @@ if ($calle) {
 	$impactos = mysql_result($result,0,"impactos");
 	$NombreBotonAccion = "Editar";
 	$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+calles\'" value="Cancelar">';
+	echo SCRIPT('window.location="#edicion_calle";');
 } else {
 	$q = "SELECT LAST_INSERT_ID() FROM ".TBL_STREETS; 
 	$codigo_calle = mysql_num_rows($database->query($q)) + 1;
