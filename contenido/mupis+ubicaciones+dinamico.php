@@ -206,13 +206,13 @@ if ( strpos($calle, "G:") !== false ) {
 		if ($grupo_calle) $t_grupo_calle = " where $grupo_calle";
 		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle FROM emupi_mupis AS a$t_grupo_calle;";
 	} else {
-		// Por Presencia 
-	if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL ) {
+		// Por Presencia y sin usuario
+	if ( ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) && !$usuario ) {
 		// Siendo Admin o Vendedor
 		if ($grupo_calle) $t_grupo_calle = " and $grupo_calle";
 		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle FROM emupi_mupis AS a WHERE id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena)$t_grupo_calle;";
 	} else {
-		// Siendo cualquier otro nivel
+		// Siendo cualquier otro nivel o con usuario
 		if ($grupo_calle) $t_grupo_calle = "$grupo_calle and ";
 		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle, (SELECT logotipo from emupi_usuarios where codigo='$usuario') as logotipo from emupi_mupis where $t_grupo_calle id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='$usuario'));";
 	}
@@ -239,7 +239,7 @@ if ( strpos($calle, "G:") !== false ) {
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
       $codigo_evento = mysql_result($result,$i,"codigo_evento");
-		if ( ($session->isAdmin() && !$usuario) || $session->userlevel == SALESMAN_LEVEL ) {
+		if ( ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) ) {
 			$q = "SELECT DISTINCT logotipo FROM emupi_usuarios where codigo IN (SELECT codigo from emupi_mupis_pedidos where codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_caras as b WHERE catorcena=$catorcena AND b.codigo_mupi=".mysql_result($result,$i,"id_mupi")."));";
 			//echo $q."<br>";
 			$result2 = $database->query($q);
