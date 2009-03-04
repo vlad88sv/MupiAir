@@ -222,16 +222,16 @@ if ( isset($_POST['id_pantalla'] ) ) {
 }
 if ( !isset($_POST['actualizar']) ) {
 	$q = "INSERT INTO ".TBL_MUPI_FACES." (".$extra1."tipo_pantalla, codigo_mupi, codigo_pedido, foto_real, catorcena) VALUES (".$extra2."'" . $_POST['tipo_pantalla'] . "', '" . $_POST['codigo_mupi']  . "', '" . $_POST['codigo_pedido']  . "', '" . $idImg .  "', '" . $_POST['catorcena']  .  "')  ON DUPLICATE KEY UPDATE tipo_pantalla=VALUES(tipo_pantalla), codigo_mupi=VALUES(codigo_mupi), codigo_pedido=VALUES(codigo_pedido), foto_real=VALUES(foto_real);";
+	$database->REGISTRAR ("pantallas_agregar", "Se agregó una pantalla. Código pedido: ". $_POST['codigo_pedido'] .", Código MUPI: ". $_POST['codigo_mupi'] . ", Catorcena: " .AnularFechaNula($_POST['catorcena']), "SQL: $q");
 } else {
 	$q = "UPDATE ".TBL_MUPI_FACES." SET codigo_pedido='". $_POST['codigo_pedido'] . "',foto_real='$idImg' WHERE id_pantalla='".$_POST['id_pantalla']."';";
+	$database->REGISTRAR ("pantallas_actualizar", "Se actualizó una pantalla. Código pedido: ". $_POST['codigo_pedido'] .", Código Pantalla: ". $_POST['id_pantalla'], "SQL: $q");
 }
 DEPURAR ($q,0);
 if ( $database->query($q) == 1 ) {
 	echo Mensaje ("Exito al registrar la pantalla", _M_INFO);
-	$database->REGISTRAR ("pantallas_agregar", "Se modificó o actualizó una pantalla. Código pedido: ". $_POST['codigo_pedido'] .", Código MUPI: ". $_POST['codigo_mupi'],"SQL: $q");
 } else {
 	echo Mensaje ("Falló al registrar la pantalla", _M_ERROR);
-	$database->REGISTRAR ("pantallas_agregar", "Se intentó modificar o actualizar una pantalla, pero falló. Código pedido: ". $_POST['codigo_pedido'] .", Código MUPI: ". $_POST['codigo_mupi'],"SQL: $q");
 }
  
 }
