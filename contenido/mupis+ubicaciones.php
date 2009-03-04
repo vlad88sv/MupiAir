@@ -46,7 +46,7 @@
 						width: \'600px\' 
 					}  
 					}); 
-					setTimeout($.unblockUI, 5000);
+					//setTimeout($.unblockUI, 5000);
 				}
 				function LINK_vehicular(){
 					BLOCK_IMAGEN(\'div#div_vehicular\');

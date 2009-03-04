@@ -107,6 +107,7 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
    $datos .= SCRIPT('$("#botones_arte").html("");');
    for($i=0; $i<$num_rows; $i++){
 	   $datosDiv = "";
+	   $datosDiv .= '<a onclick=\'$.unblockUI()\'>Cerrar</a><hr />';
 	  $arte = mysql_result($result,$i,"arte");
       $tipo_pantalla  = mysql_result($result,$i,"tipo_pantalla");
       $foto_real = mysql_result($result,$i,"foto_real");
@@ -126,7 +127,6 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 		$datos .= '<script>$("#botones_arte").append("<a onclick=\'LINK_'.$tipoPantalla.'()\'>Ver imagenes de cara '.$tipoPantalla.'</a><br />");</script>';
     } else {
 	// Si es cliente o usuario.
-		$datosDiv .= '<a onclick=\'$.unblockUI()\'>Cerrar</a><hr />';
 	if ( time() > $catorcena ) {
 		//Si la catorcena NO es futura.
 		$datosDiv .= "<center><strong>Imagen actual de su campaña ".$tipoPantalla.":</strong></center>";
