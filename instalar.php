@@ -190,7 +190,7 @@ Esta tabla funciona como una versión básica de un registro de pares.
 Servirá para llevar las estadísticas de todo el sitio:
 -Numero de visitas
 */
-$q="clave VARCHAR(255) NOT NULL PRIMARY KEY, valor VARCHAR(255)";
+$q="id_registro INT NOT NULL AUTO_INCREMENT PRIMARY KEY, clave VARCHAR(255), valor TEXT, detalle TEXT, autor VARCHAR(255), timestamp int(11) unsigned not null";
 CREAR_TBL(TBL_REGISTRY, $q);
 
 /*

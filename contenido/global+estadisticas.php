@@ -8,6 +8,9 @@ global $session, $database, $inicioCatorcena;
 	$("#toggler_pantallas_activas").click(function() {
 	$("#tabla_pantallas_activas").toggle();
 	});
+	$("#toggler_registros").click(function() {
+	$("#tabla_registros").toggle();
+	});
 	});
 	</script>
 	';
@@ -50,7 +53,28 @@ if (in_array($session->userlevel, $NivelesPermitidos) && !$usuario) {
       echo "<tr><td>$codigo</td><td>$notas</td></tr>";
    }
    echo "</table><br>";
-}
+   }
+   
+   echo "<hr /><h2>Registro</h2>";
+   	$q = "SELECT clave, valor, detalle, autor, timestamp FROM ".TBL_REGISTRY." ORDER BY timestamp";
+	$result = $database->query($q);
+	$num_rows = mysql_numrows($result);
+	if ( $num_rows == 0 ) {
+	  echo Mensaje("¡No hay registros!",_M_NOTA);
+	} else {
+   echo '<a id="toggler_registros">Mostrar/Ocultar lista de registros</a>';
+   echo "<table id=\"tabla_registros\" style=\"display:none\">";
+   echo "<tr><th>Fecha y Hora</th><th>Clave</th><th>Valor</th><th>Autor</th></tr>";
+   for($i=0; $i<$num_rows; $i++){
+	  $timestamp = date( "h:i:s @ d/m/Y", mysql_result($result,$i,"timestamp"));
+      $clave  = mysql_result($result,$i,"clave");
+      $valor  = mysql_result($result,$i,"valor");
+      $detalle  = mysql_result($result,$i,"detalle");
+      $autor  = mysql_result($result,$i,"autor");
+      echo "<tr><td>$timestamp</td><td>$clave</td><td>$valor <acronym title=\"$detalle\">¿?</acronym></td><td>$autor</td></tr>";
+   }
+   echo "</table><br>";
+   }
    MOSTRAR_eventos();
   return;
 }

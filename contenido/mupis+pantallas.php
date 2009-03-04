@@ -17,12 +17,14 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio, $calle) {
 			$q = "INSERT INTO emupi_mupis_caras (tipo_pantalla, codigo_mupi , codigo_pedido , foto_real , catorcena ) SELECT tipo_pantalla, codigo_mupi, codigo_pedido , foto_real , $catorcena_inicio FROM emupi_mupis_caras WHERE catorcena=$CatorcenaAnterior;";
 			$result = $database->query($q);
 			if ( $result ) { echo Mensaje ("Clonado completo.<br />Los datos de la catorcena ".date('d/m/Y',$CatorcenaAnterior)." ahora existen para la catorcena ".date('d/m/Y',$catorcena_inicio),_M_INFO); } else { echo Mensaje ("Falló la clonación.",_M_ERROR); }
+			$database->REGISTRAR ("pantallas_clonar", "Se clonaron los datos de pantallas de la catorcena ".date('d/m/Y',$CatorcenaAnterior)." en ".date('d/m/Y',$catorcena_inicio),"SQL: $q");
 			break;
 			
 			case 'eliminar_datos':
 			$q = "DELETE FROM emupi_mupis_caras WHERE catorcena=$catorcena_inicio;";
 			$result = $database->query($q);
 			if ( $result ) { echo Mensaje ("Eliminado de datos completo.<br />Se eliminaron los datos de la catorcena ".date('d/m/Y',$catorcena_inicio),_M_INFO); } else { echo Mensaje ("Falló la eliminación de datos.",_M_ERROR); }
+			$database->REGISTRAR ("pantallas_eliminar_total", "Se eliminaron los datos de pantallas para una catorcena. Catorcena: ".date('d/m/Y',$catorcena_inicio),"SQL: $q");
 			break;
 		}	
 	}
@@ -39,6 +41,7 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio, $calle) {
 			$result = $database->query($q);
 			if ( $result ) { echo Mensaje ("Imagen asociada eliminada",_M_INFO); } else { echo Mensaje ("Imagen asociada no pudo ser eliminada",_M_ERROR); }
 			}
+			$database->REGISTRAR ("pantallas_eliminar", "Se eliminaron los datos de la pantalla con Id. ".$_GET['eliminar'],"SQL: $q");
 	}
 	
 	}
@@ -225,9 +228,12 @@ if ( !isset($_POST['actualizar']) ) {
 DEPURAR ($q,0);
 if ( $database->query($q) == 1 ) {
 	echo Mensaje ("Exito al registrar la pantalla", _M_INFO);
+	$database->REGISTRAR ("pantallas_agregar", "Se modificó o actualizó una pantalla. Código pedido: ". $_POST['codigo_pedido'] .", Código MUPI: ". $_POST['codigo_mupi'],"SQL: $q");
 } else {
 	echo Mensaje ("Falló al registrar la pantalla", _M_ERROR);
+	$database->REGISTRAR ("pantallas_agregar", "Se intentó modificar o actualizar una pantalla, pero falló. Código pedido: ". $_POST['codigo_pedido'] .", Código MUPI: ". $_POST['codigo_mupi'],"SQL: $q");
 }
+ 
 }
 
 function Combobox__TipoPantalla($default=0){

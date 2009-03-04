@@ -303,7 +303,23 @@
           mysql_query($q, $this->connection);
           $this->calcNumActiveGuests();
       }
-      
+      // ************************************************************* //
+	  // Funciones de conveniencia
+      // ************************************************************* //
+	  
+	  function REGISTRAR($clave, $valor, $detalle)
+	  {
+	  global $session;
+	  $clave = mysql_real_escape_string($clave); // Evitamos SQL Inyection.
+	  $valor = mysql_real_escape_string($valor); // Evitamos SQL Inyection.
+	  $detalle = mysql_real_escape_string($detalle); // Evitamos SQL Inyection.
+	  $autor = mysql_real_escape_string($session->codigo); // Evitamos SQL Inyection.
+	  $timestamp = time();
+	  $q = "INSERT INTO ".TBL_REGISTRY." (clave, valor, detalle, autor, timestamp) VALUES ('$clave','$valor','$detalle','$autor','$timestamp')";
+	  @mysql_query($q, $this->connection);
+	  DEPURAR ($q,0);
+	  }
+	  
       function Combobox_usuarios($nombre = "codigo", $default = null)
       {
           $q = "SELECT codigo, nombre FROM " . TBL_USERS . " WHERE userlevel <> 9;";

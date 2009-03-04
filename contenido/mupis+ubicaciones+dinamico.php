@@ -347,11 +347,13 @@ function actualizarCoords ($id, $lat, $lng) {
 	global $database;
 	$q = "UPDATE ".TBL_MUPI." SET lat='$lat', lon='$lng' WHERE id_mupi='$id';";
 	$result = $database->query($q);
+	$database->REGISTRAR ("pantallas_mover", "Se movió el Eco Mupis '$id' a ($lat,$lng)","SQL: $q");
 } 
 
 function actualizarReferencia ($id, $lat, $lng) {
 	global $database;
 	$q = "UPDATE ".TBL_REFS." SET lat='$lat', lon='$lng' WHERE id_referencia='$id';";
 	$result = $database->query($q);
+	$database->REGISTRAR ("referencias_mover", "Se movió la referencia '$id' a ($lat,$lng)","SQL: $q");
 }
 ?>
