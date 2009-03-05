@@ -98,7 +98,7 @@ echo SCRIPT('
 /*********************************************************************************************/
 // Inicio de parte dinámica.
 /*********************************************************************************************/
-echo "<br />".$database->Combobox_CatorcenasConPresencia("catorcenas_presencia",$usuario);
+echo "<br />Seleccione la catorcena de la cúal desee ver las estadísticas ".$database->Combobox_CatorcenasConPresencia("catorcenas_presencia",$usuario);
 echo '<hr><span id="datos_catorcena"><b>Seleccione una catorcena por favor</b></span>';
 echo '<hr />';
 

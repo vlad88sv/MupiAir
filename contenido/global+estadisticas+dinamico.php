@@ -8,6 +8,7 @@ require_once('../include/fecha.php');
 require_once('sub.php');
 
 if ( isset( $_GET['catorcena'] ) ) {
+	DEPURAR ("OK . Catorcena",0);
 	retornar ( Buscar (strip_tags($_GET['usuario']), strip_tags($_GET['catorcena'])) );
 } else {
 	retornar ( "Ud. esta utilizando incorrectamente este script de soporte." );
@@ -40,26 +41,25 @@ function Buscar ($usuario, $catorcena) {
 	$q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.id_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=".Obtener_catorcena_cercana($catorcena)." AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$usuario."')".";";
 	$result = @mysql_query($q, $link);
 	$datos .= "Número de impactos publicitarios diarios: <b>" . (int) (mysql_result($result,0,"Impactos"))."</b><br />";
-	
+	DEPURAR ("OK . Básico",0);
+   
    $q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.id_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$usuario."')".";";
-   DEPURAR ($q,0);
-   $result = @mysql_query($q, $link) or retornar (Mensaje('Ocurrió un error mientras se obtenian las estadísticas.',_M_ERROR));
+   $result = @mysql_query($q, $link);
    $num_rows = mysql_numrows($result);
 
    if(!$result || ($num_rows < 0)){
-      $datos .= (Mensaje("Error mostrando la información",_M_ERROR));
+      $datos .= Mensaje("Error mostrando la información",_M_ERROR);
    }
    if($num_rows == 0){
-      $datos .=  (Mensaje("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!",_M_ERROR));
+      $datos .=  Mensaje("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!",_M_ERROR);
    }
- 
+ DEPURAR ("OK . Medio",0);
    $Impactos  = mysql_result($result,0,"Impactos");
    if (!$Impactos) {
-	   $datos .=  (Mensaje("¡ups!... parece que no existe referencia de número de impactos para sus calles",_M_ERROR)); 
-   }
- 
-   $ImpactosCatorcena  = bcmul ($Impactos, "14");
- 
+	   $datos .=  Mensaje("¡ups!... parece que no existe referencia de número de impactos para sus calles",_M_ERROR); 
+   } else { 
+	   $ImpactosCatorcena  = bcmul ($Impactos, "14");
+	DEPURAR ("OK . Avanzado-0",0);  
    
    $datos .= '<b>'. ($Impactos) . "</b> Impactos diarios" . '<br />';
    $datos .= '<b>'. ($ImpactosCatorcena) . "</b> Impactos en esta catorcena" . '<br />';
@@ -73,14 +73,14 @@ function Buscar ($usuario, $catorcena) {
    if($num_rows == 0){
       $datos .= Mensaje("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!", _M_INFO);
    }
-   
+   DEPURAR ("OK . Avanzado-1",0);  
    $personasDiaro = mysql_result($result,0,"Impactos");
    $personasCatorcena = bcmul($personasDiaro, "14");
    $datos .= '<b>'. ($personasDiaro) . "</b> personas al menos visualizan su anuncio diariamente" . '<br />';
    $datos .= '<b>'. ($personasCatorcena) . "</b> personas al menos visualizan su anuncio en esta catorcena" . '<br />';
    
    $q = "select SUM(costo) AS cuenta from emupi_mupis_pedidos where codigo_pedido IN (select distinct codigo_pedido from emupi_mupis_caras where catorcena=$catorcena and codigo_pedido IN (SELECT codigo_pedido from emupi_mupis_pedidos where codigo='".$session->codigo."'));";
-   $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba las estadísticas.');
+   $result = @mysql_query($q, $link);
    
    if(!$result || ($num_rows < 0)){
       $datos .= ("Error mostrando la información");
@@ -94,6 +94,7 @@ function Buscar ($usuario, $catorcena) {
    if ( $ImpactosCatorcena ) {
 	$datos .= 'Costo por impacto: <b>$' . bcdiv ($costo,$ImpactosCatorcena,10) . '</b><br />';
 	$datos .= 'Número de impactos por persona: <b>' . bcdiv($Impactos,$personasDiaro,0) . '</b><br />';
+   }
    }
    retornar($datos);
 }
