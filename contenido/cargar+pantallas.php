@@ -11,6 +11,50 @@ function CONTENIDO_cargar_pantallas(){
 	// 5. Si todo lo anterior es exitoso, entonces se actualizarán los campos de imagen de todas las pantallas correspondientes.
 	// 6. Fin.
 	
+	// -----------------------------------------------------------------------------------------------------------------------
+	// Verificamos si ya puso a cargar el archivo
+	$NombreCampo = 'ArchivoZip';
+	$Catorcena = '';
+	if ( isset ($_FILES[$NombreCampo]) ) {
+		// Si lo puso entonces verificamos que no haya habido ningún error
+		if ( !$_FILES[$NombreCampo]['error'] ) {
+			// Será ZIP ?
+			if ( strtolower(@end(explode(".",$_FILES[$NombreCampo]['name']))) == "zip" ) {
+				// Si, es ZIP, entonces procedamos a descomprimirlo...
+				$zip = zip_open($_FILES[$NombreCampo]['tmp_name']);
+				if ($zip) {
+					// Creemos el directorio padre del zip.
+					$DirectorioZip = 'zip/'.$_FILES[$NombreCampo]['name'].'/';
+					mkdir($DirectorioZip,0777,true);
+					while ($zip_entry = zip_read($zip)) {
+						if ( substr(zip_entry_name($zip_entry),-1) == "/" ) {
+							// Es directorio, crear si no existe.
+							if ( !is_dir($DirectorioZip.zip_entry_name($zip_entry)) ) {
+								mkdir($DirectorioZip.zip_entry_name($zip_entry),0777,true);
+								$Catorcena = basename($DirectorioZip.zip_entry_name($zip_entry));
+								echo "Se procesará la catorcena: " . $Catorcena;
+							}
+						} else {
+							$fp = fopen($DirectorioZip.zip_entry_name($zip_entry), "w");
+							if (zip_entry_open($zip, $zip_entry, "r")) {
+								$buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
+								fwrite($fp,"$buf");
+								zip_entry_close($zip_entry);
+								fclose($fp);
+							}
+						}
+					}
+					zip_close($zip);
+					echo MENSAJE ("Archivo correctamente descompreso, procediendo a analizarlo..", _M_INFO);
+				} else {
+					echo MENSAJE ("Archivo no pudo ser descompreso, deteniendo operación", _M_ERROR);
+				}
+			} else {
+				// No, no es ZIP, no proceder.
+				echo MENSAJE ("Lo siento, no puedo procesar el archivo cargado, la extensión no es 'zip'", _M_ERROR);
+			}
+		}
+	}
 	// Instrucciones
 	echo '
 	<h1>Utilidad de cargado de fotos de pantallas</h1>
@@ -31,7 +75,7 @@ function CONTENIDO_cargar_pantallas(){
 	echo '<hr />';
 	echo '<form action="./?'._ACC_.'=cargar+pantallas" enctype="multipart/form-data" method="POST">';
 	echo '<table>';
-	echo '<tr><td class="limpio" width="20%">Archivo a cargar</td><td class="limpio"><input type="file" size="100%"></td></tr>';
+	echo '<tr><td class="limpio" width="20%">Archivo a cargar</td><td class="limpio"><input type="file" name="ArchivoZip" size="100%"></td></tr>';
 	echo '<tr><td class="limpio" width="20%"></td><td class="limpio"><input type="submit" value="Cargar archivo"></td></tr>';
 	echo '</table>';
 	echo '</form>';
