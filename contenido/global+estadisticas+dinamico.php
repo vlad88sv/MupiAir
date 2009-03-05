@@ -4,6 +4,7 @@ ob_start("ob_gzhandler");
 date_default_timezone_set ('America/El_Salvador');
 require_once('../include/const.php');
 require_once('../include/sesion.php');
+require_once('../include/fecha.php');
 require_once('sub.php');
 
 if ( isset( $_GET['catorcena'] ) ) {
@@ -25,21 +26,36 @@ function Buscar ($usuario, $catorcena) {
    $datos ="";
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die(Mensaje('!->La base de datos seleccionada "'.$DB_base.'" no existe',_M_ERROR));
+  
+	$datos .= "Catorcena mostrada: <b>" . date("d/m/Y", Obtener_catorcena_cercana($catorcena)) . " a " . date("d/m/Y", Fin_de_catorcena($catorcena)) . "</b><br />";
+
+	$q = "SELECT COUNT(*) as cuenta FROM ". TBL_MUPI_FACES ." WHERE catorcena=".Obtener_catorcena_cercana($catorcena)." AND codigo_pedido IN (SELECT codigo_pedido from ".TBL_MUPI_ORDERS." WHERE codigo = '".$usuario."');";
+	$result = @mysql_query($q, $link);
+	$datos .= "Número de caras publicitarias contratadas en catorcena actual: <b>" . mysql_result($result,0,"cuenta")."</b><br />";
+
+	$q = "SELECT SUM(catorcena_fin - catorcena_inicio) as cuenta FROM emupi_mupis_pedidos WHERE codigo='".$usuario."';";
+	$result = @mysql_query($q, $link);
+	$datos .= "Número de catorcenas contratadas: <b>" . Contar_catorcenas(mysql_result($result,0,"cuenta"))."</b><br />";
+
+	$q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.id_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=".Obtener_catorcena_cercana($catorcena)." AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$usuario."')".";";
+	$result = @mysql_query($q, $link);
+	$datos .= "Número de impactos publicitarios diarios: <b>" . (int) (mysql_result($result,0,"Impactos"))."</b><br />";
+	
    $q = "SELECT SUM((SELECT impactos FROM " . TBL_STREETS . " WHERE codigo_calle = (SELECT codigo_calle FROM ".TBL_MUPI." AS c WHERE c.id_mupi=a.codigo_mupi))) AS 'Impactos' FROM ". TBL_MUPI_FACES ." AS a WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." WHERE codigo='".$usuario."')".";";
    DEPURAR ($q,0);
    $result = @mysql_query($q, $link) or retornar (Mensaje('Ocurrió un error mientras se obtenian las estadísticas.',_M_ERROR));
    $num_rows = mysql_numrows($result);
 
    if(!$result || ($num_rows < 0)){
-      retornar(Mensaje("Error mostrando la información",_M_ERROR));
+      $datos .= (Mensaje("Error mostrando la información",_M_ERROR));
    }
    if($num_rows == 0){
-      retornar (Mensaje("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!",_M_ERROR));
+      $datos .=  (Mensaje("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!",_M_ERROR));
    }
  
    $Impactos  = mysql_result($result,0,"Impactos");
    if (!$Impactos) {
-	   retornar (Mensaje("¡ups!... parece que no existe referencia de número de impactos para sus calles",_M_ERROR)); 
+	   $datos .=  (Mensaje("¡ups!... parece que no existe referencia de número de impactos para sus calles",_M_ERROR)); 
    }
  
    $ImpactosCatorcena  = bcmul ($Impactos, "14");
@@ -51,11 +67,11 @@ function Buscar ($usuario, $catorcena) {
    $q = "SELECT SUM(Impactos) AS impactos FROM (SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS c WHERE c.id_mupi=a.codigo_mupi) AS 'Calle', (SELECT impactos FROM emupi_calles WHERE codigo_calle = @calle) AS 'Impactos' FROM emupi_mupis_caras AS a WHERE catorcena=$catorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='".$session->codigo."')) AS a;";
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba las estadísticas.');
    if(!$result || ($num_rows < 0)){
-      retornar("Error mostrando la información",_M_ERROR);
+      $datos .= Mensaje("Error mostrando la información",_M_ERROR);
    }
  
    if($num_rows == 0){
-      retornar ("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!");
+      $datos .= Mensaje("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!", _M_INFO);
    }
    
    $personasDiaro = mysql_result($result,0,"Impactos");
@@ -67,17 +83,18 @@ function Buscar ($usuario, $catorcena) {
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba las estadísticas.');
    
    if(!$result || ($num_rows < 0)){
-      retornar("Error mostrando la información");
+      $datos .= ("Error mostrando la información");
    }
  
    if($num_rows == 0){
-      retornar ("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!");
+      $datos .=  ("¡No hay pantallas registradas a su nombre en la catorcena seleccionada!");
    }
    
-   $costo = mysql_result($result,0,"cuenta");
-   $datos .= 'Costo por impacto: <b>$' . bcdiv ($costo,$ImpactosCatorcena,10) . '</b><br />';
-   $datos .= 'Número de impactos por persona: <b>' . bcdiv($Impactos,$personasDiaro,0) . '</b><br />';
-   
+   $costo = @mysql_result($result,0,"cuenta");
+   if ( $ImpactosCatorcena ) {
+	$datos .= 'Costo por impacto: <b>$' . bcdiv ($costo,$ImpactosCatorcena,10) . '</b><br />';
+	$datos .= 'Número de impactos por persona: <b>' . bcdiv($Impactos,$personasDiaro,0) . '</b><br />';
+   }
    retornar($datos);
 }
 ?>
