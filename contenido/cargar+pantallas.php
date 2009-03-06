@@ -72,9 +72,9 @@ function CONTENIDO_cargar_pantallas(){
 									//3
 									$q = "UPDATE ".TBL_MUPI_FACES." SET foto_real='$foto_real' WHERE id_pantalla='$id_pantalla'";
 									$database->query($q);
-									echo MENSAJE ("Cara $id_pantalla actualizada!", _M_INFO);
+									echo MENSAJE ("!Cara $id_pantalla actualizada!", _M_INFO);
 								} else {
-									echo "'" . zip_entry_name($zip_entry) . "' descartado por no existir en la base de datos.";
+									echo MENSAJE ("'" . zip_entry_name($zip_entry) . "' descartado por no existir en la base de datos.",_M_ERROR);
 								} // Si habia 1 resultado
 								
 								//**********************************************************
@@ -122,5 +122,6 @@ function CONTENIDO_cargar_pantallas(){
 	echo '</table>';
 	echo '</form>';
 	echo Mensaje('recuerde que esta es una operación intensiva para el servidor, evite realizar la carga de imagenes en horas pico', _M_NOTA);
+	echo Mensaje('Los archivos cargados son eliminados tras ser asignados a las pantallas, conserve una copia local de ellos si los necesita', _M_NOTA);
 }
 ?>
