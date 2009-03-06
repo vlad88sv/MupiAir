@@ -169,7 +169,7 @@ function verPantallas($usuario="", $calle="", $filtro=""){
    }
    $num_rows = mysql_numrows($result);
    if($num_rows == 0){
-      echo Mensaje ("¡No hay Pantallas "._NOMBRE_." ingresadas!", _M_NOTA);
+      echo Mensaje ("¡No hay Pantallas "._NOMBRE_." que coincidan con el criterio de búsqueda!", _M_NOTA);
       return;
    }
 
