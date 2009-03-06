@@ -19,6 +19,28 @@ function displayUsers(){
       echo "¡No hay clientes/usuarios ingresados!";
       return;
    }
+echo '
+Nivel
+<select name="FiltroNivel">
+<option value="10">Todos
+<option value="1">Usuario
+<option value="2">Demo
+<option value="3">Cliente
+<option value="5">Vendedor
+<option value="9">Administrador
+</select>
+<input type="button" value="Filtrar!" />
+';
+
+//echo '<br />';
+
+echo '
+Catorcena
+'.Combobox_catorcenas("FiltroCatorcenas", Obtener_catorcena_cercana()).'
+<input type="button" value="Filtrar!" />
+';
+
+echo '<hr />';
    echo '<table border="0">';
 	if ( $session->isAdmin() ) {
 	   echo "<tr><th>Código</th><th>Nombre</th><th>Nivel</th><th>Email</th><th>Última actividad</th><th>Acciones</th></tr>";

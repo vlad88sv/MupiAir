@@ -106,7 +106,7 @@
 	  <ol>
 	  <li id="MM_paso_1">Escoja la catorcena de la cual desea ver sus Eco Mupis y presione el botón "Mostrar calles".</li>
 	  <li>Aparecerá una selección de calles en las cuales Ud. tiene Eco Mupis con su publicidad, escoja la calle de la cual desee ver el mapa y presione "Mostrar Mapa".</li>
-	  <li>Deberá aparecer un Mapa con los Eco Mupis (representados como pequeños cuadros rojos) que contienen las fotos de su publicidad.<br />Al realizar "clic" sobre dichos cuadros rojos, podrá observar las imagenes respectivas si Ud. desplaza la página hacia abajo.</li>
+	  <li>Deberá aparecer un Mapa con los Eco Mupis (representados como pequeños cuadros rojos) que contienen las fotos de su publicidad.<br />Al realizar "clic" sobre dichos cuadros rojos podrá observar las fografías reales de sus caras contratadas.</li>
 	  <li>Repita los pasos 1 a 3 tanto como Ud. guste.</li>
 	  </ol>
 	  </div>';
