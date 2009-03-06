@@ -17,15 +17,6 @@ require_once("../include/database.php");
       else if(isset($_POST['subdelinact'])){
          procDeleteInactive();
       }
-      /* Admin submitted ban user form */
-      else if(isset($_POST['subbanuser'])){
-         procBanUser();
-      }
-      /* Admin submitted delete banned user form */
-      else if(isset($_POST['subdelbanned'])){
-         procDeleteBannedUser();
-      }
-
    } else {
    
    return;
@@ -41,6 +32,7 @@ require_once("../include/database.php");
       global $session, $database, $form;
       /* Username error checking */
       $subuser = checkUsername("upduser");
+	  $database->REGISTRAR("USUARIO_NIVEL", "Se cambió el nivel de acceso de un usuario.", "Usuario afectado: $subuser");
       
       /* Errors exist, have user correct them */
       if($form->num_errors > 0){
@@ -63,88 +55,21 @@ require_once("../include/database.php");
       global $session, $database, $form;
       /* Username error checking */
       $subuser = checkUsername("deluser");
-      
+      $database->REGISTRAR("USUARIO_ELIMINAR", "Se eliminó un usuario.", "Usuario afectado: $subuser");
       /* Errors exist, have user correct them */
       if($form->num_errors > 0){
          $_SESSION['value_array'] = $_POST;
          $_SESSION['error_array'] = $form->getErrorArray();
-         header("Location: ../?accion=admin");
+         header("Location: ../?accion=gestionar+clientes");
       }
       /* Delete user from database */
       else{
          $q = "DELETE FROM ".TBL_USERS." WHERE codigo = '$subuser'";
          $database->query($q);
-         header("Location: ../?accion=admin");
+         header("Location: ../?accion=gestionar+clientes");
       }
    }
-   
-   /**
-    * procDeleteInactive - All inactive users are deleted from
-    * the database, not including administrators. Inactivity
-    * is defined by the number of days specified that have
-    * gone by that the user has not logged in.
-    */
-   function procDeleteInactive(){
-      global $session, $database;
-      $inact_time = $session->time - $_POST['inactdays']*24*60*60;
-      $q = "DELETE FROM ".TBL_USERS." WHERE timestamp < $inact_time "
-          ."AND userlevel != ".ADMIN_LEVEL;
-      $database->query($q);
-      header("Location: ../?accion=admin");
-   }
-   
-   /**
-    * procBanUser - If the submitted username is correct,
-    * the user is banned from the member system, which entails
-    * removing the username from the users table and adding
-    * it to the banned users table.
-    */
-   function procBanUser(){
-      global $session, $database, $form;
-      /* Username error checking */
-      $subuser = checkUsername("banuser");
       
-      /* Errors exist, have user correct them */
-      if($form->num_errors > 0){
-         $_SESSION['value_array'] = $_POST;
-         $_SESSION['error_array'] = $form->getErrorArray();
-         header("Location: ../?accion=admin");
-      }
-      /* Ban user from member system */
-      else{
-         $q = "DELETE FROM ".TBL_USERS." WHERE codigo = '$subuser'";
-         $database->query($q);
-
-         $q = "INSERT INTO ".TBL_BANNED_USERS." VALUES ('$subuser', $session->time)";
-         $database->query($q);
-         header("Location: ../?accion=admin");
-      }
-   }
-   
-   /**
-    * procDeleteBannedUser - If the submitted username is correct,
-    * the user is deleted from the banned users table, which
-    * enables someone to register with that username again.
-    */
-   function procDeleteBannedUser(){
-      global $session, $database, $form;
-      /* Username error checking */
-      $subuser = checkUsername("delbanuser", true);
-      
-      /* Errors exist, have user correct them */
-      if($form->num_errors > 0){
-         $_SESSION['value_array'] = $_POST;
-         $_SESSION['error_array'] = $form->getErrorArray();
-         header("Location: ../?accion=admin");
-      }
-      /* Delete user from database */
-      else{
-         $q = "DELETE FROM ".TBL_BANNED_USERS." WHERE codigo = '$subuser'";
-         $database->query($q);
-         header("Location: ../?accion=admin");
-      }
-   }
-   
    /**
     * checkUsername - Helper function for the above processing,
     * it makes sure the submitted username is valid, if not,

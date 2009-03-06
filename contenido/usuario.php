@@ -70,6 +70,7 @@ echo '
 Nivel:<br />
 <select name="updlevel">
 <option value="1">Usuario
+<option value="2">Demo
 <option value="3">Cliente
 <option value="5">Vendedor
 <option value="9">Administrador
