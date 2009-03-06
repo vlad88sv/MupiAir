@@ -2,6 +2,7 @@
 $Catorcena = NULL;
 function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio, $calle) {
 	global $session, $form, $Catorcena, $database;
+	$filtro = '';
 	echo '<h1>Gestión de pantallas de ' . _NOMBRE_ . '</h1>';
 	if ( $session->isAdmin() ) {
 	
@@ -26,6 +27,20 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio, $calle) {
 			if ( $result ) { echo Mensaje ("Eliminado de datos completo.<br />Se eliminaron los datos de la catorcena ".date('d/m/Y',$catorcena_inicio),_M_INFO); } else { echo Mensaje ("Falló la eliminación de datos.",_M_ERROR); }
 			$database->REGISTRAR ("pantallas_eliminar_total", "Se eliminaron los datos de pantallas para una catorcena. Catorcena: ".date('d/m/Y',$catorcena_inicio),"SQL: $q");
 			break;
+			
+			case 'filtrar_sin_foto':
+			$filtro = 'filtrar_sin_foto';
+			break;
+			
+			case 'filtrar_sin_pedido':
+			$filtro = 'filtrar_sin_pedido';
+			break;
+			
+			case 'filtrar_sin_mupi':
+			$filtro = 'filtrar_sin_mupi';
+			break;
+			
+			
 		}	
 	}
 	
@@ -59,7 +74,11 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio, $calle) {
 	$BotonCambiar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena=\'+document.getElementsByName(\'miSelect\')[0].value" value="Cambiar">';
 	$BotonClonarCatorcenaAnterior = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=clonar\'" value="Clonar datos de catorcena anterior" '.GenerarTooltip('Clona los datos de los mupis de la catorcena inmediata anterior').'>';
 	$BotonEliminarDatosCatorcena = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=eliminar_datos\'" value="Eliminar todos los datos de esta catorcena" '.GenerarTooltip('Elimina los datos mostrados para la catorcena actual').'>';
+	$BotonEliminarFotosCatorcena = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=eliminar_fotos\'" value="Eliminar todas las fotos de esta catorcena" '.GenerarTooltip('Elimina las fotos reales para la catorcena actual').'>';
 	$BotonFiltraVistaPorCalles = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena=\'+document.getElementsByName(\'miSelect\')[0].value+\'&amp;calle=\'+document.getElementsByName(\'cmbCalles\')[0].value" value="Filtrar">';
+	$BotonFiltrarSinFoto  = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=filtrar_sin_foto\'" value="Ver pantallas sin foto" '.GenerarTooltip('Muestra las pantallas que aún no tienen una foto real asignada').'>';
+	$BotonFiltrarSinPedido  = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=filtrar_sin_pedido\'" value="Ver pantallas sin pedido" '.GenerarTooltip('Muestra las pantallas que aún no tienen un pedido real asignado').'>';
+	$BotonFiltrarSinMupi  = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+pantallas&amp;catorcena='.$Catorcena.'&amp;sub=filtrar_sin_mupi\'" value="Ver pantallas sin Eco Mupi" '.GenerarTooltip('Muestra las pantallas que no estan asignada a un Eco Mupis').'>';
 	echo $BotonCambiar;
 	echo $BotonCancelar;
 	echo "<br />";
@@ -69,8 +88,13 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio, $calle) {
 	echo "<br />";
 	echo $BotonClonarCatorcenaAnterior;
 	echo $BotonEliminarDatosCatorcena;
+	echo $BotonEliminarFotosCatorcena;
+	echo "<br />";
+	echo $BotonFiltrarSinFoto;
+	echo $BotonFiltrarSinPedido;
+	echo $BotonFiltrarSinMupi;
 	echo "<hr />";
-	verPantallas($usuario,$calle);
+	verPantallas($usuario,$calle,$filtro);
 	}
 	if ( $session->isAdmin() ) {
 	$paraUsuario = "";
@@ -86,7 +110,7 @@ function CONTENIDO_pantallas($usuario, $pantalla , $catorcena_inicio, $calle) {
 	verPantallasregistro($usuario, $pantalla);
 	}
 }
-function verPantallas($usuario="", $calle=""){
+function verPantallas($usuario="", $calle="", $filtro=""){
    global $database, $Catorcena;
    
 	echo '
@@ -106,8 +130,38 @@ function verPantallas($usuario="", $calle=""){
 	if ( $calle ) {
 		 $calle = "AND a.codigo_mupi IN (SELECT h.id_mupi FROM emupi_mupis as h WHERE h.codigo_calle='$calle')";
 	}
-   $q = "SELECT id_pantalla, tipo_pantalla, codigo_mupi, (SELECT CONCAT(codigo_calle, '.' , codigo_mupi, ' | ', (SELECT ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=@codigo_calle:=b.codigo_calle), ', ', direccion ) FROM emupi_mupis as c WHERE c.id_mupi=a.codigo_mupi) AS codigo_mupi_traducido, codigo_pedido, (SELECT CONCAT(codigo_pedido, '. ' , o.descripcion) FROM ".TBL_MUPI_ORDERS." as o WHERE o.codigo_pedido = a.codigo_pedido) as codigo_pedido_traducido, catorcena, foto_real, codigo_evento, @calle as codigo_calle2 FROM ".TBL_MUPI_FACES." as a WHERE catorcena = $Catorcena $calle $wusuario ORDER BY codigo_calle2, codigo_mupi, tipo_pantalla;";
-   //echo $q;
+	
+	if ( $filtro ) {
+		switch ($filtro) {
+			case 'filtrar_sin_foto':
+			$filtro = "AND ((foto_real IS NULL) OR (foto_real = 0) OR (foto_real = ''))";
+			break;
+			
+			case 'filtrar_sin_pedido':
+			$filtro = "HAVING codigo_pedido_traducido IS NULL";
+			break;
+			
+			case 'filtrar_sin_mupi':
+			$filtro = "HAVING codigo_mupi_traducido IS NULL";
+			break;
+			
+			default:
+			$filtro = '';
+			
+		}
+	}
+	//Necesito:
+	// - Id. Pantalla
+	//a. Id. Eco Mupis
+	//b. Id. Eco Mupis Traducido
+	//c. Tipo de cara
+	//d. Codigo Pedido
+	//e. Codigo Pedido Traducido
+	//f. Foto Real
+   // 05/03/09 -> Se corrobora que el codigo_mupi que tenemos en nuestra lista, pertenezca a un mupi existente.
+   // 05/03/09 -> Se corrobora que el codigo_pedido que tenemos en nuestra lista, pertenezca a un pedido existente.
+   $q = "SELECT	id_pantalla, @codigo_mupi := (SELECT id_mupi FROM ".TBL_MUPI." as b WHERE a.codigo_mupi=b.id_mupi) as codigo_mupi, @codigo_mupi_traducido := (SELECT CONCAT((SELECT @ubicacion := b.ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=b.codigo_calle), '. ', direccion , ' | ' , c.codigo_calle, '.' , @codigo_mupi_parcial := c.codigo_mupi, ' | ', c.id_mupi ) FROM emupi_mupis as c WHERE c.id_mupi= @codigo_mupi), (SELECT CONCAT(@codigo_pedido_parcial := b.codigo_pedido, '. ' , b.descripcion) FROM ".TBL_MUPI_ORDERS." as b WHERE a.codigo_pedido=b.codigo_pedido) as codigo_pedido_traducido, tipo_pantalla, @codigo_mupi_traducido AS codigo_mupi_traducido, @ubicacion AS ubicacion, @codigo_mupi_parcial as codigo_mupi_parcial, @codigo_pedido_parcial as codigo_pedido_parcial, foto_real FROM ".TBL_MUPI_FACES. " AS a WHERE catorcena = $Catorcena $calle $wusuario $filtro ORDER BY ubicacion, codigo_mupi_parcial, tipo_pantalla";
+   DEPURAR ($q,0);
    $result = $database->query($q);
    if ( !$result ) {
       echo "Error mostrando la información";
@@ -121,12 +175,12 @@ function verPantallas($usuario="", $calle=""){
 
 echo '<a id="toggler">Mostrar/Ocultar lista de Pantallas</a>';
 echo '<div id="tabla_pantallas" style="display:none"><table>';
-echo "<thead><tr><th>Código "._NOMBRE_."</th><th>Cara</th><th>Código pedido</th><th>Foto real</th><th>Evento</th><th>Acción</th></tr></thead>";
+echo "<thead><tr><th>Ubicación | Código Mupi | Id. Mupi</th><th>Cara</th><th>Código pedido</th><th>Foto real</th><th>Evento</th><th>Acción</th></tr></thead>";
 echo "<tbody>";
    for($i=0; $i<$num_rows; $i++){
       $tipo_pantalla  = mysql_result($result,$i,"tipo_pantalla");
       $codigo_mupi = CREAR_LINK_GET("gestionar+mupis&amp;mupi=".mysql_result($result,$i,"codigo_mupi"), mysql_result($result,$i,"codigo_mupi_traducido"), "Ver y/o editar los datos de este "._NOMBRE_);
-      $codigo_pedido = CREAR_LINK_GET("gestionar+pedidos&amp;pedido=" . mysql_result($result,$i,"codigo_pedido"), mysql_result($result,$i,"codigo_pedido_traducido"), "Ver a quien pertenece este pedido");
+      $codigo_pedido = CREAR_LINK_GET("gestionar+pedidos&amp;pedido=" . mysql_result($result,$i,"codigo_pedido_parcial"), mysql_result($result,$i,"codigo_pedido_traducido"), "Ver a quien pertenece este pedido");
       $codigo_evento = ''; //Ejecutar la búsqueda de eventos para esta pantalla
 	  $codigo_evento .= CREAR_LINK_GET("gestionar+eventos&amp;sub=adicionar&amp;tipo=PANTALLA&amp;afectado=".mysql_result($result,$i,"id_pantalla"),"Agregar","Agrega un evento");
       $foto_real  = mysql_result($result,$i,"foto_real");
@@ -146,7 +200,7 @@ $CampoActualizar = $CampoPantalla = $BotonCancelar = $CampoCodigoMUPI = $Pantall
 if ($id) {
 	$q = "SELECT * FROM ".TBL_MUPI_FACES." WHERE id_pantalla='$id';";
 	$result = $database->query($q);
-	
+	DEPURAR ($q,0);
 	$CampoId =  '<input type="hidden" name="id_pantalla" value="'.$id.'">';
 	$Pantalla = mysql_result($result,0,"tipo_pantalla") ;
 	$codigo_mupi =  mysql_result($result,0,"codigo_mupi") ;
