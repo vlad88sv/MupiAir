@@ -105,7 +105,7 @@ function CONTENIDO_cargar_pantallas(){
 	Para un correcto cargado de pantallas, se recomienda seguir los siguientes pasos:
 	<ol>
 	<li>Asegurese de que todos los mupis esten creados para la catorcena a cargar, y que tengan una pantalla asignada.<br />Utilice la herramienta "<strong>Clonar anterior</strong>" si es necesario.</li>
-	<li>Obtenga (e imprima si es posible) la lista númerica de pantallas para la catorcena deseada.<br /><a onclick="alert(\'Aún no disponible\')">Puede obtenerla haciendo clic aquí.</a></li>
+	<li>Obtenga (e imprima si es posible) la lista númerica de pantallas para la catorcena deseada.<br /><a href="./?'._ACC_.'=listas&tipo=id_pantallas" target="_blank">Puede obtenerla haciendo clic aquí.</a></li>
 	<li>Cree una carpeta con nombre igual a la fecha de inicio de la catorcena a la cual corresponden las fotos, formato dd-mm-yy (dia-mes-año).<br />Ej. "<strong>05-01-09</strong>" - evite añadir espacios u otros caracteres.</li>
 	<li>Agregue (en el folder recien creado) las fotos deseadas de las pantallas, enumerandolas de acuerdo a la lista del paso #1.<br />Solo serán válidos archivos con extensión "<strong>.jpg</strong>" (notese las minúsculas).</li>
 	<li><span style="color:#FF0000">Por favor <strong>no</strong> continúe sin corroborar los nombres de los archivos, <strong>esta operación es irreversible una vez cargados los datos.</strong></span></li>

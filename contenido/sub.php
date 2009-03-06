@@ -98,6 +98,13 @@ function CONTENIDO_mostrar_principal() {
 			break;
 		}
 	
+	case "listas":
+		if($session->isAdmin()){
+			$tipoDeLista= isset( $_GET['tipo'] ) ? $_GET['tipo'] : "";
+			CONTENIDO_listas( $usuario, $tipoDeLista );
+			break;
+		}
+	
 	case "editar usuario":
 		if($session->isAdmin()){
 			CONTENIDO_usuario_editar( $usuario );
@@ -405,5 +412,12 @@ function EnNulidad($string, $reemplazo){
 		return $reemplazo;
 	}
 	return $string;
+}
+
+function CONTENIDO_listas( $usuario, $tipoDeLista ){
+	global $database;
+	$q = "SELECT @codigo_mupi := (SELECT id_mupi FROM ".TBL_MUPI." as b WHERE a.codigo_mupi=b.id_mupi) as codigo_mupi, @codigo_mupi_traducido := (SELECT CONCAT((SELECT @ubicacion := b.ubicacion FROM emupi_calles AS b WHERE c.codigo_calle=b.codigo_calle), '. ', direccion , ' | ' , c.codigo_calle, '.' , @codigo_mupi_parcial := c.codigo_mupi ) FROM emupi_mupis as c WHERE c.id_mupi= @codigo_mupi) AS ubicacion, tipo_pantalla, id_pantalla FROM ".TBL_MUPI_FACES. " AS a WHERE catorcena = '".Obtener_catorcena_cercana()."' ORDER BY ubicacion, @codigo_mupi_parcial, tipo_pantalla";
+	$result = $database->query($q);
+	echo Query2Table($result);
 }
 ?>
