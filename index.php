@@ -134,6 +134,5 @@ ob_flush();
 flush();
 ?>
 <script>
-setTimeout($.unblockUI, 1000);
-
+setTimeout($.unblockUI, 10);
 </script>
