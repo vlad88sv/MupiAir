@@ -66,6 +66,13 @@ echo '<hr />';
 		echo "<tr><td>$uname</td><td>$nombre</td><td>$acciones</td></tr>";
 	  }
    }
+   echo "<tfoot>";
+   if ( $session->isAdmin() ) {
+	echo "<td colspan='5'>Total</td><td>$num_rows</td>";
+   } else {
+	echo "<td colspan='2'>Total</td><td>$num_rows</td>";
+   }
+   echo "</tfoot>";
    echo "</table><br />";
 }
 

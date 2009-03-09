@@ -70,6 +70,9 @@ function verMUPIS($calle=NULL){
 		$Eliminar = CREAR_LINK_GET("gestionar+mupis$conservar_GET_calle&amp;eliminar=".mysql_result($result,$i,"id_mupi"),"Eliminar", "Eliminar los datos de este "._NOMBRE_);
 	echo "<tr><td  width=\"5%\">$id</td><td  width=\"10%\">$codigo_mupi</td><td width=\"30%\">$direccion</td><td width=\"5%\">$foto_generica</td><td width=\"5%\">$Longitud</td><td width=\"5%\">$Latitud</td><td  width=\"30%\">$codigo_calle</td><td  width=\"10%\">$Eliminar</td></tr>";
 	}
+	echo "<tfoot>";
+    echo "<td colspan='7'>Total</td><td>$num_rows</td>";
+    echo "</tfoot>";
 	echo "</table></div><br />";
 	ob_flush();
 	flush();

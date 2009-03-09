@@ -39,6 +39,9 @@ function Ver_Lista_Referencias(){
 		$Eliminar = CREAR_LINK_GET("gestionar+referencias&amp;eliminar=".mysql_result($result,$i,"id_referencia"),"Eliminar", "Eliminar los datos de esta referencia");
 	echo "<tr><td>$id_referencia</td><td>$lon</td><td>$lat</td><td>$imagen_referencia</td><td>$codigo_calle</td><td>$Eliminar</td></tr>";
 	}
+	echo "<tfoot>";
+    echo "<td colspan='5'>Total</td><td>$num_rows</td>";
+    echo "</tfoot>";
 	echo "</table><br />";
 }
 

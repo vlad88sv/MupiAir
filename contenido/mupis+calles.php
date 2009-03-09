@@ -69,6 +69,9 @@ echo "<tr><th>Código calle "._NOMBRE_."</th><th>Ubicación</th><th>Grupo</th><t
       $codigo_calle  = CREAR_LINK_GET("gestionar+calles&amp;calle=".$codigo_calle,$codigo_calle, "Editar los datos de esta calle");
       echo "<tr><td>$codigo_calle</td><td>$ubicacion</td><td>$grupo_calle</td><td>$impactos</td><td>$Eliminar</tr>";
    }
+   echo "<tfoot>";
+   echo "<td colspan='4'>Total</td><td>$num_rows</td>";
+   echo "</tfoot>";
    echo "</table><br>";
 }
 

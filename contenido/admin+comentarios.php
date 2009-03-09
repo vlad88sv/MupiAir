@@ -17,7 +17,7 @@ function CONTENIDO_comentarios($usuario,$id_comentario) {
 
 function Ver_Lista_Comentarios(){
 	global $database;
-	$q = "SELECT id_comentario, codigo, comentario, timestamp, tipo FROM ".TBL_COMMENTS." ORDER BY tipo".";";
+	$q = "SELECT id_comentario, codigo, comentario, timestamp, tipo FROM ".TBL_COMMENTS." ORDER BY tipo, id_comentario";
 	$result = $database->query($q);
 	$num_rows = @mysql_numrows($result);
 	if(!$result || ($num_rows < 0)){
@@ -39,6 +39,9 @@ function Ver_Lista_Comentarios(){
 		$Eliminar = CREAR_LINK_GET("gestionar+comentarios&amp;eliminar=".mysql_result($result,$i,"id_comentario"),"Eliminar", "Eliminar los datos de este comentario");
 	echo "<tr><td>$id_comentario</td><td>$codigo</td><td>$comentario</td><td>$timestamp</td><td>$tipo</td><td>$Eliminar</td></tr>";
 	}
+   echo "<tfoot>";
+   echo "<td colspan='5'>Total</td><td>$num_rows</td>";
+   echo "</tfoot>";
 	echo "</table><br />";
 }
 

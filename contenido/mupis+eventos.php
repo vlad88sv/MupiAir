@@ -94,6 +94,9 @@ echo "<tr><th>Código Evento "._NOMBRE_."</th><th>Fecha y Hora</th><th>Categorí
       $id_evento  = CREAR_LINK_GET("gestionar+eventos&amp;evento=".$id_evento,$id_evento, "Editar los datos de este evento");
       echo "<tr><td>$id_evento</td><td>$timestamp</td><td>$categoria</td><td>$afectado</td><td>$descripcion_evento</td><td>$foto_evento</td><td>$Eliminar</td></tr>";
    }
+   echo "<tfoot>";
+   echo "<td colspan='6'>Total</td><td>$num_rows</td>";
+   echo "</tfoot>";
    echo "</table><br>";
 }
 
