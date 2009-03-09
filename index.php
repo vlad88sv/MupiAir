@@ -53,6 +53,7 @@ require_once("contenido/cargar+pantallas.php");
 	<meta http-equiv="Content-Language" content="es" />
 	<link rel="stylesheet" type="text/css" href="estilo.css" />
 	<link rel="stylesheet" type="text/css" href="include/chrometheme/chromestyle.css" />
+	<link rel="stylesheet" type="text/css" href="include/jquery.jgrowl.css" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<link rel="start" href="/" />
 	<title><? echo _NOMBRE_; ?> - Servicio publicitario</title>
@@ -60,6 +61,7 @@ require_once("contenido/cargar+pantallas.php");
 	<meta name="description" content="MUPI es un servicio publicitario." />
 	<script src="include/jquery-1.3.1.min.js" type="text/javascript"></script>
 	<script src="include/jquery.blockUI.js" type="text/javascript"></script>
+	<script src="include/jquery.jgrowl.js" type="text/javascript"></script>
 	<script src="include/jquery.toggleval.js" type="text/javascript"></script>
 	<script type="text/javascript" src="include/tooltip.js"></script>
 	<script type="text/javascript" src="include/chromejs/chrome.js">
@@ -71,6 +73,7 @@ require_once("contenido/cargar+pantallas.php");
 	</script>
 	<script>
 	$().ajaxStart(function(){$.blockUI( { message: '<h1><img src="loader.gif" /> Su petición esta siendo procesada...</h1>' } );}).ajaxStop($.unblockUI);
+	$.jGrowl.defaults.position = 'bottom-left';
 	</script>
 	<!--[if gte IE 5.5]>
 	<![if lt IE 7]>
@@ -82,6 +85,13 @@ require_once("contenido/cargar+pantallas.php");
 	</style>
 	<![endif]>
 	<![endif]-->
+	<style type="text/css">
+
+			div.jGrowl div.aviso {
+				background-color: 		#FF0000;
+				color: 					#FFFFFF;
+			}
+	</style>
 </head>
 <body>
 	<script>

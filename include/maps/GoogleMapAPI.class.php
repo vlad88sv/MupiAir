@@ -806,7 +806,7 @@ class GoogleMapAPI {
 				$Contenido_maximizado = "";
 			}
 			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{'.$Contenido_maximizado.'}) });' . "\n";
-			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#datos_mupis").html(""); });' . "\n";
+			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#botones_arte").html(""); });' . "\n";
 			$_output .= '} else {' . "\n";
 			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; });' . "\n";
 			$_output .= '}' . "\n";
