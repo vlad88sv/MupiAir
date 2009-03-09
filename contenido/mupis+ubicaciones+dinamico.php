@@ -129,16 +129,16 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 	// Si es cliente o usuario.
 	if ( time() > $catorcena ) {
 		//Si la catorcena NO es futura.
-		$datosDiv .= "<center><strong>Imagen actual de su campaña ".$tipoPantalla.":</strong></center>";
+		$datosDiv .= "<center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>";
 		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
-		$datosDiv .= "<center><strong>Arte digital de su campaña:</center>";
+		$datosDiv .= "<center><strong>Arte digital de campaña:</center>";
 		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$arte.'" />' . "</strong></center>";	
 	} else {
 		//Si la catorcena NO es futura.
-		$datosDiv .= "<center><strong>Imagen actual de su campaña ".$tipoPantalla.":</strong></center>";
-		$datosDiv .= "<center>Viendo catorcena futura, La fotografía mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
+		$datosDiv .= "<center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>";
+		$datosDiv .= "<center>Viendo catorcena futura, la fotografía mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
 		$datosDiv .= "<center><strong>Arte digital de su campaña:</strong></center>";
-		$datosDiv .= "<center>Viendo catorcena campaña, Arte no disponible</center>";
+		$datosDiv .= "<center>Viendo catorcena futura, Arte no disponible</center>";
 	}
 	if (!$PosponerBlockUI)
 	$PosponerBlockUI .= '
