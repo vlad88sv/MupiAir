@@ -34,6 +34,18 @@ function Buscar ($usuario, $catorcena) {
 	$result = @mysql_query($q, $link);
 	$datos .= "Número de caras publicitarias contratadas en catorcena actual: <b>" . mysql_result($result,0,"cuenta")."</b><br />";
 
+	$datos .= "<ul>";
+	
+	$q = "SELECT COUNT(*) as cuenta FROM ". TBL_MUPI_FACES ." WHERE tipo_pantalla='0' AND catorcena=".Obtener_catorcena_cercana($catorcena)." AND codigo_pedido IN (SELECT codigo_pedido from ".TBL_MUPI_ORDERS." WHERE codigo = '".$usuario."');";
+	$result = @mysql_query($q, $link);
+	$datos .= "<li>Número de caras publicitarias vehiculares: <b>" . mysql_result($result,0,"cuenta")."</b></li>";
+
+	$q = "SELECT COUNT(*) as cuenta FROM ". TBL_MUPI_FACES ." WHERE tipo_pantalla='1' AND catorcena=".Obtener_catorcena_cercana($catorcena)." AND codigo_pedido IN (SELECT codigo_pedido from ".TBL_MUPI_ORDERS." WHERE codigo = '".$usuario."');";
+	$result = @mysql_query($q, $link);
+	$datos .= "<li>Número de caras publicitarias peatonales: <b>" . mysql_result($result,0,"cuenta")."</b></li>";
+	
+	$datos .= "</ul>";
+	
 	$q = "SELECT SUM(catorcena_fin - catorcena_inicio) as cuenta FROM emupi_mupis_pedidos WHERE codigo='".$usuario."';";
 	$result = @mysql_query($q, $link);
 	$datos .= "Número de catorcenas contratadas: <b>" . Contar_catorcenas(mysql_result($result,0,"cuenta"))."</b><br />";
