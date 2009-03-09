@@ -255,7 +255,8 @@ if ( strpos($calle, "G:") !== false ) {
 			$logotipo = ''; //"<br />".CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"), "50px");
 		}
       $logotipo = '<div style="width:400px; height:150px">'.$logotipo.'</div>';
-      $html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
+      //$html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
+      $html = "<center><bCliente actual: </b><br />".$logotipo."</center>";
 	  
       if ($session->userlevel == ADMIN_LEVEL) {
 
