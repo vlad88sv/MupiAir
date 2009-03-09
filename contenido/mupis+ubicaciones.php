@@ -3,7 +3,7 @@
   {
       global $session, $database, $map;
 	  //Cosas que solo Admin y Vendedor pueden tener acceso
-      $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+      $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL, DEMO_LEVEL);
       if (!in_array($session->userlevel, $NivelesPermitidos)) {
 		  $usuario = $session->codigo;
       }

@@ -86,7 +86,7 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die('!->La base de datos seleccionada "'.$DB_base.'" no existe');
    if ( time() > $catorcena ) { $tCatorcena=$catorcena; } else { $tCatorcena=Obtener_catorcena_anterior($catorcena); }
-   if ( ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) && !$usuario) {
+   if ( ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL || $session->userlevel == DEMO_LEVEL ) && !$usuario) {
 	$q = "select tipo_pantalla, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
    } else {
 	$q = "select tipo_pantalla, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$tCatorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos where codigo='$usuario') AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
@@ -118,8 +118,9 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 		$tipoPantalla = 'peatonal';
       }
 	  
-	if ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) {
-	// Si es administrador o Vendedor.
+	$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL, DEMO_LEVEL);
+	if (in_array($session->userlevel, $NivelesPermitidos)) {
+	// Si es administrador, Vendedor o Demo.
 		$datosDiv .= "<center><strong>Imagen actual de su campaña ".$tipoPantalla.":</strong></center>";
 		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
 		$datosDiv .= "<center><strong>Arte digital de su campaña:</center>";
@@ -207,8 +208,8 @@ if ( strpos($calle, "G:") !== false ) {
 		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle FROM emupi_mupis AS a$t_grupo_calle;";
 	} else {
 		// Por Presencia y sin usuario
-	if ( ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) && !$usuario ) {
-		// Siendo Admin o Vendedor
+	if ( (($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) && !$usuario) || $session->userlevel == DEMO_LEVEL) {
+		// Siendo Admin, Vendedor o Demo
 		if ($grupo_calle) $t_grupo_calle = " and $grupo_calle";
 		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle FROM emupi_mupis AS a WHERE id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena)$t_grupo_calle;";
 	} else {
