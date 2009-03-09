@@ -256,7 +256,7 @@ if ( strpos($calle, "G:") !== false ) {
 		}
       $logotipo = '<div style="width:400px; height:150px">'.$logotipo.'</div>';
       //$html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
-      $html = "<bCliente actual</b><br /><center>".$logotipo."</center>";
+      $html = "<center><b>Cliente(s) actual(es)</b><hr />".$logotipo."</center>";
 	  
       if ($session->userlevel == ADMIN_LEVEL) {
 
