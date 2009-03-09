@@ -73,7 +73,6 @@ require_once("contenido/cargar+pantallas.php");
 	</script>
 	<script>
 	$().ajaxStart(function(){$.blockUI( { message: '<h1><img src="loader.gif" /> Su petición esta siendo procesada...</h1>' } );}).ajaxStop($.unblockUI);
-	$.jGrowl.defaults.position = 'bottom-left';
 	</script>
 	<!--[if gte IE 5.5]>
 	<![if lt IE 7]>
@@ -85,13 +84,7 @@ require_once("contenido/cargar+pantallas.php");
 	</style>
 	<![endif]>
 	<![endif]-->
-	<style type="text/css">
-
-			div.jGrowl div.aviso {
-				background-color: 		#FF0000;
-				color: 					#FFFFFF;
-			}
-	</style>
+	<style>div.jGrowl div.aviso {background-color: #FF0000;color: #FFFFFF;}</style>
 </head>
 <body>
 	<script>

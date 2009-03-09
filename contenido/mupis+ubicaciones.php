@@ -23,6 +23,7 @@
 				$("#botones_arte").empty();
 				$("#datos_calles").load("contenido/mupis+ubicaciones+dinamico.php?accion=calles&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val());
 				$("li#MM_paso_1").css("text-decoration", "line-through");
+				$.jGrowl.defaults.position = "bottom-left";
 				$.jGrowl("Si selecciona la calle \"Todas\", podrá desplazarse sobre todo el mapa para encontrar sus ubicaciones, de lo contrario se le mostrará unicamente los Ecomupis que esten en la calle seleccionada", { sticky: true , theme:  \'aviso\' });
 				}
 				function funcion_combo_calles() {
