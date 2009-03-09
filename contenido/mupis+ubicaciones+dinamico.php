@@ -256,7 +256,7 @@ if ( strpos($calle, "G:") !== false ) {
 		}
       $logotipo = '<div style="width:400px; height:150px">'.$logotipo.'</div>';
       //$html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
-      $html = "<center><bCliente actual: </b><br />".$logotipo."</center>";
+      $html = "<bCliente actual</b><br /><center>".$logotipo."</center>";
 	  
       if ($session->userlevel == ADMIN_LEVEL) {
 
@@ -339,7 +339,7 @@ if ( strpos($calle, "G:") !== false ) {
 $datos = '';
 $datos .= $map->getMapJS();
 //$datos .= $map->getMap();
-$datos .= $map->getSidebar();
+//$datos .= $map->getSidebar();
 $datos .= "<hr /><b>Mupis totales: $n_mupis</b>";
 $datos .= SCRIPT('onLoad();');
 return $datos;
