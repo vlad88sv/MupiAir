@@ -219,7 +219,7 @@ if ( strpos($calle, "G:") !== false ) {
 	}
    DEPURAR($q,0);
    $result = $database->query($q);
-   $num_rows = mysql_numrows($result);
+   $n_mupis = $num_rows = mysql_numrows($result);
    if(!$result || ($num_rows < 0)){
       exit ( "Error mostrando la información<br />");
    }
@@ -340,6 +340,7 @@ $datos .= $map->getMapJS();
 //$datos .= $map->getMap();
 $datos .= $map->getSidebar();
 $datos .= SCRIPT('onLoad();');
+$datos .= "<hr /><b>Mupis totales: $n_mupis</b>";
 return $datos;
 }
 
