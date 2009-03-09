@@ -339,8 +339,8 @@ $datos = '';
 $datos .= $map->getMapJS();
 //$datos .= $map->getMap();
 $datos .= $map->getSidebar();
-$datos .= SCRIPT('onLoad();');
 $datos .= "<hr /><b>Mupis totales: $n_mupis</b>";
+$datos .= SCRIPT('onLoad();');
 return $datos;
 }
 
