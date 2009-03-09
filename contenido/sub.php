@@ -195,7 +195,7 @@ return '<img src="'. $ruta . '" style="max-width:'.$width.'; max-height:'.$heigh
 
 function CONTENIDO_mostrar_logo_cliente() {
 	global $session, $database;
-	$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+	$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL, DEMO_LEVEL);
 	if ( !in_array($session->userlevel, $NivelesPermitidos) && $session->logged_in ) {
 		$q = "SELECT logotipo FROM ". TBL_USERS . " WHERE codigo='".$session->codigo."';";
 		$result = $database->query($q);		
@@ -275,6 +275,35 @@ function INICIAR_MENUES () {
 	</ul>
 	</div>
 	';
+	break;
+	
+	case DEMO_LEVEL:
+	$s =
+	'
+	<div class="chromestyle" id="chromemenu">
+	<ul>
+	<li><a href="./">Inicio</a></li>'
+	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
+	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+	<li>&nbsp;&nbsp;&nbsp;</li>
+	<li>&nbsp;&nbsp;</li>
+	<li>&nbsp;</li>
+	</ul>
+	</div>
+	<p style="width:40em">
+	<b>Bienvenido al sistema <em>Mupiair</em> de Ecomupis</b>.<br />
+	El usuario y la clave de acceso que Ud. recibió le ha permitido ingresar al sistema en modo de demostración y en base a ello se le ha otorgado acceso a una parte del sistema .<br /><br />
+	Este sistema <em>-el cúal es una herramienta única en el país-</em> permite que los clientes puedan monitorear las 24 horas y desde cualquier lugar del mundo, la ubicación exacta de su publicidad, la cúal previamente como cliente ha contratado en nuestro medio publicitario.<br /><br />
+	Ud. puede visualizar las ubicaciones en las diferentes calles en que las cuales ha tenido presencia su marca tanto en catorcenas anteriores como en la presente.<br /><br />
+	Otra característica del sistema es la capacidad de informarle inmediatamente de cualquier evento que haya ocurrido en un medio que contenga su publicidad, tales eventos podrían ser: destrucción total o parcial, daños por vandalismo, otros daños, etc. posteriormente y gracias a nuestro equipo de reparación 24/7, también podrá ver el momento en que se llevo a cabo su respectiva reinstalación y reparación, la cúal se realiza en periodos de <b>24 horas</b> como máximo.<br /><br />
+	También puede Ud. ver estadísticas de impactos publicitarios diarios, costo por impacto, etc. así como generar desde la web reportes PDF de todas sus ubicaciones, pasadas o presentes y mucho más.<br /><br />
+	Por todo lo anterior, le garantizamos que esta herramienta lo mantendrá al tanto de todo lo referente a sus espacios publicitarios, porque en <b>Ecomupis nos preocupamos por dar a nuestros clientes las herramientas mas sofisticadas y de fácil uso para que su experiencia con nosotros sea <em>la mejor posible</em></b>.<br/><br/>
+	Lo invitamos a navegar en la opción <b><a href="./?accion=ver+ubicaciones">Ubicaciones</a></b>, donde podrá ver nuestras ubicaciones con fotografía actual.<br/><br />
+	<span style="font-size:.9em;text-decoration: overline;"><em>Sistema mupiair de Ecomupis</em></span>
+	</p>
+	';
+	break;
 	break;
 	
 	case USER_LEVEL:

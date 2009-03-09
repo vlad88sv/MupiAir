@@ -29,6 +29,7 @@ define("GUEST_NAME", "Visitante");
 define("ADMIN_LEVEL", 9);
 define("SALESMAN_LEVEL",  5);
 define("CLIENT_LEVEL", 3);
+define("DEMO_LEVEL", 2);
 define("USER_LEVEL", 1);
 define("GUEST_LEVEL", 0);
 define("TRACK_VISITORS", true);
