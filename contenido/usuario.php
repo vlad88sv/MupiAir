@@ -1,12 +1,39 @@
 <?
 function displayUsers(){
    global $database,$session;
+   echo '
+Nivel
+<select id="FiltroNivel">
+<option value="">Todos
+<option value="1">Usuario
+<option value="2">Demo
+<option value="3">Cliente
+<option value="5">Vendedor
+<option value="9">Administrador
+</select>
+<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+clientes&amp;nivel=\'+$(\'#FiltroNivel\').val()" value="Filtrar!" />
+';
+
+echo '
+Catorcena
+'.Combobox_catorcenas("FiltroCatorcenas", Obtener_catorcena_cercana()).'
+<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+clientes&amp;catorcena=\'+$(\'#FiltroCatorcenas\').val()" value="Filtrar!" />
+';
+echo '<br /><br />';
+   $where = "";
    if ( !$session->isAdmin() ) {
-	   $where_userlevel = " WHERE userlevel <= 3 ";
+	   $where = "WHERE userlevel <= 3 ";
    } else {
-	   $where_userlevel = "";
+	   if ( isset($_GET['nivel']) ) {
+		   if ($_GET['nivel'])
+		   $where = "WHERE userlevel='".mysql_real_escape_string($_GET['nivel'])."'";
+	   }
+	   if ( isset($_GET['catorcena']) ) {
+		   $where = "WHERE codigo IN (SELECT codigo FROM ".TBL_MUPI_ORDERS." WHERE codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_FACES." WHERE catorcena='".mysql_real_escape_string($_GET['catorcena'])."'))";
+	   }
    }
-   $q = "SELECT * FROM ".TBL_USERS."$where_userlevel ORDER BY userlevel DESC;";
+   $q = "SELECT * FROM ".TBL_USERS." $where ORDER BY userlevel DESC;";
+   DEPURAR ($q, 0);
    $result = $database->query($q);
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
@@ -16,29 +43,8 @@ function displayUsers(){
    }
    if($num_rows == 0){
       /*Esto nunca deberia de pasar realmente...*/
-      echo "¡No hay clientes/usuarios ingresados!";
-      return;
+      echo Mensaje ("¡No hay clientes/usuarios ingresados que coincidan con los criterios del filtro!", _M_INFO);
    }
-echo '
-Nivel
-<select name="FiltroNivel">
-<option value="10">Todos
-<option value="1">Usuario
-<option value="2">Demo
-<option value="3">Cliente
-<option value="5">Vendedor
-<option value="9">Administrador
-</select>
-<input type="button" value="Filtrar!" />
-';
-
-//echo '<br />';
-
-echo '
-Catorcena
-'.Combobox_catorcenas("FiltroCatorcenas", Obtener_catorcena_cercana()).'
-<input type="button" value="Filtrar!" />
-';
 
 echo '<hr />';
    echo '<table border="0">';
