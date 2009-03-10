@@ -85,7 +85,7 @@ function CONTENIDO__usuarios_resumen(){
 	$q_nPantalas = "(SELECT COUNT(*) as cuenta FROM ". TBL_MUPI_FACES ." AS c WHERE catorcena=".$catorcena." AND codigo_pedido IN (SELECT codigo_pedido from ".TBL_MUPI_ORDERS." AS b WHERE b.codigo = a.codigo)) AS npantallas";
 	$q_nPantalas_Veh = "(SELECT COUNT(*) as cuenta FROM ". TBL_MUPI_FACES ." AS c WHERE tipo_pantalla='0' AND catorcena=".$catorcena." AND codigo_pedido IN (SELECT codigo_pedido from ".TBL_MUPI_ORDERS." AS b WHERE b.codigo = a.codigo)) AS npantallasv";
 	$q_nPantalas_Pea = "(SELECT COUNT(*) as cuenta FROM ". TBL_MUPI_FACES ." AS c WHERE tipo_pantalla='1' AND catorcena=".$catorcena." AND codigo_pedido IN (SELECT codigo_pedido from ".TBL_MUPI_ORDERS." AS b WHERE b.codigo = a.codigo)) AS npantallasp";
-	$q = "SELECT nombre, $q_nPantalas, $q_nPantalas_Veh , $q_nPantalas_Pea FROM ".TBL_USERS." AS a WHERE userlevel = ".CLIENT_LEVEL." AND codigo IN (SELECT codigo FROM ".TBL_MUPI_ORDERS." WHERE codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_FACES." WHERE catorcena='".$catorcena."'));";
+	$q = "SELECT nombre, $q_nPantalas, $q_nPantalas_Veh , $q_nPantalas_Pea FROM ".TBL_USERS." AS a WHERE codigo IN (SELECT codigo FROM ".TBL_MUPI_ORDERS." WHERE codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_FACES." WHERE catorcena='".$catorcena."'));";
    DEPURAR ($q, 0);
    $result = $database->query($q);
    /* Error occurred, return given name by default */

@@ -7,7 +7,7 @@ function CONTENIDO_admin() {
 	}
 	
 	echo '<h2>Resumen clientes</h2>';
-	echo 'Catorcena ' . $database->Combobox_CatorcenasConPresencia("FiltroCatorcenasResumen") . '<input type="button" OnClick="$(\'#clientes_resumen\').load(\'contenido/usuario+dinamico.php?resumen=1&amp;catorcena=\'+$(\'#FiltroCatorcenas\').val())" value="Filtrar!" />';
+	echo 'Catorcena ' . $database->Combobox_CatorcenasConPresencia("FiltroCatorcenasResumen") . '<input type="button" OnClick="$(\'#clientes_resumen\').load(\'contenido/usuario+dinamico.php?resumen=1&amp;catorcena=\'+$(\'#FiltroCatorcenasResumen\').val())" value="Filtrar!" />';
 	echo '<div id="clientes_resumen"></div>';
 	
 	echo '<hr />';
