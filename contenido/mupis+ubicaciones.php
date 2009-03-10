@@ -13,7 +13,7 @@
 		unset($_GET['verpormupis']);
 	  }
       //Importante!!! Esto tiene que suceder antes de cualquier cuestión AJAX porque Google esta usando document.write en algún momento!.
-      echo sprintf('<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s" type="text/javascript" charset="utf-8"></script>', GOOGLE_MAP_KEY);
+      //echo sprintf('<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=%s" type="text/javascript" charset="utf-8"></script>', GOOGLE_MAP_KEY);
       //echo '<script src="include/jquery.form.js" charset="utf-8"></script>';
       // AJAX ;)
       if (!isset($_GET['verpormupis'])) {
@@ -24,6 +24,9 @@
 				$("#datos_calles").load("contenido/mupis+ubicaciones+dinamico.php?accion=calles&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val());
 				$("li#MM_paso_1").css("text-decoration", "line-through");
 				$.jGrowl.defaults.position = "bottom-left";
+				$(\'div.close\').trigger("click.jGrowl");
+				$.jGrowl.defaults.closer = false;
+				//$.jGrowl.defaults.closerTemplate = "<div>Cerrar todas</div>";
 				$.jGrowl("Si selecciona la calle \"Todas\", podrá desplazarse sobre todo el mapa para encontrar sus ubicaciones, de lo contrario se le mostrará unicamente los Ecomupis que esten en la calle seleccionada", { sticky: true , theme:  \'aviso\' });
 				}
 				function funcion_combo_calles() {

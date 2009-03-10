@@ -121,9 +121,9 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 	$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL, DEMO_LEVEL);
 	if (in_array($session->userlevel, $NivelesPermitidos)) {
 	// Si es administrador, Vendedor o Demo.
-		$datosDiv .= "<center><strong>Imagen actual de su campaña ".$tipoPantalla.":</strong></center>";
+		$datosDiv .= "<center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>";
 		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
-		$datosDiv .= "<center><strong>Arte digital de su campaña:</center>";
+		$datosDiv .= "<center><strong>Arte digital de cara:</center>";
 		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$arte.'" />' . "</strong></center>";
 		$datos .= '<script>$("#botones_arte").append("<a onclick=\'LINK_'.$tipoPantalla.'()\'>Ver imagenes de cara '.$tipoPantalla.'</a><br />");</script>';
     } else {
@@ -132,13 +132,13 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 		//Si la catorcena NO es futura.
 		$datosDiv .= "<center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>";
 		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
-		$datosDiv .= "<center><strong>Arte digital de campaña:</center>";
+		$datosDiv .= "<center><strong>Arte digital de cara:</center>";
 		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$arte.'" />' . "</strong></center>";	
 	} else {
 		//Si la catorcena NO es futura.
 		$datosDiv .= "<center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>";
 		$datosDiv .= "<center>Viendo catorcena futura, la fotografía mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
-		$datosDiv .= "<center><strong>Arte digital de su campaña:</strong></center>";
+		$datosDiv .= "<center><strong>Arte digital cara:</strong></center>";
 		$datosDiv .= "<center>Viendo catorcena futura, Arte no disponible</center>";
 	}
 	if (!$PosponerBlockUI)
