@@ -71,7 +71,7 @@ $html .= "<tfoot>";
    //if ( $session->isAdmin() ) {
 	//echo "<td colspan='5'>Total</td><td>$num_rows</td>";
    //} else {
-	$html .= "<td colspan='2'>Total</td><td>$num_rows</td>";
+	$html .= "<td colspan='2'>Total de registros encontrados para el filtro seleccionado</td><td>$num_rows</td>";
    //}
    $html .= "</tfoot>";
    $html .= "</table><br />";
@@ -110,7 +110,7 @@ echo '<hr />';
 	  $html .= "<tr><td style='text-align:center;'>$nombre</td><td>$npantallas</td><td>$npantallasv</td><td>$npantallasp</td></tr>";
    }
 	$html .= "<tfoot>";
-	$html .= "<td colspan='3'>Total</td><td>$num_rows</td>";
+	$html .= "<td colspan='3'>Total de registros encontrados para el filtro seleccionado</td><td>$num_rows</td>";
    $html .= "</tfoot>";
    $html .= "</table><br />";
    exit ($html);
