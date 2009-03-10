@@ -7,7 +7,7 @@ blockquote
 p
 	{background-color:#F0F0F0;color:#000000;margin:0;width:80%;padding:5px;margin:10px;margin-left:auto;margin-right:auto}
 textarea,input[type=text],input[type=password]
-	{background-color:#EEEEEE;color:#AAAAFF;font-weight:bold; width: 100%;}
+	{background-color:#EEEEEE;color:#AAAAFF;font-weight:bold; width: 99%;}
 textarea.hasFocus,input[type=text].hasFocus,input[type=password].hasFocus 
 	{ color: #000; font-weight: bold; }
 textarea.hasFocus,input[type=text].isChanged,input[type=password].isChanged
