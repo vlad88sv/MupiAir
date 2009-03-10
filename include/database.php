@@ -508,9 +508,9 @@
           // 4. Posteriormente la ubicacion de esa calle.
           // 5. Mostramos nada mas las distintas calles.
           // - Combobox espera calle y ubicación.
-          $q = "SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS b WHERE a.codigo_mupi=b.id_mupi) AS 'calle', (SELECT ubicacion FROM emupi_calles WHERE codigo_calle=@calle) AS ubicacion FROM emupi_mupis_caras AS a WHERE catorcena=" . $catorcena . $WHERE_USER . " ORDER BY ubicacion;";
+          $q = "SELECT DISTINCT @calle := (SELECT codigo_calle FROM emupi_mupis AS b WHERE a.codigo_mupi=b.id_mupi) AS 'calle', (SELECT ubicacion FROM emupi_calles WHERE codigo_calle=@calle) AS ubicacion FROM emupi_mupis_caras AS a WHERE catorcena=" . $catorcena . $WHERE_USER . " HAVING ubicacion IS NOT NULL ORDER BY ubicacion;";
           
-		  //echo $q.'<br />';
+		  echo $q.'<br />';
           $result = mysql_query($q, $this->connection);
   		  $q2 = "select distinct grupo_calle from emupi_calles where grupo_calle IS NOT NULL AND grupo_calle != '';";
 		  DEPURAR ($q2,0);
