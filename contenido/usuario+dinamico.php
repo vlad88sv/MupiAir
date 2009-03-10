@@ -7,7 +7,7 @@ require_once('../include/fecha.php');
 require_once('sub.php');
 
 if ( isset($_GET['completo']) ) CONTENIDO__usuarios_completos();
-if ( isset($_GET['resumen']) ) CONTENIDO__usuarios_resumen();
+if ( isset($_GET['resumen']) && isset($_GET['catorcena']) ) CONTENIDO__usuarios_resumen();
 
 function CONTENIDO__usuarios_completos(){
 global $session, $database, $form;
@@ -79,6 +79,41 @@ $html .= "<tfoot>";
 }
  
 function CONTENIDO__usuarios_resumen(){
+	global $session, $database, $form;
+	$html = '';
+	$catorcena = mysql_real_escape_string($_GET['catorcena']);
+	$q_nPantalas = "(SELECT COUNT(*) as cuenta FROM ". TBL_MUPI_FACES ." AS c WHERE catorcena=".$catorcena." AND codigo_pedido IN (SELECT codigo_pedido from ".TBL_MUPI_ORDERS." AS b WHERE b.codigo = a.codigo)) AS npantallas";
+	$q_nPantalas_Veh = "(SELECT COUNT(*) as cuenta FROM ". TBL_MUPI_FACES ." AS c WHERE tipo_pantalla='0' AND catorcena=".$catorcena." AND codigo_pedido IN (SELECT codigo_pedido from ".TBL_MUPI_ORDERS." AS b WHERE b.codigo = a.codigo)) AS npantallasv";
+	$q_nPantalas_Pea = "(SELECT COUNT(*) as cuenta FROM ". TBL_MUPI_FACES ." AS c WHERE tipo_pantalla='1' AND catorcena=".$catorcena." AND codigo_pedido IN (SELECT codigo_pedido from ".TBL_MUPI_ORDERS." AS b WHERE b.codigo = a.codigo)) AS npantallasp";
+	$q = "SELECT nombre, $q_nPantalas, $q_nPantalas_Veh , $q_nPantalas_Pea FROM ".TBL_USERS." AS a WHERE userlevel = ".CLIENT_LEVEL." AND codigo IN (SELECT codigo FROM ".TBL_MUPI_ORDERS." WHERE codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_FACES." WHERE catorcena='".$catorcena."'));";
+   DEPURAR ($q, 0);
+   $result = $database->query($q);
+   /* Error occurred, return given name by default */
+   $num_rows = mysql_numrows($result);
+   if(!$result || ($num_rows < 0)){
+      $html .= "Error mostrando la información";
+      return;
+   }
+   if($num_rows == 0){
+      /*Esto nunca deberia de pasar realmente...*/
+      $html .= Mensaje ("¡No hay clientes/usuarios ingresados que coincidan con los criterios del filtro!", _M_INFO);
+   }
+
+echo '<hr />';
+   echo '<table border="0">';
+   echo "<tr><th>Nombre</th><th>Número de pantallas</th><th>Vehiculares</th><th>Peatonales</th></tr>";
+   for($i=0; $i<$num_rows; $i++){
+      $nombre = mysql_result($result,$i,"nombre");
+      $npantallas = mysql_result($result,$i,"npantallas");
+      $npantallasv = mysql_result($result,$i,"npantallasv");
+      $npantallasp = mysql_result($result,$i,"npantallasp");
+	  $html .= "<tr><td style='text-align:center;'>$nombre</td><td>$npantallas</td><td>$npantallasv</td><td>$npantallasp</td></tr>";
+   }
+	$html .= "<tfoot>";
+	$html .= "<td colspan='3'>Total</td><td>$num_rows</td>";
+   $html .= "</tfoot>";
+   $html .= "</table><br />";
+   exit ($html);
 }
 
 ?>
