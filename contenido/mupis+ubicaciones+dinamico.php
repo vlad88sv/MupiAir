@@ -320,7 +320,7 @@ $datos = '';
 $datos .= $map->getMapJS();
 //$datos .= $map->getMap();
 //$datos .= $map->getSidebar();
-$datos .= "<hr /><b>Mupis totales: $n_mupis</b>";
+$datos .= "<hr /><b>Total de espacios publicitarios: $n_mupis</b>";
 $datos .= SCRIPT('onLoad();');
 return $datos;
 }
