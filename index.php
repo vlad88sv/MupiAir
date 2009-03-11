@@ -86,8 +86,8 @@ require_once("contenido/cargar+pantallas.php");
 	<![endif]-->
 	<style>
 	div.jGrowl div.aviso {background-color: #FF0000;color: #FFFFFF;}
-	div.jGrowl div.smoke {background-color: #000000;color: #FFFFFF;-moz-border-radius:0px;-webkit-border-radius:0px;width:600px;overflow:hidden;}
-	div.jGrowl div.globoclientes {background-color: #FFFA73;color: #000000;-moz-border-radius:0px;-webkit-border-radius:0px;width:600px;overflow:hidden;border:2px solid #000000}
+	div.jGrowl div.smoke {background-color: #000000;color: #FFFFFF;-moz-border-radius:0px;-webkit-border-radius:0px;width:600px;overflow:hidden;opacity:1;filter:alpha(opacity = 100);}
+	div.jGrowl div.globoclientes {background-color: #FFFA73;color: #000000;-moz-border-radius:0px;-webkit-border-radius:0px;width:600px;overflow:hidden;border:2px solid #000000;opacity:1;filter:alpha(opacity = 100);}
 	</style>
 </head>
 <body>

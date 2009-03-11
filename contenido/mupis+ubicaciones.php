@@ -31,6 +31,7 @@
 				function funcion_combo_calles() {
 				$("#botones_arte").empty();
 				$("#Mensajes").empty();
+				$(\'div.close\').trigger("click.jGrowl");
 				window.location="#ubicaciones";
 				$("#grafico_mapa").load("contenido/mupis+ubicaciones+dinamico.php?accion=mapas&usuario=' . $usuario . '&catorcena="+$(\'#combo_catorcenas\').val()+"&calle="+$(\'#combo_calles\').val());
 				}

@@ -786,6 +786,7 @@ class GoogleMapAPI {
      // IMPORTANTE!, acá tiene que ir el hack mayor!.
     function getCreateMarkerJS() {
         $_SCRIPT_ = '$.get(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI=\'+id, function(data){
+			$(\'div.close\').trigger("click.jGrowl");
 			$.jGrowl(data,{
 					theme: \'globoclientes\',
 					sticky: true,
