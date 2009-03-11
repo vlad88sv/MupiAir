@@ -260,8 +260,11 @@ global $database;
 	//print_ar($_POST);
 	//print_ar($_FILES);
 if ( !$_FILES['foto_real']['error'] ) {
-	$Pre_Id = isset($_POST['ConservarPantalla2']) ? $_POST['ConservarPantalla2'] : 0;
-	$idImg = CargarImagenEnBD("foto_real","PANTALLAS", $Pre_Id);
+	// Con la utilidad de "Clonar pantallas" se introdujo un gran defecto:
+	// La modificacion de fotos es retroactiva.
+	// Como solución temporal se evitará que reemplaze la foto actual y cree siempre un nuevo slot.
+	//$Pre_Id = isset($_POST['ConservarPantalla2']) ? $_POST['ConservarPantalla2'] : 0;
+	$idImg = CargarImagenEnBD("foto_real","PANTALLAS");
 } else {
 	
 	if ( isset ($_POST['ConservarPantalla']) ){
