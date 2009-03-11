@@ -171,7 +171,7 @@
           }
 		  echo "<tfoot>";
 		  if (!$usuario) {
-			echo "<td colspan='5'>Total</td><td>$num_rows</td>";
+			echo "<td colspan='3'>Total</td><td>$num_rows</td>";
 		  } else  {
 			echo "<td colspan='2'>Total</td><td>$num_rows</td>";
 		  }

@@ -133,7 +133,6 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 		"<center>" . "<img src='include/ver.php?id=".$arte."' />" . "</strong></center>";
 	} // Fin de procesado de de $datosUI
 
-	$botonCerrarCaja = addslashes("<a onclick='$.unblockUI()'>Cerrar</a><hr />");
 	$datosCaja = "$.jGrowl('".addslashes($datosUI[$tipoPantalla])."',{ 
 					theme: 'smoke',
 					sticky: true,
@@ -320,7 +319,7 @@ $datos = '';
 $datos .= $map->getMapJS();
 //$datos .= $map->getMap();
 //$datos .= $map->getSidebar();
-$datos .= "<hr /><b>Total de espacios publicitarios: $n_mupis</b>";
+$datos .= "<hr /><b>Total de espacios publicitarios en la calle seleccionada: $n_mupis</b>";
 $datos .= SCRIPT('onLoad();');
 return $datos;
 }

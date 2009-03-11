@@ -9,7 +9,7 @@ function CONTENIDO_pedidos($usuario, $pedido) {
 		}
 	}
 	echo '<hr /><h2>Sus Pedidos '._NOMBRE_.".</h2>";
-	if ( $session->isAdmin() ) {
+	echo "[NO FUNCIONA AÚN] Mostrar solo pedidos que se encuentren en la catorcena: " . $database->Combobox_CatorcenasConPresencia("cmbFiltroCatorcena",$usuario);
 		
 		//Nos toca registrar un Pedido
 		if ( isset($_POST['registrar_pedidos']) ) {
@@ -18,7 +18,6 @@ function CONTENIDO_pedidos($usuario, $pedido) {
 		
 		//Nos toca elimiinar un pedido
 		if ( isset($_GET['eliminar']) && isset($_GET['imagen']) ) {
-		global $database;
 		// Eliminamos la pantalla
 		$q = "DELETE FROM " . TBL_MUPI_ORDERS . " WHERE codigo_pedido=" . $_GET['eliminar'] . ";";
 		$result = $database->query($q);
@@ -30,16 +29,10 @@ function CONTENIDO_pedidos($usuario, $pedido) {
 		$result = $database->query($q);
 		if ( $result ) { echo "Imagen asociada al pedido eliminada<br />"; } 
 		}
-		}
 		
-	} else { 
-		//Solo puede ver sus propios pedidos.
-		$usuario = $session->codigo;
-	}
+		}
 	
 	verPedidos($usuario);
-	if ( $session->isAdmin() ) {
-	
 	if ($usuario) { $paraUsuario = " para $usuario"; } else { $paraUsuario = ""; }
 	
 	if ($pedido) {
@@ -51,7 +44,6 @@ function CONTENIDO_pedidos($usuario, $pedido) {
 	echo '<hr /><h2>'.$edicionOregistro.$paraUsuario.'</h2>';
 	
 	verPedidosregistro($usuario, $pedido);
-	}
 }
 function verPedidos($usuario="", $pedido=""){
    global $database;
