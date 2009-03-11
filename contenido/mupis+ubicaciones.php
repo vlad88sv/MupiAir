@@ -99,6 +99,6 @@
       
       echo '</tr>';
       echo '</table>';
-      echo '<span id="datos_mupis">Seleccione un ' . _NOMBRE_ . '</span>';
+      echo '<span id="datos_mupis"></span>';
   }
 ?>
