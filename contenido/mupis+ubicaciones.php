@@ -37,29 +37,6 @@
 				</script>
 			    ';
 	  }
-	  // Mostrar las imagenes en el BlockUI.
-
-    echo "\n".
-				'<script>
-				function BLOCK_IMAGEN(IMAGE_DIV){
-					$.blockUI({
-					message: $(IMAGE_DIV),  
-					css: {  
-						top:  ($(window).height() - 600) /2 + \'px\', 
-						left: ($(window).width() - 600) /2 + \'px\', 
-						width: \'600px\' 
-					}  
-					}); 
-					//setTimeout($.unblockUI, 5000);
-				}
-				function LINK_vehicular(){
-					BLOCK_IMAGEN(\'div#div_vehicular\');
-				}
-				function LINK_peatonal() {
-					BLOCK_IMAGEN(\'div#div_peatonal\');
-				}
-				</script>
-			    ';
 				
       $BotonVerPorMupis = NULL;
 	  echo '<div id="div_peatonal" style="display:none"></div><div id="div_vehicular" style="display:none"></div>';

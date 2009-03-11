@@ -84,7 +84,10 @@ require_once("contenido/cargar+pantallas.php");
 	</style>
 	<![endif]>
 	<![endif]-->
-	<style>div.jGrowl div.aviso {background-color: #FF0000;color: #FFFFFF;}</style>
+	<style>
+	div.jGrowl div.aviso {background-color: #FF0000;color: #FFFFFF;}
+	div.jGrowl div.smoke {background-color: #000000;color: #FFFFFF;-moz-border-radius:0px;-webkit-border-radius:0px;width:600px;overflow:hidden;}
+	</style>
 </head>
 <body>
 	<script>

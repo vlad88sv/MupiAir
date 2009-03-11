@@ -80,9 +80,9 @@ function retornar($texto) {
 	exit ('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' . $texto . '<br />');
 }
 
+// Buscar () - Encuentra las caras que pertenecen a $codigo_mupi (realmente id_mupi)
 function Buscar ($codigo_mupi, $catorcena, $usuario) {
    global $session;
-   /* La logica aqui es que si el usuario que solicitó la búsqueda es administrador, entonces se le muestran todos los MUPIS, si no solo se le muestran los suyos */
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die('!->La base de datos seleccionada "'.$DB_base.'" no existe');
    if ( time() > $catorcena ) { $tCatorcena=$catorcena; } else { $tCatorcena=Obtener_catorcena_anterior($catorcena); }
@@ -91,7 +91,6 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
    } else {
 	$q = "select tipo_pantalla, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$tCatorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos where codigo='$usuario') AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
    }
-   //echo $q.'<br />';
    $result = @mysql_query($q, $link) or retornar ('!->Ocurrió un error mientras se revisaba la disponibilidad del MUPI.');
    /* Error occurred, return given name by default */
    $num_rows = mysql_numrows($result);
@@ -99,71 +98,50 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
       retornar("Error mostrando la información");
    }
  
- if($num_rows == 0){
+   if($num_rows == 0){
       retornar (Mensaje("¡No hay datos para ese código ($codigo_mupi)!",_M_ERROR));
    }
-   
-   $tipoPantalla = $datos = $PosponerBlockUI = '';
-   $datos .= SCRIPT('$("#botones_arte").html("");');
+   // =====================Hasta acá la BD================================= //
+
+   // ===================================================================== //
+   // Empezamos a recorrer las caras encontradas
+   $tipoPantalla = $datosLinksGlobo = '';
    for($i=0; $i<$num_rows; $i++){
-	   $datosDiv = "";
-	   $datosDiv .= '<a onclick=\'$.unblockUI()\'>Cerrar</a><hr />';
-	  $arte = mysql_result($result,$i,"arte");
-      $tipo_pantalla  = mysql_result($result,$i,"tipo_pantalla");
-      $foto_real = mysql_result($result,$i,"foto_real");
-      // si es par es vehicular
-      if ( ($tipo_pantalla % 2) == 0 ) {
-		$tipoPantalla = 'vehicular';
-      }else{
-		$tipoPantalla = 'peatonal';
-      }
-	  
+	   
+	$arte = mysql_result($result,$i,"arte");
+	$tipo_pantalla  = mysql_result($result,$i,"tipo_pantalla");
+	$foto_real = mysql_result($result,$i,"foto_real");
+	// si es par es vehicular
+	$tipoPantalla = ($tipo_pantalla % 2) == 0 ? 'vehicular' : 'peatonal';
+	// Botón de cerrar para el BlockUI.
+	// $datosUI .= '<a onclick=\'$.unblockUI()\'>Cerrar</a><hr />';
+	// Admin, Vendedor y Demas al presionar sobre el mupi podrán ver
+	// el logo de las compañias establecidas en ese punto y ademas
+	// tendrán los enlaces de Ver imagen vehicular/peatonal en el pie del globo
 	$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL, DEMO_LEVEL);
-	if (in_array($session->userlevel, $NivelesPermitidos)) {
-	// Si es administrador, Vendedor o Demo.
-		$datosDiv .= "<center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>";
-		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
-		$datosDiv .= "<center><strong>Arte digital de cara:</center>";
-		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$arte.'" />' . "</strong></center>";
-		$datos .= '<script>$("#botones_arte").append("<a onclick=\'LINK_'.$tipoPantalla.'()\'>Ver imagenes de cara '.$tipoPantalla.'</a><br />");</script>';
-    } else {
-	// Si es cliente o usuario.
-	if ( time() > $catorcena ) {
-		//Si la catorcena NO es futura.
-		$datosDiv .= "<center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>";
-		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
-		$datosDiv .= "<center><strong>Arte digital de cara:</center>";
-		$datosDiv .= "<center>" . '<img src="include/ver.php?id='.$arte.'" />' . "</strong></center>";	
+
+	// Si es catorcena futura y no es Administrador, ni Vendedor ni Demo.
+	if ( time() < $catorcena && !in_array($session->userlevel, $NivelesPermitidos) ) {
+		$datosUI[$tipoPantalla] .= "<span style='display:none'><center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>".
+		"<center>Viendo catorcena futura, la fotografía mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>".
+	    "<center><strong>Arte digital cara:</strong></center>".
+		"<center>Viendo catorcena futura, Arte no disponible</center></span>";
 	} else {
-		//Si la catorcena NO es futura.
-		$datosDiv .= "<center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>";
-		$datosDiv .= "<center>Viendo catorcena futura, la fotografía mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>";
-		$datosDiv .= "<center><strong>Arte digital cara:</strong></center>";
-		$datosDiv .= "<center>Viendo catorcena futura, Arte no disponible</center>";
-	}
-	if (!$PosponerBlockUI)
-	$PosponerBlockUI .= '
-	function PBUI () {
-	$.blockUI({
-			message: $(\'div#div_'.$tipoPantalla.'\'),  
-			css: {  
-				top:  ($(window).height() - 600) /2 + \'px\', 
-				left: ($(window).width() - 600) /2 + \'px\', 
-				width: \'600px\' 
-			}  
-			});
-	}
-	setTimeout(PBUI, 500);
-	';
-	}
-	$datos .= SCRIPT('$("#div_'.$tipoPantalla.'").html("'.addslashes($datosDiv).'");');
-   }
-   // Esto tiene que ser disparado un poco despues de que se dispare el evento Stop de Ajax
-   // para evitar que cierre automaticamente la cajita de la imagen.
-   if ($PosponerBlockUI) {
-	   $datos .= SCRIPT($PosponerBlockUI);
-   }
-retornar($datos);
+		$datosUI[$tipoPantalla] = "<center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>".
+		"<center>" . "<img src='include/ver.php?id=" . $foto_real . "' />" . "</center>".
+		"<center><strong>Arte digital de cara:</center>".
+		"<center>" . "<img src='include/ver.php?id=".$arte."' />" . "</strong></center>";
+	} // Fin de procesado de de $datosUI
+
+	$botonCerrarCaja = addslashes("<a onclick='$.unblockUI()'>Cerrar</a><hr />");
+	$datosCaja = "$.jGrowl('".addslashes($datosUI[$tipoPantalla])."',{ 
+					theme: 'smoke',
+					sticky: true,
+					closer: false})";
+	$datosLinksGlobo .= "<center><a onclick=\"$datosCaja\">Ver imagen de cara ".$tipoPantalla."</a></center>";
+
+   } // Fin del recorrido de datos.
+retornar($datosLinksGlobo);
 }
 
 function Mostrar_Mapa($catorcena, $calle, $usuario){
@@ -255,9 +233,10 @@ if ( strpos($calle, "G:") !== false ) {
 		} else {
 			$logotipo = ''; //"<br />".CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"), "50px");
 		}
-      $logotipo = '<div style="width:400px; height:150px">'.$logotipo.'</div>';
+      $logotipo = '<div style="width:400px; height:75px">'.$logotipo.'</div>';
       //$html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
-      $html = "<center><b>Cliente(s) actual(es)</b><hr />".$logotipo."</center>";
+	  $_SCRIPT_ = '<script>$("#datos_mupis_en_globo").load("contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI='.$id_mupi . "|" . $catorcena . "|" . $usuario.'");</script>';
+      $html = "<center><b>Cliente(s) actual(es)</b><hr />".$logotipo."</center><div id='datos_mupis_en_globo' style='width:400px; height:50px'></div>$_SCRIPT_";
 	  
       if ($session->userlevel == ADMIN_LEVEL) {
 

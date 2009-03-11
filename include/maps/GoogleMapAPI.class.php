@@ -785,7 +785,7 @@ class GoogleMapAPI {
      */
      // IMPORTANTE!, acá tiene que ir el hack mayor!.
     function getCreateMarkerJS() {
-        $_SCRIPT_ = '$("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI=\'+id,{},function(){$("#Mensajes").empty();});';
+        $_SCRIPT_ = '$("#datos_mupis").load(\'contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI=\'+id);';
         $_output = '';
 		$_output .= 'function createMarker(point, title, html, n, tooltip, id, html_pedidos) {' . "\n";
         $_output .= 'if(n >= '. sizeof($this->_icons) .') { n = '. (sizeof($this->_icons) - 1) ."; }\n";
@@ -805,7 +805,7 @@ class GoogleMapAPI {
 			} else {
 				$Contenido_maximizado = "";
 			}
-			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; marker.openInfoWindowHtml(html,{'.$Contenido_maximizado.'}) });' . "\n";
+			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { marker.openInfoWindowHtml(html,{'.$Contenido_maximizado.'}) });' . "\n";
 			$_output .= 'GEvent.addListener(marker, "infowindowclose", function() { $("#botones_arte").html(""); });' . "\n";
 			$_output .= '} else {' . "\n";
 			$_output .= 'GEvent.addListener(marker, "'.$this->window_trigger.'", function() { '.$_SCRIPT_.'; });' . "\n";
