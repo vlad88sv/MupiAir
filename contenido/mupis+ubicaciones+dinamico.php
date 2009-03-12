@@ -265,6 +265,7 @@ if ( strpos($calle, "G:") !== false ) {
 							$Boton_Vehicular = "<a href='./?"._ACC_."=gestionar+pantallas&actualizar=1&id=$Pantalla_Vehicular&catorcena=$catorcena' target='blank'>Editar esta cara...</a><br />";
 						} else {
 							$n_caras_p++;
+							$n_caras++;
 							$Pantalla_Peatonal = mysql_result($result2,$ii,"id_pantalla");
 							$Valor_Peatonal = mysql_result($result2,$ii,"codigo_pedido");
 							$Valor_Peatonal_Desc = mysql_result($result2,$ii,"descripcion");
@@ -298,6 +299,21 @@ if ( strpos($calle, "G:") !== false ) {
 		  ;
 		
       } else {
+		  $q = "SELECT id_pantalla, tipo_pantalla FROM emupi_mupis_caras AS a WHERE codigo_mupi='$id_mupi' AND catorcena='$catorcena' AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." AS tmo WHERE tmo.codigo='$usuario')";
+		  DEPURAR($q,0);
+		  $result2 = $database->query($q);
+		  $num_rows2 = mysql_numrows($result2);
+		  if($num_rows2 > 0){
+			for($ii=0; $ii<$num_rows2; $ii++){
+			   if ( (mysql_result($result2,$ii,"tipo_pantalla") % 2) == 0 ) {
+					$n_caras_v++;
+					$n_caras++;
+				} else {
+					$n_caras_p++;
+					$n_caras++;
+			   }
+			}
+		  }
 		  $Contenido_maximizado = "";
 		  $map->Mostrar_Contenido_Maximizado = false;
 	  }
