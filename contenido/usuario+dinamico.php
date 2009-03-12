@@ -13,19 +13,20 @@ function CONTENIDO__usuarios_completos(){
 global $session, $database, $form;
   $html = $where = '';
    if ( !$session->isAdmin() ) {
-	   $where .= " AND userlevel <= 3 ";
+	   $where .= " AND userlevel = ".CLIENT_LEVEL;
    } else {
 	   if ( isset($_GET['nivel']) ) {
 		   if ($_GET['nivel']) {
 		   $where .= " AND userlevel='".mysql_real_escape_string($_GET['nivel'])."'";
 		   }
 	   }
-	   if ( isset($_GET['catorcena']) ) {
-		   if ($_GET['catorcena']) {
-		   $where .= " AND codigo IN (SELECT codigo FROM ".TBL_MUPI_ORDERS." WHERE codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_FACES." WHERE catorcena='".mysql_real_escape_string($_GET['catorcena'])."'))";
-		   }
+   }
+   if ( isset($_GET['catorcena']) ) {
+	   if ($_GET['catorcena']) {
+	   $where .= " AND codigo IN (SELECT codigo FROM ".TBL_MUPI_ORDERS." WHERE codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_FACES." WHERE catorcena='".mysql_real_escape_string($_GET['catorcena'])."'))";
 	   }
    }
+
    $q = "SELECT * FROM ".TBL_USERS." WHERE 1=1 $where ORDER BY userlevel DESC;";
    DEPURAR ($q, 0);
    $result = $database->query($q);

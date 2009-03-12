@@ -12,17 +12,24 @@ function CONTENIDO_admin() {
 	
 	echo '<hr />';
 	echo '<h2>Cientes</h2>';
-	echo 'Nivel
-	<select id="FiltroNivel">
-	<option value="">Todos
-	<option value="1">Usuario
-	<option value="2">Demo
-	<option value="3">Cliente
-	<option value="5">Vendedor
-	<option value="9">Administrador
-	</select><input type="button" OnClick="$(\'#clientes_completo\').load(\'contenido/usuario+dinamico.php?completo=1&nivel=\'+$(\'#FiltroNivel\').val())" value="Filtrar!" /> ';
 
-	echo 'Catorcena ' . $database->Combobox_CatorcenasConPresencia("FiltroCatorcenas") . '<input type="button" OnClick="$(\'#clientes_completo\').load(\'contenido/usuario+dinamico.php?completo=1&nivel=\'+$(\'#FiltroNivel\').val()+\'&amp;catorcena=\'+$(\'#FiltroCatorcenas\').val())" value="Filtrar!" />';
+
+	if ( $session->isAdmin() ) {
+		echo 'Nivel
+		<select id="FiltroNivel">
+		<option value="">Todos
+		<option value="1">Usuario
+		<option value="2">Demo
+		<option value="3">Cliente
+		<option value="5">Vendedor
+		<option value="9">Administrador
+		</select>';
+		echo '<input type="button" OnClick="$(\'#clientes_completo\').load(\'contenido/usuario+dinamico.php?completo=1&nivel=\'+$(\'#FiltroNivel\').val())" value="Filtrar!" /> ';
+		echo 'Catorcena ' . $database->Combobox_CatorcenasConPresencia("FiltroCatorcenas") . '<input type="button" OnClick="$(\'#clientes_completo\').load(\'contenido/usuario+dinamico.php?completo=1&nivel=\'+$(\'#FiltroNivel\').val()+\'&amp;catorcena=\'+$(\'#FiltroCatorcenas\').val())" value="Filtrar!" />';
+	} else {
+		echo 'Catorcena ' . $database->Combobox_CatorcenasConPresencia("FiltroCatorcenas") . '<input type="button" OnClick="$(\'#clientes_completo\').load(\'contenido/usuario+dinamico.php?completo=1&amp;catorcena=\'+$(\'#FiltroCatorcenas\').val())" value="Filtrar!" />';
+		echo '<input type="button" OnClick="$(\'#clientes_completo\').load(\'contenido/usuario+dinamico.php?completo=1\')" value="Ver todos" />';
+	}
 	echo '<br /><br />';
 	echo '<div id="clientes_completo"></div>';
 	if ( $session->isAdmin() ) {
