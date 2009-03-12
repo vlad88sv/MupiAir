@@ -9,7 +9,6 @@ function CONTENIDO_pedidos($usuario, $pedido) {
 		}
 	}
 	echo '<hr /><h2>Sus Pedidos '._NOMBRE_.".</h2>";
-	echo "[NO FUNCIONA AÚN] Mostrar solo pedidos que se encuentren en la catorcena: " . $database->Combobox_CatorcenasConPresencia("cmbFiltroCatorcena",$usuario);
 		
 		//Nos toca registrar un Pedido
 		if ( isset($_POST['registrar_pedidos']) ) {
@@ -31,8 +30,8 @@ function CONTENIDO_pedidos($usuario, $pedido) {
 		}
 		
 		}
-	
-	verPedidos($usuario);
+	echo "Mostrar solo pedidos que se encuentren en la catorcena: " . $database->Combobox_CatorcenasConPresencia("cmbFiltroCatorcena",$usuario) . "<input type='button' onclick='$(\"#tabla_pedidos\").load(\"contenido/mupis+pedidos+dinamico.php?usuario=$usuario&amp;catorcena=\"+$(\"#cmbFiltroCatorcena\").val())' value='filtrar' >". "<input type='button' onclick='$(\"#tabla_pedidos\").load(\"contenido/mupis+pedidos+dinamico.php?usuario=$usuario\")' value='Mostrar todos los pedidos' >";
+	echo "<div id='tabla_pedidos'></div>";
 	if ($usuario) { $paraUsuario = " para $usuario"; } else { $paraUsuario = ""; }
 	
 	if ($pedido) {
@@ -45,45 +44,7 @@ function CONTENIDO_pedidos($usuario, $pedido) {
 	
 	verPedidosregistro($usuario, $pedido);
 }
-function verPedidos($usuario="", $pedido=""){
-   global $database;
-   
-   $WHERE = "";
-   $num_rows = "";
-   if ($usuario) { $WHERE = " WHERE codigo='".$usuario."'"; }
-   
-   $q = "SELECT codigo_pedido, codigo, (SELECT nombre from ". TBL_USERS . " AS b WHERE a.codigo = b.codigo) as nombre, catorcena_inicio, catorcena_fin, foto_pantalla, costo , descripcion FROM ".TBL_MUPI_ORDERS." AS a$WHERE ORDER BY codigo_pedido;";
-   $result = $database->query($q);
-   
-   if ( !$result ) {
-      echo "Error mostrando la información";
-      return;
-   }
-   
-   $num_rows = mysql_numrows($result);
-   if ( $num_rows == 0 ) {
-      echo Mensaje ("¡No hay Pedidos "._NOMBRE_." ingresados!",_M_NOTA);
-      return;
-   }
-   
-echo '<table>';
-echo "<tr><th>Código Pedido "._NOMBRE_."</th><th>Nombre cliente</th><th>Intervalo de alquiler</th><th>Número de catorcenas</th><th>Arte Pantalla</th><th>Costo</th><th>Descripción</th><th>Acciones</th></tr>";
-   for($i=0; $i<$num_rows; $i++){
-      $codigo_pedido  = mysql_result($result,$i,"codigo_pedido");
-      $codigo =  CREAR_LINK_GET("gestionar+pedidos:".mysql_result($result,$i,"codigo"), mysql_result($result,$i,"nombre"), "Ver los pedidos de este cliente");
-      $catorcena_inicio  = AnularFechaNula(mysql_result($result,$i,"catorcena_inicio"));
-      $catorcena_fin  = AnularFechaNula(mysql_result($result,$i,"catorcena_fin"));
-      $NumeroDeCatorcenas = Contar_catorcenas(mysql_result($result,$i,"catorcena_inicio"), mysql_result($result,$i,"catorcena_fin"));
-      $foto_pantalla  = mysql_result($result,$i,"foto_pantalla");
-	  if ( $foto_pantalla ) { $foto_pantalla = "<span ".GenerarTooltip(CargarImagenDesdeBD(mysql_result($result,$i,"foto_pantalla"),'200px'))." />". $foto_pantalla."</span>"; }
-      $costo = "$". (int)(mysql_result($result,$i,"costo"));
-	  $descripcion = (mysql_result($result,$i,"descripcion"));
-      $Eliminar = CREAR_LINK_GET("gestionar+pedidos&amp;eliminar=".mysql_result($result,$i,"codigo_pedido")."&amp;imagen=" . mysql_result($result,$i,"foto_pantalla") ,"Eliminar", "Eliminar los datos de este pedido");
-      $codigo_pedido  = CREAR_LINK_GET("gestionar+pedidos&amp;pedido=".$codigo_pedido,$codigo_pedido, "Editar los datos de este pedido");
-      echo "<tr><td>$codigo_pedido</td><td>$codigo</td><td>$catorcena_inicio al $catorcena_fin</td><td>$NumeroDeCatorcenas</td><td>$foto_pantalla</td><td>$costo</td><td>$descripcion</td><td>$Eliminar</tr>";
-   }
-   echo "</table><br>";
-}
+
 function verPedidosregistro($usuario="", $pedido="") {
 global $form, $database;
 $CampoCodigoPedido = 0;
