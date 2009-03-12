@@ -124,12 +124,12 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 	if ( time() < $catorcena && !in_array($session->userlevel, $NivelesPermitidos) ) {
 		$datosUI[$tipoPantalla] .= "<span style='display:none'><center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>".
 		"<center>Viendo catorcena futura, la fotografía mostrada es ilustrativa y corresponde al mupi seleccionado en la catorcena presente.<br /><br />" . '<img src="include/ver.php?id='.$foto_real.'" />' . "</center>".
-	    "<center><strong>Arte digital cara:</strong></center>".
+	    "<center><strong>Arte digital de campaña:</strong></center>".
 		"<center>Viendo catorcena futura, Arte no disponible</center></span>";
 	} else {
 		$datosUI[$tipoPantalla] = "<center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>".
 		"<center>" . "<img src='include/ver.php?id=" . $foto_real . "' />" . "</center>".
-		"<center><strong>Arte digital de cara:</center>".
+		"<center><strong>Arte digital de campaña:</center>".
 		"<center>" . "<img src='include/ver.php?id=".$arte."' />" . "</strong></center>";
 	} // Fin de procesado de de $datosUI
 
@@ -208,7 +208,10 @@ if ( strpos($calle, "G:") !== false ) {
 	//Imagen de los marcadores
 	//Removido por petición. 06/02/09
 	//if ( !$session->isAdmin() || $usuario ) $map->setMarkerIcon('http://'.$_SERVER['SERVER_ADDR'].'/mupi/include/ver.php?id='.mysql_result($result,0,"logotipo"),'',0,0,0,0);
-   
+
+
+   // Recorrer todos los mupis.
+   $n_caras_p = $n_caras_v = $n_caras = 0;
    for($i=0; $i<$num_rows; $i++){
       $id_mupi  = mysql_result($result,$i,"id_mupi");
       $codigo_mupi  = mysql_result($result,$i,"codigo_calle") . "." .mysql_result($result,$i,"codigo_mupi");
@@ -236,8 +239,8 @@ if ( strpos($calle, "G:") !== false ) {
       //$html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
 	  $_SCRIPT_ = '<script>$("#datos_mupis_en_globo").load("contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI='.$id_mupi . "|" . $catorcena . "|" . $usuario.'");</script>';
       $html = "<center><b>Cliente(s) actual(es)</b><hr />".$logotipo."</center><div id='datos_mupis_en_globo' style='width:400px; height:50px'></div>$_SCRIPT_";
-	  
-      if ($session->userlevel == ADMIN_LEVEL) {
+
+	  if ($session->userlevel == ADMIN_LEVEL) {
 
 			$q = "SELECT id_pantalla, tipo_pantalla, codigo_pedido, (SELECT descripcion FROM ".TBL_MUPI_ORDERS." AS b WHERE b.codigo_pedido=a.codigo_pedido) AS descripcion FROM emupi_mupis_caras AS a WHERE codigo_mupi='$id_mupi' and catorcena='$catorcena'".";";
 			//echo $q."<br>";
@@ -249,14 +252,19 @@ if ( strpos($calle, "G:") !== false ) {
 			
 			$Boton_Vehicular = "<a href='./?"._ACC_."=gestionar+pantallas&crear=1&catorcena=$catorcena&tipo=0&id_mupi=$id_mupi' target='blank'>Crear esta cara...</a><br />";
 			$Boton_Peatonal = "<a href='./?"._ACC_."=gestionar+pantallas&crear=1&catorcena=$catorcena&tipo=1&id_mupi=$id_mupi' target='blank'>Crear esta cara...</a><br />";
+
+			// Si ese mupi tenia caras, entonces las recorremos.
 			if($num_rows2 > 0){
 				   for($ii=0; $ii<$num_rows2; $ii++){
 					   if ( (mysql_result($result2,$ii,"tipo_pantalla") % 2) == 0 ) {
+							$n_caras_v++;
+							$n_caras++;
 						    $Pantalla_Vehicular = mysql_result($result2,$ii,"id_pantalla");
 							$Valor_Vehicular = mysql_result($result2,$ii,"codigo_pedido");
 							$Valor_Vehicular_Desc = mysql_result($result2,$ii,"descripcion");
 							$Boton_Vehicular = "<a href='./?"._ACC_."=gestionar+pantallas&actualizar=1&id=$Pantalla_Vehicular&catorcena=$catorcena' target='blank'>Editar esta cara...</a><br />";
 						} else {
+							$n_caras_p++;
 							$Pantalla_Peatonal = mysql_result($result2,$ii,"id_pantalla");
 							$Valor_Peatonal = mysql_result($result2,$ii,"codigo_pedido");
 							$Valor_Peatonal_Desc = mysql_result($result2,$ii,"descripcion");
@@ -319,7 +327,14 @@ $datos = '';
 $datos .= $map->getMapJS();
 //$datos .= $map->getMap();
 //$datos .= $map->getSidebar();
-$datos .= "<hr /><b>Total de espacios publicitarios en la calle seleccionada: $n_mupis</b>";
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Total de Eco Mupis mostrados
+$datos .= "<hr />Total de Ecomupis en la calle seleccionada: <b>$n_mupis</b><br />";
+// Total de caras encontradas
+$datos .= "Total de espacios publicitarios en la calle seleccionada: <b>$n_caras</b><br />";
+$datos .= "Número de caras publicitarias vehiculares en la calle seleccionada: <b>" . $n_caras_v ."</b><br />";
+$datos .= "Número de caras publicitarias peatonales en la calle seleccionada: <b>" . $n_caras_p ."</b><br />";
+
 $datos .= SCRIPT('onLoad();');
 return $datos;
 }
