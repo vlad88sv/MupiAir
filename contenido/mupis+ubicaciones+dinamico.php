@@ -86,7 +86,7 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
    $link = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die('Por favor revise sus datos, puesto que se produjo el siguiente error:<br /><pre>' . mysql_error() . '</pre>');
    mysql_select_db(DB_NAME, $link) or die('!->La base de datos seleccionada "'.$DB_base.'" no existe');
    if ( time() > $catorcena ) { $tCatorcena=$catorcena; } else { $tCatorcena=Obtener_catorcena_anterior($catorcena); }
-   if ( ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL || $session->userlevel == DEMO_LEVEL ) && !$usuario) {
+   if ( ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL || $session->userlevel == DEMO_LEVEL || $session->userlevel == USER_LEVEL) && !$usuario) {
 	$q = "select tipo_pantalla, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$catorcena AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
    } else {
 	$q = "select tipo_pantalla, foto_real, (SELECT foto_pantalla FROM emupi_mupis_pedidos as b where a.codigo_pedido=b.codigo_pedido) AS arte from emupi_mupis_caras as a where catorcena=$tCatorcena AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos where codigo='$usuario') AND codigo_mupi = (SELECT id_mupi FROM emupi_mupis WHERE id_mupi=$codigo_mupi);";
@@ -145,7 +145,7 @@ retornar($datosLinksGlobo);
 
 function Mostrar_Mapa($catorcena, $calle, $usuario){
 global $session, $map, $database;
-$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
+$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL, DEMO_LEVEL, USER_LEVEL);
 // setup database for geocode caching
 $map->setDSN('mysql://'.DB_USER.':'.DB_PASS.'@'.DB_SERVER.'/'.DB_NAME);
 //Google Map Key
@@ -158,9 +158,10 @@ if ( !$session->isAdmin() ) {
 	$map->map_controls = false;
 	$map->disable_map_drag = true;
 	$map->disable_drag = true;
+	$map->Mostrar_Contenido_Maximizado = false;
 }
-// Desactivar los controles que solo Admin y Vendedor pueden tener.
-if ( !in_array($session->userlevel,array(ADMIN_LEVEL, SALESMAN_LEVEL)) ) {
+// Desactivarel globito que solo Admin, Vendedor, Demo y Usuario pueden ver.
+if ( !in_array($session->userlevel,$NivelesPermitidos) ) {
 	$map->disableInfoWindow();
 }
 // Cargar puntos mupis.
@@ -185,8 +186,8 @@ if ( strpos($calle, "G:") !== false ) {
 		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle FROM emupi_mupis AS a$t_grupo_calle;";
 	} else {
 		// Por Presencia y sin usuario
-	if ( (($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) && !$usuario) || $session->userlevel == DEMO_LEVEL) {
-		// Siendo Admin, Vendedor o Demo
+	if ( (($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL || $session->userlevel == USER_LEVEL) && !$usuario) || $session->userlevel == DEMO_LEVEL) {
+		// Siendo Admin, Vendedor, Usuario o Demo
 		if ($grupo_calle) $t_grupo_calle = " and $grupo_calle";
 		$q = "select id_mupi, codigo_mupi, direccion, foto_generica, lon, lat, codigo_evento, codigo_calle FROM emupi_mupis AS a WHERE id_mupi IN (select codigo_mupi FROM emupi_mupis_caras WHERE catorcena=$catorcena)$t_grupo_calle;";
 	} else {
@@ -220,7 +221,7 @@ if ( strpos($calle, "G:") !== false ) {
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
       $codigo_evento = mysql_result($result,$i,"codigo_evento");
-		if ( ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL) ) {
+		if ( ($session->isAdmin() || $session->userlevel == SALESMAN_LEVEL || $session->userlevel == USER_LEVEL) ) {
 			$q = "SELECT DISTINCT logotipo FROM emupi_usuarios where codigo IN (SELECT codigo from emupi_mupis_pedidos where codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_caras as b WHERE catorcena=$catorcena AND b.codigo_mupi=".mysql_result($result,$i,"id_mupi")."));";
 			//echo $q."<br>";
 			$result2 = $database->query($q);
@@ -239,8 +240,8 @@ if ( strpos($calle, "G:") !== false ) {
       //$html = "<b>Dirección: </b>".$direccion."<br /><center>".$logotipo."</center>";
 	  $_SCRIPT_ = '<script>$("#datos_mupis_en_globo").load("contenido/mupis+ubicaciones+dinamico.php?accion=mupi&MUPI='.$id_mupi . "|" . $catorcena . "|" . $usuario.'");</script>';
       $html = "<center><b>Cliente(s) actual(es)</b><hr />".$logotipo."</center><div id='datos_mupis_en_globo' style='width:400px; height:50px'></div>$_SCRIPT_";
-
-	  if ($session->userlevel == ADMIN_LEVEL) {
+	  $Contenido_maximizado = "";
+	  if (in_array($session->userlevel,$NivelesPermitidos)) {
 
 			$q = "SELECT id_pantalla, tipo_pantalla, codigo_pedido, (SELECT descripcion FROM ".TBL_MUPI_ORDERS." AS b WHERE b.codigo_pedido=a.codigo_pedido) AS descripcion FROM emupi_mupis_caras AS a WHERE codigo_mupi='$id_mupi' and catorcena='$catorcena'".";";
 			//echo $q."<br>";
@@ -274,12 +275,12 @@ if ( strpos($calle, "G:") !== false ) {
 				   }
 			
 			}
-
-		  $Contenido_maximizado =
-		  "<b>Catorcena a editar:</b> " . AnularFechaNula($catorcena). " - " . AnularFechaNula( Fin_de_catorcena($catorcena) ).
-		  "<br /><b>Mupi a Editar:</b> $codigo_mupi -> Id. $id_mupi" .
-		  "<hr />".
-		  "<table>".
+			if ($session->isAdmin()) {
+			$Contenido_maximizado =
+			"<b>Catorcena a editar:</b> " . AnularFechaNula($catorcena). " - " . AnularFechaNula( Fin_de_catorcena($catorcena) ).
+			"<br /><b>Mupi a Editar:</b> $codigo_mupi -> Id. $id_mupi" .
+			"<hr />".
+			"<table>".
 			   "<tr>".
 				   "<th>Cara vehicular</th><th>Cara peatonal</th>".
 			   "</tr>".
@@ -295,8 +296,9 @@ if ( strpos($calle, "G:") !== false ) {
 				   $Boton_Peatonal.
 				   "</td>".
 			   "</tr>".
-		  "</table>"
-		  ;
+			"</table>"
+			;
+			}
 		
       } else {
 		  $q = "SELECT id_pantalla, tipo_pantalla FROM emupi_mupis_caras AS a WHERE codigo_mupi='$id_mupi' AND catorcena='$catorcena' AND codigo_pedido IN (SELECT codigo_pedido FROM ".TBL_MUPI_ORDERS." AS tmo WHERE tmo.codigo='$usuario')";
@@ -314,7 +316,6 @@ if ( strpos($calle, "G:") !== false ) {
 			   }
 			}
 		  }
-		  $Contenido_maximizado = "";
 		  $map->Mostrar_Contenido_Maximizado = false;
 	  }
       $map->addMarkerByCoords($lon, $lat, $codigo_mupi . ' | ' . $direccion, $html, $codigo_mupi, $id_mupi . "|" . $catorcena . "|" . $usuario, $Contenido_maximizado);

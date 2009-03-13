@@ -459,7 +459,7 @@
       {
           global $session;
           $WHERE_USER = '';
-          $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL, DEMO_LEVEL);
+          $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL, DEMO_LEVEL, USER_LEVEL);
           if (!in_array($session->userlevel, $NivelesPermitidos) || $codigo) {
               $WHERE_USER = "WHERE codigo='" . $codigo . "'";
           }
@@ -497,7 +497,7 @@
           // Calles donde el usuario $codigo tiene caras alquiladas en la catorcena $catorcena.
           global $session;
           $WHERE_USER = '';
-          $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL, DEMO_LEVEL);
+          $NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL, DEMO_LEVEL, USER_LEVEL);
           if (!in_array($session->userlevel, $NivelesPermitidos) || $codigo) {
               $WHERE_USER = " AND codigo_pedido IN (SELECT codigo_pedido FROM emupi_mupis_pedidos WHERE codigo='" . $codigo . "')";
           }

@@ -72,6 +72,8 @@ require_once("contenido/cargar+pantallas.php");
 	***********************************************/
 	</script>
 	<script>
+	// Esto por alguna razón es lento en FF3.0/LNX - Shiretoko/LNX no tiene problemas, ni Opera/LNX.
+	$.blockUI.defaults.applyPlatformOpacityRules = true;
 	$().ajaxStart(function(){$.blockUI( { message: '<h1><img src="loader.gif" /> Su petición esta siendo procesada...</h1>' } );}).ajaxStop($.unblockUI);
 	</script>
 	<!--[if gte IE 5.5]>
@@ -91,11 +93,8 @@ require_once("contenido/cargar+pantallas.php");
 	</style>
 </head>
 <body>
-	<script>
-		// Esto por alguna razón es lento en FF3.0/LNX - Shiretoko/LNX no tiene problemas, ni Opera/LNX.
-		$.blockUI.defaults.applyPlatformOpacityRules = true;
-        $.blockUI({ message: '<img src="loader-white.gif" />Cargando, espere por favor...', css: { border: 'none', padding: '15px', backgroundColor: '#000', '-webkit-border-radius': '10px', '-moz-border-radius': '10px', opacity: '.5', color: '#fff', 'font-size': '15pt' }});
-	</script>
+	<script>$.blockUI({ message: '<img src="loader-white.gif" />Cargando, espere por favor...', css: { border: 'none', padding: '15px', backgroundColor: '#000', '-webkit-border-radius': '10px', '-moz-border-radius': '10px', opacity: '.5', color: '#fff', 'font-size': '15pt' }});</script>
+	<?php ob_flush(); flush(); ?>
 	<div style="height:80px; margin-top:5px; margin-left:10px; margin-right:10px">
 			<div style="float:left">
 				<span id="alImg1" style="width:327px;height:75px;">
