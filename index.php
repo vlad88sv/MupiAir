@@ -94,7 +94,6 @@ require_once("contenido/cargar+pantallas.php");
 </head>
 <body>
 	<script>$.blockUI({ message: '<img src="loader-white.gif" />Cargando, espere por favor...', css: { border: 'none', padding: '15px', backgroundColor: '#000', '-webkit-border-radius': '10px', '-moz-border-radius': '10px', opacity: '.5', color: '#fff', 'font-size': '15pt' }});</script>
-	<?php ob_flush(); flush(); ?>
 	<div style="height:80px; margin-top:5px; margin-left:10px; margin-right:10px">
 			<div style="float:left">
 				<span id="alImg1" style="width:327px;height:75px;">
