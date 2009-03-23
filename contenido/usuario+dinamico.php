@@ -43,15 +43,15 @@ global $session, $database, $form;
 
 echo '<hr />';
    echo '<table border="0">';
-	//if ( $session->isAdmin() ) {
-	//   echo "<tr><th>Código</th><th>Nombre</th><th>Nivel</th><th>Email</th><th>Última actividad</th><th>Acciones</th></tr>";
-	//} else {
-		echo "<tr><th>Nombre</th><th>Código</th><th>Acciones</th></tr>";
-	//}
+	if ( $session->isAdmin() ) {
+	   echo "<tr><th>Código</th><th>Nombre</th><th>Nivel</th><th>Email</th><th>Última actividad</th><th>Acciones</th></tr>";
+	} else {
+	   echo "<tr><th>Nombre</th><th>Código</th><th>Acciones</th></tr>";
+	}
    for($i=0; $i<$num_rows; $i++){
-	  $acciones='';
+      $acciones='';
       $uname  = mysql_result($result,$i,"codigo");
-	  $logotipo = CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"));
+      $logotipo = CargarImagenDesdeBD(mysql_result($result,$i,"logotipo"));
       $nombre = mysql_result($result,$i,"nombre");
       if ($session->isAdmin()) $ulevel = mysql_result($result,$i,"userlevel");
       if ($session->isAdmin()) $email  = mysql_result($result,$i,"email");
@@ -60,20 +60,20 @@ echo '<hr />';
       if ($session->isAdmin()) $acciones .= CREAR_LINK_GET("gestionar+pantallas:$uname", "Pantallas", "Le mostrara las pantallas en las cuales se encuentran colocados los pedidos.")."<br />";
       $acciones .= CREAR_LINK_GET("ver+ubicaciones:$uname", "Ubicaciones", "Le mostrara las ubicaciones de los MUPIS de este cliente.")."<br />";
       $acciones .= CREAR_LINK_GET("ver+estadisticas:$uname", "Estadísticas", "Le mostrara las estadísticas de este cliente.")."<br />";
-	  if ($session->isAdmin()) $acciones .= "<hr />".CREAR_LINK_GET("ver+reportes:$uname", "Reporte", "Le generará un reporte sobre este cliente.");
+      if ($session->isAdmin()) $acciones .= "<hr />".CREAR_LINK_GET("ver+reportes:$uname", "Reporte", "Le generará un reporte sobre este cliente.");
       if ($session->isAdmin()) $uname = CREAR_LINK_GET("ver+cliente:".$uname, $uname, "Ver datos de este cliente");
-      //if ( $session->isAdmin() ) {
-		//echo "<tr><td style='text-align:center;'>$logotipo<br />$uname</td><td>$nombre</td><td>$ulevel</td><td>$email</td><td>$time</td><td>$acciones</td></tr>";
-	  //} else {
-		$html .= "<tr><td style='text-align:center;'>$logotipo<br />$nombre</td><td>$uname</td><td>$acciones</td></tr>";
-	  //}
+      if ($session->isAdmin()) {
+	  $html .= "<tr><td style='text-align:center;'>$logotipo<br />$uname</td><td>$nombre</td><td>$ulevel</td><td>$email</td><td>$time</td><td>$acciones</td></tr>";
+      } else {
+	  $html .= "<tr><td style='text-align:center;'>$logotipo<br />$nombre</td><td>$uname</td><td>$acciones</td></tr>";
+      }
    }
 $html .= "<tfoot>";
-   //if ( $session->isAdmin() ) {
-	//echo "<td colspan='5'>Total</td><td>$num_rows</td>";
-   //} else {
+   if ( $session->isAdmin() ) {
+	$html .= "<td colspan='5'>Total de registros encontrados para el filtro seleccionado</td><td>$num_rows</td>";
+   } else {
 	$html .= "<td colspan='2'>Total de registros encontrados para el filtro seleccionado</td><td>$num_rows</td>";
-   //}
+   }
    $html .= "</tfoot>";
    $html .= "</table><br />";
    exit ($html);

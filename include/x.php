@@ -119,7 +119,7 @@ class Process
    function procForgotPass(){
       global $database, $session, $mailer, $form;
       /* Username error checking */
-      $subuser = $_POST['codigo'];
+      $subuser = $_POST['user'];
       $field = "user";  //Use field name for username
       if(!$subuser || strlen($subuser = trim($subuser)) == 0){
          $form->setError($field, "* Nombre de usuario no ingresado<br>");

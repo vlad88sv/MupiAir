@@ -18,7 +18,7 @@ function CONTENIDO_en_linea(){
 	$q = "SELECT codigo FROM " . TBL_ACTIVE_USERS . " ORDER BY timestamp DESC,codigo";
 	//echo $q;
 	$result = $database->query($q);
-	$num_rows = mysql_numrows($result);	
+	$num_rows = mysql_numrows($result);
 	DEPURAR($num_rows);
 	if($num_rows > 0){
 	   for($i=0; $i<$num_rows; $i++){
@@ -31,12 +31,12 @@ function CONTENIDO_en_linea(){
 
 function CONTENIDO_mostrar_principal() {
 	global $session;
-	
+
 	CONTENIDO_mostrar_logo_cliente();
-	
+
 	if ( isset( $_GET[_ACC_]) ) {
 		$ACC = explode(":",$_GET[_ACC_]);
-		if ( isset( $ACC[0] ) ) { $accion = urldecode($ACC[0]); } 
+		if ( isset( $ACC[0] ) ) { $accion = urldecode($ACC[0]); }
 	} else {
 		$accion = "ingresar";
 	}
@@ -48,7 +48,7 @@ function CONTENIDO_mostrar_principal() {
 			switch ( $accion ) {
 				case "ayuda contacto": break;
 				case "rpr clave": break;
-				default: 
+				default:
 				$accion= "ingresar";
 			}
 		}
@@ -58,16 +58,16 @@ function CONTENIDO_mostrar_principal() {
 	case "ingresar":
 		CONTENIDO_usuario_ingresar();
 		break;
-	
+
 	case "salir":
 		$session->logout();
 		header("Location: ./");
 		break;
-	
+
 	case "ayuda contacto":
 		CONTENIDO_ayuda_contacto() ;
 		break;
-	
+
 	case "rpr clave":
 		CONTENIDO_recuperar_clave();
 		break;
@@ -75,7 +75,7 @@ function CONTENIDO_mostrar_principal() {
 	case "ver reportes":
 		ADMIN_reportes();
 		break;
-		
+
 	case "ver ubicaciones":
 		CONTENIDO_mupis_ubicaciones($usuario);
 		break;
@@ -83,8 +83,8 @@ function CONTENIDO_mostrar_principal() {
 	case "ver estadisticas":
 		CONTENIDO_global_estadisticas($usuario);
 		break;
-	
-	case "gestionar eventos":	
+
+	case "gestionar eventos":
 	case "ver eventos":
 			$evento = isset( $_GET['evento'] ) ? $_GET['evento'] : "";
 			CONTENIDO_mupis_eventos($usuario, $evento);
@@ -97,20 +97,20 @@ function CONTENIDO_mostrar_principal() {
 			CONTENIDO_usuario_info( $usuario );
 			break;
 		}
-	
+
 	case "listas":
 		if($session->isAdmin()){
 			$tipoDeLista= isset( $_GET['tipo'] ) ? $_GET['tipo'] : "";
 			CONTENIDO_listas( $usuario, $tipoDeLista );
 			break;
 		}
-	
+
 	case "editar usuario":
 		if($session->isAdmin()){
 			CONTENIDO_usuario_editar( $usuario );
 			break;
 		}
-		
+
 	case "ver clientes":
 	case "gestionar clientes":
 		$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL);
@@ -141,7 +141,7 @@ function CONTENIDO_mostrar_principal() {
 			CONTENIDO_usuario_registrar();
 			break;
 		}
-		
+
 	case "gestionar mupis":
 		if($session->isAdmin()){
 			$mupi = isset( $_GET['mupi'] ) ? $_GET['mupi'] : "";
@@ -156,21 +156,21 @@ function CONTENIDO_mostrar_principal() {
 			CONTENIDO_calles($usuario,$calle);
 			break;
 		}
-				
+
 	case "gestionar comentarios":
 		if($session->isAdmin()){
 			$id_comentario = isset( $_GET['comentario'] ) ? $_GET['comentario'] : "";
 			CONTENIDO_comentarios($usuario, $id_comentario);
 			break;
 		}
-	
+
 	case "gestionar referencias":
 		if($session->isAdmin()){
 			$id_referencia = isset( $_GET['referencia'] ) ? $_GET['referencia'] : "";
 			CONTENIDO_referencias($usuario, $id_referencia);
 			break;
 		}
-			
+
 	case "ver":
 		if($session->isAdmin()){
 			$id = isset( $ACC[1] ) ? $ACC[1] : "";
@@ -178,13 +178,13 @@ function CONTENIDO_mostrar_principal() {
 			echo '<center>'.CargarImagenDesdeBD($id).'</center>';
 			break;
 		}
-		
+
 	case "cargar pantallas":
 		if($session->isAdmin()){
 			CONTENIDO_cargar_pantallas();
 			break;
-		}	
-	
+		}
+
 	default:
 		CONTENIDO_global_404();
 	}
@@ -198,7 +198,7 @@ function CONTENIDO_mostrar_logo_cliente() {
 	$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL, DEMO_LEVEL);
 	if ( !in_array($session->userlevel, $NivelesPermitidos) && $session->logged_in ) {
 		$q = "SELECT logotipo FROM ". TBL_USERS . " WHERE codigo='".$session->codigo."';";
-		$result = $database->query($q);		
+		$result = $database->query($q);
 		echo '<center>' . '<img src="include/ver.php?id='.mysql_result($result,0,"logotipo").'" />'. '</center><hr />';
 	}
 }
@@ -208,17 +208,16 @@ function INICIAR_MENUES () {
 	switch ($session->userlevel) {
 	case ADMIN_LEVEL:
 	$s =
-	'
-	<div class="chromestyle" id="chromemenu" style="font-size:.8em">
-	<ul>
-	<li><a href="./">Inicio</a></li>
-	<li><a href="#" rel="menu_herramientas">Acciones</a></li>'
+	'<div class="chromestyle" id="chromemenu" style="font-size:0.8em">
+	<ul>'
+	.'<li><a href="./">Inicio</a></li>'
+	.'<li><a href="#" rel="menu_herramientas">Acciones</a></li>'
 	.'<li>'.  CREAR_LINK_GET("registro","Registrar cliente", "Agregar un nuevo cliente al sistema") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("gestionar+pantallas","Gestionar pantallas", "Eliminar o modificar pantallas") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("gestionar+pedidos","Gestionar pedidos", "Eliminar o modificar pedidos") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("ver+reportes", "Reportes", "Generar reportes") .'</li>'
-	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>
 	<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
 	<li>&nbsp;&nbsp;&nbsp;</li>
 	<li>&nbsp;&nbsp;</li>
@@ -228,7 +227,7 @@ function INICIAR_MENUES () {
 	';
 	//Herramientas
 	$s .= '
-	<div id="menu_herramientas" class="dropmenudiv" style="width: 150px;">'
+	<div id="menu_herramientas" class="dropmenudiv" style="width:150px;">'
 	. CREAR_LINK_GET("cargar+pantallas", "Cargar Pantallas", "Cargar fotos enumeradas de pantallas")
 	. CREAR_LINK_GET("gestionar+clientes","Editar Clientes", "Gestionar clientes")
 	. CREAR_LINK_GET("gestionar+mupis","Editar Ubicaciones", "Eliminar o modificar MUPIS")
@@ -238,7 +237,7 @@ function INICIAR_MENUES () {
 	. CREAR_LINK_GET("gestionar+comentarios", "Editar Comentarios", "Eliminar o modificar comentarios")
 	.'</div>';
 	break;
-	
+
 	case SALESMAN_LEVEL:
 	$s =
 	'
@@ -247,7 +246,7 @@ function INICIAR_MENUES () {
 	<li><a href="./">Inicio</a></li>'
 	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
 	.'<li>'.  CREAR_LINK_GET("ver+clientes","Clientes", "Ver lista de clientes") .'</li>'
-	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>
 	<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
 	<li>&nbsp;&nbsp;&nbsp;</li>
 	<li>&nbsp;&nbsp;</li>
@@ -256,7 +255,7 @@ function INICIAR_MENUES () {
 	</div>
 	';
 	break;
-	
+
 	CASE CLIENT_LEVEL:
 	$s =
 	'
@@ -264,10 +263,10 @@ function INICIAR_MENUES () {
 	<ul>
 	<li><a href="./">Estadísticas</a></li>
 	<li><a href="./?accion=ver+ubicaciones">Mis Ubicaciones</a></li>
-	<li><a href="./?accion=ver+eventos" >Eventos</a></li>	
-	<li><a href="./?accion=ayuda+contacto">Comenta</a></li>	
-	<li><a href="./?accion=ver+reportes">Reportes</a></li>	
-	<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	<li><a href="./?accion=ver+eventos" >Eventos</a></li>
+	<li><a href="./?accion=ayuda+contacto">Comenta</a></li>
+	<li><a href="./?accion=ver+reportes">Reportes</a></li>
+	<li><a href="./?accion=salir">Cerrar sesión</a></li>
 	<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
 	<li>&nbsp;&nbsp;&nbsp;</li>
 	<li>&nbsp;&nbsp;</li>
@@ -276,7 +275,7 @@ function INICIAR_MENUES () {
 	</div>
 	';
 	break;
-	
+
 	case DEMO_LEVEL:
 	$s =
 	'
@@ -284,7 +283,7 @@ function INICIAR_MENUES () {
 	<ul>
 	<li><a href="./">Inicio</a></li>'
 	.'<li>'.  CREAR_LINK_GET("ver+ubicaciones","Ubicaciones", "Ver mapa de MUPIS") .'</li>'
-	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	.'<li><a href="./?accion=salir">Cerrar sesión</a></li>
 	<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
 	<li>&nbsp;&nbsp;&nbsp;</li>
 	<li>&nbsp;&nbsp;</li>
@@ -294,7 +293,7 @@ function INICIAR_MENUES () {
 	';
 	break;
 	break;
-	
+
 	case USER_LEVEL:
 	$s =
 	'
@@ -302,10 +301,10 @@ function INICIAR_MENUES () {
 	<ul>
 	<li><a href="./" onclick="return false">Estadísticas</a></li>
 	<li><a href="./?accion=ver+ubicaciones">Mis Ubicaciones</a></li>
-	<li><a href="./" onclick="return false">Eventos</a></li>	
-	<li><a href="./?accion=ayuda+contacto">Comenta</a></li>	
-	<li><a href="./" onclick="return false"">Reportes</a></li>	
-	<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	<li><a href="./" onclick="return false">Eventos</a></li>
+	<li><a href="./?accion=ayuda+contacto">Comenta</a></li>
+	<li><a href="./" onclick="return false"">Reportes</a></li>
+	<li><a href="./?accion=salir">Cerrar sesión</a></li>
 	<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
 	<li>&nbsp;&nbsp;&nbsp;</li>
 	<li>&nbsp;&nbsp;</li>
@@ -314,13 +313,13 @@ function INICIAR_MENUES () {
 	</div>
 	';
 	break;
-	
+
 	default:
 	$s =
 	'
 	<div class="chromestyle" id="chromemenu">
 	<ul>
-	<li><a href="./?accion=salir">Cerrar sesión</a></li>	
+	<li><a href="./?accion=salir">Cerrar sesión</a></li>
 	</ul>
 	</div>
 	<p>
@@ -354,7 +353,7 @@ function Query2Table($result, $tableFeatures="") {
  $table .= "</table>\n\n";
  return $table;
  }
- 
+
  function AnularFechaNula ($time,$EnVacioHoy=false) {
  if ( $EnVacioHoy ) { $vacio = date("d-m-Y"); } else { $vacio = ""; }
  if ( $time ) { return date("d-m-Y", $time); } else { return $vacio; }
@@ -410,9 +409,9 @@ function Mensaje ($texto, $tipo=_M_INFO){
 		default:
 		return 'Error: no se definió el $tipo de mensaje';
 	}
-	
+
 	return "<div id=\"$id\">".$texto."</div>";
-	
+
 }
 
 function truncate($string, $max = 120, $replacement = '...')

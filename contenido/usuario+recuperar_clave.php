@@ -1,4 +1,10 @@
 <?
+function CONTENIDO_recuperar_clave(){
+global $form;
+echo '
+<h3>Recuperación de Constraseña</h3>
+';
+
 if(isset($_SESSION['forgotpass'])){
    if($_SESSION['forgotpass']){
       echo "<h3>Nueva Clave Generada</h3>";
@@ -13,12 +19,9 @@ if(isset($_SESSION['forgotpass'])){
        
    unset($_SESSION['forgotpass']);
 }
-function CONTENIDO_recuperar_clave(){
-global $form;
-echo '
-<h3>Recuperación de Constraseña</h3>
-Una nueva clave será envíada a tu cuenta de correo y será asociada a tu usuario.<br><br>'  . $form->error("user") . 
-'<form action="x.php" method="POST">
+
+echo 'Una nueva clave será envíada a tu cuenta de correo y será asociada a tu usuario.<br><br>'  . $form->error("user") . 
+'<form action="include/x.php" method="POST">
 <table border="0">
 <tr>
 <td><b>Usuario o código cliente:</b></td><td><input type="text" name="user" maxlength="30" value="' . $form->value("user") . '"></td>

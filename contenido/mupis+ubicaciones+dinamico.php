@@ -160,8 +160,8 @@ if ( !$session->isAdmin() ) {
 	$map->disable_drag = true;
 	$map->Mostrar_Contenido_Maximizado = false;
 }
-// Desactivarel globito que solo Admin, Vendedor, Demo y Usuario pueden ver.
-if ( !in_array($session->userlevel,$NivelesPermitidos) ) {
+// Desactivarel globito que solo Admin, Vendedor y Usuario pueden ver.
+if ( !in_array($session->userlevel,array(ADMIN_LEVEL, SALESMAN_LEVEL, USER_LEVEL)) ) {
 	$map->disableInfoWindow();
 }
 // Cargar puntos mupis.
@@ -260,7 +260,7 @@ if ( strpos($calle, "G:") !== false ) {
 					   if ( (mysql_result($result2,$ii,"tipo_pantalla") % 2) == 0 ) {
 							$n_caras_v++;
 							$n_caras++;
-						    $Pantalla_Vehicular = mysql_result($result2,$ii,"id_pantalla");
+							$Pantalla_Vehicular = mysql_result($result2,$ii,"id_pantalla");
 							$Valor_Vehicular = mysql_result($result2,$ii,"codigo_pedido");
 							$Valor_Vehicular_Desc = mysql_result($result2,$ii,"descripcion");
 							$Boton_Vehicular = "<a href='./?"._ACC_."=gestionar+pantallas&actualizar=1&id=$Pantalla_Vehicular&catorcena=$catorcena' target='blank'>Editar esta cara...</a><br />";

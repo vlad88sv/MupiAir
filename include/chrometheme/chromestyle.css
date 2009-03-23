@@ -1,24 +1,21 @@
 .chromestyle{
+position:relative;
+height: 150x;
+left:0;
 width: 100%;
 margin:0;
-line-height: 70px;
+padding:0;
 font-family: arial;
-font-style: normal;
 font-variant: small-caps;
 font-weight: bolder;
 font-size: medium;
-line-height: 100%;
-word-spacing: normal;
-letter-spacing: normal;
-text-decoration: none;
-text-transform: none;
-text-align: left;
-text-indent: 0ex;
 }
 
 .chromestyle ul{
 height: 70x;
 width: 100%;
+margin:0;
+padding:0;
 text-align: center;
 background: url(chromebg.gif) center center repeat-x;
 opacity:0.9

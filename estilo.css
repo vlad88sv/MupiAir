@@ -8,7 +8,7 @@ p
 	{background-color:#F0F0F0;color:#000000;margin:0;width:80%;padding:5px;margin:10px;margin-left:auto;margin-right:auto}
 textarea,input[type=text],input[type=password]
 	{background-color:#EEEEEE;color:#AAAAFF;font-weight:bold; width: 99%;}
-textarea.hasFocus,input[type=text].hasFocus,input[type=password].hasFocus 
+textarea.hasFocus,input[type=text].hasFocus,input[type=password].hasFocus
 	{ color: #000; font-weight: bold; }
 textarea.hasFocus,input[type=text].isChanged,input[type=password].isChanged
 	{ color: #00c; font-weight: bold; }
@@ -30,6 +30,8 @@ hr
 	{display:block}
 table
 	{margin-bottom:4px;margin-top:4px;width:95%;border-collapse:collapse;margin-left: auto;margin-right: auto;}
+table.limpia td
+	{border:0;padding:5px}
 table th
 	{font-weight:bold;color:#000000; text-align:left;border-bottom:2px solid #000000; border-collapse:collapse;border-spacing:0}
 table td

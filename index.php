@@ -2,7 +2,7 @@
 /*-----------------------INICIALIZACIÓN-------------------*/
 error_reporting(E_STRICT | E_ALL);
 /* Activar compresión de salida */
-ob_start("ob_gzhandler"); 
+ob_start("ob_gzhandler");
 /* Para los mapas de google */
 require_once('include/maps/GoogleMapAPI.class.php');
 /* Constantes */
@@ -43,9 +43,8 @@ require_once("contenido/admin+comentarios.php");
 require_once("contenido/mapa+referencias.php");
 require_once("contenido/cargar+pantallas.php");
 ?>
-<!-- Este comentario activa "quirks mode" en Internet Explorer ;) - Vlad.-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xml:lang="es" lang="es">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="Content-Style-type" content="text/css" />
@@ -106,7 +105,7 @@ require_once("contenido/cargar+pantallas.php");
 				</span>
 			 </div>
 	 </div>
-	<div style="clear:both; margin:0">
+	<div style="clear:both; padding:0; margin:0">
 	<?
 	global $session;
 	if ( $session->logged_in ) {
@@ -118,16 +117,14 @@ require_once("contenido/cargar+pantallas.php");
 		<div id="content">
 			<?php CONTENIDO_mostrar_principal(); ?>
 		</div>
-		<div class="clear"></div>
-		<?php 
-		global $session; 
+		<?php
+		global $session;
 		if ( $session->logged_in && $session->isAdmin() ) {
 		echo '<div id="abajo">';
 		CONTENIDO_en_linea();
 		echo '</div>';
 		}
 		?>
-		<div class="clear"></div>
 	</div>
 	</div>
 	</body>

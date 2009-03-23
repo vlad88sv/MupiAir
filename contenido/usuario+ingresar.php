@@ -2,15 +2,15 @@
 function CONTENIDO_usuario_ingresar() {
 
 	global $session, $form;
-	
+
 	/* Ya se encuentra registrado */
 	if($session->logged_in){
 		/* Limpiamos todo lo que podamos */
 		unset($_SESSION['reguname']);
 		unset($_SESSION['regsuccess']);
-		
+
 		/* Lo mandamos a su respectiva página de inicio	*/
-		
+
 		switch ( $session->userlevel ) {
 			case ADMIN_LEVEL:
 			case CLIENT_LEVEL:
@@ -60,20 +60,20 @@ function CONTENIDO_usuario_ingresar() {
 ');
 ?>
 <form action="include/x.php" method="post">
-<table>
+<table class="limpia">
 <tr>
-<td class="limpio" width="10%" >Código:</td>
-<td class="limpio"><input type="text" name="codigo" maxlength="100" size="30" value="" /></td>
+<td width="10%" >Código:</td>
+<td><input type="text" name="codigo" style="width: 11em;" value="" /></td>
 </tr>
 <tr>
-<td class="limpio">Clave:</td>
-<td class="limpio"><input type="password" id="clave" name="clave" maxlength="30" size="30" value="" /></td>
+<td>Clave:</td>
+<td><input type="password" name="clave" style="width: 11em;" value="" /></td>
 </tr>
 <tr>
-<td class="limpio">¿Recordarme?:</td>
-<td class="limpio"><input type="checkbox" name="remember" <? if($form->value("remember")){ echo "checked"; } ?> onMouseOver="toolTip('Recordar sus datos de acceso para esta maquina.<br />Se recomienda <b>no</b> utilizar en equipos compartidos.')" onMouseOut="toolTip()" /></td>
+<td>¿Recordarme?:</td>
+<td><input type="checkbox" name="remember" <? if($form->value("remember")){ echo "checked"; } ?> onMouseOver="toolTip('Recordar sus datos de acceso para esta maquina.<br />Se recomienda <b>no</b> utilizar en equipos compartidos.')" onMouseOut="toolTip()" /></td>
 </tr>
-<tr><td class="limpio"></td><td class="limpio"><br /><input type="submit" name="ingresar" value="Clic aquí para ingresar al sistema Eco Mupis" /></td></tr>
+<tr><td></td><td><br /><input type="submit" name="ingresar" value="Clic aquí para ingresar al sistema Eco Mupis" /></td></tr>
 </table>
 <input type="hidden" name="sublogin" value="1">
 </form>
