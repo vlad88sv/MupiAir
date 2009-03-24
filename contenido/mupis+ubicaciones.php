@@ -38,15 +38,15 @@
 				</script>
 			    ';
 	  }
-				
+
       $BotonVerPorMupis = NULL;
 	  echo '<div id="div_peatonal" style="display:none"></div><div id="div_vehicular" style="display:none"></div>';
       echo '<h1 id="ubicaciones">Ubicaciones de MUPIS contratados</h1><hr />';
-      
+
       echo '<table>';
       echo '<tr>';
-      echo '<td valign="top" width="15%">';
-      
+      echo '<td valign="top" width="305px">';
+
       if (!isset($_GET['verpormupis'])) {
           $Boton_combo_catorcenas = '<input type="button" OnClick="funcion_combo_catorcenas()" value="Mostrar calles">';
           echo '<b>Ver Catorcena:</b><br />' . $database->Combobox_CatorcenasConPresencia("combo_catorcenas", $usuario) . $Boton_combo_catorcenas . '<br /><br />';
@@ -54,7 +54,7 @@
           //echo '<span id="lista_mupis"><b>Seleccione una calle</b><br /><br /></span>';
           //Deshabilitado - 17/02/09 - petición de Alejandro.
           echo '<span id="lista_mupis"></span>';
-          
+
           if (in_array($session->userlevel, $NivelesPermitidos)) {
               $BotonVerPorMupis = "<br /><hr />" . '<input type="button" OnClick="window.location=\'./?' . _ACC_ . '=ver+ubicaciones&verpormupis=1\'" value="Ver por Mupis">';
           }
@@ -62,7 +62,7 @@
           $Boton_combo_calles = '<input type="button" OnClick="funcion_combo_ver_mupi_calles()" value="Ver">';
 		  echo '<b>Trabajar Catorcena:</b><br />' . Combobox_catorcenas("combo_catorcenas", Obtener_catorcena_cercana()) . '<br />';
           echo '<b>Ver Calle:</b><br />' . $database->Combobox_calle("combo_calles") . $Boton_combo_calles . '<br /><br />';
-          
+
           if (in_array($session->userlevel, $NivelesPermitidos)) {
               $BotonVerPorMupis = "<br /><hr />" . '<input type="button" OnClick="window.location=\'./?' . _ACC_ . '=ver+ubicaciones\'" value="Ver por Pantallas">';
           }
@@ -76,11 +76,11 @@
       }
       echo $BotonVerPorMupis;
 	  echo "<br /><hr /><div id='botones_arte'></div>";
-	  
+
       echo '</td>';
-      
+
       echo '<td>';
-	  
+
       echo '
 	  <div id="Mensajes" style="font-weight:bold;padding: 10px 10px">
 	  <h2>Instrucciones de uso.</h2>
@@ -95,9 +95,9 @@
 	  echo '<div id="map" style="width: 100%; height: 500px"></div>';
 	  echo '<div id="sidebar_map"></div>';
 	  echo '<div id="grafico_mapa"></div>';
-	  
+
       echo '</td>';
-      
+
       echo '</tr>';
       echo '</table>';
       echo '<span id="datos_mupis"></span>';

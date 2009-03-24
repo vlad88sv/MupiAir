@@ -62,19 +62,19 @@ function CONTENIDO_usuario_ingresar() {
 <form action="include/x.php" method="post">
 <table class="limpia">
 <tr>
-<td width="10%" >Código:</td>
+<td width="50%" class="texto_der">Código o nombre de usuario</td>
 <td><input type="text" name="codigo" style="width: 11em;" value="" /></td>
 </tr>
 <tr>
-<td>Clave:</td>
+<td class="texto_der">Clave (contraseña)</td>
 <td><input type="password" name="clave" style="width: 11em;" value="" /></td>
 </tr>
 <tr>
-<td>¿Recordarme?:</td>
+<td class="texto_der">¿Recordar mi acceso en este equipo?</td>
 <td><input type="checkbox" name="remember" <? if($form->value("remember")){ echo "checked"; } ?> onMouseOver="toolTip('Recordar sus datos de acceso para esta maquina.<br />Se recomienda <b>no</b> utilizar en equipos compartidos.')" onMouseOut="toolTip()" /></td>
 </tr>
-<tr><td></td><td><br /><input type="submit" name="ingresar" value="Clic aquí para ingresar al sistema Eco Mupis" /></td></tr>
 </table>
+<center><input type="submit" name="ingresar" value="Clic aquí para ingresar al sistema Eco Mupis" /></center>
 <input type="hidden" name="sublogin" value="1">
 </form>
 <hr /><? echo "Si ha olvidado su clave por favor haga clic en el enlace: " . CREAR_LINK_GET("rpr+clave", "Recuperar clave", "Clic en este enlace para intentar recuperar su clave"); ?></a>
