@@ -1,7 +1,7 @@
 html
 	{
 	height:100%;
-	font-family: arial;
+	font-family: Verdana, Helvetica, "Lucida Grande", Arial, sans-serif;
 	font-weight: bolder;
 	font-size: medium;
 	}
@@ -59,7 +59,7 @@ a img
 #container
 	{position:relative; padding-left:2px;padding-right:2px;padding-top:0;left:0;right:0;top:0;z-index:0;margin-left: auto;margin-right: auto;}
 #content
-	{background:none;color:#000000;font-weight:normal;border-top:2px solid #000000;border-bottom:2px solid #000000;margin-bottom:4px;min-height:300px; height:auto !important; height:300px;padding:5px;}
+	{background:none;color:#000000;font-weight:normal;border-bottom:2px solid #000000;margin-bottom:4px;min-height:300px; height:auto !important; height:300px;padding:5px;}
 #abajo
 	{background:none; color:#000000;font-weight:bold;margin-bottom:4px;padding:5px;}
 #clear

@@ -119,7 +119,7 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 	// el logo de las compañias establecidas en ese punto y ademas
 	// tendrán los enlaces de Ver imagen vehicular/peatonal en el pie del globo
 	$NivelesPermitidos = array(ADMIN_LEVEL, SALESMAN_LEVEL, DEMO_LEVEL);
-
+	//html = "$.jGrowl('')"
 	// Si es catorcena futura y no es Administrador, ni Vendedor ni Demo.
 	if ( time() < $catorcena && !in_array($session->userlevel, $NivelesPermitidos) ) {
 		$datosUI[$tipoPantalla] .= "<center><strong>Imagen actual de cara ".$tipoPantalla.":</strong></center>".
@@ -133,8 +133,7 @@ function Buscar ($codigo_mupi, $catorcena, $usuario) {
 		"<center>" . "<img src=\\\'include/ver.php?id=".$arte."\\\' />" . "</strong></center>";
 	} // Fin de procesado de de $datosUI addslashes($datosUI[$tipoPantalla])
 
-	$datosCaja = "$(\'div.close\').trigger('click.jGrowl');$.jGrowl('".($datosUI[$tipoPantalla])."'".",{theme: 'smoke',sticky: true,closer: false})";
-	//$datosCaja = "$.jGrowl('"."\\\'hola\\\'" ."'" .",{theme: 'smoke',sticky: true,closer: false})";
+	$datosCaja = "$('div.close').trigger('click.jGrowl');$.jGrowl('".($datosUI[$tipoPantalla])."'".",{theme: 'smoke',sticky: true,closer: false})";
 	$datosLinksGlobo .= "<center><a onclick=\\\"$datosCaja\\\">Ver imagen de cara ".$tipoPantalla."</a></center>";
 
    } // Fin del recorrido de datos.
@@ -294,7 +293,7 @@ if ( strpos($calle, "G:") !== false ) {
 
 			if($num_rows2 > 0){
 				   for($ii=0; $ii<$num_rows2; $ii++){
-					   $logotipo .= CargarImagenDesdeBD(mysql_result($result2,$ii,"logotipo"), "50px");
+					   $logotipo .= CargarImagenDesdeBD2(mysql_result($result2,$ii,"logotipo"), "50px");
 				   }
 			}
 		} else {
@@ -395,7 +394,7 @@ if ( strpos($calle, "G:") !== false ) {
    for($i=0; $i<$num_rows; $i++){
       $lon  = mysql_result($result,$i,"lon");
       $lat  = mysql_result($result,$i,"lat");
-	  $logotipo = "<br />".CargarImagenDesdeBD(mysql_result($result,$i,"imagen_referencia"), "200px");
+	  $logotipo = "<br />".CargarImagenDesdeBD2(mysql_result($result,$i,"imagen_referencia"), "200px");
 	  $map->addMarkerByCoords($lon, $lat, "Referencia" , "Este es un punto de referencia<br />".$logotipo, '', "REF|$catorcena|".mysql_result($result,$i,"id_referencia"),"");
 	  $map->addMarkerIcon(public_base_directory(). '/include/ver.php?id='.mysql_result($result,$i,"imagen_referencia"),'',0,0,50,50);
 

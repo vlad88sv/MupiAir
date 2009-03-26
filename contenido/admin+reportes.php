@@ -6,17 +6,6 @@ function byteConvert($bytes)
 
 	return sprintf('%.2f '.$s[$e], ($bytes/pow(1024, floor($e))));
 }
-function Directorios($base, $tema) {
-	$dir=dir($base);
-	$s = "<h3>$tema</h3><blockquote cite=\"$tema\"><ol>";
-	while($filename=$dir->read()) {
-		if ( $filename != "." && $filename != ".." && $filename != "index.php" ) { $s = $s."<li>".CREAR_LINK("$base$filename", $filename, "Abrir $filename").' [<b>'.byteConvert(filesize($base.$filename)).'</b>]</li><br />'; }
-	}
-	$dir->close();
-	$s = $s."</ol></blockquote>";
-	return $s;
-}
-
 $HTML_HEAD = '
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
@@ -31,6 +20,11 @@ $HTML_FOOT = '</body></html>';
 function ADMIN_reportes() {
 	global $HTML_HEAD, $HTML_FOOT, $database, $session;
 	echo "<h1>Reportes</h1>";
+
+	//
+	echo Mensaje("Esta sección se encuentra en desarrollo intensivo actualmente, gracias por la espera.",_M_INFO);
+	//
+
 	/***************************************************************************************************************************/
 	/*							USER      													        	*/
 	/***************************************************************************************************************************/
@@ -63,11 +57,11 @@ function ADMIN_reportes() {
 		unset($dompdf);
 		unset($PDF_INSTRUCTORES);
 		@set_time_limit(30);
-		
+
 		/* LINKS */
 		echo "<pre>";
-		echo '<a href="'.$archivo_HTML_INSTRUCTORES_IND.'" target="_blank">Descargar reportes de horario para '.$_SESSION['user'].'[HTML]</a><br />'; 
-		echo '<a href="'.$archivo_PDF_INSTRUCTORES_IND.'" target="_blank">Descargar reportes de horario para '.$_SESSION['user'].'[PDF]</a><br />'; 
+		echo '<a href="'.$archivo_HTML_INSTRUCTORES_IND.'" target="_blank">Descargar reportes de horario para '.$_SESSION['user'].'[HTML]</a><br />';
+		echo '<a href="'.$archivo_PDF_INSTRUCTORES_IND.'" target="_blank">Descargar reportes de horario para '.$_SESSION['user'].'[PDF]</a><br />';
 		echo "</pre>";
 		echo '<blockquote>Por favor realice clic derecho sobre el enlace de descarga y posteriormente utilice la opción "Guardar como" de su navegador</blockquote>';
 		/* FIN USER */
@@ -81,12 +75,12 @@ function ADMIN_reportes() {
 		/*							HORARIOS - HTML												        */
 		/***************************************************************************************************************************/
 		$s = $HTML_HEAD;
-		if (isset($_POST['dpto0'])) { 
+		if (isset($_POST['dpto0'])) {
 		if ($_POST['dpto0'] == 1) {
 			$_SESSION['dpto'] = 0;
 			$s = $s . "<h2>".DE_0. "</h2>";
 			for ($i=0; $i < 4; $i++) {
-			if (isset($_POST["tipo_instructor$i"])) { 
+			if (isset($_POST["tipo_instructor$i"])) {
 				if ( $_POST["tipo_instructor$i"] == 1 ) {
 					$_SESSION['tipo'] = $i;
 					if ($i != 2 ) {
@@ -96,19 +90,19 @@ function ADMIN_reportes() {
 					if (isset($_POST['taller3'])) { if ( $_POST['taller3'] ) {$_SESSION['taller'] = 'LIV'; $s = $s . MOSTRAR_HORARIOS_ECHO(); }}
 					} else {
 					//Encargado de Taller, solo mostrar 1 horario.
-					$_SESSION['taller'] = 'GENERAL'; $s = $s . MOSTRAR_HORARIOS_ECHO(); 
+					$_SESSION['taller'] = 'GENERAL'; $s = $s . MOSTRAR_HORARIOS_ECHO();
 					}
 				}
 			}
 			}
 		}
 		}
-		if (isset($_POST['dpto1'])) { 
+		if (isset($_POST['dpto1'])) {
 		if ($_POST['dpto1'] == 1) {
 			$_SESSION['dpto'] = 1;
 			$s = $s . "<h2>".DE_1. "</h2>";
 			for ($i=0; $i < 4; $i++) {
-			if (isset($_POST["tipo_instructor$i"])) { 
+			if (isset($_POST["tipo_instructor$i"])) {
 				if ( $_POST["tipo_instructor$i"] == 1 ) {
 					$_SESSION['tipo'] = $i;
 					if ($i != 2 ) {
@@ -118,7 +112,7 @@ function ADMIN_reportes() {
 					if (isset($_POST['taller7'])) { if ( $_POST['taller7'] ) {$_SESSION['taller'] = 'TEC'; $s = $s . MOSTRAR_HORARIOS_ECHO(); }}
 					} else {
 					//Encargado de Taller, solo mostrar 1 horario.
-					$_SESSION['taller'] = 'GENERAL'; $s = $s . MOSTRAR_HORARIOS_ECHO(); 
+					$_SESSION['taller'] = 'GENERAL'; $s = $s . MOSTRAR_HORARIOS_ECHO();
 					}
 				}
 			}
@@ -134,11 +128,11 @@ function ADMIN_reportes() {
 		fwrite($fh, $s);
 		fclose($fh);
 		}
-		
+
 		/***************************************************************************************************************************/
 		/*							HORARIOS - PDF												        */
-		/***************************************************************************************************************************/	
-		
+		/***************************************************************************************************************************/
+
 		if ( $_POST['tipo_reporte0'] == 1 ) {
 		@set_time_limit(300);
 		$dompdf = new DOMPDF();
@@ -152,13 +146,13 @@ function ADMIN_reportes() {
 		@set_time_limit(30);
 		}
 		}
-		
+
 		/***************************************************************************************************************************/
 		/*							INSTRUCTORES - HTML											        */
 		/***************************************************************************************************************************/
 		if ( $_POST['generar_instructores'] == 1 ) {
 		$s = $HTML_HEAD. displayUsers_ECHO() . $HTML_FOOT;
-		
+
 		//Haremos Instructores_HTML?
 		if ( $_POST['tipo_reporte1'] == 1 ) {
 		$archivo_HTML_INSTRUCTORES = "reportes/+I/+HTML/instructores+".$tiempo_ord.".html";
@@ -166,7 +160,7 @@ function ADMIN_reportes() {
 		fwrite($fh, $s);
 		fclose($fh);
 		}
-		
+
 		/***************************************************************************************************************************/
 		/*							INSTRUCTORES - PDF												*/
 		/***************************************************************************************************************************/
@@ -183,7 +177,7 @@ function ADMIN_reportes() {
 		@set_time_limit(30);
 		}
 		}
-		
+
 		/***************************************************************************************************************************/
 		/* 			GENERACIÓN DE REPORTES TERMINANDA, MOSTRAR LINKS */
 		/***************************************************************************************************************************/
@@ -222,12 +216,9 @@ function ADMIN_reportes() {
 		<input type="submit" name="bgenerar" value="Generar" />
 		</form>
 		';
-		echo "<hr /><h2>Se han encontrado los siguientes reportes anteriormente generados</h2>";
-		echo Directorios("reportes/+HTML/", "HTML");
-		echo Directorios("reportes/+PDF/", "PDF");
 		return;
 	} else {
-		
+
 	}
 }
 ?>

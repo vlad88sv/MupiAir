@@ -227,7 +227,7 @@ function INICIAR_MENUES () {
 	';
 	//Herramientas
 	$s .= '
-	<div id="menu_herramientas" class="dropmenudiv" style="width:150px;">'
+	<div id="menu_herramientas" class="dropmenudiv">'
 	. CREAR_LINK_GET("cargar+pantallas", "Cargar Pantallas", "Cargar fotos enumeradas de pantallas")
 	. CREAR_LINK_GET("gestionar+clientes","Editar Clientes", "Gestionar clientes")
 	. CREAR_LINK_GET("gestionar+mupis","Editar Ubicaciones", "Eliminar o modificar MUPIS")
@@ -388,7 +388,11 @@ return NULL;
 }
 
 function CargarImagenDesdeBD ($id, $height='100%') {
-	return "<img style='height:".$height.";' src='include/ver.php?id=$id' />";
+	return '<img style="height:'.$height.';" src="include/ver.php?id='.$id.'" />';
+}
+
+function CargarImagenDesdeBD2 ($id, $height='100%') {
+	return "<img style='height:".$height.";' src='include/ver.php?id=".$id."' />";
 }
 
 function GenerarTooltip ($texto) {
