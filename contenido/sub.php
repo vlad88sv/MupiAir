@@ -368,11 +368,12 @@ Verificamos que exista la superglobal $_FILES para el indice del supuesto campo 
 */
 //print_ar($_FILES);
 if ( !$_FILES[$NombreCampo]['error'] ) {
-	$ParsedIMG = mysql_real_escape_string(file_get_contents($_FILES[$NombreCampo]['tmp_name']));
 	//echo $ParsedIMG;
-	$q = "INSERT INTO ".TBL_IMG." (id_imagen, data, categoria, mime) VALUES(".$Id_Imagen.", '".$ParsedIMG."', '".$Categoria."', '".$_FILES[$NombreCampo]['type']."') ON DUPLICATE KEY UPDATE data=VALUES(data), categoria=VALUES(categoria), mime=VALUES(mime);";
+	$q = "INSERT INTO ".TBL_IMG." (id_imagen, categoria, mime) VALUES(".$Id_Imagen.", '".$Categoria."', '".$_FILES[$NombreCampo]['type']."') ON DUPLICATE KEY UPDATE categoria=VALUES(categoria), mime=VALUES(mime);";
 	$database->query($q);
-	return mysql_insert_id($database->connection);
+	$insert_id = mysql_insert_id($database->connection);
+	move_uploaded_file($_FILES[$NombreCampo]['tmp_name'],"img/$insert_id");
+	return $insert_id;
 } else {
 	/*
 		Ok, si no esta establecida ninguna imagen y nos dieron y $Id_Imagen es porque quieren eliminarla.
