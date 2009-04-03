@@ -8,7 +8,7 @@ error_reporting(E_STRICT | E_ALL);
 
 function CREAR_TBL($TBL,$QUERY) {
 global $link;
-if ( isset($_POST['reiniciar']) ) { 
+if ( isset($_POST['reiniciar']) ) {
 @mysql_query("DROP TABLE IF EXISTS $TBL;", $link) or die('!->No se pudo eliminar la tabla "'.$TBL.'".<br /><pre>' . mysql_error() . '</pre>');
 }
 $QUERY = "CREATE TABLE IF NOT EXISTS ". $TBL . " (" . $QUERY . ");";
@@ -138,7 +138,7 @@ Tabla que contiene la descripción de cada mupi habido y por haber
 No contiene información sobre quién lo arrenda ni desde cuando, solo lo ubica en el mapa.
 Ademas contiene la direccion (path) a la imagen/foto generica de este MUPI en particular.
 NOTA: El campo evento tendrá el código de algún evento ocurrido (si hubiera) a este MUPI.
-Si el evento le ocurré al MUPI en general (ej. le choca un automovil) entonces deberá 
+Si el evento le ocurré al MUPI en general (ej. le choca un automovil) entonces deberá
 asignarle el evento al MUPI.
 Si el evento llegará a afectar a una sola de las pantallas, entonces deberá relacionar dicho
 evento con la pantalla afectada y no con el MUPI. Ver detalles en tabla TBL_MUPI_FACES.
@@ -171,7 +171,7 @@ CREAR_TBL(TBL_MUPI_FACES, $q);
 
 /*
 La tabla de eventos contiene la fecha cuando sucedió el evento y la descripción del evento.
-No tiene campo para decir que MUPI afectó porque al contrario es en las tablas TBL_MUPI y 
+No tiene campo para decir que MUPI afectó porque al contrario es en las tablas TBL_MUPI y
 TBL_MUPI_FACES en las que se relaciona con una entrada de esta tabla.
 */
 
@@ -197,7 +197,7 @@ CREAR_TBL(TBL_REGISTRY, $q);
 Esta tabla albergara todas las imagenes usadas.
 Se diferenciaran por su categoria y podrán verla a travez de su ID.
 */
-$q="id_imagen INT NOT NULL AUTO_INCREMENT PRIMARY KEY, data LONGBLOB, categoria VARCHAR(100), mime VARCHAR(100)";
+$q="id_imagen INT NOT NULL AUTO_INCREMENT PRIMARY KEY, categoria VARCHAR(100), mime VARCHAR(100)";
 CREAR_TBL(TBL_IMG, $q);
 
 /*
