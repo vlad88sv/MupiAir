@@ -21,9 +21,9 @@ class Session
    }
 
    /**
-    * startSession - Performs all the actions necessary to 
+    * startSession - Performs all the actions necessary to
     * initialize this session object. Tries to determine if the
-    * the user has logged in already, and sets the variables 
+    * the user has logged in already, and sets the variables
     * accordingly. Also takes advantage of this page load to
     * update the active visitors tables.
     */
@@ -46,7 +46,7 @@ class Session
       else{
          $database->addActiveUser($this->codigo, $this->time);
       }
-      
+
       /* Remove inactive visitors from database */
       $database->removeInactiveUsers();
       $database->removeInactiveGuests();
@@ -56,7 +56,7 @@ class Session
     * checkLogin - Checks if the user has already previously
     * logged in, and a session with the user has already been
     * established. Also checks to see if user has been remembered.
-    * If so, the database is queried to make sure of the user's 
+    * If so, the database is queried to make sure of the user's
     * authenticity. Returns true if the user has logged in.
     */
    function checkLogin(){
@@ -123,7 +123,7 @@ class Session
       if(!$subpass){
          $form->setError($field, "* Olvidó ingresar la clave");
       }
-      
+
       /* Return if form errors exist */
       if($form->num_errors > 0){
          return false;
@@ -144,7 +144,7 @@ class Session
          $form->setError($field, "* Clave inválida");
 	 DEPURAR ("Login: Not clave");
       }
-      
+
       /* Return if form errors exist */
       if($form->num_errors > 0){
          return false;
@@ -155,7 +155,7 @@ class Session
       $this->codigo  = $_SESSION['codigo'] = $this->userinfo['codigo'];
       $this->userid    = $_SESSION['userid']   = $this->generateRandID();
       $this->userlevel = $this->userinfo['userlevel'];
-      
+
       /* Insert userid into database and update active users table */
       $database->updateUserField($this->codigo, "userid", $this->userid);
       $database->addActiveUser($this->codigo, $this->time);
@@ -201,14 +201,14 @@ class Session
 
       /* Reflect fact that user has logged out */
       $this->logged_in = false;
-      
+
       /**
        * Remove from active users table and add to
        * active guests tables.
        */
       $database->removeActiveUser($this->codigo);
       $database->addActiveGuest($_SERVER['REMOTE_ADDR'], $this->time);
-      
+
       /* Set user level to guest */
       $this->codigo  = GUEST_NAME;
       $this->userlevel = GUEST_LEVEL;
@@ -262,7 +262,7 @@ class Session
             $form->setError($field, "* Código fiscal o nombre de usuario ya esta en uso");
          }
       }
-     
+
       $field = "clave";
       if(!$clave){
          $form->setError($field, "* Clave no ingresada");
@@ -278,17 +278,17 @@ class Session
             $form->setError($field, "* Clave no es Alfanumerica");
          }
       }
-      
-    
+
+
       /* Email error checking */
       $field = "email";  //Use field name for email
-      
+
       if(!$email){
          $form->setError($field, "* Email no ingresado");
-           
+
       }
       else{
-      
+
          /* Check if valid email address */
          $regex = "^[_+a-z0-9-]+(\.[_+a-z0-9-]+)*"
                  ."@[a-z0-9-]+(\.[a-z0-9-]{1,})*"
@@ -298,7 +298,7 @@ class Session
          }
          $email = stripslashes($email);
       }
-	  
+
       /* Errors exist, have user correct them */
       if($form->num_errors > 0){
          return 1;  //Errors with form
@@ -314,7 +314,7 @@ class Session
          }
       }
    }
-   
+
    /**
     * editAccount - Attempts to edit the user's account information
     * including the clave, which it first makes sure is correct
@@ -322,7 +322,7 @@ class Session
     * format, the change is made. All other fields are changed
     * automatically.
     */
-   function editAccount($subnewpass, $codigo, $nombre, $razon, $email, $telefono1, $telefono2, $telefono3, $logotipo, $notas){
+   function editAccount($clave, $codigo, $nombre, $razon, $email, $telefono1, $telefono2, $telefono3, $logotipo, $notas){
       global $database, $form;  //The database and form object
       $form->setValue("clave", $clave);
       $form->setValue("nombre", $nombre);
@@ -344,14 +344,13 @@ class Session
          }
          $email = stripslashes($email);
       }
-      
+
       /* Errors exist, have user correct them */
       if($form->num_errors > 0){
          return false;  //Errors with form
       }
 		if ( !$_FILES['logotipo']['error'] ) {
-			$Pre_Id = isset($_POST['ConservarLogotipo2']) ? $_POST['ConservarLogotipo2'] : 0;
-			$idImg = CargarImagenEnBD("logotipo","LOGOTIPOS", $Pre_Id);
+			$idImg = CargarImagenEnBD("logotipo","LOGOTIPOS");
 		} else {
 			if ( isset ($_POST['ConservarLogotipo']) ){
 			 $idImg = $_POST['ConservarLogotipo2'];
@@ -359,7 +358,7 @@ class Session
 			 $idImg = 0;
 			}
 		}
-	if ($subnewpass) $database->updateUserField($codigo,"clave",md5($subnewpass));
+	if ($clave) $database->updateUserField($codigo,"clave",md5($clave));
 	$database->updateUserField($codigo,"nombre",$nombre);
 	$database->updateUserField($codigo,"razon",$razon);
 	$database->updateUserField($codigo,"email",$email);
@@ -368,12 +367,10 @@ class Session
 	$database->updateUserField($codigo,"telefono3",$telefono3);
 	$database->updateUserField($codigo,"logotipo",$idImg);
 	$database->updateUserField($codigo,"notas",$notas);
-
-      
       /* Success! */
       return true;
    }
-   
+
    /**
     * isAdmin - Returns true if currently logged in user is
     * an administrator, false otherwise.
@@ -382,7 +379,7 @@ class Session
       return ($this->userlevel == ADMIN_LEVEL ||
               $this->codigo  == ADMIN_NAME);
    }
-   
+
    /**
     * generateRandID - Generates a string made up of randomized
     * letters (lower and upper case) and digits and returns
@@ -391,7 +388,7 @@ class Session
    function generateRandID(){
       return md5($this->generateRandStr(16));
    }
-   
+
    /**
     * generateRandStr - Generates a string made up of randomized
     * letters (lower and upper case) and digits, the length

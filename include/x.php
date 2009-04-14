@@ -51,11 +51,11 @@ class Process
       /* Login attempt */
       DEPURAR ("Intengo de LOGIN");
       $retval = $session->login(mysql_real_escape_string($_POST['codigo']), mysql_real_escape_string($_POST['clave']), isset($_POST['remember']));
-      
+
       /* Login successful */
       if($retval){
 	$_SESSION['regsuccess'] = true;
-	
+
       }
       /* Login failed */
       else{
@@ -63,9 +63,9 @@ class Process
          $_SESSION['value_array'] = $_POST;
          $_SESSION['error_array'] = $form->getErrorArray();
       }
-	 header("Location:../");      
+	 header("Location:../");
    }
-   
+
    /**
     * procLogout - Simply attempts to log the user out of the system
     * given that there is no logout form to process.
@@ -75,7 +75,7 @@ class Process
       $retval = $session->logout();
 	header("Location: ../");
    }
-   
+
    /**
     * procRegister - Processes the user submitted registration form,
     * if errors are found, the user is redirected to correct the
@@ -110,7 +110,7 @@ class Process
       }
 	header("Location: ../?"._ACC_."=registro");
 }
-   
+
    /**
     * procForgotPass - Validates the given username then if
     * everything is fine, a new password is generated and
@@ -133,7 +133,7 @@ class Process
             $form->setError($field, "* El usuario no existe<br>");
          }
       }
-      
+
       /* Errors exist, have user correct them */
       if($form->num_errors > 0){
          $_SESSION['value_array'] = $_POST;
@@ -143,11 +143,11 @@ class Process
       else{
          /* Generate new password */
          $newpass = $session->generateRandStr(8);
-         
+
          /* Get email of user */
          $usrinf = $database->getUserInfo($subuser);
          $email  = $usrinf['email'];
-         
+
          /* Attempt to send the email with new password */
          if($mailer->sendNewPass($subuser,$email,$newpass)){
             /* Email sent, update database */
@@ -159,30 +159,8 @@ class Process
             $_SESSION['forgotpass'] = false;
          }
       }
-      
-      header("Location: ../?accion=rpr+clave");
-   }
-   
-   /**
-    * procEditAccount - Attempts to edit the user's account
-    * information, including the password, which must be verified
-    * before a change is made.
-    */
-   function procEditAccount(){
-      global $session, $form;
-      /* Account edit attempt */
-      $retval = $session->editAccount($_POST['newpass'], $_POST['codigo'], $_POST['nombre'],$_POST['razon'], $_POST['email'], $_POST['telefono1'], $_POST['telefono2'], $_POST['telefono3'], '', $_POST['notas']);
 
-      /* Account edit successful */
-      if($retval){
-         $_SESSION['useredit'] = true;
-      }
-      /* Error found with form */
-      else{
-         $_SESSION['value_array'] = $_POST;
-         $_SESSION['error_array'] = $form->getErrorArray();
-      }
-	header("Location: ../?"._ACC_."=editar+usuario:".$_POST['codigo']); 
+      header("Location: ../?accion=rpr+clave");
    }
 };
 

@@ -1,4 +1,21 @@
 <?
+/*Será que tenemos que hacer una edición de usuario?*/
+if (isset($_POST['subedit'])) {
+      global $session, $form;
+      /* Account edit attempt */
+      $retval = $session->editAccount($_POST['newpass'], $_POST['codigo'], $_POST['nombre'],$_POST['razon'], $_POST['email'], $_POST['telefono1'], $_POST['telefono2'], $_POST['telefono3'], '', $_POST['notas']);
+
+      /* Account edit successful */
+      if($retval){
+         $_SESSION['useredit'] = true;
+      }
+      /* Error found with form */
+      else{
+         $_SESSION['value_array'] = $_POST;
+         $_SESSION['error_array'] = $form->getErrorArray();
+      }
+}
+
 function CONTENIDO_usuario_editar($usuario) {
 global $database, $session;
 if(!$session->isAdmin()){
@@ -15,7 +32,7 @@ if(!$database->codigoTaken($usuario)) {
 /* Si esta en proceso de edición */
 if(isset($_SESSION['useredit'])){
    unset($_SESSION['useredit']);
-   
+
    echo Mensaje("¡Cuenta de cliente editada exitosamente!<br />La cuenta de ".$_SESSION['user_edic'] ." ha sido exitosamente actualizada.",_M_INFO);
    CONTENIDO_usuario_info($_SESSION['user_edic']);
    return;
@@ -24,7 +41,7 @@ $_SESSION['user_edic'] = $usuario;
 $req_user_info = $database->getUserInfo($_SESSION['user_edic']);
 ?>
 <h1>Editar cuenta del Cliente: <? echo $_SESSION['user_edic']; ?></h1>
-<form action="include/x.php" enctype="multipart/form-data" method="POST">
+<form action="./?accion=editar+usuario" enctype="multipart/form-data" method="POST">
 <table  border="0" cellspacing="0">
 <tr>
 <td width="20%">Nueva clave:</td>

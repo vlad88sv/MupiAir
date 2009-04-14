@@ -366,24 +366,13 @@ global $database;
 /*
 Verificamos que exista la superglobal $_FILES para el indice del supuesto campo INPUT=FILE para no trabajar de gusto...
 */
-//print_ar($_FILES);
 if ( !$_FILES[$NombreCampo]['error'] ) {
-	//echo $ParsedIMG;
 	$q = "INSERT INTO ".TBL_IMG." (id_imagen, categoria, mime) VALUES(".$Id_Imagen.", '".$Categoria."', '".$_FILES[$NombreCampo]['type']."') ON DUPLICATE KEY UPDATE categoria=VALUES(categoria), mime=VALUES(mime);";
 	$database->query($q);
 	$insert_id = mysql_insert_id($database->connection);
+	//print_ar($_FILES);
 	move_uploaded_file($_FILES[$NombreCampo]['tmp_name'],"img/$insert_id");
 	return $insert_id;
-} else {
-	/*
-		Ok, si no esta establecida ninguna imagen y nos dieron y $Id_Imagen es porque quieren eliminarla.
-		* Eliminamos los datos de esa fila para recuperar el espacio.
-		* Retornamos NULL para denotar la nueva anti-referencia.
-	*/
-	if ( $Id_Imagen ) {
-		$q = "DELETE FROM ".TBL_IMG." WHERE id_imagen=".$Id_Imagen.";";
-		$database->query($q);
-	}
 }
 return NULL;
 }
