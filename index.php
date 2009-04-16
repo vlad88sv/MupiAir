@@ -16,8 +16,6 @@ ini_set("memory_limit","128M");
 
 /*-----------------------INCLUSIONES-------------------*/
 /* CODIGO */
-/*Para procesar PDF's*/
-require_once ('include/dompdf/dompdf_config.inc.php');
 /*Para manejo de catorcenas */
 require_once ('include/fecha.php');
 /* CONTENIDO */
