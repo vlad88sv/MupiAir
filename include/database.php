@@ -11,30 +11,30 @@
       //Number of signed-up users
       var $num_members;
       /* Note: call getNumMembers() to access $num_members! */
-      
+
       /* Class constructor */
       function MySQLDB()
       {
           /* Make connection to database */
           $this->connection = @mysql_connect(DB_SERVER, DB_USER, DB_PASS) or die("Fue imposible conectarse a la base de datos, posiblemente no ha ejecutado el instalador (instalar.php) de " . _NOMBRE_ . " correctamente.<br /><hr />Detalles del error:<pre>" . mysql_error() . "</pre>");
           mysql_select_db(DB_NAME, $this->connection) or die(mysql_error());
-          
+
           /**
            * Only query database to find out number of members
            * when getNumMembers() is called for the first time,
            * until then, default value set.
            */
           $this->num_members = -1;
-          
+
           if (TRACK_VISITORS) {
               /* Calculate number of users at site */
               $this->calcNumActiveUsers();
-              
+
               /* Calculate number of guests at site */
               $this->calcNumActiveGuests();
           }
       }
-      
+
       /**
        * confirmUserPass - Checks whether or not the given
        * codigo is in the database, if so it checks if the
@@ -49,7 +49,7 @@
           if (!get_magic_quotes_gpc()) {
               $codigo = addslashes($codigo);
           }
-          
+
           /* Verify that user is in database */
           $q = "SELECT clave FROM " . TBL_USERS . " WHERE codigo = '$codigo'";
           $result = mysql_query($q, $this->connection);
@@ -57,23 +57,23 @@
               //Indicates codigo failure
               return 1;
           }
-          
+
           /* Retrieve clave from result, strip slashes */
           $dbarray = mysql_fetch_array($result);
           $dbarray['clave'] = stripslashes($dbarray['clave']);
           $clave = stripslashes($clave);
-          
+
           /* Validate that clave is correct */
           if ($clave == $dbarray['clave']) {
               //Success! codigo and clave confirmed
               return 0;
           } else {
-              
+
               //Indicates clave failure
               return 2;
           }
       }
-      
+
       /**
        * confirmUserID - Checks whether or not the given
        * codigo is in the database, if so it checks if the
@@ -88,7 +88,7 @@
           if (!get_magic_quotes_gpc()) {
               $codigo = addslashes($codigo);
           }
-          
+
           /* Verify that user is in database */
           $q = "SELECT userid FROM " . TBL_USERS . " WHERE codigo = '$codigo'";
           $result = mysql_query($q, $this->connection);
@@ -96,23 +96,23 @@
               //Indicates codigo failure
               return 1;
           }
-          
+
           /* Retrieve userid from result, strip slashes */
           $dbarray = mysql_fetch_array($result);
           $dbarray['userid'] = stripslashes($dbarray['userid']);
           $userid = stripslashes($userid);
-          
+
           /* Validate that userid is correct */
           if ($userid == $dbarray['userid']) {
               //Success! codigo and userid confirmed
               return 0;
           } else {
-              
+
               //Indicates userid invalid
               return 2;
           }
       }
-      
+
       /**
        * codigoTaken - Returns true if the codigo has
        * been taken by another user, false otherwise.
@@ -126,7 +126,7 @@
           $result = mysql_query($q, $this->connection);
           return(mysql_numrows($result) > 0);
       }
-      
+
       /**
        * codigoBanned - Returns true if the codigo has
        * been banned by the administrator.
@@ -140,7 +140,7 @@
           $result = mysql_query($q, $this->connection);
           return(mysql_numrows($result) > 0);
       }
-      
+
       /**
        * addNewUser - Inserts the given (codigo, clave, email)
        * info into the database. Appropriate user level is set.
@@ -154,14 +154,14 @@
           if (strcasecmp($codigo, ADMIN_NAME) == 0) {
               $ulevel = ADMIN_LEVEL;
           } else {
-              
+
               $ulevel = CLIENT_LEVEL;
           }
           $q = "INSERT INTO " . TBL_USERS . " VALUES ('$codigo', '$clave', '$nombre', '$razon', '$email', '$telefono1', '$telefono2', '$telefono3', '$logotipo', '$notas', $ulevel, 0, " . time() . ")";
           DEPURAR($q);
           return mysql_query($q, $this->connection);
       }
-      
+
       /**
        * updateUserField - Updates a field, specified by the field
        * parameter, in the user's row of the database.
@@ -171,7 +171,7 @@
           $q = "UPDATE " . TBL_USERS . " SET " . $field . " = '$value' WHERE codigo = '$codigo'";
           return mysql_query($q, $this->connection);
       }
-      
+
       /**
        * getUserInfo - Returns the result array from a mysql
        * query asking for all information stored regarding
@@ -189,7 +189,7 @@
           $dbarray = mysql_fetch_array($result);
           return $dbarray;
       }
-      
+
       /**
        * getNumMembers - Returns the number of signed-up users
        * of the website, banned members not included. The first
@@ -207,7 +207,7 @@
           }
           return $this->num_members;
       }
-      
+
       /**
        * calcNumActiveUsers - Finds out how many active users
        * are viewing site and sets class variable accordingly.
@@ -219,7 +219,7 @@
           $result = mysql_query($q, $this->connection);
           $this->num_active_users = mysql_numrows($result);
       }
-      
+
       /**
        * calcNumActiveGuests - Finds out how many active guests
        * are viewing site and sets class variable accordingly.
@@ -231,7 +231,7 @@
           $result = mysql_query($q, $this->connection);
           $this->num_active_guests = mysql_numrows($result);
       }
-      
+
       /**
        * addActiveUser - Updates codigo's last active timestamp
        * in the database, and also adds him to the table of
@@ -241,14 +241,14 @@
       {
           $q = "UPDATE " . TBL_USERS . " SET timestamp = '$time' WHERE codigo = '$codigo'";
           mysql_query($q, $this->connection);
-          
+
           if (!TRACK_VISITORS)
               return;
           $q = "REPLACE INTO " . TBL_ACTIVE_USERS . " VALUES ('$codigo', '$time')";
           mysql_query($q, $this->connection);
           $this->calcNumActiveUsers();
       }
-      
+
       /* addActiveGuest - Adds guest to active guests table */
       function addActiveGuest($ip, $time)
       {
@@ -258,9 +258,9 @@
           mysql_query($q, $this->connection);
           $this->calcNumActiveGuests();
       }
-      
+
       /* These functions are self explanatory, no need for comments */
-      
+
       /* removeActiveUser */
       function removeActiveUser($codigo)
       {
@@ -271,7 +271,7 @@
           mysql_query($q, $this->connection);
           $this->calcNumActiveUsers();
       }
-      
+
       /* removeActiveGuest */
       function removeActiveGuest($ip)
       {
@@ -281,7 +281,7 @@
           mysql_query($q, $this->connection);
           $this->calcNumActiveGuests();
       }
-      
+
       /* removeInactiveUsers */
       function removeInactiveUsers()
       {
@@ -292,7 +292,7 @@
           mysql_query($q, $this->connection);
           $this->calcNumActiveUsers();
       }
-      
+
       /* removeInactiveGuests */
       function removeInactiveGuests()
       {
@@ -306,7 +306,7 @@
       // ************************************************************* //
 	  // Funciones de conveniencia
       // ************************************************************* //
-	  
+
 	  function REGISTRAR($clave, $valor, $detalle)
 	  {
 	  global $session;
@@ -319,7 +319,7 @@
 	  @mysql_query($q, $this->connection);
 	  DEPURAR ($q,0);
 	  }
-	  
+
       function Combobox_usuarios($nombre = "codigo", $default = null)
       {
           $q = "SELECT codigo, nombre FROM " . TBL_USERS . " WHERE userlevel <> 9;";
@@ -350,7 +350,7 @@
           $s .= '</select>';
           return $s;
       }
-      
+
       function Combobox_pedido($nombre = "codigo_pedido", $default = null, $desde = null, $hasta = null)
       {
           $intervalo = '';
@@ -386,7 +386,7 @@
           $s .= '</select>';
           return $s;
       }
-      
+
       function Combobox_mupi($nombre = "codigo_mupi", $default = null)
       {
           //id_mupi, codigo_calle.codigo_mupi , calle, ubicacion.
@@ -419,7 +419,37 @@
           $s .= '</select>';
           return $s;
       }
-      
+
+      function Combobox_calle_grupos($nombre = "codigo_calle", $default = null)
+      {
+          $q = "select distinct grupo_calle from emupi_calles where grupo_calle IS NOT NULL AND grupo_calle != '';";
+          $result = mysql_query($q, $this->connection);
+          $num_rows = mysql_numrows($result);
+          $s = '';
+          if (!$result || ($num_rows < 0)) {
+              $s .= "Error mostrando la información";
+              return $s;
+          }
+          if ($num_rows == 0) {
+              /*Esto nunca deberia de pasar realmente...*/
+              $s .= "¡No hay calles " . _NOMBRE_ . " ingresadas!";
+              return $s;
+          }
+          $s = '<select name="' . $nombre . '" id="' . $nombre . '">';
+          $s .= '<option value="::T::">Todas</option>';
+          for ($i = 0; $i < $num_rows; $i++) {
+              $grupo_calle = mysql_result($result, $i, "grupo_calle");
+              if ($grupo_calle == $default) {
+                  $selected = ' selected="selected"';
+              } else {
+                  $selected = "";
+              }
+              $s .= '<option value="G:' . urlencode(mysql_result($result, $i, "grupo_calle")) . '">' . mysql_result($result, $i, "grupo_calle") . '</option>';
+          }
+          $s .= '</select>';
+          return $s;
+      }
+
       function Combobox_calle($nombre = "codigo_calle", $default = null, $calle = null)
       {
           if ($calle) {
@@ -441,6 +471,7 @@
               return $s;
           }
           $s = '<select name="' . $nombre . '" id="' . $nombre . '">';
+          $s .= '<option value="::T::">Todas</option>';
           for ($i = 0; $i < $num_rows; $i++) {
               $codigo_calle = mysql_result($result, $i, "codigo_calle");
               $nombre = mysql_result($result, $i, "nombre");
@@ -454,7 +485,7 @@
           $s .= '</select>';
           return $s;
       }
-      
+
       function Combobox_CatorcenasConPresencia($nombre = "catorcena_presencia", $codigo = null, $OnChange = null)
       {
           global $session;
@@ -491,7 +522,7 @@
           $s .= '</select>';
           return $s;
       }
-      
+
       function Combobox_CallesConPresencia($nombre, $codigo, $catorcena)
       {
           // Calles donde el usuario $codigo tiene caras alquiladas en la catorcena $catorcena.
@@ -529,12 +560,14 @@
 
 		  //Agregamos los grupos
 		  $s .= '<optgroup label="Grupos">';
-              
+
 		  //Agregamos el grupo "Todas" -- todas las calles.
 		  $s .= '<option value="::T::">Todas</option>';
-		  for ($i = 0; $i < $num_rows2; $i++) {
+          /*
+          for ($i = 0; $i < $num_rows2; $i++) {
               $s .= '<option value="G:' . urlencode(mysql_result($result2, $i, "grupo_calle")) . '">' . mysql_result($result2, $i, "grupo_calle") . '</option>';
           }
+          */
 		  //Agregamos las secciones de calle
 		  $s .= '<optgroup label="Secciones">';
           for ($i = 0; $i < $num_rows; $i++) {
@@ -543,7 +576,7 @@
           $s .= '</select>';
           return $s;
       }
-      
+
       /**
        * query - Performs the given query on the database and
        * returns the result, which may be false, true or a
@@ -558,7 +591,7 @@
           return $resultado;
       }
   }
-  
+
   /* Create database connection */
   $database = new MySQLDB;
 ?>

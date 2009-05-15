@@ -12,7 +12,6 @@ require_once("include/sesion.php");
 /* Hacer disponible a todos mi ubicación*/
 $sURL_INDEX = $_SERVER['PHP_SELF'];
 date_default_timezone_set ('America/El_Salvador');
-ini_set("memory_limit","128M");
 
 /*-----------------------INCLUSIONES-------------------*/
 /* CODIGO */
@@ -71,7 +70,7 @@ require_once("contenido/cargar+pantallas.php");
 	<script>
 	// Esto por alguna razón es lento en FF3.0/LNX - Shiretoko/LNX no tiene problemas, ni Opera/LNX.
 	$.blockUI.defaults.applyPlatformOpacityRules = true;
-	$().ajaxStart(function(){$.blockUI( { message: '<h1><img src="loader.gif" /> Su petición esta siendo procesada...</h1>' } );}).ajaxStop($.unblockUI);
+	$().ajaxStart(function(){$.blockUI( { message: '<h1><img src="loader.gif" /> Su petición esta siendo procesada...</h1>', css: { width: '500px', border: 'none', padding: '15px', '-webkit-border-radius': '10px', '-moz-border-radius': '10px', opacity: '.9', 'font-size': '12pt'}} );}).ajaxStop($.unblockUI);
 	</script>
 	<!--[if gte IE 5.5]>
 	<![if lt IE 7]>

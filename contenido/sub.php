@@ -48,6 +48,7 @@ function CONTENIDO_mostrar_principal() {
 			switch ( $accion ) {
 				case "ayuda contacto": break;
 				case "rpr clave": break;
+				case "ver ubicaciones": break;
 				default:
 				$accion= "ingresar";
 			}
@@ -351,6 +352,31 @@ function Query2Table($result, $tableFeatures="") {
  $table .= "</tr>\n";
  }
  $table .= "</table>\n\n";
+ return $table;
+ }
+function db_ui_tabla($resultado, $CSS="") {
+ global $db_link;
+ if ( !mysql_num_rows($resultado) ) {
+ 	return "No se encontraron datos";
+ }
+
+ $table = "";
+ $table .= "<table $CSS>\n";
+ $noFields = mysql_num_fields($resultado);
+ $table .= "<tr>";
+ for ($i = 0; $i < $noFields; $i++) {
+ $field = mysql_field_name($resultado, $i);
+ $table .= "<th>$field</th>\n";
+ }
+ $table .= "</tr>\n";
+ while ($r = mysql_fetch_row($resultado)) {
+ $table .= "<tr>";
+ foreach ($r as $column) {
+ $table .= "<td>$column</td>";
+ }
+ $table .= "</tr>\n";
+ }
+ $table .= "</table>";
  return $table;
  }
 

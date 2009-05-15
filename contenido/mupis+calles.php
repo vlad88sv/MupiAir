@@ -25,39 +25,39 @@ function CONTENIDO_calles($usuario, $calle) {
 	}
 
 	vercalles($usuario);
-	
+
 	if ($calle) {
 		$edicionOregistro = 'Edición del calle ' . $calle;
 	} else {
 		$edicionOregistro = 'Registrar calle';
 	}
-	
+
 	echo '<hr /><h2 id="edicion_calle">'.$edicionOregistro.'</h2>';
-	
+
 	vercallesregistro($usuario, $calle);
 }
 
 function vercalles($usuario="", $calle=""){
    global $database;
-   
+
 //  $WHERE = "";
    $num_rows = "";
 //   if ($usuario) { $WHERE = " WHERE codigo='".$usuario."'"; }
-   
+
    $q = "SELECT * FROM ".TBL_STREETS;
    $result = $database->query($q);
-   
+
    if ( !$result ) {
       echo "Error mostrando la información";
       return;
    }
-   
+
    $num_rows = mysql_numrows($result);
    if ( $num_rows == 0 ) {
       echo Mensaje ("¡No hay calles "._NOMBRE_." ingresadas", _M_NOTA);
       return;
    }
-   
+
 echo "<table>";
 echo "<tr><th>Código calle "._NOMBRE_."</th><th>Ubicación</th><th>Grupo</th><th>Impactos</th><th>Acciones</th></tr>";
    for($i=0; $i<$num_rows; $i++){
@@ -92,7 +92,7 @@ if ($calle) {
 		return;
 	}
 	$codigo_calle = mysql_result($result,0,"codigo_calle");
-	
+
 	$CampoCodigocalle = '<input type="hidden" name="codigo_calle" value="'.$codigo_calle.'">';
 	$ubicacion = mysql_result($result,0,"ubicacion");
 	$grupo_calle = mysql_result($result,0,"grupo_calle");
@@ -101,7 +101,7 @@ if ($calle) {
 	$BotonCancelar = '<input type="button" OnClick="window.location=\'./?'._ACC_.'=gestionar+calles\'" value="Cancelar">';
 	echo SCRIPT('window.location="#edicion_calle";');
 } else {
-	$q = "SELECT LAST_INSERT_ID() FROM ".TBL_STREETS; 
+	$q = "SELECT LAST_INSERT_ID() FROM ".TBL_STREETS;
 	$codigo_calle = mysql_num_rows($database->query($q)) + 1;
 	$CampoCodigocalle = '<input type="hidden" name="codigo_calle" value="0">';
 	$impactos = 0;
@@ -126,12 +126,13 @@ echo '
 <input type="hidden" name="registrar_calles" value="1">
 </form>';
 }
- 
+
 function calles_REGISTRAR() {
 global $database,$form;
 
 $q = "INSERT INTO ".TBL_STREETS." (codigo_calle, ubicacion, grupo_calle, impactos ) VALUES ('".$_POST['codigo_calle']."', '" . $_POST['ubicacion']. "', '"  . $_POST['grupo_calle']. "', '". $_POST['impactos']. "')  ON DUPLICATE KEY UPDATE ubicacion=VALUES(ubicacion), grupo_calle=VALUES(grupo_calle), impactos=VALUES(impactos);";
 DEPURAR ($q);
+$database->REGISTRAR ("calles", "Se editó la calle '".$_POST['codigo_calle']."'","SQL: $q");
 if ( $database->query($q) == 1 ) {
 	echo Mensaje("Exito al registrar calle de ".  $_POST['ubicacion'], _M_INFO);
 } else {
